@@ -2,9 +2,8 @@ const electron = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
 const ipc = require('electron').ipcMain;
-require('electron-reload');
-
 const open = require('./utilities/fileOpener');
+require('electron-reload');
 
 const { app } = electron;
 const { BrowserWindow } = electron;
@@ -44,6 +43,6 @@ app.on('activate', () => {
 
 // Listeners
 ipc.on('open-csv-dialog', async (event) => {
-	const filter = [{ name: 'Comma Separated Values', extensions: ['csv'] }];
+	const filter = [{ name: 'CSV', extensions: ['csv'] }];
 	event.sender.send('selected-csv', await open(filter));
 });
