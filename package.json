@@ -2,7 +2,7 @@
   "name": "newpacom",
   "version": "0.1.0",
   "private": true,
-  "main": "src/start.js",
+  "main": "src/main.js",
   "homepage": "./",
   "build": {
     "appId": "some.id.ofyours",

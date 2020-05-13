@@ -2,7 +2,7 @@ const ipc = window.require('electron').ipcRenderer;
 
 const parse = () => {
 	const resolved = new Promise((resolve, reject) => {
-		ipc.on('selected-file', (event, path) => {
+		ipc.on('selected-csv', (event, path) => {
 			if (path) {
 				resolve(path);
 			} else {
@@ -11,7 +11,7 @@ const parse = () => {
 		});
 	});
 
-	ipc.send('open-file-dialog');
+	ipc.send('open-csv-dialog');
 
 	return resolved;
 };
