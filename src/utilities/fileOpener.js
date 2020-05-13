@@ -1,26 +1,16 @@
-const electron = require('electron');
-const os = require('os');
+const fs = require('fs');
+const pick = require('./filePicker');
 
-const { dialog } = electron;
+const open = async (filters) => new Promise((resolve, reject) => {
+	pick(filters).then((path) => {
+		fs.readFile(path, (err, data) => {
+			if (err) {
+				reject(err);
+			}
 
-const open = async (filters) => {
-	if (os.platform() === 'linux' || os.platform() === 'win32') {
-		return dialog.showOpenDialog({
-			properties: ['openFile'],
-			filters
-		}).then((files) => {
-			if (files) return files.filePaths[0];
-			return '';
+			resolve(data.toString());
 		});
-	}
-
-	return dialog.showOpenDialog({
-		properties: ['openFile', 'openDirectory'],
-		filters
-	}).then((files) => {
-		if (files) return files.filePaths[0];
-		return '';
 	});
-};
+});
 
 module.exports = open;

@@ -6,14 +6,14 @@ function App() {
 	const [path, setPath] = useState(null);
 
 	const onClick = () => {
-		parse().then(setPath);
+		parse().then(setPath).catch(console.error);
 	};
 
 	return (
 		<>
 			<h1>Our Electron App!!</h1>
 			<Button onClick={onClick}>Browse...</Button>
-			<h1>{path}</h1>
+			{path && <h1>{JSON.stringify(path)}</h1>}
 		</>
 	);
 }
