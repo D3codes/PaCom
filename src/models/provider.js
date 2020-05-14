@@ -6,4 +6,4 @@ class Provider {
 	}
 }
 
-export default Provider;
+module.exports = Provider;

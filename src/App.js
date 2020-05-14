@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
+
 import parse from './utilities/csvImporter';
+import fromPulse from './transformers/fromPulse';
 
 function App() {
 	const [path, setPath] = useState(null);
 
 	const onClick = () => {
-		parse().then(setPath).catch(console.error);
+		parse().then(({ data }) => fromPulse(data)).then((reminders) => {
+			console.log('*** reminders:', reminders);
+		});
 	};
 
 	return (

@@ -1,9 +1,8 @@
 class ContactMethod {
-	constructor(phoneNumber, type, sendAsSms) {
+	constructor(phoneNumber, type) {
 		this.phoneNumber = phoneNumber;
 		this.type = type;
-		this.sendAsSms = sendAsSms;
 	}
 }
 
-export default ContactMethod;
+module.exports = ContactMethod;

@@ -7,4 +7,4 @@ class Appointment {
 	}
 }
 
-export default Appointment;
+module.exports = Appointment;
