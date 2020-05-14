@@ -24,11 +24,12 @@ module.exports = {
   rules: {
     "react/jsx-filename-extension": "off",
     "linebreak-style": "off",
-    "comma-dangle": "off",
+    "comma-dangle": ["warn", "off"],
     "indent": ["warn", "tab"],
     "no-tabs": "off",
     "max-len": ["warn", 150],
     "react/jsx-indent": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-indent-props": "off"
   }
 };
