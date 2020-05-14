@@ -9,7 +9,7 @@ function App() {
 
 	const onClick = () => {
 		parse().then(({ data }) => fromPulse(data)).then((reminders) => {
-			console.log('*** reminders:', reminders);
+			setPath(reminders);
 		});
 	};
 

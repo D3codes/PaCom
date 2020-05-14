@@ -12,8 +12,9 @@ module.exports = (rows) => {
 	rows.forEach((row, index) => {
 		if (!row[3]) return;
 
+		// This unshift is removing the company from the row
+		rows[index - 1].unshift();
 		const [
-			company = null,
 			paddedProvider = null,
 			appointmentDate = null
 		] = rows[index - 1];
@@ -34,7 +35,7 @@ module.exports = (rows) => {
 		if (cellPhone) contactMethods.push(new ContactMethod(cellPhone, 'Cell'));
 		if (workPhone) contactMethods.push(new ContactMethod(workPhone, 'Work'));
 
-		const patient = new Patient(name, contactMethods, preferredContactMethod);
+		const patient = new Patient(accountNumber, name, contactMethods, preferredContactMethod, dateOfBirth);
 
 		const provider = new Provider(paddedProvider);
 
