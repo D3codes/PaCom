@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles
+	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography
 } from '@material-ui/core';
 import {
 	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings
 } from '@material-ui/icons';
+
+import getVersion from '../utilities/getVersion';
+import usePromise from '../hooks/usePromise';
 
 const DRAWER_WIDTH = 300;
 
@@ -54,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
 		transition: theme.transitions.create('width', {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.enteringScreen
-		})
+		}),
+		overflowX: 'hidden'
 	},
 	drawerClose: {
 		transition: theme.transitions.create('width', {
@@ -78,6 +82,12 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(0, 1),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar
+	},
+	versionContainer: {
+		position: 'fixed',
+		bottom: 0,
+		alignSelf: 'center',
+		paddingBottom: theme.spacing()
 	}
 }));
 
@@ -85,6 +95,7 @@ export default function MiniDrawer({
 	open = false, onDrawerClose, onTabSelect, selectedTabId = TABS[0].id
 }) {
 	const classes = useStyles();
+	const [version] = usePromise(() => getVersion());
 
 	return (
 		<Drawer
@@ -114,6 +125,9 @@ export default function MiniDrawer({
 					</ListItem>
 				))}
 			</List>
+			<div className={classes.versionContainer}>
+				{version && <Typography color="textSecondary" variant="caption">{version}</Typography>}
+			</div>
 		</Drawer>
 	);
 }
