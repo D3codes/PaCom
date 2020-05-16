@@ -12,7 +12,7 @@ const { BrowserWindow } = electron;
 let mainWindow;
 
 function createWindow() {
-	mainWindow = new BrowserWindow({ width: 800, height: 600, webPreferences: { nodeIntegration: true } });
+	mainWindow = new BrowserWindow({ width: 1000, height: 900, webPreferences: { nodeIntegration: true } });
 	mainWindow.setMenuBarVisibility(false);
 
 	mainWindow.loadURL(
