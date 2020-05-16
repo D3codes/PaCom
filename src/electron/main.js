@@ -1,13 +1,11 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const electron = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-const ipc = require('electron').ipcMain;
 const open = require('./utilities/fileOpener');
-// eslint-disable-next-line import/no-extraneous-dependencies
-require('electron-reload');
+// require('electron-reload'); /* Uncomment for local dev */
 
-const { app } = electron;
-const { BrowserWindow } = electron;
+const { app, BrowserWindow, ipcMain: ipc } = electron;
 
 let mainWindow;
 
@@ -18,7 +16,7 @@ function createWindow() {
 	mainWindow.loadURL(
 		isDev
 			? 'http://localhost:3000'
-			: `file://${path.join(__dirname, '../build/index.html')}`
+			: `file://${path.join(__dirname, '../index.html')}`
 	);
 
 	mainWindow.on('closed', () => {
@@ -26,7 +24,7 @@ function createWindow() {
 	});
 
 	// Dev Tools
-	mainWindow.webContents.openDevTools();
+	if (isDev) mainWindow.webContents.openDevTools();
 }
 
 app.on('ready', createWindow);
