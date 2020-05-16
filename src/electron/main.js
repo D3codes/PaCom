@@ -1,13 +1,10 @@
-const electron = require('electron');
+const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
 const ipc = require('electron').ipcMain;
 const open = require('./utilities/fileOpener');
 // eslint-disable-next-line import/no-extraneous-dependencies
 require('electron-reload');
-
-const { app } = electron;
-const { BrowserWindow } = electron;
 
 let mainWindow;
 
@@ -26,7 +23,7 @@ function createWindow() {
 	});
 
 	// Dev Tools
-	mainWindow.webContents.openDevTools();
+	if (isDev) mainWindow.webContents.openDevTools();
 }
 
 app.on('ready', createWindow);
