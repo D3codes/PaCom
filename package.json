@@ -34,8 +34,7 @@
   "scripts": {
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
     "start": "cross-env BROWSER=none react-scripts start",
-    "build": "react-scripts build",
-    "build-electron": "cp -r src/electron/. build/electron",
+    "build": "react-scripts build && cp -r src/electron/. build/electron",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "package-win": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
