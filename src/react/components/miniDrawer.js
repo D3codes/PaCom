@@ -5,7 +5,7 @@ import {
 	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography
 } from '@material-ui/core';
 import {
-	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings
+	AddComment, AlarmAdd, ChevronLeft, EditLocation, RateReview, Settings
 } from '@material-ui/icons';
 
 import getVersion from '../utilities/getVersion';
@@ -113,7 +113,7 @@ export default function MiniDrawer({
 		>
 			<div className={classes.toolbar}>
 				<IconButton onClick={onDrawerClose}>
-					<ChevronRight />
+					<ChevronLeft />
 				</IconButton>
 			</div>
 			<Divider />
