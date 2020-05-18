@@ -10,7 +10,6 @@ import MessageTemplates from './components/messageTemplates/messageTemplates';
 import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH } from './components/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
 import Settings from './components/settings/settings';
-import UppMessages from './components/uppMessages/uppMessages';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -94,9 +93,6 @@ export default function App() {
 				</div>
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE, classes)}>
 					<CustomMessage />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_UPP_MESSAGES, classes)}>
-					<UppMessages />
 				</div>
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.PROVIDER_MAPPINGS, classes)}>
 					<ProviderMappings />
