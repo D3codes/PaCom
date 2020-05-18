@@ -29,7 +29,7 @@ module.exports = {
 		'comma-dangle': ['warn', 'never'],
 		'indent': ['warn', 'tab'],
 		'no-tabs': 'off',
-		'max-len': ['warn', 150],
+		'max-len': ['warn', 180],
 		'react/jsx-indent': 'off',
 		'react/jsx-one-expression-per-line': 'off',
 		'react/jsx-indent-props': 'off',

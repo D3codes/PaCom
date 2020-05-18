@@ -1,17 +1,15 @@
 import Papa from 'papaparse';
 
-const ipc = window.require('electron').ipcRenderer;
+const parse = (file) => Papa.parse(file, {
+	complete: (results) => results
+});
 
-const parse = () => {
-	ipc.send('open-csv-dialog');
+const getCSV = () => {
+	window.ipcRenderer.send('open-csv-dialog');
 	return new Promise((resolve, reject) => {
-		ipc.on('selected-csv', (event, file) => {
+		window.ipcRenderer.on('selected-csv', (event, file) => {
 			if (file) {
-				Papa.parse(file, {
-					complete: (results) => {
-						resolve(results);
-					}
-				});
+				resolve(parse(file));
 			} else {
 				reject();
 			}
@@ -19,4 +17,7 @@ const parse = () => {
 	});
 };
 
-export default parse;
+export default {
+	parse,
+	getCSV
+};

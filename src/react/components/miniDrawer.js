@@ -5,13 +5,14 @@ import {
 	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography
 } from '@material-ui/core';
 import {
-	AddComment, AlarmAdd, ChevronLeft, EditLocation, RateReview, Settings
+	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings
 } from '@material-ui/icons';
 
 import getVersion from '../utilities/getVersion';
 import usePromise from '../hooks/usePromise';
 
-const DRAWER_WIDTH = 300;
+export const DRAWER_OPEN_WIDTH = 300;
+export const DRAWER_CLOSED_WIDTH = 65;
 
 const TABS = [
 	{
@@ -48,28 +49,19 @@ const TABS = [
 
 const useStyles = makeStyles((theme) => ({
 	drawer: {
-		width: DRAWER_WIDTH,
+		width: DRAWER_OPEN_WIDTH,
 		flexShrink: 0,
 		whiteSpace: 'nowrap'
 	},
 	drawerOpen: {
-		width: DRAWER_WIDTH,
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen
-		}),
+		width: DRAWER_OPEN_WIDTH,
+		transition: theme.transitions.create('width'),
 		overflowX: 'hidden'
 	},
 	drawerClose: {
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen
-		}),
+		transition: theme.transitions.create('width'),
 		overflowX: 'hidden',
-		width: theme.spacing(6) + 1,
-		[theme.breakpoints.up('sm')]: {
-			width: theme.spacing(8) + 1
-		}
+		width: DRAWER_CLOSED_WIDTH
 	},
 	icon: {
 		fontSize: '2rem',
@@ -88,11 +80,17 @@ const useStyles = makeStyles((theme) => ({
 		bottom: 0,
 		alignSelf: 'center',
 		paddingBottom: theme.spacing()
+	},
+	collapsed: {
+		transition: theme.transitions.create('transform')
+	},
+	expanded: {
+		transform: 'rotate(-180deg)'
 	}
 }));
 
 export default function MiniDrawer({
-	open = false, onDrawerClose, onTabSelect, selectedTabId = TABS[0].id
+	open = false, onChevronClick, onTabSelect, selectedTabId = TABS[0].id
 }) {
 	const classes = useStyles();
 	const [version] = usePromise(() => getVersion());
@@ -112,8 +110,8 @@ export default function MiniDrawer({
 			}}
 		>
 			<div className={classes.toolbar}>
-				<IconButton onClick={onDrawerClose}>
-					<ChevronLeft />
+				<IconButton onClick={onChevronClick}>
+					<ChevronRight className={clsx(classes.collapsed, { [classes.expanded]: open })} />
 				</IconButton>
 			</div>
 			<Divider />
@@ -134,7 +132,7 @@ export default function MiniDrawer({
 
 MiniDrawer.propTypes = {
 	open: PropTypes.bool,
-	onDrawerClose: PropTypes.func.isRequired,
+	onChevronClick: PropTypes.func.isRequired,
 	onTabSelect: PropTypes.func.isRequired,
 	selectedTabId: PropTypes.string
 };

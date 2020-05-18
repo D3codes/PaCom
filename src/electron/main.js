@@ -12,7 +12,7 @@ const { app, BrowserWindow, ipcMain: ipc } = electron;
 let mainWindow;
 
 function createWindow() {
-	mainWindow = new BrowserWindow({ width: 1000, height: 900, webPreferences: { nodeIntegration: true } });
+	mainWindow = new BrowserWindow({ width: 1000, height: 900, webPreferences: { nodeIntegration: true, preload: `${__dirname}/preload.js` } });
 	mainWindow.setMenuBarVisibility(false);
 
 	mainWindow.loadURL(

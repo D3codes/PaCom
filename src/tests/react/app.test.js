@@ -7,9 +7,11 @@ import App from '../../react/app';
 jest.mock('../../react/utilities/getVersion', () => '0.1.0');
 jest.mock('../../react/hooks/usePromise');
 
-it('renders without crashing', () => {
-	usePromiseMock.mockImplementation(() => []);
+describe('App', () => {
+	it('renders without crashing', () => {
+		usePromiseMock.mockImplementation(() => []);
 
-	const { getAllByText } = render(<App />);
-	expect(getAllByText('Send Appointment Reminders'));
+		const { getAllByText } = render(<App />);
+		expect(getAllByText('Send Appointment Reminders')).toHaveLength(2);
+	});
 });
