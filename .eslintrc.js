@@ -33,6 +33,7 @@ module.exports = {
 		'react/jsx-indent': 'off',
 		'react/jsx-one-expression-per-line': 'off',
 		'react/jsx-indent-props': 'off',
-		'react/require-default-props': ['error', {ignoreFunctionalComponents: true}]
+		'react/require-default-props': ['error', {ignoreFunctionalComponents: true}],
+		'import/prefer-default-export': 'off'
 	}
 };
