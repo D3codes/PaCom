@@ -38,7 +38,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "package-win": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
-    "package-mac": "electron-builder build --mac -c.extraMetadata.main=build/electron/main.js --publish never"
+    "package-mac": "electron-builder build --mac -c.extraMetadata.main=build/electron/main.js --publish never",
+    "eslint": "node_modules/.bin/eslint ./src"
   },
   "eslintConfig": {
     "extends": "react-app"
