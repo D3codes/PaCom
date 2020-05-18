@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 	appBar: {
 		marginLeft: DRAWER_CLOSED_WIDTH,
 		width: `calc(100% - ${DRAWER_CLOSED_WIDTH}px)`,
-		zIndex: theme.zIndex.drawer - 1,
 		transition: theme.transitions.create(['width', 'margin'])
 	},
 	appBarShift: {
@@ -61,7 +60,7 @@ export default function App() {
 	const [open, setOpen] = useState(false);
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
 
-	const onChevronClick = () => {
+	const handleChevronClick = () => {
 		setOpen(!open);
 	};
 
@@ -72,7 +71,7 @@ export default function App() {
 			<CssBaseline />
 			<MiniDrawer
 				open={open}
-				onChevronClick={onChevronClick}
+				onChevronClick={handleChevronClick}
 				onTabSelect={setSelectedTabId}
 				selectedTabId={selectedTabId}
 			/>
