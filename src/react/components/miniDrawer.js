@@ -2,15 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles
+	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography
 } from '@material-ui/core';
 import {
 	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings
 } from '@material-ui/icons';
 
-const DRAWER_WIDTH = 300;
+import getVersion from '../utilities/getVersion';
+import usePromise from '../hooks/usePromise';
 
-const TABS = [
+export const DRAWER_OPEN_WIDTH = 300;
+export const DRAWER_CLOSED_WIDTH = 65;
+
+const PRIMARY_TABS = [
 	{
 		Icon: AlarmAdd,
 		id: 'sndApptRmdrs',
@@ -20,12 +24,10 @@ const TABS = [
 		Icon: AddComment,
 		id: 'sndCstmMsg',
 		label: 'Send Custom Message'
-	},
-	{
-		Icon: AddComment,
-		id: 'sndUppMsgs',
-		label: 'Send UPP Messages'
-	},
+	}
+];
+
+const SECONDARY_TABS = [
 	{
 		Icon: EditLocation,
 		id: 'prvdrMpngs',
@@ -45,27 +47,19 @@ const TABS = [
 
 const useStyles = makeStyles((theme) => ({
 	drawer: {
-		width: DRAWER_WIDTH,
+		width: DRAWER_OPEN_WIDTH,
 		flexShrink: 0,
 		whiteSpace: 'nowrap'
 	},
 	drawerOpen: {
-		width: DRAWER_WIDTH,
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen
-		})
+		width: DRAWER_OPEN_WIDTH,
+		transition: theme.transitions.create('width'),
+		overflowX: 'hidden'
 	},
 	drawerClose: {
-		transition: theme.transitions.create('width', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen
-		}),
+		transition: theme.transitions.create('width'),
 		overflowX: 'hidden',
-		width: theme.spacing(6) + 1,
-		[theme.breakpoints.up('sm')]: {
-			width: theme.spacing(8) + 1
-		}
+		width: DRAWER_CLOSED_WIDTH
 	},
 	icon: {
 		fontSize: '2rem',
@@ -78,13 +72,26 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(0, 1),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar
+	},
+	versionContainer: {
+		position: 'fixed',
+		bottom: 0,
+		alignSelf: 'center',
+		paddingBottom: theme.spacing()
+	},
+	collapsed: {
+		transition: theme.transitions.create('transform')
+	},
+	expanded: {
+		transform: 'rotate(-180deg)'
 	}
 }));
 
 export default function MiniDrawer({
-	open = false, onDrawerClose, onTabSelect, selectedTabId = TABS[0].id
+	open = false, onChevronClick, onTabSelect, selectedTabId = PRIMARY_TABS[0].id
 }) {
 	const classes = useStyles();
+	const [version] = usePromise(() => getVersion());
 
 	return (
 		<Drawer
@@ -101,37 +108,48 @@ export default function MiniDrawer({
 			}}
 		>
 			<div className={classes.toolbar}>
-				<IconButton onClick={onDrawerClose}>
-					<ChevronRight />
+				<IconButton onClick={onChevronClick}>
+					<ChevronRight className={clsx(classes.collapsed, { [classes.expanded]: open })} />
 				</IconButton>
 			</div>
 			<Divider />
 			<List>
-				{TABS.map(({ Icon, id, label }) => (
+				{PRIMARY_TABS.map(({ Icon, id, label }) => (
 					<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
 						<Icon className={classes.icon} color="primary" />
 						<ListItemText primary={label} />
 					</ListItem>
 				))}
 			</List>
+			<Divider />
+			<List>
+				{SECONDARY_TABS.map(({ Icon, id, label }) => (
+					<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
+						<Icon className={classes.icon} color="primary" />
+						<ListItemText primary={label} />
+					</ListItem>
+				))}
+			</List>
+			<div className={classes.versionContainer}>
+				{version && <Typography color="textSecondary" variant="caption">{version}</Typography>}
+			</div>
 		</Drawer>
 	);
 }
 
 MiniDrawer.propTypes = {
 	open: PropTypes.bool,
-	onDrawerClose: PropTypes.func.isRequired,
+	onChevronClick: PropTypes.func.isRequired,
 	onTabSelect: PropTypes.func.isRequired,
 	selectedTabId: PropTypes.string
 };
 
-MiniDrawer.Tabs = TABS;
+MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS);
 
 MiniDrawer.TabIds = {
-	SEND_APPOINTMENT_REMINDERS: TABS[0].id,
-	SEND_CUSTOM_MESSAGE: TABS[1].id,
-	SEND_UPP_MESSAGES: TABS[2].id,
-	PROVIDER_MAPPINGS: TABS[3].id,
-	MESSAGE_TEMPLATES: TABS[4].id,
-	SETTINGS: TABS[5].id
+	SEND_APPOINTMENT_REMINDERS: PRIMARY_TABS[0].id,
+	SEND_CUSTOM_MESSAGE: PRIMARY_TABS[1].id,
+	PROVIDER_MAPPINGS: SECONDARY_TABS[0].id,
+	MESSAGE_TEMPLATES: SECONDARY_TABS[1].id,
+	SETTINGS: SECONDARY_TABS[2].id
 };

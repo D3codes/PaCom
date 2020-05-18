@@ -1,44 +1,29 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import {
-	AppBar, CssBaseline, IconButton, makeStyles, Toolbar, Typography
+	AppBar, CssBaseline, makeStyles, Toolbar, Typography
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
 import CustomMessage from './components/customMessage/customMessage';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
-import MiniDrawer from './components/miniDrawer';
+import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH } from './components/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
 import Settings from './components/settings/settings';
-import UppMessages from './components/uppMessages/uppMessages';
-
-const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: 'flex'
 	},
 	appBar: {
-		zIndex: theme.zIndex.drawer + 1,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen
-		})
+		marginLeft: DRAWER_CLOSED_WIDTH,
+		width: `calc(100% - ${DRAWER_CLOSED_WIDTH}px)`,
+		transition: theme.transitions.create(['width', 'margin'])
 	},
 	appBarShift: {
-		marginLeft: drawerWidth,
-		width: `calc(100% - ${drawerWidth}px)`,
-		transition: theme.transitions.create(['width', 'margin'], {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.enteringScreen
-		})
-	},
-	menuButton: {
-		marginRight: 36
-	},
-	hide: {
-		display: 'none'
+		marginLeft: DRAWER_OPEN_WIDTH,
+		width: `calc(100% - ${DRAWER_OPEN_WIDTH}px)`,
+		transition: theme.transitions.create(['width', 'margin'])
 	},
 	content: {
 		flexGrow: 1,
@@ -74,12 +59,8 @@ export default function App() {
 	const [open, setOpen] = useState(false);
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
 
-	const handleDrawerOpen = () => {
-		setOpen(true);
-	};
-
-	const handleDrawerClose = () => {
-		setOpen(false);
+	const handleChevronClick = () => {
+		setOpen(!open);
 	};
 
 	const title = getTitle(selectedTabId);
@@ -89,7 +70,7 @@ export default function App() {
 			<CssBaseline />
 			<MiniDrawer
 				open={open}
-				onDrawerClose={handleDrawerClose}
+				onChevronClick={handleChevronClick}
 				onTabSelect={setSelectedTabId}
 				selectedTabId={selectedTabId}
 			/>
@@ -100,17 +81,6 @@ export default function App() {
 				})}
 			>
 				<Toolbar>
-					<IconButton
-						color="inherit"
-						aria-label="open drawer"
-						onClick={handleDrawerOpen}
-						edge="start"
-						className={clsx(classes.menuButton, {
-							[classes.hide]: open
-						})}
-					>
-						<MenuIcon />
-					</IconButton>
 					<Typography variant="h6" noWrap>
 						{title}
 					</Typography>
@@ -123,9 +93,6 @@ export default function App() {
 				</div>
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE, classes)}>
 					<CustomMessage />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_UPP_MESSAGES, classes)}>
-					<UppMessages />
 				</div>
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.PROVIDER_MAPPINGS, classes)}>
 					<ProviderMappings />
