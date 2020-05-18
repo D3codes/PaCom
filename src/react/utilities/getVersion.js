@@ -1,4 +1,5 @@
-const ipc = window.require('electron').ipcRenderer;
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { ipcRenderer: ipc } = require('electron');
 
 class VersionNotFoundError extends Error {
 	constructor() {
