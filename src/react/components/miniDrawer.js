@@ -14,7 +14,7 @@ import usePromise from '../hooks/usePromise';
 export const DRAWER_OPEN_WIDTH = 300;
 export const DRAWER_CLOSED_WIDTH = 65;
 
-const TABS = [
+const PRIMARY_TABS = [
 	{
 		Icon: AlarmAdd,
 		id: 'sndApptRmdrs',
@@ -24,12 +24,10 @@ const TABS = [
 		Icon: AddComment,
 		id: 'sndCstmMsg',
 		label: 'Send Custom Message'
-	},
-	{
-		Icon: AddComment,
-		id: 'sndUppMsgs',
-		label: 'Send UPP Messages'
-	},
+	}
+];
+
+const SECONDARY_TABS = [
 	{
 		Icon: EditLocation,
 		id: 'prvdrMpngs',
@@ -90,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer({
-	open = false, onChevronClick, onTabSelect, selectedTabId = TABS[0].id
+	open = false, onChevronClick, onTabSelect, selectedTabId = PRIMARY_TABS[0].id
 }) {
 	const classes = useStyles();
 	const [version] = usePromise(() => getVersion());
@@ -116,7 +114,16 @@ export default function MiniDrawer({
 			</div>
 			<Divider />
 			<List>
-				{TABS.map(({ Icon, id, label }) => (
+				{PRIMARY_TABS.map(({ Icon, id, label }) => (
+					<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
+						<Icon className={classes.icon} color="primary" />
+						<ListItemText primary={label} />
+					</ListItem>
+				))}
+			</List>
+			<Divider />
+			<List>
+				{SECONDARY_TABS.map(({ Icon, id, label }) => (
 					<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
 						<Icon className={classes.icon} color="primary" />
 						<ListItemText primary={label} />
@@ -137,13 +144,12 @@ MiniDrawer.propTypes = {
 	selectedTabId: PropTypes.string
 };
 
-MiniDrawer.Tabs = TABS;
+MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS);
 
 MiniDrawer.TabIds = {
-	SEND_APPOINTMENT_REMINDERS: TABS[0].id,
-	SEND_CUSTOM_MESSAGE: TABS[1].id,
-	SEND_UPP_MESSAGES: TABS[2].id,
-	PROVIDER_MAPPINGS: TABS[3].id,
-	MESSAGE_TEMPLATES: TABS[4].id,
-	SETTINGS: TABS[5].id
+	SEND_APPOINTMENT_REMINDERS: PRIMARY_TABS[0].id,
+	SEND_CUSTOM_MESSAGE: PRIMARY_TABS[1].id,
+	PROVIDER_MAPPINGS: SECONDARY_TABS[0].id,
+	MESSAGE_TEMPLATES: SECONDARY_TABS[1].id,
+	SETTINGS: SECONDARY_TABS[2].id
 };
