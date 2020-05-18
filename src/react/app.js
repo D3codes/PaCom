@@ -56,11 +56,11 @@ function getClassNameForTab(selectedTabId, tabId, classes) {
 
 export default function App() {
 	const classes = useStyles();
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(true);
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
 
 	const handleChevronClick = () => {
-		setOpen(!open);
+		setOpen(prevOpen => !prevOpen);
 	};
 
 	const title = getTitle(selectedTabId);
