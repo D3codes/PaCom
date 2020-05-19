@@ -108,6 +108,14 @@ const setTwilioPhoneNumber = (phoneNumber) => {
 	setSettings('settings.twilio.phoneNumber', phoneNumber);
 };
 
+const setTwilioSmsEndpoint = (endpoint) => {
+	setSettings('settings.twilio.smsEndpoint', endpoint);
+};
+
+const setTwilioCallEndpoint = (endpoint) => {
+	setSettings('settings.twilio.callEndpoint', endpoint);
+};
+
 const setShareDataBehavior = (behavior) => {
 	setSettings('settings.shareData.behavior', behavior);
 };
@@ -135,6 +143,8 @@ export default {
 	setMessageReportsLastReport,
 	setTwilioAuthToken,
 	setTwilioSID,
+	setTwilioSmsEndpoint,
+	setTwilioCallEndpoint,
 	setTwilioPhoneNumber,
 	setShareDataBehavior,
 	setShareDataLocation

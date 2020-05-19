@@ -21,7 +21,7 @@ const addProviderMapping = (provider) => {
 
 const removeProviderMappingWithSource = (providerSource) => {
 	let providers = getProviderMappings();
-	if (!providers) providers = [];
+	if (!providers) return;
 	providers = providers.filter((provider) => provider.source !== providerSource);
 	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
 };
@@ -40,7 +40,7 @@ const addMessageTemplate = (messageTemplate) => {
 
 const removeMessageTemplateWithName = (templateName) => {
 	let templates = getMessageTemplates();
-	if (!templates) templates = [];
+	if (!templates) return;
 	templates = templates.filter((template) => template.name !== templateName);
 	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
 };

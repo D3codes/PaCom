@@ -24,7 +24,9 @@
         "twilio": {
             "SID": "",
             "authToken": "",
-            "phoneNumber": ""
+            "phoneNumber": "",
+            "smsEndpoint": "",
+            "callEndpoint": ""
         },
         "shareData": {
             "behavior": 0,
