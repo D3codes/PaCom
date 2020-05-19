@@ -3,10 +3,11 @@ const ContactMethod = require('../models/conactMethod');
 const Patient = require('../models/patient');
 const Provider = require('../models/provider');
 const Reminder = require('../models/reminder');
-const { InvalidInputError } = require('../exceptions');
+const { NullValueException } = require('../exceptions');
 
 module.exports = (rows) => {
-	if (!rows) throw new InvalidInputError(`Invalid input provided to "fromPulse" transformer: ${rows}`);
+	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
+
 	const reminders = [];
 	rows.forEach((row, index) => {
 		if (index === 0 || !row[3]) return;
