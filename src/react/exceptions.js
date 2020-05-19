@@ -1,1 +1,1 @@
-export class InvalidInputError extends Error {}
+export class NullValueException extends Error {}
