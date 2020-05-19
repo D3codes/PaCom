@@ -1,5 +1,5 @@
 const Store = require('electron-store');
-const defaultSettings = require('../models/settingsModel.json');
+const defaultSettings = require('../models/defaultSettings.json');
 
 const store = new Store();
 
