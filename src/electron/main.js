@@ -76,3 +76,11 @@ ipc.on('add-message-template', (event, template) => {
 ipc.on('remove-message-template', (event, templateName) => {
 	persistantStorage.removeMessageTemplateWithName(templateName);
 });
+
+ipc.on('get-settings', (event) => {
+	event.sender.send('settings', persistantStorage.getSettings());
+});
+
+ipc.on('set-settings', (event, p, v) => {
+	persistantStorage.setSettings(p, v);
+});

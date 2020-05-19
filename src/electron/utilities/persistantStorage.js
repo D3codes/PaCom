@@ -1,9 +1,11 @@
 const Store = require('electron-store');
+const defaultSettings = require('../models/settingsModel.json');
 
 const store = new Store();
 
 const PROVIDER_MAPPINGS = 'providerMappings';
 const MESSAGE_TEMPLATES = 'messageTemplates';
+const SETTINGS = 'settings';
 
 const getProviderMappings = () => {
 	const providers = store.get(PROVIDER_MAPPINGS);
@@ -43,11 +45,30 @@ const removeMessageTemplateWithName = (templateName) => {
 	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
 };
 
+const initializeSettings = () => {
+	store.set(defaultSettings);
+};
+
+const getSettings = () => {
+	let settings = store.get(SETTINGS);
+	if (!settings) {
+		initializeSettings();
+		settings = defaultSettings;
+	}
+	return settings;
+};
+
+const setSettings = (path, value) => {
+	store.set(path, value);
+};
+
 module.exports = {
 	getProviderMappings,
 	addProviderMapping,
 	removeProviderMappingWithSource,
 	getMessageTemplates,
 	addMessageTemplate,
-	removeMessageTemplateWithName
+	removeMessageTemplateWithName,
+	getSettings,
+	setSettings
 };

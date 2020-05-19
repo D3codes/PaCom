@@ -1,0 +1,34 @@
+{
+    "settings": {
+        "appointmentReminders": {
+            "dateVerification": {
+                "numberOfDays": 3,
+                "allowSendOutsideRange": true
+            },
+            "notificationMethod": {
+                "sendToPreferredAndSms": false,
+                "textHomeIfCellNotAvailable": false
+            }
+        },
+        "customMessages": {
+            "notificationMethod": {
+                "sendToPreferredAndSms": false,
+                "textHomeIfCellNotAvailable": false
+            }
+        },
+        "messageReports": {
+            "autosaveReports": false,
+            "autosaveLocation": "",
+            "lastReport": ""
+        },
+        "twilio": {
+            "SID": "",
+            "authToken": "",
+            "phoneNumber": ""
+        },
+        "shareData": {
+            "behavior": 0,
+            "location": ""
+        }
+    }
+}
