@@ -5,7 +5,7 @@ import {
 	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse
 } from '@material-ui/core';
 import {
-	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings, ExpandLess, ExpandMore
+	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings, ExpandMore
 } from '@material-ui/icons';
 
 import getVersion from '../utilities/getVersion';
