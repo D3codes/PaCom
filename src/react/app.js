@@ -13,7 +13,8 @@ import Settings from './components/settings/settings';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		display: 'flex'
+		display: 'flex',
+		height: '100%'
 	},
 	appBar: {
 		marginLeft: DRAWER_CLOSED_WIDTH,
@@ -27,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		flexGrow: 1,
-		padding: theme.spacing(3)
+		padding: theme.spacing(3),
+		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
 	},
 	toolbar: {
 		display: 'flex',
@@ -38,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
 		...theme.mixins.toolbar
 	},
 	showContainer: {
-		display: 'initial'
+		display: 'initial',
+		height: '100%'
 	},
 	hideContainer: {
 		display: 'none'
@@ -56,11 +59,16 @@ function getClassNameForTab(selectedTabId, tabId, classes) {
 
 export default function App() {
 	const classes = useStyles();
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
 
 	const handleChevronClick = () => {
-		setOpen(prevOpen => !prevOpen);
+		setOpen((prevOpen) => !prevOpen);
+	};
+
+	const handleTabSelect = (tabId) => {
+		setSelectedTabId(tabId);
+		setOpen(false);
 	};
 
 	const title = getTitle(selectedTabId);
@@ -71,15 +79,14 @@ export default function App() {
 			<MiniDrawer
 				open={open}
 				onChevronClick={handleChevronClick}
-				onTabSelect={setSelectedTabId}
+				onTabSelect={handleTabSelect}
 				selectedTabId={selectedTabId}
 			/>
 			<AppBar
 				position="fixed"
 				className={clsx(classes.appBar, {
 					[classes.appBarShift]: open
-				})}
-			>
+				})}>
 				<Toolbar>
 					<Typography variant="h6" noWrap>
 						{title}

@@ -33,6 +33,8 @@ module.exports = {
 		'react/jsx-indent': 'off',
 		'react/jsx-one-expression-per-line': 'off',
 		'react/jsx-indent-props': 'off',
-		'react/require-default-props': ['error', {ignoreFunctionalComponents: true}]
+		'react/require-default-props': ['error', {ignoreFunctionalComponents: true}],
+		'react/jsx-closing-bracket-location': [1, {selfClosing: 'tag-aligned', nonEmpty: 'after-props'}],
+		'react/jsx-fragments': [1, 'element']
 	}
 };

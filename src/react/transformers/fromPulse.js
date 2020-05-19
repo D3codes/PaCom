@@ -31,7 +31,7 @@ module.exports = (rows) => {
 		] = row;
 
 		const contactMethods = [];
-		if (homePhone) contactMethods.push(new ContactMethod(homePhone, 'Phone'));
+		if (homePhone) contactMethods.push(new ContactMethod(homePhone, 'Home'));
 		if (cellPhone) contactMethods.push(new ContactMethod(cellPhone, 'Cell'));
 		if (workPhone) contactMethods.push(new ContactMethod(workPhone, 'Work'));
 
