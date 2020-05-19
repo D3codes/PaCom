@@ -21,16 +21,16 @@ const sendMessage = async (phoneNumber, message, endpoint) => {
 };
 
 const sendSMS = (phoneNumber, message) => {
-	if(!phoneNumber || !message) throw new NullValueException(`Null value provided to "twilioClient": ${phoneNumber, message}`);
+	if (!phoneNumber || !message) throw new NullValueException(`Null value provided to "twilioClient": ${phoneNumber}, ${message}`);
 
 	return sendMessage(phoneNumber, message, sendMessageEndpoint);
-}
+};
 
 const sendCall = (phoneNumber, message) => {
-	if(!phoneNumber || !message) throw new NullValueException(`Null value provided to "twilioClient": ${phoneNumber, message}`);
+	if (!phoneNumber || !message) throw new NullValueException(`Null value provided to "twilioClient": ${phoneNumber}, ${message}`);
 
 	return sendMessage(phoneNumber, message, callEndpoint);
-}
+};
 
 export default {
 	sendSMS,
