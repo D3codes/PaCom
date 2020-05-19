@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography
+	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse
 } from '@material-ui/core';
 import {
-	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings
+	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings, ExpandLess, ExpandMore
 } from '@material-ui/icons';
 
 import getVersion from '../utilities/getVersion';
@@ -18,12 +18,14 @@ const PRIMARY_TABS = [
 	{
 		Icon: AlarmAdd,
 		id: 'sndApptRmdrs',
-		label: 'Send Appointment Reminders'
+		label: 'Send Appointment Reminders',
+		title: 'Send Appointment Reminders'
 	},
 	{
 		Icon: AddComment,
 		id: 'sndCstmMsg',
-		label: 'Send Custom Message'
+		label: 'Send Custom Message',
+		title: 'Send Custom Message'
 	}
 ];
 
@@ -31,17 +33,53 @@ const SECONDARY_TABS = [
 	{
 		Icon: EditLocation,
 		id: 'prvdrMpngs',
-		label: 'Provider Mappings'
+		label: 'Provider Mappings',
+		title: 'Provider Mappings'
 	},
 	{
 		Icon: RateReview,
 		id: 'msgTmplts',
-		label: 'Message Templates'
+		label: 'Message Templates',
+		title: 'Message Templates'
+	}
+];
+
+const SETTINGS_TAB = {
+	Icon: Settings,
+	id: 'stngs',
+	label: 'Settings'
+};
+
+const SUBSETTINGS_TABS = [
+	{
+		Icon: Settings,
+		id: 'aptRmndrs',
+		label: 'Appointment Reminders',
+		title: 'Settings | Appointment Reminders'
 	},
 	{
 		Icon: Settings,
-		id: 'stngs',
-		label: 'Settings'
+		id: 'cstmMsg',
+		label: 'Custom Messages',
+		title: 'Settings | Custom Messages'
+	},
+	{
+		Icon: Settings,
+		id: 'msgRpts',
+		label: 'Message Reports',
+		title: 'Settings | Message Reports'
+	},
+	{
+		Icon: Settings,
+		id: 'twilio',
+		label: 'Twilio',
+		title: 'Settings | Twilio'
+	},
+	{
+		Icon: Settings,
+		id: 'shrDta',
+		label: 'Shared Data',
+		title: 'Settings | Shared Data'
 	}
 ];
 
@@ -84,6 +122,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	expanded: {
 		transform: 'rotate(-180deg)'
+	},
+	nested: {
+		paddingLeft: theme.spacing(4)
 	}
 }));
 
@@ -92,6 +133,18 @@ export default function MiniDrawer({
 }) {
 	const classes = useStyles();
 	const [version] = usePromise(() => getVersion());
+
+	const [settingsOpen, setSettingsOpen] = React.useState(false);
+
+	const handleMiniDrawerClick = () => {
+		if (settingsOpen && open) setSettingsOpen(false);
+		onChevronClick();
+	};
+
+	const handleClick = () => {
+		if (!settingsOpen && !open) onChevronClick();
+		setSettingsOpen(!settingsOpen);
+	};
 
 	return (
 		<Drawer
@@ -108,7 +161,7 @@ export default function MiniDrawer({
 			}}
 		>
 			<div className={classes.toolbar}>
-				<IconButton onClick={onChevronClick}>
+				<IconButton onClick={handleMiniDrawerClick}>
 					<ChevronRight className={clsx(classes.collapsed, { [classes.expanded]: open })} />
 				</IconButton>
 			</div>
@@ -129,6 +182,20 @@ export default function MiniDrawer({
 						<ListItemText primary={label} />
 					</ListItem>
 				))}
+				<ListItem button onClick={handleClick}>
+					<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
+					<ListItemText primary={SETTINGS_TAB.label} />
+					<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
+				</ListItem>
+				<Collapse in={settingsOpen} timeout="auto" unmountOnExit>
+					<List disablePadding>
+						{SUBSETTINGS_TABS.map(({ id, label }) => (
+							<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId} className={classes.nested}>
+								<ListItemText primary={label} />
+							</ListItem>
+						))}
+					</List>
+				</Collapse>
 			</List>
 			<div className={classes.versionContainer}>
 				{version && <Typography color="textSecondary" variant="caption">{version}</Typography>}
@@ -144,12 +211,17 @@ MiniDrawer.propTypes = {
 	selectedTabId: PropTypes.string
 };
 
-MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS);
+MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS).concat(SETTINGS_TAB).concat(SUBSETTINGS_TABS);
 
 MiniDrawer.TabIds = {
 	SEND_APPOINTMENT_REMINDERS: PRIMARY_TABS[0].id,
 	SEND_CUSTOM_MESSAGE: PRIMARY_TABS[1].id,
 	PROVIDER_MAPPINGS: SECONDARY_TABS[0].id,
 	MESSAGE_TEMPLATES: SECONDARY_TABS[1].id,
-	SETTINGS: SECONDARY_TABS[2].id
+	SETTINGS: SETTINGS_TAB.id,
+	APPOINTMENT_REMINDERS_SETTINGS: SUBSETTINGS_TABS[0].id,
+	CUSTOM_MESSAGE_SETTINGS: SUBSETTINGS_TABS[1].id,
+	MESSAGE_REPORT_SETTINGS: SUBSETTINGS_TABS[2].id,
+	TWILIO_SETTINGS: SUBSETTINGS_TABS[3].id,
+	SHARED_DATA_SETTINGS: SUBSETTINGS_TABS[4].id
 };

@@ -9,7 +9,11 @@ import CustomMessage from './components/customMessage/customMessage';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
 import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH } from './components/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
-import Settings from './components/settings/settings';
+import AppointmentReminderSettings from './components/settings/appointmentReminderSettings';
+import CustomMessageSettings from './components/settings/customMessageSettings';
+import MessageReportSettings from './components/settings/messageReportSettings';
+import TwilioSettings from './components/settings/twilioSettings';
+import SharedDataSettings from './components/settings/sharedDataSettings';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 function getTitle(tabId) {
 	const foundTab = MiniDrawer.Tabs.find((tab) => tab.id === tabId);
-	return foundTab ? foundTab.label : '';
+	return foundTab ? foundTab.title : '';
 }
 
 function getClassNameForTab(selectedTabId, tabId, classes) {
@@ -100,8 +104,20 @@ export default function App() {
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_TEMPLATES, classes)}>
 					<MessageTemplates />
 				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SETTINGS, classes)}>
-					<Settings />
+				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.APPOINTMENT_REMINDERS_SETTINGS, classes)}>
+					<AppointmentReminderSettings />
+				</div>
+				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS, classes)}>
+					<CustomMessageSettings />
+				</div>
+				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS, classes)}>
+					<MessageReportSettings />
+				</div>
+				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.TWILIO_SETTINGS, classes)}>
+					<TwilioSettings />
+				</div>
+				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SHARED_DATA_SETTINGS, classes)}>
+					<SharedDataSettings />
 				</div>
 			</main>
 		</div>
