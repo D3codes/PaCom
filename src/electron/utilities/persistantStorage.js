@@ -12,17 +12,18 @@ const getProviderMappings = () => {
 	return providers ? JSON.parse(providers) : [];
 };
 
-const addProviderMapping = (provider) => {
-	let providers = getProviderMappings();
-	if (!providers) providers = [];
-	providers.push(provider);
-	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
-};
-
 const removeProviderMappingWithSource = (providerSource) => {
 	let providers = getProviderMappings();
 	if (!providers) return;
 	providers = providers.filter((provider) => provider.source !== providerSource);
+	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
+};
+
+const addProviderMapping = (provider) => {
+	removeProviderMappingWithSource(provider.source);
+	let providers = getProviderMappings();
+	if (!providers) providers = [];
+	providers.push(provider);
 	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
 };
 
