@@ -1,15 +1,11 @@
-class VersionNotFoundError extends Error {
-	constructor() {
-		super('Unable to find version for package');
-	}
-}
+import { VersionNotFoundException } from '../exceptions';
 
 const getVersion = () => {
 	window.ipcRenderer.send('request-version');
 	return new Promise((resolve, reject) => {
 		window.ipcRenderer.on('version', (event, version) => {
 			if (version) resolve(version);
-			else reject(new VersionNotFoundError());
+			else reject(new VersionNotFoundException());
 		});
 	});
 };
