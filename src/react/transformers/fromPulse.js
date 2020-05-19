@@ -3,14 +3,14 @@ const ContactMethod = require('../models/conactMethod');
 const Patient = require('../models/patient');
 const Provider = require('../models/provider');
 const Reminder = require('../models/reminder');
-
-class InvalidInputError extends Error {}
+const { NullValueException } = require('../exceptions');
 
 module.exports = (rows) => {
-	if (!rows) return new InvalidInputError(`Invalid input provided to 'fromPulse' transformer: ${rows}`);
+	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
+
 	const reminders = [];
 	rows.forEach((row, index) => {
-		if (!row[3]) return;
+		if (index === 0 || !row[3]) return;
 
 		// This unshift is removing the company from the row
 		rows[index - 1].unshift();
