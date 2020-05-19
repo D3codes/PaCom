@@ -141,7 +141,7 @@ export default function MiniDrawer({
 		onChevronClick();
 	};
 
-	const handleClick = () => {
+	const handleSettingsClick = () => {
 		if (!settingsOpen && !open) onChevronClick();
 		setSettingsOpen(!settingsOpen);
 	};
@@ -182,7 +182,7 @@ export default function MiniDrawer({
 						<ListItemText primary={label} />
 					</ListItem>
 				))}
-				<ListItem button onClick={handleClick}>
+				<ListItem button onClick={handleSettingsClick}>
 					<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
 					<ListItemText primary={SETTINGS_TAB.label} />
 					<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
