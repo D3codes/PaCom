@@ -81,6 +81,6 @@ ipc.on('get-settings', (event) => {
 	event.sender.send('settings', persistantStorage.getSettings());
 });
 
-ipc.on('set-settings', (event, p, v) => {
-	persistantStorage.setSettings(p, v);
+ipc.on('set-settings', (event, settingsPath, value) => {
+	persistantStorage.setSettings(settingsPath, value);
 });
