@@ -52,31 +52,26 @@ const SETTINGS_TAB = {
 
 const SUBSETTINGS_TABS = [
 	{
-		Icon: Settings,
 		id: 'aptRmndrs',
 		label: 'Appointment Reminders',
 		title: 'Settings | Appointment Reminders'
 	},
 	{
-		Icon: Settings,
 		id: 'cstmMsg',
 		label: 'Custom Messages',
 		title: 'Settings | Custom Messages'
 	},
 	{
-		Icon: Settings,
 		id: 'msgRpts',
 		label: 'Message Reports',
 		title: 'Settings | Message Reports'
 	},
 	{
-		Icon: Settings,
 		id: 'twilio',
 		label: 'Twilio',
 		title: 'Settings | Twilio'
 	},
 	{
-		Icon: Settings,
 		id: 'shrDta',
 		label: 'Shared Data',
 		title: 'Settings | Shared Data'
@@ -211,7 +206,7 @@ MiniDrawer.propTypes = {
 	selectedTabId: PropTypes.string
 };
 
-MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS).concat(SETTINGS_TAB).concat(SUBSETTINGS_TABS);
+MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS).concat(SUBSETTINGS_TABS);
 
 MiniDrawer.TabIds = {
 	SEND_APPOINTMENT_REMINDERS: PRIMARY_TABS[0].id,
