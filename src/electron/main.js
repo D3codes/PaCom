@@ -5,7 +5,7 @@ const path = require('path');
 
 const projectPackage = require('../../package.json');
 const open = require('./utilities/fileOpener');
-// require('electron-reload'); /* Uncomment for local dev */
+const persistantStorage = require('./utilities/persistantStorage');
 
 const { app, BrowserWindow, ipcMain: ipc } = electron;
 let mainWindow;
@@ -50,4 +50,36 @@ ipc.on('open-csv-dialog', async (event) => {
 
 ipc.on('request-version', (event) => {
 	event.sender.send('version', projectPackage ? projectPackage.version : null);
+});
+
+ipc.on('get-provider-mappings', (event) => {
+	event.sender.send('provider-mappings', persistantStorage.getProviderMappings());
+});
+
+ipc.on('add-provider-mapping', (event, mapping) => {
+	persistantStorage.addProviderMapping(mapping);
+});
+
+ipc.on('remove-provider-mapping', (event, providerSource) => {
+	persistantStorage.removeProviderMappingWithSource(providerSource);
+});
+
+ipc.on('get-message-templates', (event) => {
+	event.sender.send('message-templates', persistantStorage.getMessageTemplates());
+});
+
+ipc.on('add-message-template', (event, template) => {
+	persistantStorage.addMessageTemplate(template);
+});
+
+ipc.on('remove-message-template', (event, templateName) => {
+	persistantStorage.removeMessageTemplateWithName(templateName);
+});
+
+ipc.on('get-settings', (event) => {
+	event.sender.send('settings', persistantStorage.getSettings());
+});
+
+ipc.on('set-settings', (event, settingsPath, value) => {
+	persistantStorage.setSettings(settingsPath, value);
 });
