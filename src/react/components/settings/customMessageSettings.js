@@ -3,6 +3,6 @@ import { Typography } from '@material-ui/core';
 
 export default function Settings() {
 	return (
-		<Typography variant="h2">This is the Settings Content</Typography>
+		<Typography variant="h2">This is the Custom Message Settings Content</Typography>
 	);
 }
