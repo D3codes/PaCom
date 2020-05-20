@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Save, CloudDownload } from '@material-ui/icons';
 import toPhoneNumber from '../../transformers/toPhoneNumber';
 import persistantStorage from '../../utilities/persistantStorage';
-import { Save } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -19,7 +19,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 	buttonContainer: {
 		display: 'flex',
-		justifyContent: 'flex-end'
+		justifyContent: 'space-between'
+	},
+	logDownloader: {
+		margin: theme.spacing(1),
+    	display: 'flex',
+    	transition: '0.5s'
+	},
+	bigLogDownloader: {
+		transform: 'matrix(12,0,0,12,160,-90)',
+    	transition: '0.5s'
+	},
+	expandButtonContainer: {
+		display: 'flex',
+		position: 'absolute'
 	}
 }));
 
@@ -30,6 +43,7 @@ export default function Settings() {
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [callEndpoint, setCallEndpoint] = useState('');
 	const [smsEndpoint, setSmsEndpoint] = useState('');
+	const [expandLogDownloader, setExpandLogDownloader] = useState(false);
 
 	useEffect(() => {
 		persistantStorage.getSettings().then(settings => {
@@ -53,6 +67,10 @@ export default function Settings() {
 		persistantStorage.setTwilioSmsEndpoint(smsEndpoint);
 	};
 
+	const handleExpand = () => {
+		setExpandLogDownloader(prev => !prev);
+	};
+
 	return (
 		<div className={classes.root}>
 			<form className={classes.form} noValidate autoComplete="off">
@@ -72,7 +90,15 @@ export default function Settings() {
 				<TextField fullWidth id="smsEndpoint-field" label="SMS Endpoint" variant="outlined" value={smsEndpoint} onChange={event => setSmsEndpoint(event.target.value)} />
 			</form>
 			<div className={classes.buttonContainer}>
-				<Button startIcon={<Save />} color="primary" variant="contained" onClick={handleSave}>Save</Button>
+				<div>
+					<div className={classes.expandButtonContainer}>
+						<Button startIcon={<CloudDownload />} onClick={handleExpand} color="primary" variant="contained">Download Logs</Button>
+					</div>
+					<Card className={expandLogDownloader ? classes.bigLogDownloader : classes.logDownloader}>
+						Logs
+					</Card>
+				</div>
+				<Button endIcon={<Save />} color="primary" variant="contained" onClick={handleSave}>Save</Button>
 			</div>
 		</div>
 	);
