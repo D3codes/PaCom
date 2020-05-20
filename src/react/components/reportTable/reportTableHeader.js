@@ -28,62 +28,62 @@ function ReportTableHeader() {
 			<TableRow>
 				<TableCell align="center" className={clsx(classes.tableCellHead, classes.firstTableCellHead)}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Status
+						Status
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Provider
+						Provider
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Date
+						Date
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Time
+						Time
 					</Typography>
 				</TableCell>
 				<TableCell align="center" className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Duration
+						Duration
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Patient
+						Patient
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Account
+						Account
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Date of Birth
+						Date of Birth
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Notify By
+						Notify By
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Work Phone
+						Work Phone
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Home Phone
+						Home Phone
 					</Typography>
 				</TableCell>
 				<TableCell className={clsx(classes.tableCellHead, classes.lastTableCellHead)}>
 					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-										Cell Phone
+						Cell Phone
 					</Typography>
 				</TableCell>
 			</TableRow>
