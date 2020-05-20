@@ -1,14 +1,18 @@
-class Reminder {
+import Model from './model';
+
+class Reminder extends Model {
 	constructor(patient, appointment) {
+		super();
 		this.patient = patient;
 		this.appointment = appointment;
 		this.status = 'Pending...';
 	}
 
 	getPatientPhoneNumberByType(type) {
-		const contactMethod = this.patient && this.patient.contactMethods && this.patient.contactMethods.find((cm) => cm.type === type);
+		const contactMethods = this.getIn(['patient', 'contactMethods']);
+		const contactMethod = contactMethods && contactMethods.find((cm) => cm.type === type);
 		return contactMethod ? contactMethod.phoneNumber : null;
 	}
 }
 
-module.exports = Reminder;
+export default Reminder;

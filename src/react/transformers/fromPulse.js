@@ -1,9 +1,9 @@
-const Appointment = require('../models/appointment');
-const ContactMethod = require('../models/conactMethod');
-const Patient = require('../models/patient');
-const Provider = require('../models/provider');
-const Reminder = require('../models/reminder');
-const { NullValueException } = require('../exceptions');
+import Appointment from '../models/appointment';
+import ContactMethod from '../models/conactMethod';
+import Patient from '../models/patient';
+import Provider from '../models/provider';
+import Reminder from '../models/reminder';
+import { NullValueException } from '../exceptions';
 
 module.exports = (rows) => {
 	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
