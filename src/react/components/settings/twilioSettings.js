@@ -7,13 +7,19 @@ import { Save } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		'& .MuiTextField-root': {
-			margin: theme.spacing(1),
-			width: '75ch'
-		}
+		display: 'flex',
+		flexDirection: 'column',
+		height: '100%'
 	},
-	saveButton: {
-		margin: theme.spacing(1)
+	form: {
+		'& .MuiTextField-root': {
+			margin: theme.spacing(1)
+		},
+		flex: 1
+	},
+	buttonContainer: {
+		display: 'flex',
+		justifyContent: 'flex-end'
 	}
 }));
 
@@ -48,11 +54,12 @@ export default function Settings() {
 	};
 
 	return (
-		<>
-			<form className={classes.root} noValidate autoComplete="off">
-				<TextField id="sid-field" label="SID" variant="outlined" value={sid} onChange={event => setSid(event.target.value)} />
-				<TextField id="authToken-field" label="Authorization Token" variant="outlined" value={authToken} onChange={event => setAuthToken(event.target.value)} />
+		<div className={classes.root}>
+			<form className={classes.form} noValidate autoComplete="off">
+				<TextField fullWidth id="sid-field" label="SID" variant="outlined" value={sid} onChange={event => setSid(event.target.value)} />
+				<TextField fullWidth id="authToken-field" label="Authorization Token" variant="outlined" value={authToken} onChange={event => setAuthToken(event.target.value)} />
 				<TextField
+					fullWidth
 					id="phoneNumber-field"
 					onChange={handlePhoneNumberChange}
 					label="Phone Number"
@@ -61,10 +68,12 @@ export default function Settings() {
 					error={!phoneNumber}
 					value={phoneNumber}
 				/>
-				<TextField id="callEndpoint-field" label="Call Endpoint" variant="outlined" value={callEndpoint} onChange={event => setCallEndpoint(event.target.value)} />
-				<TextField id="smsEndpoint-field" label="SMS Endpoint" variant="outlined" value={smsEndpoint} onChange={event => setSmsEndpoint(event.target.value)} />
+				<TextField fullWidth id="callEndpoint-field" label="Call Endpoint" variant="outlined" value={callEndpoint} onChange={event => setCallEndpoint(event.target.value)} />
+				<TextField fullWidth id="smsEndpoint-field" label="SMS Endpoint" variant="outlined" value={smsEndpoint} onChange={event => setSmsEndpoint(event.target.value)} />
 			</form>
-			<Button className={classes.saveButton} startIcon={<Save />} color="primary" variant="contained" onClick={handleSave}>Save</Button>
-		</>
+			<div className={classes.buttonContainer}>
+				<Button startIcon={<Save />} color="primary" variant="contained" onClick={handleSave}>Save</Button>
+			</div>
+		</div>
 	);
 }

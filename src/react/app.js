@@ -17,7 +17,8 @@ import SharedDataSettings from './components/settings/sharedDataSettings';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		display: 'flex'
+		display: 'flex',
+		height: '100%'
 	},
 	appBar: {
 		marginLeft: DRAWER_CLOSED_WIDTH,
@@ -31,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		flexGrow: 1,
-		padding: theme.spacing(3)
+		padding: theme.spacing(3),
+		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
 	},
 	toolbar: {
 		display: 'flex',
@@ -42,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
 		...theme.mixins.toolbar
 	},
 	showContainer: {
-		display: 'initial'
+		display: 'initial',
+		height: '100%'
 	},
 	hideContainer: {
 		display: 'none'
