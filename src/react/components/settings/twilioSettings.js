@@ -3,23 +3,17 @@ import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import toPhoneNumber from '../../transformers/toPhoneNumber';
 import persistantStorage from '../../utilities/persistantStorage';
+import { Save } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		display: 'flex',
-		flexFlow: 'column',
-		height: '100%'
-	},
-	form: {
-		display: 'flex'
-	},
-	saveButtonDiv: {
-		flexFlow: 'column',
-		display: 'flex',
-		flex: 1
+		'& .MuiTextField-root': {
+			margin: theme.spacing(1),
+			width: '75ch'
+		}
 	},
 	saveButton: {
-		display: 'flex'
+		margin: theme.spacing(1)
 	}
 }));
 
@@ -54,12 +48,11 @@ export default function Settings() {
 	};
 
 	return (
-		<div className={classes.root}>
-			<div className={classes.form}>
-				<TextField fullWidth id="sid-field" label="SID" variant="outlined" value={sid} onChange={event => setSid(event.target.value)} />
-				<TextField fullWidth id="authToken-field" label="Authorization Token" variant="outlined" value={authToken} onChange={event => setAuthToken(event.target.value)} />
+		<>
+			<form className={classes.root} noValidate autoComplete="off">
+				<TextField id="sid-field" label="SID" variant="outlined" value={sid} onChange={event => setSid(event.target.value)} />
+				<TextField id="authToken-field" label="Authorization Token" variant="outlined" value={authToken} onChange={event => setAuthToken(event.target.value)} />
 				<TextField
-					fullWidth
 					id="phoneNumber-field"
 					onChange={handlePhoneNumberChange}
 					label="Phone Number"
@@ -68,12 +61,10 @@ export default function Settings() {
 					error={!phoneNumber}
 					value={phoneNumber}
 				/>
-				<TextField fullWidth id="callEndpoint-field" label="Call Endpoint" variant="outlined" value={callEndpoint} onChange={event => setCallEndpoint(event.target.value)} />
-				<TextField fullWidth id="smsEndpoint-field" label="SMS Endpoint" variant="outlined" value={smsEndpoint} onChange={event => setSmsEndpoint(event.target.value)} />
-			</div>
-			<div className={classes.saveButtonDiv}>
-				<Button color="primary" onClick={handleSave} variant="contained">Save</Button>
-			</div>
-		</div>
+				<TextField id="callEndpoint-field" label="Call Endpoint" variant="outlined" value={callEndpoint} onChange={event => setCallEndpoint(event.target.value)} />
+				<TextField id="smsEndpoint-field" label="SMS Endpoint" variant="outlined" value={smsEndpoint} onChange={event => setSmsEndpoint(event.target.value)} />
+			</form>
+			<Button className={classes.saveButton} startIcon={<Save />} color="primary" variant="contained" onClick={handleSave}>Save</Button>
+		</>
 	);
 }
