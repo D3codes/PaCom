@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Button, Popover } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Save, CloudDownload } from '@material-ui/icons';
+import { Save, CloudDownload, Language, Phone, VpnKey, Security } from '@material-ui/icons';
 import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
 } from '@material-ui/pickers';
-import toPhoneNumber from '../../transformers/toPhoneNumber';
+import validatePhoneNumber from '../../utilities/validatePhoneNumber';
+import validateTwilioEndpoint from '../../utilities/validateTwilioEndpoint';
 import persistantStorage from '../../utilities/persistantStorage';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,9 +23,14 @@ const useStyles = makeStyles((theme) => ({
 		},
 		flex: 1
 	},
+	content: {
+		display: 'block',
+		padding: theme.spacing(1)
+	},
 	buttonContainer: {
 		display: 'flex',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		padding: theme.spacing(1)
 	}
 }));
 
@@ -37,7 +43,7 @@ export default function Settings() {
 	const [smsEndpoint, setSmsEndpoint] = useState('');
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [selectedDate, setSelectedDate] = React.useState(
-		new Date('2014-08-18T21:11:54')
+		new Date('2020-08-18T21:11:54')
 	);
 
 	const handleDateChange = date => {
@@ -59,14 +65,22 @@ export default function Settings() {
 		persistantStorage.getSettings().then(settings => {
 			setSid(settings.twilio.SID);
 			setAuthToken(settings.twilio.authToken);
-			setPhoneNumber(toPhoneNumber(settings.twilio.phoneNumber));
-			setCallEndpoint(settings.twilio.callEndpoint);
-			setSmsEndpoint(settings.twilio.smsEndpoint);
+			setPhoneNumber(validatePhoneNumber(settings.twilio.phoneNumber));
+			setCallEndpoint(validateTwilioEndpoint(settings.twilio.callEndpoint));
+			setSmsEndpoint(validateTwilioEndpoint(settings.twilio.smsEndpoint));
 		});
 	}, []);
 
 	const handlePhoneNumberChange = (event) => {
-		setPhoneNumber(toPhoneNumber(event.target.value));
+		setPhoneNumber(validatePhoneNumber(event.target.value));
+	};
+
+	const handleCallEndpointChange = (event) => {
+		setCallEndpoint(validateTwilioEndpoint(event.target.value));
+	};
+
+	const handleSmsEndpointChange = (event) => {
+		setSmsEndpoint(validateTwilioEndpoint(event.target.value));
 	};
 
 	const handleSave = () => {
@@ -80,8 +94,28 @@ export default function Settings() {
 	return (
 		<div className={classes.root}>
 			<form className={classes.form} noValidate autoComplete="off">
-				<TextField fullWidth id="sid-field" label="SID" variant="outlined" value={sid} onChange={event => setSid(event.target.value)} />
-				<TextField fullWidth id="authToken-field" label="Authorization Token" variant="outlined" value={authToken} onChange={event => setAuthToken(event.target.value)} />
+				<TextField
+					fullWidth
+					id="sid-field"
+					label="SID"
+					variant="outlined"
+					value={sid}
+					onChange={event => setSid(event.target.value)}
+					InputProps={{
+						startAdornment: <VpnKey color="primary" />
+					}}
+				/>
+				<TextField
+					fullWidth
+					id="authToken-field"
+					label="Authorization Token"
+					variant="outlined"
+					value={authToken}
+					onChange={event => setAuthToken(event.target.value)}
+					InputProps={{
+						startAdornment: <Security color="primary" />
+					}}
+				/>
 				<TextField
 					fullWidth
 					id="phoneNumber-field"
@@ -91,16 +125,36 @@ export default function Settings() {
 					helperText={phoneNumber ? '' : 'Invalid Phone Number'}
 					error={!phoneNumber}
 					value={phoneNumber}
+					InputProps={{
+						startAdornment: <><Phone color="primary" /><p>+1</p></>
+					}}
 				/>
 				<TextField
 					fullWidth
 					id="callEndpoint-field"
 					label="Call Endpoint"
 					variant="outlined"
+					helperText={callEndpoint ? '' : 'Invalid Endpoint'}
+					error={!callEndpoint}
 					value={callEndpoint}
-					onChange={event => setCallEndpoint(event.target.value)}
+					onChange={handleCallEndpointChange}
+					InputProps={{
+						startAdornment: <Language color="primary" />
+					}}
 				/>
-				<TextField fullWidth id="smsEndpoint-field" label="SMS Endpoint" variant="outlined" value={smsEndpoint} onChange={event => setSmsEndpoint(event.target.value)} />
+				<TextField
+					fullWidth
+					id="smsEndpoint-field"
+					label="SMS Endpoint"
+					variant="outlined"
+					helperText={smsEndpoint ? '' : 'Invalid Endpoint'}
+					error={!smsEndpoint}
+					value={smsEndpoint}
+					onChange={handleSmsEndpointChange}
+					InputProps={{
+						startAdornment: <Language color="primary" />
+					}}
+				/>
 			</form>
 			<div className={classes.buttonContainer}>
 				<div className={classes.root}>
