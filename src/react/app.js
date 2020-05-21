@@ -69,7 +69,7 @@ export default function App() {
 
 	const handleChevronClick = () => {
 		setOpen((prevOpen) => !prevOpen);
-		setSettingsOpen(SUBSETTINGS_TABS.some((subTab) => subTab.id === selectedTabId));
+		setSettingsOpen((prevSettingsOpen) => !open && prevSettingsOpen && SUBSETTINGS_TABS.some((subTab) => subTab.id === selectedTabId));
 	};
 
 	const handleTabSelect = (tabId) => {
