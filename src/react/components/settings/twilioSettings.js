@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Card } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import { TextField, Button, Popover } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Save, CloudDownload } from '@material-ui/icons';
+import {
+	MuiPickersUtilsProvider,
+	KeyboardDatePicker
+} from '@material-ui/pickers';
 import toPhoneNumber from '../../transformers/toPhoneNumber';
 import persistantStorage from '../../utilities/persistantStorage';
 
@@ -20,19 +25,6 @@ const useStyles = makeStyles((theme) => ({
 	buttonContainer: {
 		display: 'flex',
 		justifyContent: 'space-between'
-	},
-	logDownloader: {
-		margin: theme.spacing(1),
-    	display: 'flex',
-    	transition: '0.5s'
-	},
-	bigLogDownloader: {
-		transform: 'matrix(12,0,0,12,160,-90)',
-    	transition: '0.5s'
-	},
-	expandButtonContainer: {
-		display: 'flex',
-		position: 'absolute'
 	}
 }));
 
@@ -43,7 +35,25 @@ export default function Settings() {
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [callEndpoint, setCallEndpoint] = useState('');
 	const [smsEndpoint, setSmsEndpoint] = useState('');
-	const [expandLogDownloader, setExpandLogDownloader] = useState(false);
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [selectedDate, setSelectedDate] = React.useState(
+		new Date('2014-08-18T21:11:54')
+	);
+
+	const handleDateChange = date => {
+		setSelectedDate(date);
+	};
+
+	const handleClick = event => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const open = Boolean(anchorEl);
+	const id = open ? 'simple-popover' : undefined;
 
 	useEffect(() => {
 		persistantStorage.getSettings().then(settings => {
@@ -67,10 +77,6 @@ export default function Settings() {
 		persistantStorage.setTwilioSmsEndpoint(smsEndpoint);
 	};
 
-	const handleExpand = () => {
-		setExpandLogDownloader(prev => !prev);
-	};
-
 	return (
 		<div className={classes.root}>
 			<form className={classes.form} noValidate autoComplete="off">
@@ -86,17 +92,68 @@ export default function Settings() {
 					error={!phoneNumber}
 					value={phoneNumber}
 				/>
-				<TextField fullWidth id="callEndpoint-field" label="Call Endpoint" variant="outlined" value={callEndpoint} onChange={event => setCallEndpoint(event.target.value)} />
+				<TextField
+					fullWidth
+					id="callEndpoint-field"
+					label="Call Endpoint"
+					variant="outlined"
+					value={callEndpoint}
+					onChange={event => setCallEndpoint(event.target.value)}
+				/>
 				<TextField fullWidth id="smsEndpoint-field" label="SMS Endpoint" variant="outlined" value={smsEndpoint} onChange={event => setSmsEndpoint(event.target.value)} />
 			</form>
 			<div className={classes.buttonContainer}>
-				<div>
-					<div className={classes.expandButtonContainer}>
-						<Button startIcon={<CloudDownload />} onClick={handleExpand} color="primary" variant="contained">Download Logs</Button>
-					</div>
-					<Card className={expandLogDownloader ? classes.bigLogDownloader : classes.logDownloader}>
-						Logs
-					</Card>
+				<div className={classes.root}>
+					<Button
+						className={classes.button}
+						startIcon={<CloudDownload />}
+						aria-describedby={id}
+						variant="contained"
+						color="primary"
+						onClick={handleClick}
+					>
+						Download Logs
+					</Button>
+					<Popover
+						id={id}
+						open={open}
+						anchorEl={anchorEl}
+						onClose={handleClose}
+						anchorOrigin={{
+							vertical: 'bottom',
+							horizontal: 'center'
+						}}
+						transformOrigin={{
+							vertical: 'top',
+							horizontal: 'center'
+						}}
+					>
+						<div className={classes.content}>
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<KeyboardDatePicker
+									disableToolbar
+									variant="inline"
+									format="MM/dd/yyyy"
+									margin="normal"
+									id="date-picker-inline"
+									label="Date picker inline"
+									value={selectedDate}
+									onChange={handleDateChange}
+									KeyboardButtonProps={{
+										'aria-label': 'change date'
+									}}
+								/>
+							</MuiPickersUtilsProvider>
+						</div>
+						<div className={classes.buttonContainer}>
+							<Button variant="contained" color="primary">
+								Call Logs
+							</Button>
+							<Button variant="contained" color="primary">
+								SMS Logs
+							</Button>
+						</div>
+					</Popover>
 				</div>
 				<Button endIcon={<Save />} color="primary" variant="contained" onClick={handleSave}>Save</Button>
 			</div>
