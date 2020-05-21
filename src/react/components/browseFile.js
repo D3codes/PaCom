@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function BrowseFile() {
+function BrowseFile({ onClick }) {
 	const classes = useStyles();
 	return (
 		<div className={classes.browseContainer}>
@@ -25,7 +25,6 @@ function BrowseFile() {
 				fullWidth
 				InputProps={{
 					notched: true,
-					readOnly: true,
 					startAdornment: (
 						<InputAdornment className={classes.browseIcon} position="start"><Folder /></InputAdornment>
 					)
@@ -34,7 +33,7 @@ function BrowseFile() {
 				size="small"
 				variant="outlined"
 			/>
-			<Button className={classes.button} color="primary" variant="contained">Browse</Button>
+			<Button className={classes.button} onClick={onClick} color="primary" variant="contained">Browse</Button>
 		</div>
 	);
 }

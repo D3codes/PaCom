@@ -41,7 +41,6 @@ const reminders = [
 		)
 	)
 ];
-console.log(reminders);
 
 function AppointmentReminders() {
 	const classes = useStyles();

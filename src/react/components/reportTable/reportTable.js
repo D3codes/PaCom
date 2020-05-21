@@ -43,7 +43,7 @@ function ReportTable({ reminders = null }) {
 						className={classes.noRemindersText}
 						color="textSecondary"
 						variant="subtitle1">
-						Please import a file to view reminder report
+						Please import appointments to view message report
 					</Typography>
 				</div>
 			)}

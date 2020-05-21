@@ -75,7 +75,7 @@ export default function App() {
 	const handleTabSelect = (tabId) => {
 		const isSettingsTab = tabId === MiniDrawer.TabIds.SETTINGS;
 		if (!isSettingsTab) setSelectedTabId(tabId);
-		setSettingsOpen(isSettingsTab);
+		setSettingsOpen((prevSettingsOpen) => !prevSettingsOpen && isSettingsTab);
 		setOpen(isSettingsTab);
 	};
 

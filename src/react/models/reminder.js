@@ -8,14 +8,12 @@ class Reminder extends Model {
 		this.status = Reminder.Status.Pending;
 	}
 
-	getPatientPhoneNumberByType(type) {
-		const contactMethods = this.getIn(['patient', 'contactMethods']);
-		const contactMethod = contactMethods && contactMethods.find((cm) => cm.type === type);
-		return contactMethod ? contactMethod.phoneNumber : null;
-	}
-
 	setPendingStatus() {
 		this.status = Reminder.Status.Pending;
+	}
+
+	setSendingStatus() {
+		this.status = Reminder.Status.Sending;
 	}
 
 	setSentStatus() {
@@ -33,6 +31,7 @@ class Reminder extends Model {
 
 Reminder.Status = {
 	Pending: 'Pending',
+	Sending: 'Sending',
 	Sent: 'Sent',
 	Canceled: 'Canceled',
 	Failed: 'Failed'
