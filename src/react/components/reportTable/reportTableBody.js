@@ -66,9 +66,7 @@ function ReportTableBody({ reminders }) {
 		<TableBody>
 			{reminders.map((reminder) => (
 				<TableRow hover key={JSON.stringify(reminder)}>
-					<TableCell
-						align="center"
-						className={classes.tableCell}>
+					<TableCell align="center" className={classes.tableCell}>
 						<div className={clsx(getStatusCellClassName(classes, reminder.get('status')), classes.statusCell)}>
 							{StatusIcons(classes)[reminder.get('status', UNKNOWN)]}
 							<Typography color="inherit" className={classes.statusText} variant="body2">
@@ -76,51 +74,42 @@ function ReportTableBody({ reminders }) {
 							</Typography>
 						</div>
 					</TableCell>
-					<TableCell
-						className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['appointment', 'provider', 'target'], UNKNOWN)}
 						</Typography>
 					</TableCell>
-					<TableCell
-						className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['appointment', 'date'], UNKNOWN)}
 						</Typography>
 					</TableCell>
-					<TableCell
-						className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['appointment', 'time'], UNKNOWN)}
 						</Typography>
 					</TableCell>
-					<TableCell
-						align="center"
-						className={classes.tableCell}>
+					<TableCell align="center" className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['appointment', 'duration'], UNKNOWN)}
 						</Typography>
 					</TableCell>
-					<TableCell
-						className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['patient', 'name'], UNKNOWN)}
 						</Typography>
 					</TableCell>
-					<TableCell
-						className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['patient', 'accountNumber'], UNKNOWN)}
 						</Typography>
 					</TableCell>
-					<TableCell
-						className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['patient', 'dateOfBirth'], UNKNOWN)}
 						</Typography>
 					</TableCell>
-					<TableCell
-						className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['patient', 'preferredContactMethod'], UNKNOWN)}
 						</Typography>
