@@ -51,7 +51,7 @@ describe('ReportTableBody', () => {
 		expect(getByText('1234567')).toBeDefined();
 		expect(getByText('01/11/1995')).toBeDefined();
 		expect(getByText('Cell')).toBeDefined();
-		expect(getAllByText('Unknown').length).toBe(2);
+		expect(getAllByText('N/A').length).toBe(2);
 		expect(getByText('+19136838736')).toBeDefined();
 	});
 });
