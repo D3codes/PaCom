@@ -34,7 +34,7 @@ const reminders = [
 	)
 ];
 
-const table = document.createElement('table')
+const table = document.createElement('table');
 
 describe('ReportTableBody', () => {
 	it('renders the values of the reminders', () => {

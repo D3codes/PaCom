@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ReportTableHeader from '../../../../react/components/reportTable/reportTableHeader';
 
-const table = document.createElement('table')
+const table = document.createElement('table');
 
 describe('ReportTableHeader', () => {
 	it('renders without crashing', () => {
