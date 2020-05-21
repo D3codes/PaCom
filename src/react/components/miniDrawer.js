@@ -50,7 +50,7 @@ const SETTINGS_TAB = {
 	label: 'Settings'
 };
 
-const SUBSETTINGS_TABS = [
+export const SUBSETTINGS_TABS = [
 	{
 		id: 'aptRmndrs',
 		label: 'Appointment Reminders',
@@ -124,22 +124,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer({
-	open = false, onChevronClick, onTabSelect, selectedTabId = PRIMARY_TABS[0].id
+	open = false, onChevronClick, onTabSelect, selectedTabId = PRIMARY_TABS[0].id, settingsOpen = false
 }) {
 	const classes = useStyles();
 	const [version] = usePromise(() => getVersion());
-
-	const [settingsOpen, setSettingsOpen] = React.useState(false);
-
-	const handleMiniDrawerClick = () => {
-		if (settingsOpen && open) setSettingsOpen(false);
-		onChevronClick();
-	};
-
-	const handleSettingsClick = () => {
-		if (!settingsOpen && !open) onChevronClick();
-		setSettingsOpen(!settingsOpen);
-	};
 
 	return (
 		<Drawer
@@ -153,10 +141,9 @@ export default function MiniDrawer({
 					[classes.drawerOpen]: open,
 					[classes.drawerClose]: !open
 				})
-			}}
-		>
+			}}>
 			<div className={classes.toolbar}>
-				<IconButton onClick={handleMiniDrawerClick}>
+				<IconButton onClick={onChevronClick}>
 					<ChevronRight className={clsx(classes.collapsed, { [classes.expanded]: open })} />
 				</IconButton>
 			</div>
@@ -177,7 +164,7 @@ export default function MiniDrawer({
 						<ListItemText primary={label} />
 					</ListItem>
 				))}
-				<ListItem button onClick={handleSettingsClick}>
+				<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some((subtab) => subtab.id === selectedTabId)}>
 					<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
 					<ListItemText primary={SETTINGS_TAB.label} />
 					<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
@@ -203,7 +190,8 @@ MiniDrawer.propTypes = {
 	open: PropTypes.bool,
 	onChevronClick: PropTypes.func.isRequired,
 	onTabSelect: PropTypes.func.isRequired,
-	selectedTabId: PropTypes.string
+	selectedTabId: PropTypes.string,
+	settingsOpen: PropTypes.bool.isRequired
 };
 
 MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS).concat(SUBSETTINGS_TABS);

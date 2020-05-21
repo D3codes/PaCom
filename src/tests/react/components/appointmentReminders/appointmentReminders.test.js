@@ -5,7 +5,7 @@ import AppointmentReminders from '../../../../react/components/appointmentRemind
 
 describe('AppointmentReminders', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<AppointmentReminders />);
-		expect(getByText('This is the Send Appointment Reminders Content')).toBeDefined();
+		const { container } = render(<AppointmentReminders />);
+		expect(container.firstChild.className.includes('appointmentRemindersContainer')).toBe(true);
 	});
 });

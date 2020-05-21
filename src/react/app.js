@@ -5,19 +5,20 @@ import {
 } from '@material-ui/core';
 
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
-import CustomMessage from './components/customMessage/customMessage';
-import MessageTemplates from './components/messageTemplates/messageTemplates';
-import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH } from './components/miniDrawer';
-import ProviderMappings from './components/providerMappings/providerMappings';
 import AppointmentReminderSettings from './components/settings/appointmentReminderSettings';
+import CustomMessage from './components/customMessage/customMessage';
 import CustomMessageSettings from './components/settings/customMessageSettings';
 import MessageReportSettings from './components/settings/messageReportSettings';
-import TwilioSettings from './components/settings/twilioSettings';
+import MessageTemplates from './components/messageTemplates/messageTemplates';
+import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH, SUBSETTINGS_TABS } from './components/miniDrawer';
+import ProviderMappings from './components/providerMappings/providerMappings';
 import SharedDataSettings from './components/settings/sharedDataSettings';
+import TwilioSettings from './components/settings/twilioSettings';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		display: 'flex'
+		display: 'flex',
+		height: '100%'
 	},
 	appBar: {
 		marginLeft: DRAWER_CLOSED_WIDTH,
@@ -31,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		flexGrow: 1,
-		padding: theme.spacing(3)
+		padding: theme.spacing(3),
+		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
 	},
 	toolbar: {
 		display: 'flex',
@@ -42,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
 		...theme.mixins.toolbar
 	},
 	showContainer: {
-		display: 'initial'
+		display: 'initial',
+		height: '100%'
 	},
 	hideContainer: {
 		display: 'none'
@@ -62,9 +65,18 @@ export default function App() {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
+	const [settingsOpen, setSettingsOpen] = useState(false);
 
 	const handleChevronClick = () => {
-		setOpen(!open);
+		setOpen((prevOpen) => !prevOpen);
+		setSettingsOpen((prevSettingsOpen) => !open && prevSettingsOpen && SUBSETTINGS_TABS.some((subTab) => subTab.id === selectedTabId));
+	};
+
+	const handleTabSelect = (tabId) => {
+		const isSettingsTab = tabId === MiniDrawer.TabIds.SETTINGS;
+		if (!isSettingsTab) setSelectedTabId(tabId);
+		setSettingsOpen((prevSettingsOpen) => !prevSettingsOpen && isSettingsTab);
+		setOpen(isSettingsTab);
 	};
 
 	const title = getTitle(selectedTabId);
@@ -75,15 +87,15 @@ export default function App() {
 			<MiniDrawer
 				open={open}
 				onChevronClick={handleChevronClick}
-				onTabSelect={setSelectedTabId}
+				onTabSelect={handleTabSelect}
 				selectedTabId={selectedTabId}
+				settingsOpen={settingsOpen}
 			/>
 			<AppBar
 				position="fixed"
 				className={clsx(classes.appBar, {
 					[classes.appBarShift]: open
-				})}
-			>
+				})}>
 				<Toolbar>
 					<Typography variant="h6" noWrap>
 						{title}
