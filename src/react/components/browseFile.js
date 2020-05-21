@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function BrowseFile({ onClick }) {
+function BrowseFile() {
 	const classes = useStyles();
 	return (
 		<div className={classes.browseContainer}>
@@ -33,7 +33,7 @@ function BrowseFile({ onClick }) {
 				size="small"
 				variant="outlined"
 			/>
-			<Button className={classes.button} onClick={onClick} color="primary" variant="contained">Browse</Button>
+			<Button className={classes.button} color="primary" variant="contained">Browse</Button>
 		</div>
 	);
 }
