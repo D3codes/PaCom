@@ -4,15 +4,14 @@ import {
 	AppBar, CssBaseline, makeStyles, Toolbar, Typography
 } from '@material-ui/core';
 
+import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
 import AppointmentReminderSettings from './components/settings/appointmentReminderSettings';
-import BrowseFile from './components/browseFile';
 import CustomMessage from './components/customMessage/customMessage';
 import CustomMessageSettings from './components/settings/customMessageSettings';
 import MessageReportSettings from './components/settings/messageReportSettings';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
 import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH } from './components/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
-import ReportTable from './components/reportTable/reportTable';
 import SharedDataSettings from './components/settings/sharedDataSettings';
 import TwilioSettings from './components/settings/twilioSettings';
 
@@ -50,11 +49,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	hideContainer: {
 		display: 'none'
-	},
-	appointmentRemindersContainer: {
-		display: 'flex',
-		flexFlow: 'column',
-		height: '100%'
 	}
 }));
 
@@ -106,10 +100,7 @@ export default function App() {
 			<main className={classes.content}>
 				<div className={classes.toolbar} />
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS, classes)}>
-					<div className={classes.appointmentRemindersContainer}>
-						<BrowseFile />
-						<ReportTable />
-					</div>
+					<AppointmentReminders />
 				</div>
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE, classes)}>
 					<CustomMessage />
