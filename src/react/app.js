@@ -10,7 +10,7 @@ import CustomMessage from './components/customMessage/customMessage';
 import CustomMessageSettings from './components/settings/customMessageSettings';
 import MessageReportSettings from './components/settings/messageReportSettings';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
-import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH } from './components/miniDrawer';
+import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH, SUBSETTINGS_TABS } from './components/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
 import SharedDataSettings from './components/settings/sharedDataSettings';
 import TwilioSettings from './components/settings/twilioSettings';
@@ -65,14 +65,18 @@ export default function App() {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
+	const [settingsOpen, setSettingsOpen] = useState(false);
 
 	const handleChevronClick = () => {
 		setOpen((prevOpen) => !prevOpen);
+		setSettingsOpen(SUBSETTINGS_TABS.some((subTab) => subTab.id === selectedTabId));
 	};
 
 	const handleTabSelect = (tabId) => {
-		setSelectedTabId(tabId);
-		setOpen(false);
+		const isSettingsTab = tabId === MiniDrawer.TabIds.SETTINGS;
+		if (!isSettingsTab) setSelectedTabId(tabId);
+		setSettingsOpen(isSettingsTab);
+		setOpen(isSettingsTab);
 	};
 
 	const title = getTitle(selectedTabId);
@@ -85,6 +89,7 @@ export default function App() {
 				onChevronClick={handleChevronClick}
 				onTabSelect={handleTabSelect}
 				selectedTabId={selectedTabId}
+				settingsOpen={settingsOpen}
 			/>
 			<AppBar
 				position="fixed"
