@@ -42,7 +42,7 @@ describe('ReportTableBody', () => {
 			container: document.body.appendChild(table)
 		});
 
-		expect(getByText('Pending...')).toBeDefined();
+		expect(getByText('Pending')).toBeDefined();
 		expect(getByText('David Freeman')).toBeDefined();
 		expect(getByText('01/01/1970')).toBeDefined();
 		expect(getByText('12:00 AM')).toBeDefined();

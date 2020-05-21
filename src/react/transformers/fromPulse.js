@@ -31,9 +31,9 @@ module.exports = (rows) => {
 		] = row;
 
 		const contactMethods = [];
-		if (homePhone) contactMethods.push(new ContactMethod(homePhone, 'Home'));
-		if (cellPhone) contactMethods.push(new ContactMethod(cellPhone, 'Cell'));
-		if (workPhone) contactMethods.push(new ContactMethod(workPhone, 'Work'));
+		if (homePhone) contactMethods.push(ContactMethod.Home(homePhone));
+		if (cellPhone) contactMethods.push(ContactMethod.Cell(cellPhone));
+		if (workPhone) contactMethods.push(ContactMethod.Work(workPhone));
 
 		const patient = new Patient(accountNumber, name, contactMethods, preferredContactMethod, dateOfBirth);
 

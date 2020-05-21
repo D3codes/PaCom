@@ -153,8 +153,7 @@ export default function MiniDrawer({
 					[classes.drawerOpen]: open,
 					[classes.drawerClose]: !open
 				})
-			}}
-		>
+			}}>
 			<div className={classes.toolbar}>
 				<IconButton onClick={handleMiniDrawerClick}>
 					<ChevronRight className={clsx(classes.collapsed, { [classes.expanded]: open })} />

@@ -5,7 +5,7 @@ class Reminder extends Model {
 		super();
 		this.patient = patient;
 		this.appointment = appointment;
-		this.status = 'Pending...';
+		this.status = Reminder.Status.Pending;
 	}
 
 	getPatientPhoneNumberByType(type) {
@@ -13,6 +13,29 @@ class Reminder extends Model {
 		const contactMethod = contactMethods && contactMethods.find((cm) => cm.type === type);
 		return contactMethod ? contactMethod.phoneNumber : null;
 	}
+
+	setPendingStatus() {
+		this.status = Reminder.Status.Pending;
+	}
+
+	setSentStatus() {
+		this.status = Reminder.Status.Sent;
+	}
+
+	setCanceledStatus() {
+		this.status = Reminder.Status.Canceled;
+	}
+
+	setFailedStatus() {
+		this.status = Reminder.Status.Failed;
+	}
 }
+
+Reminder.Status = {
+	Pending: 'Pending',
+	Sent: 'Sent',
+	Canceled: 'Canceled',
+	Failed: 'Failed'
+};
 
 export default Reminder;
