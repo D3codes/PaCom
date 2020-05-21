@@ -1,8 +1,14 @@
+/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable indent */
 import React, { useState, useEffect } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
-import { TextField, Button, Popover } from '@material-ui/core';
+import {
+	TextField, Button, Popover, Divider
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Save, CloudDownload, Language, Phone, VpnKey, Security } from '@material-ui/icons';
+import {
+	Save, CloudDownload, Language, Phone, VpnKey, Security
+} from '@material-ui/icons';
 import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
@@ -31,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		justifyContent: 'space-between',
 		padding: theme.spacing(1)
+	},
+	adornmentDivider: {
+		margin: theme.spacing()
 	}
 }));
 
@@ -102,7 +111,10 @@ export default function Settings() {
 					value={sid}
 					onChange={event => setSid(event.target.value)}
 					InputProps={{
-						startAdornment: <VpnKey color="primary" />
+						startAdornment: <React.Fragment>
+											<VpnKey color="primary" />
+											<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+										</React.Fragment>
 					}}
 				/>
 				<TextField
@@ -113,7 +125,10 @@ export default function Settings() {
 					value={authToken}
 					onChange={event => setAuthToken(event.target.value)}
 					InputProps={{
-						startAdornment: <Security color="primary" />
+						startAdornment: <React.Fragment>
+											<Security color="primary" />
+											<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+										</React.Fragment>
 					}}
 				/>
 				<TextField
@@ -126,7 +141,11 @@ export default function Settings() {
 					error={!phoneNumber}
 					value={phoneNumber}
 					InputProps={{
-						startAdornment: <><Phone color="primary" /><p>+1</p></>
+						startAdornment: <React.Fragment>
+											<Phone color="primary" />
+											<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+											<p>+1</p>
+										</React.Fragment>
 					}}
 				/>
 				<TextField
@@ -139,7 +158,10 @@ export default function Settings() {
 					value={callEndpoint}
 					onChange={handleCallEndpointChange}
 					InputProps={{
-						startAdornment: <Language color="primary" />
+						startAdornment: <React.Fragment>
+											<Language color="primary" />
+											<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+										</React.Fragment>
 					}}
 				/>
 				<TextField
@@ -152,7 +174,10 @@ export default function Settings() {
 					value={smsEndpoint}
 					onChange={handleSmsEndpointChange}
 					InputProps={{
-						startAdornment: <Language color="primary" />
+						startAdornment: <React.Fragment>
+											<Language color="primary" />
+											<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+										</React.Fragment>
 					}}
 				/>
 			</form>
@@ -164,8 +189,7 @@ export default function Settings() {
 						aria-describedby={id}
 						variant="contained"
 						color="primary"
-						onClick={handleClick}
-					>
+						onClick={handleClick}>
 						Download Logs
 					</Button>
 					<Popover
@@ -180,8 +204,7 @@ export default function Settings() {
 						transformOrigin={{
 							vertical: 'top',
 							horizontal: 'center'
-						}}
-					>
+						}}>
 						<div className={classes.content}>
 							<MuiPickersUtilsProvider utils={DateFnsUtils}>
 								<KeyboardDatePicker

@@ -125,9 +125,7 @@ export default function App() {
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS, classes)}>
 					<MessageReportSettings />
 				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.TWILIO_SETTINGS, classes)}>
-					<TwilioSettings />
-				</div>
+				{selectedTabId === MiniDrawer.TabIds.TWILIO_SETTINGS && <TwilioSettings />}
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SHARED_DATA_SETTINGS, classes)}>
 					<SharedDataSettings />
 				</div>
