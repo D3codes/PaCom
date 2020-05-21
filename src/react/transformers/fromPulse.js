@@ -1,9 +1,9 @@
-const Appointment = require('../models/appointment');
-const ContactMethod = require('../models/conactMethod');
-const Patient = require('../models/patient');
-const Provider = require('../models/provider');
-const Reminder = require('../models/reminder');
-const { NullValueException } = require('../exceptions');
+import Appointment from '../models/appointment';
+import ContactMethod from '../models/conactMethod';
+import Patient from '../models/patient';
+import Provider from '../models/provider';
+import Reminder from '../models/reminder';
+import { NullValueException } from '../exceptions';
 
 module.exports = (rows) => {
 	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
@@ -31,9 +31,9 @@ module.exports = (rows) => {
 		] = row;
 
 		const contactMethods = [];
-		if (homePhone) contactMethods.push(new ContactMethod(homePhone, 'Phone'));
-		if (cellPhone) contactMethods.push(new ContactMethod(cellPhone, 'Cell'));
-		if (workPhone) contactMethods.push(new ContactMethod(workPhone, 'Work'));
+		if (homePhone) contactMethods.push(ContactMethod.Home(homePhone));
+		if (cellPhone) contactMethods.push(ContactMethod.Cell(cellPhone));
+		if (workPhone) contactMethods.push(ContactMethod.Work(workPhone));
 
 		const patient = new Patient(accountNumber, name, contactMethods, preferredContactMethod, dateOfBirth);
 

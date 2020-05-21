@@ -1,8 +1,26 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
-export default function AppointmentReminders() {
+import BrowseFile from '../browseFile';
+import ReportTable from '../reportTable/reportTable';
+
+const useStyles = makeStyles(() => ({
+	appointmentRemindersContainer: {
+		display: 'flex',
+		flexFlow: 'column',
+		height: '100%'
+	}
+}));
+
+function AppointmentReminders() {
+	const classes = useStyles();
+
 	return (
-		<Typography variant="h2">This is the Send Appointment Reminders Content</Typography>
+		<div className={classes.appointmentRemindersContainer}>
+			<BrowseFile />
+			<ReportTable />
+		</div>
 	);
 }
+
+export default AppointmentReminders;

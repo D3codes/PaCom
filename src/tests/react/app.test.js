@@ -14,4 +14,6 @@ describe('App', () => {
 		const { getAllByText } = render(<App />);
 		expect(getAllByText('Send Appointment Reminders')).toHaveLength(2);
 	});
+
+	// TODO: Add tests for MiniDrawer state management
 });

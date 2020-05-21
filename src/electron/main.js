@@ -8,7 +8,6 @@ const open = require('./utilities/fileOpener');
 const persistantStorage = require('./utilities/persistantStorage');
 
 const { app, BrowserWindow, ipcMain: ipc } = electron;
-
 let mainWindow;
 
 function createWindow() {
