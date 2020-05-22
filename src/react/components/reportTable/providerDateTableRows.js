@@ -21,18 +21,24 @@ const StatusIcons = (classes) => ({
 });
 
 const getStatusCellClassName = (classes, status) => {
+	let className = '';
 	switch (status) {
 	case Reminder.Status.Sending:
-		return clsx(classes.sending, classes.statusContainer);
+		className = classes.sending;
+		break;
 	case Reminder.Status.Sent:
-		return clsx(classes.sent, classes.statusContainer);
+		className = classes.sent;
+		break;
 	case Reminder.Status.Canceled:
-		return clsx(classes.cancel, classes.statusContainer);
+		className = classes.cancel;
+		break;
 	case Reminder.Status.Failed:
-		return clsx(classes.fail, classes.statusContainer);
+		className = classes.fail;
+		break;
 	default:
-		return clsx(classes.pending, classes.statusContainer);
+		className = classes.pending;
 	}
+	return clsx(className, classes.statusContainer);
 };
 
 const useStyles = makeStyles((theme) => ({
