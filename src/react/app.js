@@ -14,6 +14,7 @@ import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH, SUBSETTINGS_TABS } 
 import ProviderMappings from './components/providerMappings/providerMappings';
 import SharedDataSettings from './components/settings/sharedDataSettings';
 import TwilioSettings from './components/settings/twilioSettings';
+import Settings from './components/settings/settings';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -116,19 +117,7 @@ export default function App() {
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_TEMPLATES, classes)}>
 					<MessageTemplates />
 				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.APPOINTMENT_REMINDERS_SETTINGS, classes)}>
-					<AppointmentReminderSettings />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS, classes)}>
-					<CustomMessageSettings />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS, classes)}>
-					<MessageReportSettings />
-				</div>
-				{selectedTabId === MiniDrawer.TabIds.TWILIO_SETTINGS && <TwilioSettings />}
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SHARED_DATA_SETTINGS, classes)}>
-					<SharedDataSettings />
-				</div>
+				<Settings selectedTabId={selectedTabId} tabIds={MiniDrawer.TabIds} />
 			</main>
 		</div>
 	);
