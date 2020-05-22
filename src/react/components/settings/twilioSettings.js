@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	buttonContainer: {
 		display: 'flex',
+		justifyContent: 'space-between'
+	},
+	downloadButtonContainer: {
+		display: 'flex',
 		justifyContent: 'space-between',
 		padding: theme.spacing(2)
 	},
@@ -41,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing()
 	},
 	popover: {
-		marginLeft: theme.spacing(3)
+		marginLeft: theme.spacing(3),
+		marginTop: theme.spacing()
 	},
 	popoverInner: {
 		border: `3px solid ${theme.palette.primary.main}`
@@ -260,7 +265,7 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 									/>
 								</MuiPickersUtilsProvider>
 							</div>
-							<div className={classes.buttonContainer}>
+							<div className={classes.downloadButtonContainer}>
 								<Button variant="contained" color="primary">
 									Call Logs
 								</Button>
