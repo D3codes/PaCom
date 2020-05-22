@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	CircularProgress, makeStyles, TableBody, TableCell, TableRow, Typography
+	CircularProgress, makeStyles, TableCell, TableRow, Typography
 } from '@material-ui/core';
-import { Done, Error, Warning } from '@material-ui/icons';
+import {
+	Done, Error, Warning
+} from '@material-ui/icons';
 
 import ContactMethod from '../../models/conactMethod';
 import Reminder from '../../models/reminder';
@@ -19,18 +21,24 @@ const StatusIcons = (classes) => ({
 });
 
 const getStatusCellClassName = (classes, status) => {
+	let className = '';
 	switch (status) {
 	case Reminder.Status.Sending:
-		return classes.sending;
+		className = classes.sending;
+		break;
 	case Reminder.Status.Sent:
-		return classes.sent;
+		className = classes.sent;
+		break;
 	case Reminder.Status.Canceled:
-		return classes.cancel;
+		className = classes.cancel;
+		break;
 	case Reminder.Status.Failed:
-		return classes.fail;
+		className = classes.fail;
+		break;
 	default:
-		return classes.pending;
+		className = classes.pending;
 	}
+	return clsx(className, classes.statusContainer);
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +51,13 @@ const useStyles = makeStyles((theme) => ({
 	pending: {
 		color: theme.palette.text.secondary
 	},
+	providerDateCell: {
+		backgroundColor: theme.palette.primary.light,
+		color: theme.palette.common.white
+	},
+	providerDateText: {
+		padding: theme.spacing(0.5, 1)
+	},
 	sending: {
 		color: theme.palette.info.main
 	},
@@ -54,11 +69,14 @@ const useStyles = makeStyles((theme) => ({
 		justifyContant: 'space-between',
 		alignContent: 'center'
 	},
+	statusContainer: {
+		paddingLeft: theme.spacing()
+	},
 	statusIcon: {
 		margin: theme.spacing(0, 0.5),
 		fontSize: '1.25rem'
 	},
-	statusText: {
+	boldText: {
 		fontWeight: theme.typography.fontWeightBold
 	},
 	tableCell: {
@@ -66,36 +84,31 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function ReportTableBody({ reminders }) {
+function ProviderDateTableRows({ providerDateText, reminders }) {
 	const classes = useStyles();
 	return (
-		<TableBody>
+		<Fragment>
+			<TableRow>
+				<TableCell className={classes.providerDateCell} colSpan={10}>
+					<Typography className={clsx(classes.providerDateText, classes.boldText)} color="inherit">{providerDateText}</Typography>
+				</TableCell>
+			</TableRow>
 			{reminders.map((reminder) => (
 				<TableRow hover key={JSON.stringify(reminder)}>
-					<TableCell align="center" className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<div className={clsx(getStatusCellClassName(classes, reminder.get('status')), classes.statusCell)}>
 							{StatusIcons(classes)[reminder.get('status', NA)]}
-							<Typography color="inherit" className={classes.statusText} variant="body2">
+							<Typography color="inherit" className={classes.boldText} variant="body2">
 								{reminder.get('status', NA)}
 							</Typography>
 						</div>
 					</TableCell>
 					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
-							{reminder.getIn(['appointment', 'provider', 'target'], NA)}
-						</Typography>
-					</TableCell>
-					<TableCell className={classes.tableCell}>
-						<Typography variant="body2">
-							{reminder.getIn(['appointment', 'date'], NA)}
-						</Typography>
-					</TableCell>
-					<TableCell className={classes.tableCell}>
-						<Typography variant="body2">
 							{reminder.getIn(['appointment', 'time'], NA)}
 						</Typography>
 					</TableCell>
-					<TableCell align="center" className={classes.tableCell}>
+					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['appointment', 'duration'], NA)}
 						</Typography>
@@ -137,12 +150,13 @@ function ReportTableBody({ reminders }) {
 					</TableCell>
 				</TableRow>
 			))}
-		</TableBody>
+		</Fragment>
 	);
 }
 
-ReportTableBody.propTypes = {
-	reminders: PropTypes.arrayOf(PropTypes.instanceOf(Reminder)).isRequired
+ProviderDateTableRows.propTypes = {
+	providerDateText: PropTypes.string.isRequired,
+	reminders: PropTypes.arrayOf(PropTypes.instanceOf(Reminder))
 };
 
-export default ReportTableBody;
+export default ProviderDateTableRows;

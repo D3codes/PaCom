@@ -1,14 +1,25 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	makeStyles, Table, Typography
+	makeStyles, Table, TableBody, Typography
 } from '@material-ui/core';
 
 import Reminder from '../../models/reminder';
 
+import ProviderDateTableRows from './providerDateTableRows';
 import ReportActions from './reportActions';
-import ReportTableBody from './reportTableBody';
 import ReportTableHeader from './reportTableHeader';
+
+const groupRemindersByProviderAndDate = (reminders) => reminders.reduce((remindersByProviderAndDate, reminder) => {
+	const providerDateKey = `${reminder.getIn(['appointment', 'provider', 'target'])} ${reminder.getIn(['appointment', 'date'])}`;
+	const updatedRemindersByProviderAndDate = { ...remindersByProviderAndDate };
+	if (updatedRemindersByProviderAndDate[providerDateKey]) {
+		updatedRemindersByProviderAndDate[providerDateKey].push(reminder);
+	} else {
+		updatedRemindersByProviderAndDate[providerDateKey] = [reminder];
+	}
+	return updatedRemindersByProviderAndDate;
+}, {});
 
 const useStyles = makeStyles((theme) => ({
 	noRemindersContainer: {
@@ -33,10 +44,10 @@ const useStyles = makeStyles((theme) => ({
 
 function ReportTable({ reminders = null }) {
 	const classes = useStyles();
-
+	const remindersByProviderAndDate = reminders ? groupRemindersByProviderAndDate(reminders) : null;
 	return (
 		<Fragment>
-			{!reminders && (
+			{!remindersByProviderAndDate && (
 				<div className={classes.noRemindersContainer}>
 					<Typography
 						align="center"
@@ -47,11 +58,19 @@ function ReportTable({ reminders = null }) {
 					</Typography>
 				</div>
 			)}
-			{reminders && (
+			{remindersByProviderAndDate && (
 				<div className={classes.tableContainer}>
 					<Table padding="none" stickyHeader>
 						<ReportTableHeader />
-						<ReportTableBody reminders={reminders} />
+						<TableBody>
+							{Object.entries(remindersByProviderAndDate).map(([providerDateText, remindersForProviderDate]) => (
+								<ProviderDateTableRows
+									key={providerDateText}
+									providerDateText={providerDateText}
+									reminders={remindersForProviderDate}
+								/>
+							))}
+						</TableBody>
 					</Table>
 				</div>
 			)}

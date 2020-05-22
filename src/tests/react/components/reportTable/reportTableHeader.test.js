@@ -12,16 +12,14 @@ describe('ReportTableHeader', () => {
 		});
 
 		expect(getByText('Status')).toBeDefined();
-		expect(getByText('Provider')).toBeDefined();
-		expect(getByText('Date')).toBeDefined();
 		expect(getByText('Time')).toBeDefined();
 		expect(getByText('Duration')).toBeDefined();
 		expect(getByText('Patient')).toBeDefined();
 		expect(getByText('Account')).toBeDefined();
 		expect(getByText('Date of Birth')).toBeDefined();
 		expect(getByText('Notify By')).toBeDefined();
-		expect(getByText('Work Phone')).toBeDefined();
-		expect(getByText('Home Phone')).toBeDefined();
-		expect(getByText('Cell Phone')).toBeDefined();
+		expect(getByText('Work')).toBeDefined();
+		expect(getByText('Home')).toBeDefined();
+		expect(getByText('Cell')).toBeDefined();
 	});
 });
