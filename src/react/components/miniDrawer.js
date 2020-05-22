@@ -5,7 +5,7 @@ import {
 	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse
 } from '@material-ui/core';
 import {
-	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings, ExpandMore
+	PermPhoneMsg, ChevronRight, PersonPin, RateReview, Settings, ExpandMore, Schedule
 } from '@material-ui/icons';
 
 import getVersion from '../utilities/getVersion';
@@ -16,13 +16,13 @@ export const DRAWER_CLOSED_WIDTH = 65;
 
 const PRIMARY_TABS = [
 	{
-		Icon: AlarmAdd,
+		Icon: Schedule,
 		id: 'sndApptRmdrs',
 		label: 'Send Appointment Reminders',
 		title: 'Send Appointment Reminders'
 	},
 	{
-		Icon: AddComment,
+		Icon: PermPhoneMsg,
 		id: 'sndCstmMsg',
 		label: 'Send Custom Message',
 		title: 'Send Custom Message'
@@ -31,7 +31,7 @@ const PRIMARY_TABS = [
 
 const SECONDARY_TABS = [
 	{
-		Icon: EditLocation,
+		Icon: PersonPin,
 		id: 'prvdrMpngs',
 		label: 'Provider Mappings',
 		title: 'Provider Mappings'

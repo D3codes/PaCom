@@ -3,17 +3,11 @@ import clsx from 'clsx';
 import {
 	AppBar, CssBaseline, makeStyles, Toolbar, Typography
 } from '@material-ui/core';
-
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
-import AppointmentReminderSettings from './components/settings/appointmentReminderSettings';
 import CustomMessage from './components/customMessage/customMessage';
-import CustomMessageSettings from './components/settings/customMessageSettings';
-import MessageReportSettings from './components/settings/messageReportSettings';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
 import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH, SUBSETTINGS_TABS } from './components/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
-import SharedDataSettings from './components/settings/sharedDataSettings';
-import TwilioSettings from './components/settings/twilioSettings';
 import Settings from './components/settings/settings';
 
 const useStyles = makeStyles((theme) => ({

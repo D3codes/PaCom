@@ -6,6 +6,7 @@ import MiniDrawer from '../../../react/components/miniDrawer';
 
 jest.mock('../../../react/utilities/getVersion', () => '0.1.0');
 jest.mock('../../../react/hooks/usePromise');
+jest.mock('../../../react/utilities/persistantStorage');
 
 describe('MiniDrawer', () => {
 	it('renders without crashing', () => {

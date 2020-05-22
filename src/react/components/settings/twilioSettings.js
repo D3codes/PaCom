@@ -12,8 +12,8 @@ import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
 } from '@material-ui/pickers';
-import validatePhoneNumber from '../../utilities/validatePhoneNumber';
-import validateTwilioEndpoint from '../../utilities/validateTwilioEndpoint';
+import validatePhoneNumber from '../../validators/validatePhoneNumber';
+import validateTwilioEndpoint from '../../validators/validateTwilioEndpoint';
 import persistantStorage from '../../utilities/persistantStorage';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,15 +30,21 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		display: 'block',
-		padding: theme.spacing(1)
+		padding: theme.spacing(2)
 	},
 	buttonContainer: {
 		display: 'flex',
 		justifyContent: 'space-between',
-		padding: theme.spacing(1)
+		padding: theme.spacing(2)
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
+	},
+	popover: {
+		marginLeft: theme.spacing(3)
+	},
+	popoverInner: {
+		border: `3px solid ${theme.palette.primary.main}`
 	}
 }));
 
@@ -106,11 +112,11 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 	};
 
 	const handleSave = () => {
-		persistantStorage.setTwilioAuthToken(authToken);
-		persistantStorage.setTwilioSID(sid);
-		persistantStorage.setTwilioPhoneNumber(phoneNumber);
-		persistantStorage.setTwilioCallEndpoint(callEndpoint);
-		persistantStorage.setTwilioSmsEndpoint(smsEndpoint);
+		if (authToken !== twilio.authToken) persistantStorage.setTwilioAuthToken(authToken);
+		if (sid !== twilio.SID) persistantStorage.setTwilioSID(sid);
+		if (phoneNumber !== twilio.phoneNumber) persistantStorage.setTwilioPhoneNumber(phoneNumber);
+		if (callEndpoint !== twilio.callEndpoint) persistantStorage.setTwilioCallEndpoint(callEndpoint);
+		if (smsEndpoint !== twilio.smsEndpoint) persistantStorage.setTwilioSmsEndpoint(smsEndpoint);
 		reloadSettings();
 	};
 
@@ -119,10 +125,11 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 			<form className={classes.form} noValidate autoComplete="off">
 				<TextField
 					fullWidth
-					id="sid-field"
+					data-testid="sid-field"
 					label="SID"
 					variant="outlined"
 					value={sid}
+					focused
 					onChange={handleSidChange}
 					InputProps={{
 						startAdornment: (
@@ -139,6 +146,7 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					label="Authorization Token"
 					variant="outlined"
 					value={authToken}
+					focused
 					onChange={handleAuthTokenChange}
 					InputProps={{
 						startAdornment: (
@@ -151,10 +159,11 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 				/>
 				<TextField
 					fullWidth
-					id="phoneNumber-field"
+					data-testid="phoneNumber-field"
 					onChange={handlePhoneNumberChange}
 					label="Phone Number"
 					variant="outlined"
+					focused
 					helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
 					error={!phoneNumberIsValid}
 					value={phoneNumber}
@@ -176,6 +185,7 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					helperText={callEndpointIsValid ? '' : 'Invalid Endpoint'}
 					error={!callEndpointIsValid}
 					value={callEndpoint}
+					focused
 					onChange={handleCallEndpointChange}
 					InputProps={{
 						startAdornment: (
@@ -194,6 +204,7 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					helperText={smsEndpointIsValid ? '' : 'Invalid Endpoint'}
 					error={!smsEndpointIsValid}
 					value={smsEndpoint}
+					focused
 					onChange={handleSmsEndpointChange}
 					InputProps={{
 						startAdornment: (
@@ -217,6 +228,7 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 						Download Logs
 					</Button>
 					<Popover
+						className={classes.popover}
 						id={id}
 						open={open}
 						anchorEl={anchorEl}
@@ -229,30 +241,33 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 							vertical: 'top',
 							horizontal: 'center'
 						}}>
-						<div className={classes.content}>
-							<MuiPickersUtilsProvider utils={DateFnsUtils}>
-								<KeyboardDatePicker
-									disableToolbar
-									variant="inline"
-									format="MM/dd/yyyy"
-									margin="normal"
-									id="date-picker-inline"
-									label="Date"
-									value={selectedDate}
-									onChange={handleDateChange}
-									KeyboardButtonProps={{
-										'aria-label': 'change date'
-									}}
-								/>
-							</MuiPickersUtilsProvider>
-						</div>
-						<div className={classes.buttonContainer}>
-							<Button variant="contained" color="primary">
-								Call Logs
-							</Button>
-							<Button variant="contained" color="primary">
-								SMS Logs
-							</Button>
+						<div className={classes.popoverInner}>
+							<div className={classes.content}>
+								<MuiPickersUtilsProvider utils={DateFnsUtils}>
+									<KeyboardDatePicker
+										disableToolbar
+										autoOk
+										variant="inline"
+										format="MM/dd/yyyy"
+										margin="normal"
+										id="date-picker-inline"
+										label="Date"
+										value={selectedDate}
+										onChange={handleDateChange}
+										KeyboardButtonProps={{
+											'aria-label': 'change date'
+										}}
+									/>
+								</MuiPickersUtilsProvider>
+							</div>
+							<div className={classes.buttonContainer}>
+								<Button variant="contained" color="primary">
+									Call Logs
+								</Button>
+								<Button variant="contained" color="primary">
+									SMS Logs
+								</Button>
+							</div>
 						</div>
 					</Popover>
 				</div>
