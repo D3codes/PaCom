@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render } from '@testing-library/react';
-import ReportTableBody from '../../../../react/components/reportTable/reportTableBody';
+import ProviderDateTableRows from '../../../../react/components/reportTable/providerDateTableRows';
 
 import Appointment from '../../../../react/models/appointment';
 import ContactMethod from '../../../../react/models/conactMethod';
@@ -35,16 +35,22 @@ const reminders = [
 ];
 
 const table = document.createElement('table');
+const tableBody = document.createElement('tbody');
+table.appendChild(tableBody);
 
-describe('ReportTableBody', () => {
+describe('ProviderDateTableRows', () => {
 	it('renders the values of the reminders', () => {
-		const { getByText, getAllByText } = render(<ReportTableBody reminders={reminders} />, {
-			container: document.body.appendChild(table)
-		});
+		const { getByText, getAllByText } = render(
+			<ProviderDateTableRows
+				providerDateText="David Freeman 01/01/1970"
+				reminders={reminders}
+			/>, {
+				container: document.body.appendChild(tableBody)
+			}
+		);
 
 		expect(getByText('Pending')).toBeDefined();
-		expect(getByText('David Freeman')).toBeDefined();
-		expect(getByText('01/01/1970')).toBeDefined();
+		expect(getByText('David Freeman 01/01/1970')).toBeDefined();
 		expect(getByText('12:00 AM')).toBeDefined();
 		expect(getByText('90')).toBeDefined();
 		expect(getByText('Caullen R Sasnett')).toBeDefined();

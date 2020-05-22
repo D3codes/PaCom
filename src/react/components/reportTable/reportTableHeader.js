@@ -11,9 +11,12 @@ const useStyles = makeStyles((theme) => ({
 	lastTableCellHead: {
 		borderTopRightRadius: 4
 	},
+	statusText: {
+		paddingLeft: theme.spacing()
+	},
 	tableCellHead: {
 		padding: theme.spacing(1, 0),
-		backgroundColor: theme.palette.primary.light,
+		backgroundColor: theme.palette.primary.main,
 		color: theme.palette.common.white
 	},
 	tableHeaderText: {
@@ -26,64 +29,54 @@ function ReportTableHeader() {
 	return (
 		<TableHead>
 			<TableRow>
-				<TableCell align="center" className={clsx(classes.tableCellHead, classes.firstTableCellHead)}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
+				<TableCell className={clsx(classes.tableCellHead, classes.firstTableCellHead)}>
+					<Typography className={clsx(classes.tableHeaderText, classes.statusText)} color="inherit">
 						Status
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-						Provider
-					</Typography>
-				</TableCell>
-				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-						Date
-					</Typography>
-				</TableCell>
-				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Time
 					</Typography>
 				</TableCell>
-				<TableCell align="center" className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
+				<TableCell className={classes.tableCellHead}>
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Duration
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Patient
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Account
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Date of Birth
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Notify By
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-						Work Phone
+					<Typography className={classes.tableHeaderText} color="inherit">
+						Work
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-						Home Phone
+					<Typography className={classes.tableHeaderText} color="inherit">
+						Home
 					</Typography>
 				</TableCell>
 				<TableCell className={clsx(classes.tableCellHead, classes.lastTableCellHead)}>
-					<Typography className={classes.tableHeaderText} color="inherit" variant="body2">
-						Cell Phone
+					<Typography className={classes.tableHeaderText} color="inherit">
+						Cell
 					</Typography>
 				</TableCell>
 			</TableRow>
