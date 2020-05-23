@@ -144,7 +144,6 @@ export default function MiniDrawer({
 	}, []);
 
 	const handleSnackbarClose = () => {
-		console.log(clickCount, closeSnackbarCount);
 		setShowSnackBar(closeSnackbarCount === clickCount - 8 && clickCount < 20);
 		setCloseSnackbarCount(prevCount => prevCount + 1);
 	};
