@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -58,20 +58,15 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 	const [sid, setSid] = useState(twilio.SID);
 	const [authToken, setAuthToken] = useState(twilio.authToken);
 	const [phoneNumber, setPhoneNumber] = useState(twilio.phoneNumber);
-	const [phoneNumberIsValid, setPhoneNumberIsValid] = useState(true);
 	const [callEndpoint, setCallEndpoint] = useState(twilio.callEndpoint);
-	const [callEndpointIsValid, setCallEndpointIsValid] = useState(true);
 	const [smsEndpoint, setSmsEndpoint] = useState(twilio.smsEndpoint);
-	const [smsEndpointIsValid, setSmsEndpointIsValid] = useState(true);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [changesToSave, setChangesToSave] = useState(false);
 
-	useEffect(() => {
-		setPhoneNumberIsValid(validatePhoneNumber(phoneNumber));
-		setCallEndpointIsValid(validateTwilioEndpoint(callEndpoint));
-		setSmsEndpointIsValid(validateTwilioEndpoint(smsEndpoint));
-	}, []);
+	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
+	const callEndpointIsValid = useMemo(() => validateTwilioEndpoint(callEndpoint), [callEndpoint]);
+	const smsEndpointIsValid = useMemo(() => validateTwilioEndpoint(smsEndpoint), [smsEndpoint]);
 
 	const handleDateChange = date => {
 		setSelectedDate(date);
@@ -90,19 +85,16 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 
 	const handlePhoneNumberChange = event => {
 		setPhoneNumber(event.target.value);
-		setPhoneNumberIsValid(validatePhoneNumber(event.target.value));
 		setChangesToSave(event.target.value !== twilio.phoneNumber);
 	};
 
 	const handleCallEndpointChange = event => {
 		setCallEndpoint(event.target.value);
-		setCallEndpointIsValid(validateTwilioEndpoint(event.target.value));
 		setChangesToSave(event.target.value !== twilio.callEndpoint);
 	};
 
 	const handleSmsEndpointChange = event => {
 		setSmsEndpoint(event.target.value);
-		setSmsEndpointIsValid(validateTwilioEndpoint(event.target.value));
 		setChangesToSave(event.target.value !== twilio.smsEndpoint);
 	};
 
