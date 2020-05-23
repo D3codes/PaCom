@@ -121,9 +121,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	nested: {
 		paddingLeft: theme.spacing(4)
-	},
-	hide: {
-		display: 'none'
 	}
 }));
 
@@ -138,14 +135,14 @@ export default function MiniDrawer({
 	const [closeSnackbarCount, setCloseSnackbarCount] = useState(0);
 
 	useEffect(() => {
-		persistentStorage.getSettings().then(settings => {
+		persistentStorage.getSettings().then((settings) => {
 			setAdminAccess(settings.adminAccess);
 		});
 	}, []);
 
 	const handleSnackbarClose = () => {
 		setShowSnackBar(closeSnackbarCount === clickCount - 8 && clickCount < 20);
-		setCloseSnackbarCount(prevCount => prevCount + 1);
+		setCloseSnackbarCount((prevCount) => prevCount + 1);
 	};
 
 	const handleVersionClick = () => {
@@ -156,7 +153,7 @@ export default function MiniDrawer({
 			}, 30000);
 		}
 
-		setClickCount(prevCount => prevCount + 1);
+		setClickCount((prevCount) => prevCount + 1);
 		setShowSnackBar(!adminAccess && clickCount > 5 && clickCount < 19);
 
 		if (!adminAccess && clickCount >= 19) {
@@ -192,8 +189,8 @@ export default function MiniDrawer({
 					</ListItem>
 				))}
 			</List>
-			<div className={adminAccess ? '' : classes.hide}>
-				<Divider />
+			{adminAccess && <Divider />}
+			{adminAccess && (
 				<List>
 					{SECONDARY_TABS.map(({ Icon, id, label }) => (
 						<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
@@ -216,7 +213,7 @@ export default function MiniDrawer({
 						</List>
 					</Collapse>
 				</List>
-			</div>
+			)}
 			<div className={classes.versionContainer}>
 				{version && <Typography onClick={handleVersionClick} color="textSecondary" variant="caption">{version}</Typography>}
 			</div>
@@ -225,7 +222,8 @@ export default function MiniDrawer({
 				autoHideDuration={6000}
 				onClose={handleSnackbarClose}
 				TransitionComponent={Slide}
-				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} for admin access`} />
+				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} for admin access`}
+			/>
 		</Drawer>
 	);
 }
