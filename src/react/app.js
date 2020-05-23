@@ -49,9 +49,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	hideContainer: {
 		display: 'none'
-	},
-	dropdown: {
-		zIndex: 10
 	}
 }));
 
@@ -95,7 +92,6 @@ export default function App() {
 						onTabSelect={handleTabSelect}
 						selectedTabId={selectedTabId}
 						settingsOpen={settingsOpen}
-						className={classes.dropdown}
 					/>
 				</div>
 			</ClickAwayListener>
