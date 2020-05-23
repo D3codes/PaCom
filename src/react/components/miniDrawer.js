@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse
+	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse, Slide, Snackbar
 } from '@material-ui/core';
 import {
 	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings, ExpandMore
@@ -10,6 +10,7 @@ import {
 
 import getVersion from '../utilities/getVersion';
 import usePromise from '../hooks/usePromise';
+import persistantStorage from '../utilities/persistantStorage';
 
 export const DRAWER_OPEN_WIDTH = 300;
 export const DRAWER_CLOSED_WIDTH = 65;
@@ -120,6 +121,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	nested: {
 		paddingLeft: theme.spacing(4)
+	},
+	hide: {
+		display: 'none'
 	}
 }));
 
@@ -128,6 +132,39 @@ export default function MiniDrawer({
 }) {
 	const classes = useStyles();
 	const [version] = usePromise(() => getVersion());
+	const [clickCount, setClickCount] = useState(0);
+	const [showSnackbar, setShowSnackBar] = useState(false);
+	const [adminAccess, setAdminAccess] = useState(false);
+	const [closeSnackbarCount, setCloseSnackbarCount] = useState(0);
+
+	useEffect(() => {
+		persistantStorage.getSettings().then(settings => {
+			setAdminAccess(settings.adminAccess);
+		});
+	}, []);
+
+	const handleSnackbarClose = () => {
+		console.log(clickCount, closeSnackbarCount);
+		setShowSnackBar(closeSnackbarCount === clickCount - 8 && clickCount < 20);
+		setCloseSnackbarCount(prevCount => prevCount + 1);
+	};
+
+	const handleVersionClick = () => {
+		if (clickCount === 0) {
+			setTimeout(() => {
+				setClickCount(0);
+				setCloseSnackbarCount(0);
+			}, 30000);
+		}
+
+		setClickCount(prevCount => prevCount + 1);
+		setShowSnackBar(!adminAccess && clickCount > 5 && clickCount < 19);
+
+		if (!adminAccess && clickCount >= 19) {
+			setAdminAccess(true);
+			persistantStorage.setAdminAccess(true);
+		}
+	};
 
 	return (
 		<Drawer
@@ -156,32 +193,40 @@ export default function MiniDrawer({
 					</ListItem>
 				))}
 			</List>
-			<Divider />
-			<List>
-				{SECONDARY_TABS.map(({ Icon, id, label }) => (
-					<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
-						<Icon className={classes.icon} color="primary" />
-						<ListItemText primary={label} />
+			<div className={adminAccess ? '' : classes.hide}>
+				<Divider />
+				<List>
+					{SECONDARY_TABS.map(({ Icon, id, label }) => (
+						<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
+							<Icon className={classes.icon} color="primary" />
+							<ListItemText primary={label} />
+						</ListItem>
+					))}
+					<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some((subtab) => subtab.id === selectedTabId)}>
+						<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
+						<ListItemText primary={SETTINGS_TAB.label} />
+						<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
 					</ListItem>
-				))}
-				<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some((subtab) => subtab.id === selectedTabId)}>
-					<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
-					<ListItemText primary={SETTINGS_TAB.label} />
-					<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
-				</ListItem>
-				<Collapse in={settingsOpen} timeout="auto" unmountOnExit>
-					<List disablePadding>
-						{SUBSETTINGS_TABS.map(({ id, label }) => (
-							<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId} className={classes.nested}>
-								<ListItemText primary={label} />
-							</ListItem>
-						))}
-					</List>
-				</Collapse>
-			</List>
-			<div className={classes.versionContainer}>
-				{version && <Typography color="textSecondary" variant="caption">{version}</Typography>}
+					<Collapse in={settingsOpen} timeout="auto" unmountOnExit>
+						<List disablePadding>
+							{SUBSETTINGS_TABS.map(({ id, label }) => (
+								<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId} className={classes.nested}>
+									<ListItemText primary={label} />
+								</ListItem>
+							))}
+						</List>
+					</Collapse>
+				</List>
 			</div>
+			<div className={classes.versionContainer}>
+				{version && <Typography onClick={handleVersionClick} color="textSecondary" variant="caption">{version}</Typography>}
+			</div>
+			<Snackbar
+				open={showSnackbar}
+				autoHideDuration={6000}
+				onClose={handleSnackbarClose}
+				TransitionComponent={Slide}
+				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} for admin access`} />
 		</Drawer>
 	);
 }

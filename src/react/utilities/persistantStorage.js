@@ -124,6 +124,10 @@ const setShareDataLocation = (location) => {
 	setSettings('settings.shareData.location', location);
 };
 
+const setAdminAccess = (hasAccess) => {
+	setSettings('settings.adminAccess', hasAccess);
+};
+
 export default {
 	getProviderMappings,
 	addProviderMapping,
@@ -147,5 +151,6 @@ export default {
 	setTwilioCallEndpoint,
 	setTwilioPhoneNumber,
 	setShareDataBehavior,
-	setShareDataLocation
+	setShareDataLocation,
+	setAdminAccess
 };
