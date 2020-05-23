@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -134,6 +134,10 @@ export default function MiniDrawer({
 	const [adminAccess, setAdminAccess] = useState(false);
 	const [closeSnackbarCount, setCloseSnackbarCount] = useState(0);
 
+	const CLICKS_REQUIRED_FOR_ADMIN_ACCESS = 20;
+	const CLICKS_REQUIRED_FOR_SNACKBAR = 5;
+	const CLOSE_SNACKBAR_OFFSET = CLICKS_REQUIRED_FOR_SNACKBAR + 3;
+
 	useEffect(() => {
 		persistentStorage.getSettings().then(settings => {
 			setAdminAccess(settings.adminAccess);
@@ -141,7 +145,7 @@ export default function MiniDrawer({
 	}, []);
 
 	const handleSnackbarClose = () => {
-		setShowSnackBar(closeSnackbarCount === clickCount - 8 && clickCount < 20);
+		setShowSnackBar(closeSnackbarCount === clickCount - CLOSE_SNACKBAR_OFFSET && clickCount < CLICKS_REQUIRED_FOR_ADMIN_ACCESS);
 		setCloseSnackbarCount(prevCount => prevCount + 1);
 	};
 
@@ -154,9 +158,9 @@ export default function MiniDrawer({
 		}
 
 		setClickCount(prevCount => prevCount + 1);
-		setShowSnackBar(!adminAccess && clickCount > 5 && clickCount < 19);
+		setShowSnackBar(!adminAccess && clickCount > CLICKS_REQUIRED_FOR_SNACKBAR && clickCount < CLICKS_REQUIRED_FOR_ADMIN_ACCESS - 1);
 
-		if (!adminAccess && clickCount >= 19) {
+		if (!adminAccess && clickCount >= CLICKS_REQUIRED_FOR_ADMIN_ACCESS - 1) {
 			setAdminAccess(true);
 			persistentStorage.setAdminAccess(true);
 		}
@@ -189,30 +193,32 @@ export default function MiniDrawer({
 					</ListItem>
 				))}
 			</List>
-			{adminAccess && <Divider />}
 			{adminAccess && (
-				<List>
-					{SECONDARY_TABS.map(({ Icon, id, label }) => (
-						<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
-							<Icon className={classes.icon} color="primary" />
-							<ListItemText primary={label} />
+				<Fragment>
+					<Divider />
+					<List>
+						{SECONDARY_TABS.map(({ Icon, id, label }) => (
+							<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
+								<Icon className={classes.icon} color="primary" />
+								<ListItemText primary={label} />
+							</ListItem>
+						))}
+						<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some(subtab => subtab.id === selectedTabId)}>
+							<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
+							<ListItemText primary={SETTINGS_TAB.label} />
+							<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
 						</ListItem>
-					))}
-					<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some(subtab => subtab.id === selectedTabId)}>
-						<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
-						<ListItemText primary={SETTINGS_TAB.label} />
-						<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
-					</ListItem>
-					<Collapse in={settingsOpen} timeout="auto" unmountOnExit>
-						<List disablePadding>
-							{SUBSETTINGS_TABS.map(({ id, label }) => (
-								<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId} className={classes.nested}>
-									<ListItemText primary={label} />
-								</ListItem>
-							))}
-						</List>
-					</Collapse>
-				</List>
+						<Collapse in={settingsOpen} timeout="auto" unmountOnExit>
+							<List disablePadding>
+								{SUBSETTINGS_TABS.map(({ id, label }) => (
+									<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId} className={classes.nested}>
+										<ListItemText primary={label} />
+									</ListItem>
+								))}
+							</List>
+						</Collapse>
+					</List>
+				</Fragment>
 			)}
 			<div className={classes.versionContainer}>
 				{version && <Typography onClick={handleVersionClick} color="textSecondary" variant="caption">{version}</Typography>}

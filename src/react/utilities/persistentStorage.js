@@ -124,7 +124,7 @@ const setShareDataLocation = location => {
 	setSettings('settings.shareData.location', location);
 };
 
-const setAdminAccess = (hasAccess) => {
+const setAdminAccess = hasAccess => {
 	setSettings('settings.adminAccess', hasAccess);
 };
 
