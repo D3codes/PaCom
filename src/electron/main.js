@@ -5,7 +5,7 @@ const path = require('path');
 
 const projectPackage = require('../../package.json');
 const open = require('./utilities/fileOpener');
-const persistantStorage = require('./utilities/persistantStorage');
+const persistentStorage = require('./utilities/persistentStorage');
 
 const { app, BrowserWindow, ipcMain: ipc } = electron;
 let mainWindow;
@@ -53,33 +53,33 @@ ipc.on('request-version', (event) => {
 });
 
 ipc.on('get-provider-mappings', (event) => {
-	event.sender.send('provider-mappings', persistantStorage.getProviderMappings());
+	event.sender.send('provider-mappings', persistentStorage.getProviderMappings());
 });
 
 ipc.on('add-provider-mapping', (event, mapping) => {
-	persistantStorage.addProviderMapping(mapping);
+	persistentStorage.addProviderMapping(mapping);
 });
 
 ipc.on('remove-provider-mapping', (event, providerSource) => {
-	persistantStorage.removeProviderMappingWithSource(providerSource);
+	persistentStorage.removeProviderMappingWithSource(providerSource);
 });
 
 ipc.on('get-message-templates', (event) => {
-	event.sender.send('message-templates', persistantStorage.getMessageTemplates());
+	event.sender.send('message-templates', persistentStorage.getMessageTemplates());
 });
 
 ipc.on('add-message-template', (event, template) => {
-	persistantStorage.addMessageTemplate(template);
+	persistentStorage.addMessageTemplate(template);
 });
 
 ipc.on('remove-message-template', (event, templateName) => {
-	persistantStorage.removeMessageTemplateWithName(templateName);
+	persistentStorage.removeMessageTemplateWithName(templateName);
 });
 
 ipc.on('get-settings', (event) => {
-	event.sender.send('settings', persistantStorage.getSettings());
+	event.sender.send('settings', persistentStorage.getSettings());
 });
 
 ipc.on('set-settings', (event, settingsPath, value) => {
-	persistantStorage.setSettings(settingsPath, value);
+	persistentStorage.setSettings(settingsPath, value);
 });

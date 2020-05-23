@@ -10,7 +10,7 @@ import {
 
 import getVersion from '../utilities/getVersion';
 import usePromise from '../hooks/usePromise';
-import persistantStorage from '../utilities/persistantStorage';
+import persistentStorage from '../utilities/persistentStorage';
 
 export const DRAWER_OPEN_WIDTH = 300;
 export const DRAWER_CLOSED_WIDTH = 65;
@@ -138,7 +138,7 @@ export default function MiniDrawer({
 	const [closeSnackbarCount, setCloseSnackbarCount] = useState(0);
 
 	useEffect(() => {
-		persistantStorage.getSettings().then(settings => {
+		persistentStorage.getSettings().then(settings => {
 			setAdminAccess(settings.adminAccess);
 		});
 	}, []);
@@ -161,7 +161,7 @@ export default function MiniDrawer({
 
 		if (!adminAccess && clickCount >= 19) {
 			setAdminAccess(true);
-			persistantStorage.setAdminAccess(true);
+			persistentStorage.setAdminAccess(true);
 		}
 	};
 
