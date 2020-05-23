@@ -43,16 +43,16 @@ app.on('activate', () => {
 });
 
 // Listeners
-ipc.on('open-csv-dialog', async (event) => {
+ipc.on('open-csv-dialog', async event => {
 	const filter = [{ name: 'CSV', extensions: ['csv'] }];
 	event.sender.send('selected-csv', await open(filter));
 });
 
-ipc.on('request-version', (event) => {
+ipc.on('request-version', event => {
 	event.sender.send('version', projectPackage ? projectPackage.version : null);
 });
 
-ipc.on('get-provider-mappings', (event) => {
+ipc.on('get-provider-mappings', event => {
 	event.sender.send('provider-mappings', persistantStorage.getProviderMappings());
 });
 
@@ -64,7 +64,7 @@ ipc.on('remove-provider-mapping', (event, providerSource) => {
 	persistantStorage.removeProviderMappingWithSource(providerSource);
 });
 
-ipc.on('get-message-templates', (event) => {
+ipc.on('get-message-templates', event => {
 	event.sender.send('message-templates', persistantStorage.getMessageTemplates());
 });
 
@@ -76,7 +76,7 @@ ipc.on('remove-message-template', (event, templateName) => {
 	persistantStorage.removeMessageTemplateWithName(templateName);
 });
 
-ipc.on('get-settings', (event) => {
+ipc.on('get-settings', event => {
 	event.sender.send('settings', persistantStorage.getSettings());
 });
 

@@ -12,14 +12,14 @@ const getProviderMappings = () => {
 	return providers ? JSON.parse(providers) : [];
 };
 
-const removeProviderMappingWithSource = (providerSource) => {
+const removeProviderMappingWithSource = providerSource => {
 	let providers = getProviderMappings();
 	if (!providers) return;
-	providers = providers.filter((provider) => provider.source !== providerSource);
+	providers = providers.filter(provider => provider.source !== providerSource);
 	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
 };
 
-const addProviderMapping = (provider) => {
+const addProviderMapping = provider => {
 	removeProviderMappingWithSource(provider.source);
 	let providers = getProviderMappings();
 	if (!providers) providers = [];
@@ -32,17 +32,17 @@ const getMessageTemplates = () => {
 	return templates ? JSON.parse(templates) : [];
 };
 
-const addMessageTemplate = (messageTemplate) => {
+const addMessageTemplate = messageTemplate => {
 	let templates = getMessageTemplates();
 	if (!templates) templates = [];
 	templates.push(messageTemplate);
 	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
 };
 
-const removeMessageTemplateWithName = (templateName) => {
+const removeMessageTemplateWithName = templateName => {
 	let templates = getMessageTemplates();
 	if (!templates) return;
-	templates = templates.filter((template) => template.name !== templateName);
+	templates = templates.filter(template => template.name !== templateName);
 	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
 };
 

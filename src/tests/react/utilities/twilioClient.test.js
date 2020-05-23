@@ -12,7 +12,7 @@ describe('twilioClient', () => {
 	it('makes one request when sendSMS is called', () => {
 		fetch.mockResponseOnce();
 
-		twilioClient.sendSMS('9137050325', 'test').then((res) => {
+		twilioClient.sendSMS('9137050325', 'test').then(res => {
 			expect(res).toEqual(true);
 		});
 
@@ -22,7 +22,7 @@ describe('twilioClient', () => {
 	it('makes one request when sendCall is called', () => {
 		fetch.mockResponseOnce();
 
-		twilioClient.sendCall('9137050325', 'test').then((res) => {
+		twilioClient.sendCall('9137050325', 'test').then(res => {
 			expect(res).toEqual(true);
 		});
 
