@@ -16,7 +16,7 @@ import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import validateTwilioEndpoint from '../../validators/validateTwilioEndpoint';
 import persistantStorage from '../../utilities/persistantStorage';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -88,30 +88,30 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
 
-	const handlePhoneNumberChange = (event) => {
+	const handlePhoneNumberChange = event => {
 		setPhoneNumber(event.target.value);
 		setPhoneNumberIsValid(validatePhoneNumber(event.target.value));
 		setChangesToSave(event.target.value !== twilio.phoneNumber);
 	};
 
-	const handleCallEndpointChange = (event) => {
+	const handleCallEndpointChange = event => {
 		setCallEndpoint(event.target.value);
 		setCallEndpointIsValid(validateTwilioEndpoint(event.target.value));
 		setChangesToSave(event.target.value !== twilio.callEndpoint);
 	};
 
-	const handleSmsEndpointChange = (event) => {
+	const handleSmsEndpointChange = event => {
 		setSmsEndpoint(event.target.value);
 		setSmsEndpointIsValid(validateTwilioEndpoint(event.target.value));
 		setChangesToSave(event.target.value !== twilio.smsEndpoint);
 	};
 
-	const handleSidChange = (event) => {
+	const handleSidChange = event => {
 		setSid(event.target.value);
 		setChangesToSave(event.target.value !== twilio.SID);
 	};
 
-	const handleAuthTokenChange = (event) => {
+	const handleAuthTokenChange = event => {
 		setAuthToken(event.target.value);
 		setChangesToSave(event.target.value !== twilio.authToken);
 	};
@@ -297,7 +297,7 @@ TwilioSettings.propTypes = {
 			phoneNumber: PropTypes.string,
 			callEndpoint: PropTypes.string,
 			smsEndpoint: PropTypes.string
-		}
+		}.isRequired
 	),
-	reloadSettings: PropTypes.func
+	reloadSettings: PropTypes.func.isRequired
 };

@@ -120,7 +120,7 @@ export default function App() {
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_TEMPLATES, classes)}>
 					<MessageTemplates />
 				</div>
-				<Settings selectedTabId={selectedTabId} tabIds={MiniDrawer.TabIds} />
+				<Settings selectedTabId={selectedTabId} />
 			</main>
 		</div>
 	);
