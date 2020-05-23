@@ -79,12 +79,17 @@ export default function App() {
 		if (!open && isSettingsTab) setOpen(true);
 	};
 
+	const handleClickAway = () => {
+		setSettingsOpen(false);
+		setOpen(false);
+	}
+
 	const title = getTitle(selectedTabId);
 
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
-			<ClickAwayListener onClickAway={() => { setSettingsOpen(false); setOpen(false); }}>
+			<ClickAwayListener onClickAway={handleClickAway}>
 				<div>
 					<MiniDrawer
 						open={open}
