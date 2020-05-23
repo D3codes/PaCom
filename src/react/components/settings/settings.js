@@ -41,5 +41,5 @@ export default function Settings({ selectedTabId }) {
 }
 
 Settings.propTypes = {
-	selectedTabId: PropTypes.string.isRequired
+	selectedTabId: PropTypes.oneOf(Object.values(MiniDrawer.TabIds)).isRequired
 };
