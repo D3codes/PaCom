@@ -5,7 +5,7 @@ import {
 	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse, Slide, Snackbar
 } from '@material-ui/core';
 import {
-	AddComment, AlarmAdd, ChevronRight, EditLocation, RateReview, Settings, ExpandMore
+	PermPhoneMsg, ChevronRight, PersonPin, RateReview, Settings, ExpandMore, Schedule
 } from '@material-ui/icons';
 
 import getVersion from '../utilities/getVersion';
@@ -17,13 +17,13 @@ export const DRAWER_CLOSED_WIDTH = 65;
 
 const PRIMARY_TABS = [
 	{
-		Icon: AlarmAdd,
+		Icon: Schedule,
 		id: 'sndApptRmdrs',
 		label: 'Send Appointment Reminders',
 		title: 'Send Appointment Reminders'
 	},
 	{
-		Icon: AddComment,
+		Icon: PermPhoneMsg,
 		id: 'sndCstmMsg',
 		label: 'Send Custom Message',
 		title: 'Send Custom Message'
@@ -32,7 +32,7 @@ const PRIMARY_TABS = [
 
 const SECONDARY_TABS = [
 	{
-		Icon: EditLocation,
+		Icon: PersonPin,
 		id: 'prvdrMpngs',
 		label: 'Provider Mappings',
 		title: 'Provider Mappings'
@@ -79,7 +79,7 @@ export const SUBSETTINGS_TABS = [
 	}
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	drawer: {
 		width: DRAWER_OPEN_WIDTH,
 		flexShrink: 0,
@@ -135,14 +135,14 @@ export default function MiniDrawer({
 	const [closeSnackbarCount, setCloseSnackbarCount] = useState(0);
 
 	useEffect(() => {
-		persistentStorage.getSettings().then((settings) => {
-			setAdminAccess(settings.adminAccess);
-		});
+		// persistentStorage.getSettings().then(settings => {
+		// 	setAdminAccess(settings.adminAccess);
+		// });
 	}, []);
 
 	const handleSnackbarClose = () => {
 		setShowSnackBar(closeSnackbarCount === clickCount - 8 && clickCount < 20);
-		setCloseSnackbarCount((prevCount) => prevCount + 1);
+		setCloseSnackbarCount(prevCount => prevCount + 1);
 	};
 
 	const handleVersionClick = () => {
@@ -153,7 +153,7 @@ export default function MiniDrawer({
 			}, 30000);
 		}
 
-		setClickCount((prevCount) => prevCount + 1);
+		setClickCount(prevCount => prevCount + 1);
 		setShowSnackBar(!adminAccess && clickCount > 5 && clickCount < 19);
 
 		if (!adminAccess && clickCount >= 19) {
@@ -198,7 +198,7 @@ export default function MiniDrawer({
 							<ListItemText primary={label} />
 						</ListItem>
 					))}
-					<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some((subtab) => subtab.id === selectedTabId)}>
+					<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some(subtab => subtab.id === selectedTabId)}>
 						<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
 						<ListItemText primary={SETTINGS_TAB.label} />
 						<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />

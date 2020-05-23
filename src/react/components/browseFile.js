@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import { Folder } from '@material-ui/icons';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	browseContainer: {
 		display: 'flex'
 	},

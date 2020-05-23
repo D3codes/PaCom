@@ -12,11 +12,11 @@ const getProviderMappings = () => {
 	});
 };
 
-const addProviderMapping = (provider) => {
+const addProviderMapping = provider => {
 	window.ipcRenderer.send('add-provider-mapping', provider);
 };
 
-const removeProviderMappingWithSource = (providerSource) => {
+const removeProviderMappingWithSource = providerSource => {
 	window.ipcRenderer.send('remove-provider-mapping', providerSource);
 };
 
@@ -34,11 +34,11 @@ const getMessageTemplates = () => {
 	});
 };
 
-const addMessageTemplate = (template) => {
+const addMessageTemplate = template => {
 	window.ipcRenderer.send('add-message-template', template);
 };
 
-const removeMessageTemplateWithName = (templateName) => {
+const removeMessageTemplateWithName = templateName => {
 	window.ipcRenderer.send('remove-message-template', templateName);
 };
 
@@ -60,67 +60,67 @@ const setSettings = (path, value) => {
 	window.ipcRenderer.send('set-settings', path, value);
 };
 
-const setAppointmentRemindersDateVerificationDays = (days) => {
+const setAppointmentRemindersDateVerificationDays = days => {
 	setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
 };
 
-const setAppointmentRemindersDateVerificationAllowSend = (allow) => {
+const setAppointmentRemindersDateVerificationAllowSend = allow => {
 	setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allow);
 };
 
-const setAppointmentRemindersNotificationMethodPreferredAndSms = (preferredAndSms) => {
+const setAppointmentRemindersNotificationMethodPreferredAndSms = preferredAndSms => {
 	setSettings('settings.appointmentReminders.notificationMethod.sendToPreferredAndSms', preferredAndSms);
 };
 
-const setAppointmentRemindersNotificationMethodTextHomeIfCellNotAvailable = (textHome) => {
+const setAppointmentRemindersNotificationMethodTextHomeIfCellNotAvailable = textHome => {
 	setSettings('settings.appointmentReminders.notificationMethod.textHomeIfCellNotAvailable', textHome);
 };
 
-const setCustomMessagesNotificationMethodPreferredAndSms = (preferredAndSms) => {
+const setCustomMessagesNotificationMethodPreferredAndSms = preferredAndSms => {
 	setSettings('settings.customMessages.notificationMethod.sendToPreferredAndSms', preferredAndSms);
 };
 
-const setCustomMessagesNotificationMethodTextHomeIfCellNotAvailable = (textHome) => {
+const setCustomMessagesNotificationMethodTextHomeIfCellNotAvailable = textHome => {
 	setSettings('settings.customMessages.notificationMethod.textHomeIfCellNotAvailable', textHome);
 };
 
-const setMessageReportsAutosave = (autosave) => {
+const setMessageReportsAutosave = autosave => {
 	setSettings('settings.messageReports.autosaveReports', autosave);
 };
 
-const setMessageReportsAutosaveLocation = (location) => {
+const setMessageReportsAutosaveLocation = location => {
 	setSettings('settings.messageReports.autosaveLocation', location);
 };
 
-const setMessageReportsLastReport = (report) => {
+const setMessageReportsLastReport = report => {
 	setSettings('settings.messageReports.lastReport', report);
 };
 
-const setTwilioSID = (sid) => {
+const setTwilioSID = sid => {
 	setSettings('settings.twilio.SID', sid);
 };
 
-const setTwilioAuthToken = (authToken) => {
+const setTwilioAuthToken = authToken => {
 	setSettings('settings.twilio.authToken', authToken);
 };
 
-const setTwilioPhoneNumber = (phoneNumber) => {
+const setTwilioPhoneNumber = phoneNumber => {
 	setSettings('settings.twilio.phoneNumber', phoneNumber);
 };
 
-const setTwilioSmsEndpoint = (endpoint) => {
+const setTwilioSmsEndpoint = endpoint => {
 	setSettings('settings.twilio.smsEndpoint', endpoint);
 };
 
-const setTwilioCallEndpoint = (endpoint) => {
+const setTwilioCallEndpoint = endpoint => {
 	setSettings('settings.twilio.callEndpoint', endpoint);
 };
 
-const setShareDataBehavior = (behavior) => {
+const setShareDataBehavior = behavior => {
 	setSettings('settings.shareData.behavior', behavior);
 };
 
-const setShareDataLocation = (location) => {
+const setShareDataLocation = location => {
 	setSettings('settings.shareData.location', location);
 };
 

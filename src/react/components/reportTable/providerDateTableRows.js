@@ -13,7 +13,7 @@ import Reminder from '../../models/reminder';
 
 const NA = 'N/A';
 
-const StatusIcons = (classes) => ({
+const StatusIcons = classes => ({
 	[Reminder.Status.Sending]: <CircularProgress className={classes.statusIcon} color="inherit" size={18} />,
 	[Reminder.Status.Sent]: <Done color="inherit" className={classes.statusIcon} />,
 	[Reminder.Status.Canceled]: <Warning color="inherit" className={classes.statusIcon} />,
@@ -41,7 +41,7 @@ const getStatusCellClassName = (classes, status) => {
 	return clsx(className, classes.statusContainer);
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	cancel: {
 		color: theme.palette.warning.main
 	},
@@ -93,7 +93,7 @@ function ProviderDateTableRows({ providerDateText, reminders }) {
 					<Typography className={clsx(classes.providerDateText, classes.boldText)} color="inherit">{providerDateText}</Typography>
 				</TableCell>
 			</TableRow>
-			{reminders.map((reminder) => (
+			{reminders.map(reminder => (
 				<TableRow hover key={JSON.stringify(reminder)}>
 					<TableCell className={classes.tableCell}>
 						<div className={clsx(getStatusCellClassName(classes, reminder.get('status')), classes.statusCell)}>

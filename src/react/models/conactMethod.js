@@ -14,8 +14,8 @@ ContactMethod.Types = {
 	Work: 'Work'
 };
 
-ContactMethod.Cell = (phoneNumber) => new ContactMethod(phoneNumber, ContactMethod.Types.Cell);
-ContactMethod.Home = (phoneNumber) => new ContactMethod(phoneNumber, ContactMethod.Types.Home);
-ContactMethod.Work = (phoneNumber) => new ContactMethod(phoneNumber, ContactMethod.Types.Work);
+ContactMethod.Cell = phoneNumber => new ContactMethod(phoneNumber, ContactMethod.Types.Cell);
+ContactMethod.Home = phoneNumber => new ContactMethod(phoneNumber, ContactMethod.Types.Home);
+ContactMethod.Work = phoneNumber => new ContactMethod(phoneNumber, ContactMethod.Types.Work);
 
 export default ContactMethod;

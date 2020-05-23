@@ -1,8 +1,8 @@
 const fs = require('fs');
 const pick = require('./filePicker');
 
-const open = async (filters) => new Promise((resolve, reject) => {
-	pick(filters).then((path) => {
+const open = async filters => new Promise((resolve, reject) => {
+	pick(filters).then(path => {
 		fs.readFile(path, (err, data) => {
 			if (err) {
 				reject(err);

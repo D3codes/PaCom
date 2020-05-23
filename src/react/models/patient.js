@@ -12,7 +12,7 @@ class Patient extends Model {
 
 	getPhoneNumberByType(type) {
 		const contactMethods = this.get('contactMethods');
-		const contactMethod = contactMethods && contactMethods.find((cm) => cm.type === type);
+		const contactMethod = contactMethods && contactMethods.find(cm => cm.type === type);
 		return contactMethod ? contactMethod.phoneNumber : null;
 	}
 }
