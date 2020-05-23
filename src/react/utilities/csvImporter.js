@@ -1,7 +1,7 @@
 import Papa from 'papaparse';
 
-const parse = (file) => Papa.parse(file, {
-	complete: (results) => results
+const parse = file => Papa.parse(file, {
+	complete: results => results
 });
 
 const getCSV = () => {

@@ -78,7 +78,7 @@ export const SUBSETTINGS_TABS = [
 	}
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	drawer: {
 		width: DRAWER_OPEN_WIDTH,
 		flexShrink: 0,
@@ -164,7 +164,7 @@ export default function MiniDrawer({
 						<ListItemText primary={label} />
 					</ListItem>
 				))}
-				<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some((subtab) => subtab.id === selectedTabId)}>
+				<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some(subtab => subtab.id === selectedTabId)}>
 					<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
 					<ListItemText primary={SETTINGS_TAB.label} />
 					<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />

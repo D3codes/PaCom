@@ -4,7 +4,7 @@ import {
 	makeStyles, TableCell, TableHead, TableRow, Typography
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	firstTableCellHead: {
 		borderTopLeftRadius: 4
 	},
