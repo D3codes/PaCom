@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -62,11 +62,19 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 	const [smsEndpoint, setSmsEndpoint] = useState(twilio.smsEndpoint);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [selectedDate, setSelectedDate] = useState(new Date());
-	const [changesToSave, setChangesToSave] = useState(false);
 
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const callEndpointIsValid = useMemo(() => validateTwilioEndpoint(callEndpoint), [callEndpoint]);
 	const smsEndpointIsValid = useMemo(() => validateTwilioEndpoint(smsEndpoint), [smsEndpoint]);
+
+	const checkForChanges = () => (
+		sid !== twilio.SID
+		|| authToken !== twilio.authToken
+		|| phoneNumber !== twilio.phoneNumber
+		|| callEndpoint !== twilio.callEndpoint
+		|| smsEndpoint !== twilio.smsEndpoint
+	);
+	const changesToSave = useMemo(() => checkForChanges(), [sid, authToken, phoneNumber, callEndpoint, smsEndpoint]);
 
 	const handleDateChange = date => {
 		setSelectedDate(date);
@@ -82,31 +90,6 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 
 	const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
-
-	const handlePhoneNumberChange = event => {
-		setPhoneNumber(event.target.value);
-		setChangesToSave(event.target.value !== twilio.phoneNumber);
-	};
-
-	const handleCallEndpointChange = event => {
-		setCallEndpoint(event.target.value);
-		setChangesToSave(event.target.value !== twilio.callEndpoint);
-	};
-
-	const handleSmsEndpointChange = event => {
-		setSmsEndpoint(event.target.value);
-		setChangesToSave(event.target.value !== twilio.smsEndpoint);
-	};
-
-	const handleSidChange = event => {
-		setSid(event.target.value);
-		setChangesToSave(event.target.value !== twilio.SID);
-	};
-
-	const handleAuthTokenChange = event => {
-		setAuthToken(event.target.value);
-		setChangesToSave(event.target.value !== twilio.authToken);
-	};
 
 	const handleSave = () => {
 		if (authToken !== twilio.authToken) persistentStorage.setTwilioAuthToken(authToken);
@@ -127,13 +110,13 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					variant="outlined"
 					value={sid}
 					focused
-					onChange={handleSidChange}
+					onChange={event => { setSid(event.target.value); }}
 					InputProps={{
 						startAdornment: (
-							<React.Fragment>
+							<Fragment>
 								<VpnKey color="primary" />
 								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</React.Fragment>
+							</Fragment>
 						)
 					}}
 				/>
@@ -144,20 +127,20 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					variant="outlined"
 					value={authToken}
 					focused
-					onChange={handleAuthTokenChange}
+					onChange={event => { setAuthToken(event.target.value); }}
 					InputProps={{
 						startAdornment: (
-							<React.Fragment>
+							<Fragment>
 								<Security color="primary" />
 								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</React.Fragment>
+							</Fragment>
 						)
 					}}
 				/>
 				<TextField
 					fullWidth
 					data-testid="phoneNumber-field"
-					onChange={handlePhoneNumberChange}
+					onChange={event => { setPhoneNumber(event.target.value); }}
 					label="Phone Number"
 					variant="outlined"
 					focused
@@ -166,11 +149,11 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					value={phoneNumber}
 					InputProps={{
 						startAdornment: (
-							<React.Fragment>
+							<Fragment>
 								<Phone color="primary" />
 								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 								<p>+1</p>
-							</React.Fragment>
+							</Fragment>
 						)
 					}}
 				/>
@@ -183,13 +166,13 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					error={!callEndpointIsValid}
 					value={callEndpoint}
 					focused
-					onChange={handleCallEndpointChange}
+					onChange={event => { setCallEndpoint(event.target.value); }}
 					InputProps={{
 						startAdornment: (
-							<React.Fragment>
+							<Fragment>
 								<Language color="primary" />
 								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</React.Fragment>
+							</Fragment>
 						)
 					}}
 				/>
@@ -202,13 +185,13 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					error={!smsEndpointIsValid}
 					value={smsEndpoint}
 					focused
-					onChange={handleSmsEndpointChange}
+					onChange={event => { setSmsEndpoint(event.target.value); }}
 					InputProps={{
 						startAdornment: (
-							<React.Fragment>
+							<Fragment>
 								<Language color="primary" />
 								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</React.Fragment>
+							</Fragment>
 						)
 					}}
 				/>
