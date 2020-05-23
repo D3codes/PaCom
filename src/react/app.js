@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import {
-	AppBar, CssBaseline, makeStyles, Toolbar, Typography
+	AppBar, CssBaseline, makeStyles, Toolbar, Typography, ClickAwayListener
 } from '@material-ui/core';
 
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	hideContainer: {
 		display: 'none'
+	},
+	dropdown: {
+		zIndex: 10
 	}
 }));
 
@@ -75,8 +78,8 @@ export default function App() {
 	const handleTabSelect = (tabId) => {
 		const isSettingsTab = tabId === MiniDrawer.TabIds.SETTINGS;
 		if (!isSettingsTab) setSelectedTabId(tabId);
-		setSettingsOpen((prevSettingsOpen) => !prevSettingsOpen && isSettingsTab);
-		setOpen(isSettingsTab);
+		if (isSettingsTab) setSettingsOpen((prevSettingsOpen) => !prevSettingsOpen);
+		if (!open && isSettingsTab) setOpen(true);
 	};
 
 	const title = getTitle(selectedTabId);
@@ -84,13 +87,18 @@ export default function App() {
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
-			<MiniDrawer
-				open={open}
-				onChevronClick={handleChevronClick}
-				onTabSelect={handleTabSelect}
-				selectedTabId={selectedTabId}
-				settingsOpen={settingsOpen}
-			/>
+			<ClickAwayListener onClickAway={() => { setSettingsOpen(false); setOpen(false); }}>
+				<div>
+					<MiniDrawer
+						open={open}
+						onChevronClick={handleChevronClick}
+						onTabSelect={handleTabSelect}
+						selectedTabId={selectedTabId}
+						settingsOpen={settingsOpen}
+						className={classes.dropdown}
+					/>
+				</div>
+			</ClickAwayListener>
 			<AppBar
 				position="fixed"
 				className={clsx(classes.appBar, {
