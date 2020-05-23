@@ -82,7 +82,7 @@ export default function App() {
 	const handleClickAway = () => {
 		setSettingsOpen(false);
 		setOpen(false);
-	}
+	};
 
 	const title = getTitle(selectedTabId);
 
