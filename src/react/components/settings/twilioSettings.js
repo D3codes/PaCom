@@ -66,15 +66,13 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const callEndpointIsValid = useMemo(() => validateTwilioEndpoint(callEndpoint), [callEndpoint]);
 	const smsEndpointIsValid = useMemo(() => validateTwilioEndpoint(smsEndpoint), [smsEndpoint]);
-
-	const checkForChanges = () => (
+	const changesToSave = useMemo(() => (
 		sid !== twilio.SID
 		|| authToken !== twilio.authToken
 		|| phoneNumber !== twilio.phoneNumber
 		|| callEndpoint !== twilio.callEndpoint
 		|| smsEndpoint !== twilio.smsEndpoint
-	);
-	const changesToSave = useMemo(() => checkForChanges(), [sid, authToken, phoneNumber, callEndpoint, smsEndpoint]);
+	), [sid, authToken, phoneNumber, callEndpoint, smsEndpoint]);
 
 	const handleDateChange = date => {
 		setSelectedDate(date);
