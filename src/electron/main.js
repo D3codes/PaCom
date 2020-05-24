@@ -57,11 +57,11 @@ ipc.on('get-provider-mappings', event => {
 });
 
 ipc.on('add-provider-mapping', (event, mapping) => {
-	persistentStorage.addProviderMapping(mapping);
+	event.sender.send('provider-mappings', persistentStorage.addProviderMapping(mapping));
 });
 
 ipc.on('remove-provider-mapping', (event, providerSource) => {
-	persistentStorage.removeProviderMappingWithSource(providerSource);
+	event.sender.send('provider-mappings', persistentStorage.removeProviderMappingWithSource(providerSource));
 });
 
 ipc.on('get-message-templates', event => {
@@ -69,11 +69,11 @@ ipc.on('get-message-templates', event => {
 });
 
 ipc.on('add-message-template', (event, template) => {
-	persistentStorage.addMessageTemplate(template);
+	event.sender.send('message-templates', persistentStorage.addMessageTemplate(template));
 });
 
 ipc.on('remove-message-template', (event, templateName) => {
-	persistentStorage.removeMessageTemplateWithName(templateName);
+	event.sender.send('message-templates', persistentStorage.removeMessageTemplateWithName(templateName));
 });
 
 ipc.on('get-settings', event => {
@@ -81,5 +81,5 @@ ipc.on('get-settings', event => {
 });
 
 ipc.on('set-settings', (event, settingsPath, value) => {
-	persistentStorage.setSettings(settingsPath, value);
+	event.sender.send(settingsPath, persistentStorage.setSettings(settingsPath, value));
 });

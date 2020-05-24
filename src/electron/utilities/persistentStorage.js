@@ -14,17 +14,17 @@ const getProviderMappings = () => {
 
 const removeProviderMappingWithSource = providerSource => {
 	let providers = getProviderMappings();
-	if (!providers) return;
+	if (!providers) return [];
 	providers = providers.filter(provider => provider.source !== providerSource);
 	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
+	return getProviderMappings();
 };
 
 const addProviderMapping = provider => {
-	removeProviderMappingWithSource(provider.source);
-	let providers = getProviderMappings();
-	if (!providers) providers = [];
+	const providers = removeProviderMappingWithSource(provider.source);
 	providers.push(provider);
 	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
+	return getProviderMappings();
 };
 
 const getMessageTemplates = () => {
@@ -33,17 +33,18 @@ const getMessageTemplates = () => {
 };
 
 const addMessageTemplate = messageTemplate => {
-	let templates = getMessageTemplates();
-	if (!templates) templates = [];
+	const templates = getMessageTemplates();
 	templates.push(messageTemplate);
 	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
+	return getMessageTemplates();
 };
 
 const removeMessageTemplateWithName = templateName => {
 	let templates = getMessageTemplates();
-	if (!templates) return;
+	if (!templates) return [];
 	templates = templates.filter(template => template.name !== templateName);
 	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
+	return getMessageTemplates();
 };
 
 const initializeSettings = () => {
@@ -61,6 +62,7 @@ const getSettings = () => {
 
 const setSettings = (path, value) => {
 	store.set(path, value);
+	return store.get(path);
 };
 
 module.exports = {
