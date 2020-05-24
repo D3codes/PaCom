@@ -3,7 +3,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Simulate } from 'react-dom/test-utils';
 import TwilioSettings from '../../../../react/components/settings/twilioSettings';
-import persistantStorageMock from '../../../../react/utilities/persistantStorage';
+import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
 const testSettings = {
 	SID: 'AC63677480d512ca668eb026a5f418c106',
@@ -13,7 +13,7 @@ const testSettings = {
 	smsEndpoint: 'https://studio.twilio.com/v1/Flows/FW35be051ebea3362492d9ecea25d8d107/Executions'
 };
 
-jest.mock('../../../../react/utilities/persistantStorage');
+jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('TwilioSettings', () => {
 	it('renders without crashing', () => {
@@ -34,8 +34,8 @@ describe('TwilioSettings', () => {
 		expect(getByText('Save')).toBeEnabled();
 	});
 
-	it('sends updated values to persistant storage and calls reloadSettings on save', () => {
-		persistantStorageMock.setTwilioSID.mockImplementation();
+	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
+		persistentStorageMock.setTwilioSID.mockImplementation();
 		const reloadSettingsMock = jest.fn();
 		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={reloadSettingsMock} />);
 
@@ -44,7 +44,7 @@ describe('TwilioSettings', () => {
 		Simulate.change(sidField);
 		fireEvent.click(getByText('Save'));
 
-		expect(persistantStorageMock.setTwilioSID).toHaveBeenCalledTimes(1);
+		expect(persistentStorageMock.setTwilioSID).toHaveBeenCalledTimes(1);
 		expect(reloadSettingsMock).toBeCalled();
 	});
 

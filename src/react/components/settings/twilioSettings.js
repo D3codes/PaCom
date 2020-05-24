@@ -14,7 +14,7 @@ import {
 } from '@material-ui/pickers';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import validateTwilioEndpoint from '../../validators/validateTwilioEndpoint';
-import persistantStorage from '../../utilities/persistantStorage';
+import persistentStorage from '../../utilities/persistentStorage';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -90,11 +90,11 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 	const id = open ? 'simple-popover' : undefined;
 
 	const handleSave = () => {
-		if (authToken !== twilio.authToken) persistantStorage.setTwilioAuthToken(authToken);
-		if (sid !== twilio.SID) persistantStorage.setTwilioSID(sid);
-		if (phoneNumber !== twilio.phoneNumber) persistantStorage.setTwilioPhoneNumber(phoneNumber);
-		if (callEndpoint !== twilio.callEndpoint) persistantStorage.setTwilioCallEndpoint(callEndpoint);
-		if (smsEndpoint !== twilio.smsEndpoint) persistantStorage.setTwilioSmsEndpoint(smsEndpoint);
+		if (authToken !== twilio.authToken) persistentStorage.setTwilioAuthToken(authToken);
+		if (sid !== twilio.SID) persistentStorage.setTwilioSID(sid);
+		if (phoneNumber !== twilio.phoneNumber) persistentStorage.setTwilioPhoneNumber(phoneNumber);
+		if (callEndpoint !== twilio.callEndpoint) persistentStorage.setTwilioCallEndpoint(callEndpoint);
+		if (smsEndpoint !== twilio.smsEndpoint) persistentStorage.setTwilioSmsEndpoint(smsEndpoint);
 		reloadSettings();
 	};
 

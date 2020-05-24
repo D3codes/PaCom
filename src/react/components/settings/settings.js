@@ -5,7 +5,7 @@ import CustomMessageSettings from './customMessageSettings';
 import MessageReportSettings from './messageReportSettings';
 import TwilioSettings from './twilioSettings';
 import SharedDataSettings from './sharedDataSettings';
-import persistantStorage from '../../utilities/persistantStorage';
+import persistentStorage from '../../utilities/persistentStorage';
 import MiniDrawer from '../miniDrawer';
 
 export default function Settings({ selectedTabId }) {
@@ -16,7 +16,7 @@ export default function Settings({ selectedTabId }) {
 	const [sharedDataSettings, setSharedDataSettings] = useState(null);
 
 	const reloadSettings = () => {
-		persistantStorage.getSettings().then(settings => {
+		persistentStorage.getSettings().then(settings => {
 			setAppointmentReminderSettings(settings.appointmentReminders);
 			setCustomMessageSettings(settings.customMessages);
 			setMessageReportSettings(settings.messageReports);
