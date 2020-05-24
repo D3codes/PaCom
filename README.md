@@ -1,4 +1,4 @@
-# New PaCom
+# Convalesce
 
 ## Production Build Procedure
 1. Run `npm run build`
