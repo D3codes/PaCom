@@ -1,132 +1,61 @@
 // Provider Mappings
-const getProviderMappings = () => {
-	window.ipcRenderer.send('get-provider-mappings');
-	return new Promise((resolve, reject) => {
-		window.ipcRenderer.on('provider-mappings', (event, mappings) => {
-			if (mappings) {
-				resolve(mappings);
-			} else {
-				reject();
-			}
-		});
-	});
-};
+const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings');
 
-const addProviderMapping = provider => {
-	window.ipcRenderer.send('add-provider-mapping', provider);
-};
+const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-mapping', mapping);
 
-const removeProviderMappingWithSource = providerSource => {
-	window.ipcRenderer.send('remove-provider-mapping', providerSource);
-};
+const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource);
 
 // Message Templates
-const getMessageTemplates = () => {
-	window.ipcRenderer.send('get-message-templates');
-	return new Promise((resolve, reject) => {
-		window.ipcRenderer.on('message-templates', (event, templates) => {
-			if (templates) {
-				resolve(templates);
-			} else {
-				reject();
-			}
-		});
-	});
-};
+const getMessageTemplates = () => window.ipcRenderer.invoke('get-message-templates');
 
-const addMessageTemplate = template => {
-	window.ipcRenderer.send('add-message-template', template);
-};
+const addMessageTemplate = template => window.ipcRenderer.invoke('add-message-template', template);
 
-const removeMessageTemplateWithName = templateName => {
-	window.ipcRenderer.send('remove-message-template', templateName);
-};
+const removeMessageTemplateWithName = templateName => window.ipcRenderer.invoke('remove-message-template', templateName);
 
 // Settings
-const getSettings = () => {
-	window.ipcRenderer.send('get-settings');
-	return new Promise((resolve, reject) => {
-		window.ipcRenderer.on('settings', (event, settings) => {
-			if (settings) {
-				resolve(settings);
-			} else {
-				reject();
-			}
-		});
-	});
-};
+const getSettings = () => window.ipcRenderer.invoke('get-settings');
 
-const setSettings = (path, value) => {
-	window.ipcRenderer.send('set-settings', path, value);
-};
+const setSettings = (path, value) => window.ipcRenderer.invoke('set-settings', path, value);
 
-const setAppointmentRemindersDateVerificationDays = days => {
-	setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
-};
+const setAppointmentRemindersDateVerificationDays = days => setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
 
-const setAppointmentRemindersDateVerificationAllowSend = allow => {
-	setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allow);
-};
+const setAppointmentRemindersDateVerificationAllowSend = allow => setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allow);
 
-const setAppointmentRemindersNotificationMethodPreferredAndSms = preferredAndSms => {
-	setSettings('settings.appointmentReminders.notificationMethod.sendToPreferredAndSms', preferredAndSms);
-};
+const setAppointmentRemindersNotificationMethodPreferredAndSms = preferredAndSms => setSettings(
+	'settings.appointmentReminders.notificationMethod.sendToPreferredAndSms',
+	preferredAndSms
+);
 
-const setAppointmentRemindersNotificationMethodTextHomeIfCellNotAvailable = textHome => {
-	setSettings('settings.appointmentReminders.notificationMethod.textHomeIfCellNotAvailable', textHome);
-};
+const setAppointmentRemindersNotificationMethodTextHomeIfCellNotAvailable = textHome => setSettings(
+	'settings.appointmentReminders.notificationMethod.textHomeIfCellNotAvailable',
+	textHome
+);
 
-const setCustomMessagesNotificationMethodPreferredAndSms = preferredAndSms => {
-	setSettings('settings.customMessages.notificationMethod.sendToPreferredAndSms', preferredAndSms);
-};
+const setCustomMessagesNotificationMethodPreferredAndSms = preferredAndSms => setSettings('settings.customMessages.notificationMethod.sendToPreferredAndSms', preferredAndSms);
 
-const setCustomMessagesNotificationMethodTextHomeIfCellNotAvailable = textHome => {
-	setSettings('settings.customMessages.notificationMethod.textHomeIfCellNotAvailable', textHome);
-};
+const setCustomMessagesNotificationMethodTextHomeIfCellNotAvailable = textHome => setSettings('settings.customMessages.notificationMethod.textHomeIfCellNotAvailable', textHome);
 
-const setMessageReportsAutosave = autosave => {
-	setSettings('settings.messageReports.autosaveReports', autosave);
-};
+const setMessageReportsAutosave = autosave => setSettings('settings.messageReports.autosaveReports', autosave);
 
-const setMessageReportsAutosaveLocation = location => {
-	setSettings('settings.messageReports.autosaveLocation', location);
-};
+const setMessageReportsAutosaveLocation = location => setSettings('settings.messageReports.autosaveLocation', location);
 
-const setMessageReportsLastReport = report => {
-	setSettings('settings.messageReports.lastReport', report);
-};
+const setMessageReportsLastReport = report => setSettings('settings.messageReports.lastReport', report);
 
-const setTwilioSID = sid => {
-	setSettings('settings.twilio.SID', sid);
-};
+const setTwilioSID = sid => setSettings('settings.twilio.SID', sid);
 
-const setTwilioAuthToken = authToken => {
-	setSettings('settings.twilio.authToken', authToken);
-};
+const setTwilioAuthToken = authToken => setSettings('settings.twilio.authToken', authToken);
 
-const setTwilioPhoneNumber = phoneNumber => {
-	setSettings('settings.twilio.phoneNumber', phoneNumber);
-};
+const setTwilioPhoneNumber = phoneNumber => setSettings('settings.twilio.phoneNumber', phoneNumber);
 
-const setTwilioSmsEndpoint = endpoint => {
-	setSettings('settings.twilio.smsEndpoint', endpoint);
-};
+const setTwilioSmsEndpoint = endpoint => setSettings('settings.twilio.smsEndpoint', endpoint);
 
-const setTwilioCallEndpoint = endpoint => {
-	setSettings('settings.twilio.callEndpoint', endpoint);
-};
+const setTwilioCallEndpoint = endpoint => setSettings('settings.twilio.callEndpoint', endpoint);
 
-const setShareDataBehavior = behavior => {
-	setSettings('settings.shareData.behavior', behavior);
-};
+const setShareDataBehavior = behavior => setSettings('settings.shareData.behavior', behavior);
 
-const setShareDataLocation = location => {
-	setSettings('settings.shareData.location', location);
-};
+const setShareDataLocation = location => setSettings('settings.shareData.location', location);
 
-const setAdminAccess = hasAccess => {
-	setSettings('settings.adminAccess', hasAccess);
-};
+const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
 
 export default {
 	getProviderMappings,

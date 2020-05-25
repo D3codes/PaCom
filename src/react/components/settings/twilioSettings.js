@@ -72,7 +72,7 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 		|| phoneNumber !== twilio.phoneNumber
 		|| callEndpoint !== twilio.callEndpoint
 		|| smsEndpoint !== twilio.smsEndpoint
-	), [sid, authToken, phoneNumber, callEndpoint, smsEndpoint]);
+	), [sid, authToken, phoneNumber, callEndpoint, smsEndpoint, twilio]);
 
 	const handleDateChange = date => {
 		setSelectedDate(date);

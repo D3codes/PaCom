@@ -43,43 +43,25 @@ app.on('activate', () => {
 });
 
 // Listeners
-ipc.on('open-csv-dialog', async event => {
+ipc.handle('open-csv-dialog', () => {
 	const filter = [{ name: 'CSV', extensions: ['csv'] }];
-	event.sender.send('selected-csv', await open(filter));
+	return open(filter);
 });
 
-ipc.on('request-version', event => {
-	event.sender.send('version', projectPackage ? projectPackage.version : null);
-});
+ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
 
-ipc.on('get-provider-mappings', event => {
-	event.sender.send('provider-mappings', persistentStorage.getProviderMappings());
-});
+ipc.handle('get-provider-mappings', () => persistentStorage.getProviderMappings());
 
-ipc.on('add-provider-mapping', (event, mapping) => {
-	persistentStorage.addProviderMapping(mapping);
-});
+ipc.handle('add-provider-mapping', (event, mapping) => persistentStorage.addProviderMapping(mapping));
 
-ipc.on('remove-provider-mapping', (event, providerSource) => {
-	persistentStorage.removeProviderMappingWithSource(providerSource);
-});
+ipc.handle('remove-provider-mapping', (event, providerSource) => persistentStorage.removeProviderMappingWithSource(providerSource));
 
-ipc.on('get-message-templates', event => {
-	event.sender.send('message-templates', persistentStorage.getMessageTemplates());
-});
+ipc.handle('get-message-templates', () => persistentStorage.getMessageTemplates());
 
-ipc.on('add-message-template', (event, template) => {
-	persistentStorage.addMessageTemplate(template);
-});
+ipc.handle('add-message-template', (event, template) => persistentStorage.addMessageTemplate(template));
 
-ipc.on('remove-message-template', (event, templateName) => {
-	persistentStorage.removeMessageTemplateWithName(templateName);
-});
+ipc.handle('remove-message-template', (event, templateName) => persistentStorage.removeMessageTemplateWithName(templateName));
 
-ipc.on('get-settings', event => {
-	event.sender.send('settings', persistentStorage.getSettings());
-});
+ipc.handle('get-settings', () => persistentStorage.getSettings());
 
-ipc.on('set-settings', (event, settingsPath, value) => {
-	persistentStorage.setSettings(settingsPath, value);
-});
+ipc.handle('set-settings', (event, settingsPath, value) => persistentStorage.setSettings(settingsPath, value));
