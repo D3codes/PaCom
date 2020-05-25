@@ -11,11 +11,11 @@ const testData = [
 
 const expectedTransform = '[{"patient":{"accountNumber":"12345-67","name":"Freeman, David D","contactMethods":[{"phoneNumber":"(913)705-0325","type":"Home"},'
                         + '{"phoneNumber":"(913)705-0325","type":"Cell"}],"preferredContactMethod":"Cell","dateOfBirth":"09/11/1994"},'
-                        + '"appointment":{"date":"APPOINTMENTS FOR PROVIDER: GLAMB - Garrett D Lambert, MD on","time":"7:00 AM",'
-                        + '"provider":{"source":"Kansas City Psychiatric Group"},"duration":"60"},"status":"Pending"},{"patient":{"accountNumber":"12345-89",'
-                        + '"name":"Sasnett, Caullen R","contactMethods":[{"phoneNumber":"(913)683-8736","type":"Home"},{"phoneNumber":"(913)683-8736","type":"Cell"}],'
-                        + '"preferredContactMethod":"Phone","dateOfBirth":"01/11/1995"},"appointment":{"date":"APPOINTMENTS FOR PROVIDER: JLOB - Jacqueline Lob, LCSW on",'
-                        + '"time":"7:00 AM","provider":{"source":"Kansas City Psychiatric Group"},"duration":"60"},"status":"Pending"}]';
+                        + '"appointment":{"date":"Friday 8/9/2019","time":"7:00 AM",'
+                        + '"provider":{"source":"APPOINTMENTS FOR PROVIDER: GLAMB - Garrett D Lambert, MD on"},"duration":"60"},"status":"Pending"},{"patient":{'
+                        + '"accountNumber":"12345-89","name":"Sasnett, Caullen R","contactMethods":[{"phoneNumber":"(913)683-8736","type":"Home"},'
+                        + '{"phoneNumber":"(913)683-8736","type":"Cell"}],"preferredContactMethod":"Phone","dateOfBirth":"01/11/1995"},"appointment":{"date":"Friday 8/9/2019",'
+                        + '"time":"7:00 AM","provider":{"source":"APPOINTMENTS FOR PROVIDER: JLOB - Jacqueline Lob, LCSW on"},"duration":"60"},"status":"Pending"}]';
 
 describe('fromPulse', () => {
 	it('correctly transforms data', () => {
