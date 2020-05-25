@@ -8,7 +8,7 @@ const open = async filters => new Promise((resolve, reject) => {
 				reject(err);
 			}
 
-			resolve(data.toString());
+			resolve({ path, data: data.toString() });
 		});
 	});
 });
