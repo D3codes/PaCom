@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function BrowseFile({ onBrowseClick, filePath }) {
+function BrowseFile({ onBrowseClick, filePath = '' }) {
 	const classes = useStyles();
 	return (
 		<div className={classes.browseContainer}>
@@ -41,7 +41,8 @@ function BrowseFile({ onBrowseClick, filePath }) {
 }
 
 BrowseFile.propTypes = {
-	onBrowseClick: PropTypes.func.isRequired
+	onBrowseClick: PropTypes.func.isRequired,
+	filePath: PropTypes.string
 };
 
 export default BrowseFile;
