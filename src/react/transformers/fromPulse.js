@@ -5,7 +5,7 @@ import Provider from '../models/provider';
 import Reminder from '../models/reminder';
 import { NullValueException } from '../exceptions';
 
-module.exports = (rows) => {
+export default (rows) => {
 	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
 
 	const reminders = [];
