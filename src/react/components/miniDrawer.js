@@ -161,7 +161,7 @@ export default function MiniDrawer({
 		setShowSnackBar(!adminAccess && clickCount > CLICKS_REQUIRED_FOR_SNACKBAR && clickCount < CLICKS_REQUIRED_FOR_ADMIN_ACCESS - 1);
 
 		if (!adminAccess && clickCount >= CLICKS_REQUIRED_FOR_ADMIN_ACCESS - 1) {
-			persistentStorage.setAdminAccess(true).then(setValue => setAdminAccess(setValue));
+			persistentStorage.setAdminAccess(true).then(setAdminAccess);
 		}
 	};
 
