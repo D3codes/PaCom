@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import {
-	AppBar, CssBaseline, makeStyles, Toolbar, Typography
+	AppBar, CssBaseline, makeStyles, Toolbar, Typography, ClickAwayListener
 } from '@material-ui/core';
-
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
-import AppointmentReminderSettings from './components/settings/appointmentReminderSettings';
 import CustomMessage from './components/customMessage/customMessage';
-import CustomMessageSettings from './components/settings/customMessageSettings';
-import MessageReportSettings from './components/settings/messageReportSettings';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
 import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH, SUBSETTINGS_TABS } from './components/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
-import SharedDataSettings from './components/settings/sharedDataSettings';
-import TwilioSettings from './components/settings/twilioSettings';
+import Settings from './components/settings/settings';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		height: '100%'
@@ -53,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getTitle(tabId) {
-	const foundTab = MiniDrawer.Tabs.find((tab) => tab.id === tabId);
+	const foundTab = MiniDrawer.Tabs.find(tab => tab.id === tabId);
 	return foundTab ? foundTab.title : '';
 }
 
@@ -68,15 +63,20 @@ export default function App() {
 	const [settingsOpen, setSettingsOpen] = useState(false);
 
 	const handleChevronClick = () => {
-		setOpen((prevOpen) => !prevOpen);
-		setSettingsOpen((prevSettingsOpen) => !open && prevSettingsOpen && SUBSETTINGS_TABS.some((subTab) => subTab.id === selectedTabId));
+		setOpen(prevOpen => !prevOpen);
+		setSettingsOpen(prevSettingsOpen => !open && prevSettingsOpen && SUBSETTINGS_TABS.some(subTab => subTab.id === selectedTabId));
 	};
 
-	const handleTabSelect = (tabId) => {
+	const handleTabSelect = tabId => {
 		const isSettingsTab = tabId === MiniDrawer.TabIds.SETTINGS;
 		if (!isSettingsTab) setSelectedTabId(tabId);
-		setSettingsOpen((prevSettingsOpen) => !prevSettingsOpen && isSettingsTab);
-		setOpen(isSettingsTab);
+		if (isSettingsTab) setSettingsOpen(prevSettingsOpen => !prevSettingsOpen);
+		if (!open && isSettingsTab) setOpen(true);
+	};
+
+	const handleClickAway = () => {
+		setSettingsOpen(false);
+		setOpen(false);
 	};
 
 	const title = getTitle(selectedTabId);
@@ -84,13 +84,17 @@ export default function App() {
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
-			<MiniDrawer
-				open={open}
-				onChevronClick={handleChevronClick}
-				onTabSelect={handleTabSelect}
-				selectedTabId={selectedTabId}
-				settingsOpen={settingsOpen}
-			/>
+			<ClickAwayListener onClickAway={handleClickAway}>
+				<div>
+					<MiniDrawer
+						open={open}
+						onChevronClick={handleChevronClick}
+						onTabSelect={handleTabSelect}
+						selectedTabId={selectedTabId}
+						settingsOpen={settingsOpen}
+					/>
+				</div>
+			</ClickAwayListener>
 			<AppBar
 				position="fixed"
 				className={clsx(classes.appBar, {
@@ -116,21 +120,7 @@ export default function App() {
 				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_TEMPLATES, classes)}>
 					<MessageTemplates />
 				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.APPOINTMENT_REMINDERS_SETTINGS, classes)}>
-					<AppointmentReminderSettings />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS, classes)}>
-					<CustomMessageSettings />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS, classes)}>
-					<MessageReportSettings />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.TWILIO_SETTINGS, classes)}>
-					<TwilioSettings />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SHARED_DATA_SETTINGS, classes)}>
-					<SharedDataSettings />
-				</div>
+				<Settings selectedTabId={selectedTabId} />
 			</main>
 		</div>
 	);

@@ -10,7 +10,7 @@ import ProviderDateTableRows from './providerDateTableRows';
 import ReportActions from './reportActions';
 import ReportTableHeader from './reportTableHeader';
 
-const groupRemindersByProviderAndDate = (reminders) => reminders.reduce((remindersByProviderAndDate, reminder) => {
+const groupRemindersByProviderAndDate = reminders => reminders.reduce((remindersByProviderAndDate, reminder) => {
 	const providerDateKey = `${reminder.getIn(['appointment', 'provider', 'target'])} ${reminder.getIn(['appointment', 'date'])}`;
 	const updatedRemindersByProviderAndDate = { ...remindersByProviderAndDate };
 	if (updatedRemindersByProviderAndDate[providerDateKey]) {
@@ -21,7 +21,7 @@ const groupRemindersByProviderAndDate = (reminders) => reminders.reduce((reminde
 	return updatedRemindersByProviderAndDate;
 }, {});
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	noRemindersContainer: {
 		display: 'flex',
 		alignItems: 'center',
