@@ -5,15 +5,15 @@ import Provider from '../models/provider';
 import Reminder from '../models/reminder';
 import { NullValueException } from '../exceptions';
 
-module.exports = rows => {
+export default rows => {
 	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
 
 	const reminders = [];
 	rows.forEach((row, index) => {
 		if (index === 0 || !row[3]) return;
 
-		// This unshift is removing the company from the row
-		rows[index - 1].unshift();
+		// This shift is removing the company from the row
+		rows[index - 1].shift();
 		const [
 			paddedProvider = null,
 			appointmentDate = null

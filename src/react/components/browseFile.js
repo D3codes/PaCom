@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
 	Button, InputAdornment, makeStyles, TextField
 } from '@material-ui/core';
@@ -16,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function BrowseFile() {
+function BrowseFile({ onBrowseClick }) {
 	const classes = useStyles();
 	return (
 		<div className={classes.browseContainer}>
@@ -33,9 +34,13 @@ function BrowseFile() {
 				size="small"
 				variant="outlined"
 			/>
-			<Button className={classes.button} color="primary" variant="contained">Browse</Button>
+			<Button className={classes.button} color="primary" onClick={onBrowseClick} variant="contained">Browse</Button>
 		</div>
 	);
 }
+
+BrowseFile.propTypes = {
+	onBrowseClick: PropTypes.func.isRequired
+};
 
 export default BrowseFile;

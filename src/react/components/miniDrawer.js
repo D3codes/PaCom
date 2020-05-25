@@ -9,7 +9,6 @@ import {
 } from '@material-ui/icons';
 
 import getVersion from '../utilities/getVersion';
-import usePromise from '../hooks/usePromise';
 import persistentStorage from '../utilities/persistentStorage';
 
 export const DRAWER_OPEN_WIDTH = 300;
@@ -128,7 +127,7 @@ export default function MiniDrawer({
 	open = false, onChevronClick, onTabSelect, selectedTabId = PRIMARY_TABS[0].id, settingsOpen = false
 }) {
 	const classes = useStyles();
-	const [version] = usePromise(() => getVersion());
+	const [version, setVersion] = useState(null);
 	const [clickCount, setClickCount] = useState(0);
 	const [showSnackbar, setShowSnackBar] = useState(false);
 	const [adminAccess, setAdminAccess] = useState(false);
@@ -139,6 +138,7 @@ export default function MiniDrawer({
 	const CLOSE_SNACKBAR_OFFSET = CLICKS_REQUIRED_FOR_SNACKBAR + 3;
 
 	useEffect(() => {
+		getVersion().then(setVersion);
 		persistentStorage.getSettings().then(settings => {
 			setAdminAccess(settings.adminAccess);
 		});
