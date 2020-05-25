@@ -30,15 +30,15 @@ const useStyles = makeStyles(() => ({
 function AppointmentReminders() {
 	const classes = useStyles();
 	const [reminders, setReminders] = useState(null);
+	const [filePath, setFilePath] = useState('');
 	function handleBrowseClick() {
-		csvImporter
-			.getCSV()
-			.then(({ data }) => transformersByEhr[selectedEhr](data))
-			.then(setReminders);
+		const csvPromise = csvImporter.getCSV();
+		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
+		csvPromise.then(({ path }) => setFilePath(path));
 	}
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<BrowseFile onBrowseClick={handleBrowseClick} />
+			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} />
 			<ReportTable reminders={reminders} />
 		</div>
 	);

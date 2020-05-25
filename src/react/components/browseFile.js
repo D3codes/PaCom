@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function BrowseFile({ onBrowseClick }) {
+function BrowseFile({ onBrowseClick, filePath = '' }) {
 	const classes = useStyles();
 	return (
 		<div className={classes.browseContainer}>
@@ -33,6 +33,7 @@ function BrowseFile({ onBrowseClick }) {
 				label="Import CSV"
 				size="small"
 				variant="outlined"
+				value={filePath}
 			/>
 			<Button className={classes.button} color="primary" onClick={onBrowseClick} variant="contained">Browse</Button>
 		</div>
@@ -40,7 +41,8 @@ function BrowseFile({ onBrowseClick }) {
 }
 
 BrowseFile.propTypes = {
-	onBrowseClick: PropTypes.func.isRequired
+	onBrowseClick: PropTypes.func.isRequired,
+	filePath: PropTypes.string
 };
 
 export default BrowseFile;
