@@ -33,7 +33,7 @@ function AppointmentReminders() {
 	const [filePath, setFilePath] = useState('');
 	function handleBrowseClick() {
 		const csvPromise = csvImporter.getCSV();
-		csvPromise.then(({ data }) => transformersByEhr[selectedEhr](data.data)).then(setReminders);
+		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
 		csvPromise.then(({ path }) => setFilePath(path));
 	}
 	return (
