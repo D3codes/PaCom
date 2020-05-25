@@ -44,7 +44,7 @@
     "package-win": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
     "package-mac": "electron-builder build --mac -c.extraMetadata.main=build/electron/main.js --publish never",
     "pretty": "node_modules/.bin/eslint ./src --fix",
-    "eslint": "npm run pretty && node_modules/.bin/eslint ./src"
+    "eslint": "node_modules/.bin/eslint ./src"
   },
   "eslintConfig": {
     "extends": "react-app"
