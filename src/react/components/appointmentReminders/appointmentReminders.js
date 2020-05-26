@@ -4,10 +4,10 @@ import {
 } from '@material-ui/core';
 import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
+import clsx from 'clsx';
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
-import clsx from 'clsx';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
