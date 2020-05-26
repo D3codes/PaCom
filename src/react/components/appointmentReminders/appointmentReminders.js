@@ -1,10 +1,13 @@
 import React, { useState, Fragment } from 'react';
-import { makeStyles, Typography, CircularProgress, Button } from '@material-ui/core';
+import {
+	makeStyles, Typography, CircularProgress, Button
+} from '@material-ui/core';
 import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
+import clsx from 'clsx';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -36,13 +39,7 @@ const useStyles = makeStyles(theme => ({
 		transition: '200ms'
 	},
 	fileDropOver: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		flex: 1,
 		border: `2px solid ${theme.palette.primary.main}`,
-		borderRadius: 4,
-		margin: theme.spacing(2, 0),
 		boxShadow: `0 0 6px ${theme.palette.primary.main}`,
 		transition: '200ms'
 	},
@@ -52,8 +49,6 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.text.secondary
 	},
 	dragAndDropIconOver: {
-		alignSelf: 'center',
-		fontSize: '5rem',
 		color: theme.palette.primary.main
 	},
 	fileDropContent: {
@@ -102,13 +97,13 @@ function AppointmentReminders() {
 						onDrop={handleFileDrop}
 						onDragOver={handleDragOver}
 						onDragLeave={handleDragLeave}
-						className={draggingOver ? classes.fileDropOver : classes.fileDrop}>
+						className={clsx(classes.fileDrop, { [classes.fileDropOver]: draggingOver })}>
 						<div className={classes.fileDropContent}>
 							{fileDropped
 								? <CircularProgress />
 								: (
 									<Fragment>
-										<SystemUpdateAlt className={draggingOver ? classes.dragAndDropIconOver : classes.dragAndDropIcon} />
+										<SystemUpdateAlt className={clsx(classes.dragAndDropIcon, { [classes.dragAndDropIconOver]: draggingOver })} />
 										<Typography
 											align="center"
 											className={classes.noRemindersText}
