@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	makeStyles, Table, TableBody, Typography
 } from '@material-ui/core';
-
 import Reminder from '../../models/reminder';
-
 import ProviderDateTableRows from './providerDateTableRows';
 import ReportActions from './reportActions';
 import ReportTableHeader from './reportTableHeader';

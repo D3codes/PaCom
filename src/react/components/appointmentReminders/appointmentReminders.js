@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-
+import React, { useState, Fragment } from 'react';
+import { makeStyles, Typography, CircularProgress } from '@material-ui/core';
+import { SystemUpdateAlt } from '@material-ui/icons';
+import { FileDrop } from 'react-file-drop';
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
-
 import csvImporter from '../../utilities/csvImporter';
 
 // transformers
@@ -19,11 +19,34 @@ const transformersByEhr = {
 
 const selectedEhr = Ehrs.Pulse;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	appointmentRemindersContainer: {
 		display: 'flex',
 		flexFlow: 'column',
 		height: '100%'
+	},
+	fileDrop: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		flex: 1,
+		border: `1px solid ${theme.palette.divider}`,
+		borderRadius: 4,
+		margin: theme.spacing(2, 0)
+	},
+	dragAndDropIcon: {
+		alignSelf: 'center',
+		fontSize: '5rem',
+		color: theme.palette.text.secondary
+	},
+	dragAndDropIconOver: {
+		alignSelf: 'center',
+		fontSize: '5rem',
+		color: theme.palette.primary.main
+	},
+	fileDropContent: {
+		display: 'flex',
+		flexFlow: 'column'
 	}
 }));
 
@@ -31,15 +54,61 @@ function AppointmentReminders() {
 	const classes = useStyles();
 	const [reminders, setReminders] = useState(null);
 	const [filePath, setFilePath] = useState('');
-	function handleBrowseClick() {
+	const [draggingOver, setDraggingOver] = useState(false);
+	const [fileDropped, setFileDropped] = useState(false);
+
+	const handleBrowseClick = () => {
 		const csvPromise = csvImporter.getCSV();
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
 		csvPromise.then(({ path }) => setFilePath(path));
-	}
+	};
+
+	const handleFileDrop = files => {
+		if (!files) return;
+		setFileDropped(true);
+		const droppedFilePath = files[0].path;
+		const csvPromise = csvImporter.getCSV(droppedFilePath);
+		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
+		csvPromise.then(({ path }) => setFilePath(path));
+	};
+
+	const handleDragOver = () => {
+		setDraggingOver(true);
+	};
+
+	const handleDragLeave = () => {
+		setDraggingOver(false);
+	};
+
 	return (
 		<div className={classes.appointmentRemindersContainer}>
 			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} />
-			<ReportTable reminders={reminders} />
+			{reminders
+				? <ReportTable reminders={reminders} />
+				: (
+					<FileDrop
+						onDrop={handleFileDrop}
+						onDragOver={handleDragOver}
+						onDragLeave={handleDragLeave}
+						className={classes.fileDrop}>
+						<div className={classes.fileDropContent}>
+							{fileDropped
+								? <CircularProgress />
+								: (
+									<Fragment>
+										<SystemUpdateAlt className={draggingOver ? classes.dragAndDropIconOver : classes.dragAndDropIcon} />
+										<Typography
+											align="center"
+											className={classes.noRemindersText}
+											color={draggingOver ? 'primaryMain' : 'textSecondary'}
+											variant="subtitle1">
+								Browse for a file or drag it here.
+										</Typography>
+									</Fragment>
+								)}
+						</div>
+					</FileDrop>
+				)}
 		</div>
 	);
 }
