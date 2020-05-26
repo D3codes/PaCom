@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { makeStyles, Typography, CircularProgress } from '@material-ui/core';
+import { makeStyles, Typography, CircularProgress, Button } from '@material-ui/core';
 import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
 import BrowseFile from '../browseFile';
@@ -32,7 +32,19 @@ const useStyles = makeStyles(theme => ({
 		flex: 1,
 		border: `1px solid ${theme.palette.divider}`,
 		borderRadius: 4,
-		margin: theme.spacing(2, 0)
+		margin: theme.spacing(2, 0),
+		transition: '200ms'
+	},
+	fileDropOver: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		flex: 1,
+		border: `2px solid ${theme.palette.primary.main}`,
+		borderRadius: 4,
+		margin: theme.spacing(2, 0),
+		boxShadow: `0 0 6px ${theme.palette.primary.main}`,
+		transition: '200ms'
 	},
 	dragAndDropIcon: {
 		alignSelf: 'center',
@@ -90,7 +102,7 @@ function AppointmentReminders() {
 						onDrop={handleFileDrop}
 						onDragOver={handleDragOver}
 						onDragLeave={handleDragLeave}
-						className={classes.fileDrop}>
+						className={draggingOver ? classes.fileDropOver : classes.fileDrop}>
 						<div className={classes.fileDropContent}>
 							{fileDropped
 								? <CircularProgress />
@@ -100,9 +112,9 @@ function AppointmentReminders() {
 										<Typography
 											align="center"
 											className={classes.noRemindersText}
-											color={draggingOver ? 'primaryMain' : 'textSecondary'}
+											color={draggingOver ? 'primary' : 'textSecondary'}
 											variant="subtitle1">
-								Browse for a file or drag it here.
+											<Button color="primary" onClick={handleBrowseClick}>Browse for a file</Button> or drag it here.
 										</Typography>
 									</Fragment>
 								)}
