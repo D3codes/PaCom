@@ -2,13 +2,13 @@ import React, { useState, Fragment } from 'react';
 import {
 	makeStyles, Typography, CircularProgress, Button
 } from '@material-ui/core';
-import { SystemUpdateAlt, Warning } from '@material-ui/icons';
+import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
 import clsx from 'clsx';
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
-import WarningModal from '../warningModal';
+import AlertSnackbar from '../alertSnackbar';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -64,7 +64,7 @@ function AppointmentReminders() {
 	const [filePath, setFilePath] = useState('');
 	const [draggingOver, setDraggingOver] = useState(false);
 	const [fileDropped, setFileDropped] = useState(false);
-	const [showWarningModal, setShowWarningModal] = useState(false);
+	const [showAlertSnackbar, setShowAlertSnackbar] = useState(false);
 
 	const handleBrowseClick = () => {
 		const csvPromise = csvImporter.getCSV();
@@ -91,20 +91,12 @@ function AppointmentReminders() {
 			csvPromise.then(({ path }) => setFilePath(path));
 		} catch (InvalidFileTypeException) {
 			setFileDropped(false);
-			setShowWarningModal(true);
+			setShowAlertSnackbar(true);
 		}
 	};
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<WarningModal
-				showModal={showWarningModal}
-				title="Invalid File Type"
-				message="CSV File Expected"
-				type="warning"
-				buttonText="OK"
-				closeAction={() => { setShowWarningModal(false); }}
-			/>
 			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} />
 			{reminders
 				? <ReportTable reminders={reminders} />
@@ -132,6 +124,12 @@ function AppointmentReminders() {
 						</div>
 					</FileDrop>
 				)}
+			<AlertSnackbar
+				open={showAlertSnackbar}
+				severity={AlertSnackbar.Severities.Warning}
+				message="Invalid File Type - Expected CSV"
+				onClose={() => { setShowAlertSnackbar(false); }}
+			/>
 		</div>
 	);
 }
