@@ -2,12 +2,13 @@ import React, { useState, Fragment } from 'react';
 import {
 	makeStyles, Typography, CircularProgress, Button
 } from '@material-ui/core';
-import { SystemUpdateAlt } from '@material-ui/icons';
+import { SystemUpdateAlt, Warning } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
 import clsx from 'clsx';
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
+import WarningModal from '../warningModal';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -63,18 +64,10 @@ function AppointmentReminders() {
 	const [filePath, setFilePath] = useState('');
 	const [draggingOver, setDraggingOver] = useState(false);
 	const [fileDropped, setFileDropped] = useState(false);
+	const [showWarningModal, setShowWarningModal] = useState(false);
 
 	const handleBrowseClick = () => {
 		const csvPromise = csvImporter.getCSV();
-		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
-		csvPromise.then(({ path }) => setFilePath(path));
-	};
-
-	const handleFileDrop = files => {
-		if (!files) return;
-		setFileDropped(true);
-		const droppedFilePath = files[0].path;
-		const csvPromise = csvImporter.getCSV(droppedFilePath);
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
@@ -87,8 +80,31 @@ function AppointmentReminders() {
 		setDraggingOver(false);
 	};
 
+	const handleFileDrop = files => {
+		handleDragLeave();
+		if (!files) return;
+		setFileDropped(true);
+		const droppedFilePath = files[0].path;
+		try {
+			const csvPromise = csvImporter.getCSV(droppedFilePath);
+			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
+			csvPromise.then(({ path }) => setFilePath(path));
+		} catch (InvalidFileTypeException) {
+			setFileDropped(false);
+			setShowWarningModal(true);
+		}
+	};
+
 	return (
 		<div className={classes.appointmentRemindersContainer}>
+			<WarningModal
+				showModal={showWarningModal}
+				title="Invalid File Type"
+				message="CSV File Expected"
+				type="warning"
+				buttonText="OK"
+				closeAction={() => { setShowWarningModal(false); }}
+			/>
 			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} />
 			{reminders
 				? <ReportTable reminders={reminders} />
@@ -109,7 +125,7 @@ function AppointmentReminders() {
 											className={classes.noRemindersText}
 											color={draggingOver ? 'primary' : 'textSecondary'}
 											variant="subtitle1">
-											<Button color="primary" onClick={handleBrowseClick}>Browse for a file</Button> or drag it here.
+											<Button color="primary" onClick={handleBrowseClick}>Browse for a file</Button> or drag it here
 										</Typography>
 									</Fragment>
 								)}

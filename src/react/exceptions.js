@@ -6,3 +6,5 @@ export class VersionNotFoundException extends Error {
 		super('Unable to find version for package');
 	}
 }
+
+export class InvalidFileTypeException extends Error {}
