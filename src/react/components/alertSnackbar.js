@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Slide } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 function AlertSnackbar({
 	severity, title = '', message = '', open, onClose
 }) {
 	return (
-		<Snackbar open={open}>
+		<Snackbar
+			TransitionComponent={Slide}
+			open={open}>
 			<Alert
 				onClose={onClose}
 				severity={severity}>
