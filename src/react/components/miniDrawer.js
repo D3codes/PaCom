@@ -2,11 +2,12 @@ import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse, Slide, Snackbar
+	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse
 } from '@material-ui/core';
 import {
 	PermPhoneMsg, ChevronRight, PersonPin, RateReview, Settings, ExpandMore, Schedule
 } from '@material-ui/icons';
+import AlertSnackbar from './alertSnackbar';
 
 import getVersion from '../utilities/getVersion';
 import persistentStorage from '../utilities/persistentStorage';
@@ -110,7 +111,9 @@ const useStyles = makeStyles(theme => ({
 		position: 'fixed',
 		bottom: 0,
 		alignSelf: 'center',
-		paddingBottom: theme.spacing()
+		paddingBottom: theme.spacing(),
+		cursor: 'default',
+		userSelect: 'none'
 	},
 	collapsed: {
 		transition: theme.transitions.create('transform')
@@ -139,9 +142,9 @@ export default function MiniDrawer({
 
 	useEffect(() => {
 		getVersion().then(setVersion);
-		persistentStorage.getSettings().then(settings => {
-			setAdminAccess(settings.adminAccess);
-		});
+		// persistentStorage.getSettings().then(settings => {
+		// 	setAdminAccess(settings.adminAccess);
+		// });
 	}, []);
 
 	const handleSnackbarClose = () => {
@@ -222,11 +225,11 @@ export default function MiniDrawer({
 			<div className={classes.versionContainer}>
 				{version && <Typography onClick={handleVersionClick} color="textSecondary" variant="caption">{version}</Typography>}
 			</div>
-			<Snackbar
+			<AlertSnackbar
 				open={showSnackbar}
 				autoHideDuration={6000}
 				onClose={handleSnackbarClose}
-				TransitionComponent={Slide}
+				severity={AlertSnackbar.Severities.Info}
 				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} for admin access`}
 			/>
 		</Drawer>
