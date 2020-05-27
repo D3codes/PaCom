@@ -128,7 +128,6 @@ function AppointmentReminders() {
 				open={showAlertSnackbar}
 				severity={AlertSnackbar.Severities.Warning}
 				message="Invalid File Type - Expected CSV"
-				autoHideDuration={3000}
 				onClose={() => { setShowAlertSnackbar(false); }}
 			/>
 		</div>
