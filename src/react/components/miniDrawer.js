@@ -142,9 +142,9 @@ export default function MiniDrawer({
 
 	useEffect(() => {
 		getVersion().then(setVersion);
-		// persistentStorage.getSettings().then(settings => {
-		// 	setAdminAccess(settings.adminAccess);
-		// });
+		persistentStorage.getSettings().then(settings => {
+			setAdminAccess(settings.adminAccess);
+		});
 	}, []);
 
 	const handleSnackbarClose = () => {
