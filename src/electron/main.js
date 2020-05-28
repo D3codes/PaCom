@@ -48,6 +48,8 @@ ipc.handle('open-csv-dialog', () => {
 	return open(filter);
 });
 
+ipc.handle('open-file', (event, filePath) => open([], filePath));
+
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
 
 ipc.handle('get-provider-mappings', () => persistentStorage.getProviderMappings());
