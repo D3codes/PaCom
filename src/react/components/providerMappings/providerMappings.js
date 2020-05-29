@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import {
-	Button, makeStyles, Typography
-} from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Button, makeStyles, Typography } from '@material-ui/core';
+import Add from '@material-ui/icons/Add';
 
 import ProviderMappingsTable from './providerMappingsTable';
 
