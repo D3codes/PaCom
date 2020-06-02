@@ -97,7 +97,7 @@ function AppointmentReminders() {
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} />
+			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} label="Import CSV" />
 			{reminders
 				? <ReportTable reminders={reminders} />
 				: (
