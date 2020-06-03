@@ -51,9 +51,9 @@ const setTwilioSmsEndpoint = endpoint => setSettings('settings.twilio.smsEndpoin
 
 const setTwilioCallEndpoint = endpoint => setSettings('settings.twilio.callEndpoint', endpoint);
 
-const setShareDataBehavior = behavior => setSettings('settings.shareData.behavior', behavior);
+const setShareConfigBehavior = behavior => setSettings('settings.shareData.behavior', behavior);
 
-const setShareDataLocation = location => setSettings('settings.shareData.location', location);
+const setShareConfigLocation = location => setSettings('settings.shareData.location', location);
 
 const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
 
@@ -79,7 +79,7 @@ export default {
 	setTwilioSmsEndpoint,
 	setTwilioCallEndpoint,
 	setTwilioPhoneNumber,
-	setShareDataBehavior,
-	setShareDataLocation,
+	setShareConfigBehavior,
+	setShareConfigLocation,
 	setAdminAccess
 };

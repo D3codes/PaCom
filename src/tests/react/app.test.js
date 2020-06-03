@@ -16,7 +16,7 @@ describe('App', () => {
 			customMessages: {},
 			messageReports: {},
 			twilio: {},
-			sharedData: {}
+			sharedConfig: {}
 		}));
 
 		const { getAllByText } = render(<App />);

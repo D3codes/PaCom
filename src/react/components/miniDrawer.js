@@ -74,8 +74,8 @@ export const SUBSETTINGS_TABS = [
 	},
 	{
 		id: 'shrDta',
-		label: 'Shared Data',
-		title: 'Settings | Shared Data'
+		label: 'Shared Configuration',
+		title: 'Settings | Shared Configuration'
 	}
 ];
 
@@ -256,5 +256,5 @@ MiniDrawer.TabIds = {
 	CUSTOM_MESSAGE_SETTINGS: SUBSETTINGS_TABS[1].id,
 	MESSAGE_REPORT_SETTINGS: SUBSETTINGS_TABS[2].id,
 	TWILIO_SETTINGS: SUBSETTINGS_TABS[3].id,
-	SHARED_DATA_SETTINGS: SUBSETTINGS_TABS[4].id
+	SHARED_CONFIGURATION_SETTINGS: SUBSETTINGS_TABS[4].id
 };

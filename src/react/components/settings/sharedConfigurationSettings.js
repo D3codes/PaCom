@@ -34,34 +34,36 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const behavior = {
+const BEHAVIOR = {
 	local: 0,
 	networkReadOnly: 1,
 	networkReadAndWrite: 2
 };
 
-export default function SharedDataSettings({ sharedData, reloadSettings }) {
+export default function SharedConfigurationSettings({ sharedConfig, reloadSettings }) {
 	const classes = useStyles();
-	const [changesToSave, setChangesToSave] = useState(false);
-	const [selectedOption, setSelectedOption] = useState(null);
-	const [location, setLocation] = useState(null);
-	const [enableLocation, setEnableLocation] = useState(false);
+	const [selectedOption, setSelectedOption] = useState(sharedConfig.behavior);
+	const [location, setLocation] = useState(sharedConfig.location);
+	const changesToSave = useMemo(() => (
+		selectedOption !== sharedConfig.behavior
+		|| location !== sharedConfig.location
+	), [selectedOption, location, sharedConfig]);
 
 	const handleSave = () => {
-		if (selectedOption !== sharedData.behavior) persistentStorage.setShareDataBehavior(selectedOption);
-		if (location !== sharedData.location) persistentStorage.setShareDataLocation(location);
+		if (selectedOption !== sharedConfig.behavior) persistentStorage.setShareConfigBehavior(selectedOption);
+		if (location !== sharedConfig.location) persistentStorage.setShareConfigLocation(location);
 		reloadSettings();
 	};
 
 	return (
 		<div className={classes.root}>
-			<BrowseFile label="Shared Data Location" />
+			<BrowseFile label="Shared Configuration Location" disabled={selectedOption === BEHAVIOR.local} required={selectedOption !== BEHAVIOR.local} />
 			<div className={classes.content}>
 				<Button
-					onClick={() => { setSelectedOption(0); setEnableLocation(false); }}
+					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					className={classes.button}
 					color="primary"
-					variant={selectedOption === 0 ? 'outlined' : 'text'}
+					variant={selectedOption === BEHAVIOR.local ? 'outlined' : 'text'}
 					style={{ textAlign: 'left' }}
 					startIcon={(
 						<Fragment>
@@ -75,11 +77,11 @@ export default function SharedDataSettings({ sharedData, reloadSettings }) {
 					</div>
 				</Button>
 				<Button
-					onClick={() => { setSelectedOption(1); setEnableLocation(true); }}
+					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
 					className={classes.button}
 					color="primary"
 					style={{ textAlign: 'left' }}
-					variant={selectedOption === 1 ? 'outlined' : 'text'}
+					variant={selectedOption === BEHAVIOR.networkReadOnly ? 'outlined' : 'text'}
 					startIcon={(
 						<Fragment>
 							<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
@@ -92,11 +94,11 @@ export default function SharedDataSettings({ sharedData, reloadSettings }) {
 					</div>
 				</Button>
 				<Button
-					onClick={() => { setSelectedOption(2); setEnableLocation(true); }}
+					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
 					className={classes.button}
 					color="primary"
 					style={{ textAlign: 'left' }}
-					variant={selectedOption === 2 ? 'outlined' : 'text'}
+					variant={selectedOption === BEHAVIOR.networkReadAndWrite ? 'outlined' : 'text'}
 					startIcon={(
 						<Fragment>
 							<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
@@ -123,8 +125,8 @@ export default function SharedDataSettings({ sharedData, reloadSettings }) {
 	);
 }
 
-SharedDataSettings.propTypes = {
-	sharedData: PropTypes.shape(
+SharedConfigurationSettings.propTypes = {
+	sharedConfig: PropTypes.shape(
 		{
 			SID: PropTypes.string,
 			authToken: PropTypes.string,

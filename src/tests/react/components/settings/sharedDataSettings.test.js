@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render } from '@testing-library/react';
-import SharedDataSettings from '../../../../react/components/settings/sharedDataSettings';
+import SharedConfigurationSettings from '../../../../react/components/settings/sharedConfigurationSettings';
 
-describe('SharedDataSettings', () => {
+describe('SharedConfigurationSettings', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<SharedDataSettings />);
-		expect(getByText('This is the Shared Data Settings Content')).toBeDefined();
+		const { getByText } = render(<SharedConfigurationSettings />);
+		expect(getByText('This is the Shared Configuration Settings Content')).toBeDefined();
 	});
 });

@@ -4,7 +4,7 @@ import AppointmentReminderSettings from './appointmentReminderSettings';
 import CustomMessageSettings from './customMessageSettings';
 import MessageReportSettings from './messageReportSettings';
 import TwilioSettings from './twilioSettings';
-import SharedDataSettings from './sharedDataSettings';
+import SharedConfigurationSettings from './sharedConfigurationSettings';
 import persistentStorage from '../../utilities/persistentStorage';
 import MiniDrawer from '../miniDrawer';
 
@@ -13,7 +13,7 @@ export default function Settings({ selectedTabId }) {
 	const [customMessageSettings, setCustomMessageSettings] = useState(null);
 	const [messageReportSettings, setMessageReportSettings] = useState(null);
 	const [twilioSettings, setTwilioSettings] = useState(null);
-	const [sharedDataSettings, setSharedDataSettings] = useState(null);
+	const [sharedConfigurationSettings, setSharedConfigurationSettings] = useState(null);
 
 	const reloadSettings = () => {
 		persistentStorage.getSettings().then(settings => {
@@ -21,7 +21,7 @@ export default function Settings({ selectedTabId }) {
 			setCustomMessageSettings(settings.customMessages);
 			setMessageReportSettings(settings.messageReports);
 			setTwilioSettings(settings.twilio);
-			setSharedDataSettings(settings.shareData);
+			setSharedConfigurationSettings(settings.shareData);
 		});
 	};
 
@@ -35,7 +35,7 @@ export default function Settings({ selectedTabId }) {
 			{selectedTabId === MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS && <CustomMessageSettings customMessage={customMessageSettings} />}
 			{selectedTabId === MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS && <MessageReportSettings messageReports={messageReportSettings} />}
 			{selectedTabId === MiniDrawer.TabIds.TWILIO_SETTINGS && <TwilioSettings twilio={twilioSettings} reloadSettings={reloadSettings} />}
-			{selectedTabId === MiniDrawer.TabIds.SHARED_DATA_SETTINGS && <SharedDataSettings sharedData={sharedDataSettings} />}
+			{selectedTabId === MiniDrawer.TabIds.SHARED_CONFIGURATION_SETTINGS && <SharedConfigurationSettings sharedConfig={sharedConfigurationSettings} reloadSettings={reloadSettings} />}
 		</Fragment>
 	);
 }
