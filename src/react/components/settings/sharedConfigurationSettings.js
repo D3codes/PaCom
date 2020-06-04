@@ -5,6 +5,7 @@ import { Save, DesktopWindows, Storage } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import BrowseFile from '../browseFile';
 import persistentStorage from '../../utilities/persistentStorage';
+import folderSelector from '../../utilities/folderSelector';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -44,6 +45,9 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 	const classes = useStyles();
 	const [selectedOption, setSelectedOption] = useState(sharedConfig.behavior);
 	const [location, setLocation] = useState(sharedConfig.location);
+	const locationIsSpecifiedIfNetworkOptionSelected = useMemo(() => (
+		selectedOption === BEHAVIOR.local || location
+	), [location, selectedOption]);
 	const changesToSave = useMemo(() => (
 		selectedOption !== sharedConfig.behavior
 		|| location !== sharedConfig.location
@@ -55,9 +59,21 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 		reloadSettings();
 	};
 
+	const browseForFolder = () => {
+		folderSelector.getFolder().then(folderPath => setLocation(folderPath));
+	};
+
 	return (
 		<div className={classes.root}>
-			<BrowseFile label="Shared Configuration Location" disabled={selectedOption === BEHAVIOR.local} required={selectedOption !== BEHAVIOR.local} />
+			<BrowseFile
+				onBrowseClick={browseForFolder}
+				label="Shared Configuration Location"
+				filePath={location}
+				error={!locationIsSpecifiedIfNetworkOptionSelected}
+				helperText={!locationIsSpecifiedIfNetworkOptionSelected ? 'A location must be selected for the shared configuration' : ''}
+				disabled={selectedOption === BEHAVIOR.local}
+				required={selectedOption !== BEHAVIOR.local}
+			/>
 			<div className={classes.content}>
 				<Button
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
@@ -113,10 +129,10 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
-					disabled={!changesToSave}
+					disabled={!changesToSave || !locationIsSpecifiedIfNetworkOptionSelected}
 					endIcon={<Save />}
 					color="primary"
-					variant={changesToSave ? 'contained' : 'outlined'}
+					variant={changesToSave && locationIsSpecifiedIfNetworkOptionSelected ? 'contained' : 'outlined'}
 					onClick={handleSave}>
 						Save
 				</Button>

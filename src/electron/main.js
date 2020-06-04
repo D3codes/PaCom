@@ -5,6 +5,7 @@ const path = require('path');
 
 const projectPackage = require('../../package.json');
 const open = require('./utilities/fileOpener');
+const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
 
 const { app, BrowserWindow, ipcMain: ipc } = electron;
@@ -67,3 +68,5 @@ ipc.handle('remove-message-template', (event, templateName) => persistentStorage
 ipc.handle('get-settings', () => persistentStorage.getSettings());
 
 ipc.handle('set-settings', (event, settingsPath, value) => persistentStorage.setSettings(settingsPath, value));
+
+ipc.handle('open-folder-dialog', () => filePicker.pickFolder());

@@ -18,14 +18,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function BrowseFile({
-	onBrowseClick, filePath = '', label = '', disabled = false, required = false
+	onBrowseClick, filePath = '', label = '', disabled = false, error = false, helperText = ''
 }) {
 	const classes = useStyles();
 	return (
 		<div className={classes.browseContainer}>
 			<TextField
 				disabled={disabled}
-				required={required}
+				error={error}
+				helperText={helperText}
 				focused={!disabled}
 				fullWidth
 				InputProps={{
@@ -39,7 +40,9 @@ function BrowseFile({
 				variant="outlined"
 				value={filePath}
 			/>
-			<Button className={classes.button} color="primary" onClick={onBrowseClick} disabled={disabled} variant={disabled ? 'outlined' : 'contained'}>Browse</Button>
+			<span>
+				<Button className={classes.button} color="primary" onClick={onBrowseClick} disabled={disabled} variant={disabled ? 'outlined' : 'contained'}>Browse</Button>
+			</span>
 		</div>
 	);
 }
@@ -49,7 +52,8 @@ BrowseFile.propTypes = {
 	filePath: PropTypes.string,
 	label: PropTypes.string,
 	disabled: PropTypes.bool,
-	required: PropTypes.bool
+	error: PropTypes.bool,
+	helperText: PropTypes.string
 };
 
 export default BrowseFile;
