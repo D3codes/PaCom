@@ -16,7 +16,7 @@ export default function Settings({ selectedTabId }) {
 	const [messageReportSettings, setMessageReportSettings] = useState(null);
 	const [twilioSettings, setTwilioSettings] = useState(null);
 	const [sharedConfigurationSettings, setSharedConfigurationSettings] = useState(null);
-	const hasWritePermission = useMemo((sharedConfigurationSettings.behavior !== 1), [sharedConfigurationSettings]);
+	const hasWritePermission = useMemo(() => (sharedConfigurationSettings && sharedConfigurationSettings.behavior !== 1), [sharedConfigurationSettings]);
 
 	const reloadSettings = () => {
 		persistentStorage.getSettings().then(settings => {

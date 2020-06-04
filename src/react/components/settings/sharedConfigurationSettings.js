@@ -1,6 +1,6 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Typography, Divider } from '@material-ui/core';
+import { Button, Typography, Divider, withStyles } from '@material-ui/core';
 import { Save, DesktopWindows, Storage } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import BrowseFile from '../browseFile';
@@ -34,6 +34,13 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing()
 	}
 }));
+
+const AdvancedButton = withStyles({
+	root: {
+		textTransform: 'none',
+		paddingLeft: 0
+	}
+})(Button);
 
 const BEHAVIOR = {
 	local: 0,
@@ -75,7 +82,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				required={selectedOption !== BEHAVIOR.local}
 			/>
 			<div className={classes.content}>
-				<Button
+				<AdvancedButton
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					className={classes.button}
 					color="primary"
@@ -88,11 +95,11 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 						</Fragment>
 					)}>
 					<div className={classes.buttonContent}>
-						<Typography variant="h5">Local</Typography>
+						<Typography variant="h5">LOCAL</Typography>
 						<Typography>Read and Write all message templates, provider mappings, and settings locally.</Typography>
 					</div>
-				</Button>
-				<Button
+				</AdvancedButton>
+				<AdvancedButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
 					className={classes.button}
 					color="primary"
@@ -105,11 +112,11 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 						</Fragment>
 					)}>
 					<div className={classes.buttonContent}>
-						<Typography variant="h5">Network - Ready Only</Typography>
+						<Typography variant="h5">NETWORK - READ ONLY</Typography>
 						<Typography>Read all message templates, provider mappings, and settings from a network location.</Typography>
 					</div>
-				</Button>
-				<Button
+				</AdvancedButton>
+				<AdvancedButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
 					className={classes.button}
 					color="primary"
@@ -122,10 +129,10 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 						</Fragment>
 					)}>
 					<div className={classes.buttonContent}>
-						<Typography variant="h5">Network - Read and Write</Typography>
+						<Typography variant="h5">NETWORK - READ AND WRITE</Typography>
 						<Typography>Read and Write all message templates, provider mappings, and settings from a network location.</Typography>
 					</div>
-				</Button>
+				</AdvancedButton>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
