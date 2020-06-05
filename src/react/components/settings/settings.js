@@ -25,7 +25,7 @@ export default function Settings({ selectedTabId }) {
 			setMessageReportSettings(settings.messageReports);
 			setTwilioSettings(settings.twilio);
 		});
-		persistentStorage.getSharedConfigurationSettings().then(setSharedConfigurationSettings);
+		persistentStorage.getSettings(true).then(settings => { setSharedConfigurationSettings(settings.shareData); });
 	};
 
 	useEffect(() => {

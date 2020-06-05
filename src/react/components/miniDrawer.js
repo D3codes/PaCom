@@ -142,7 +142,7 @@ export default function MiniDrawer({
 
 	useEffect(() => {
 		getVersion().then(setVersion);
-		persistentStorage.getSettings().then(settings => {
+		persistentStorage.getSettings(true).then(settings => {
 			setAdminAccess(settings.adminAccess);
 		});
 	}, []);

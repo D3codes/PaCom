@@ -70,13 +70,13 @@ const removeMessageTemplateWithName = templateName => {
 	return getMessageTemplates();
 };
 
-const getSettings = () => {
+const getSettings = (forceLocal = false) => {
 	store = new Store({ cwd: app.getPath('userData') });
 	let settings = store.get(SETTINGS);
 	if (!settings) {
 		store.set(defaultSettings);
 		settings = defaultSettings;
-	} else if (settings.shareData.behavior !== 0) {
+	} else if (settings.shareData.behavior !== 0 && !forceLocal) {
 		store = new Store({ cwd: settings.shareData.location });
 		settings = store.get(SETTINGS);
 		if (!settings) {
@@ -85,11 +85,6 @@ const getSettings = () => {
 		}
 	}
 	return settings;
-};
-
-const getSharedConfigurationSettings = () => {
-	store = new Store({ cwd: app.getPath('userData') });
-	return store.get(SETTINGS).shareData;
 };
 
 const setSettings = (path, value, forceLocal = false) => {
@@ -107,6 +102,5 @@ module.exports = {
 	addMessageTemplate,
 	removeMessageTemplateWithName,
 	getSettings,
-	getSharedConfigurationSettings,
 	setSettings
 };

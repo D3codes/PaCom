@@ -65,9 +65,7 @@ ipc.handle('add-message-template', (event, template) => persistentStorage.addMes
 
 ipc.handle('remove-message-template', (event, templateName) => persistentStorage.removeMessageTemplateWithName(templateName));
 
-ipc.handle('get-settings', () => persistentStorage.getSettings());
-
-ipc.handle('get-shared-configuration-settings', () => persistentStorage.getSharedConfigurationSettings());
+ipc.handle('get-settings', (event, forceLocal = false) => persistentStorage.getSettings(forceLocal));
 
 ipc.handle('set-settings', (event, settingsPath, value, forceLocal = false) => persistentStorage.setSettings(settingsPath, value, forceLocal));
 

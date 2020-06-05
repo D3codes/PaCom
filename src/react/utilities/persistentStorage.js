@@ -13,9 +13,7 @@ const addMessageTemplate = template => window.ipcRenderer.invoke('add-message-te
 const removeMessageTemplateWithName = templateName => window.ipcRenderer.invoke('remove-message-template', templateName);
 
 // Settings
-const getSettings = () => window.ipcRenderer.invoke('get-settings');
-
-const getSharedConfigurationSettings = () => window.ipcRenderer.invoke('get-shared-configuration-settings');
+const getSettings = (forceLocal = false) => window.ipcRenderer.invoke('get-settings', forceLocal);
 
 const setSettings = (path, value, forceLocal = false) => window.ipcRenderer.invoke('set-settings', path, value, forceLocal);
 
@@ -67,7 +65,6 @@ export default {
 	addMessageTemplate,
 	removeMessageTemplateWithName,
 	getSettings,
-	getSharedConfigurationSettings,
 	setAppointmentRemindersDateVerificationAllowSend,
 	setAppointmentRemindersDateVerificationDays,
 	setAppointmentRemindersNotificationMethodPreferredAndSms,
