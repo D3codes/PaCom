@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import {
 	Button, Typography, Divider
 } from '@material-ui/core';
-import { Save, DesktopWindows, Storage } from '@material-ui/icons';
+import { Save, DesktopWindows, Storage, FileCopy } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import BrowseFile from '../browseFile';
 import persistentStorage from '../../utilities/persistentStorage';
 import folderSelector from '../../utilities/folderSelector';
+import AlertSnackBar from '../alertSnackbar';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	actionButtonContainer: {
 		display: 'flex',
-		justifyContent: 'flex-end'
+		justifyContent: 'space-between'
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
@@ -58,6 +59,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 	const classes = useStyles();
 	const [selectedOption, setSelectedOption] = useState(sharedConfig.behavior);
 	const [location, setLocation] = useState(sharedConfig.location);
+	const [showSnackbar, setShowSnackbar] = useState(false);
 	const locationIsSpecifiedIfNetworkOptionSelected = useMemo(() => (
 		selectedOption === BEHAVIOR.local || location
 	), [location, selectedOption]);
@@ -70,6 +72,10 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 		if (selectedOption !== sharedConfig.behavior) persistentStorage.setShareConfigBehavior(selectedOption);
 		if (location !== sharedConfig.location) persistentStorage.setShareConfigLocation(location);
 		reloadSettings();
+	};
+
+	const handleCopyToNetwork = () => {
+		setShowSnackbar(true);
 	};
 
 	const browseForFolder = () => {
@@ -142,6 +148,14 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
+					disabled={sharedConfig.behavior !== 2 || !sharedConfig.location}
+					variant={sharedConfig.behavior !== 2 || !sharedConfig.location ? 'outlined' : 'contained'}
+					color="primary"
+					onClick={handleCopyToNetwork}
+					startIcon={<FileCopy />}>
+					Copy local to network
+				</Button>
+				<Button
 					disabled={!changesToSave || !locationIsSpecifiedIfNetworkOptionSelected}
 					endIcon={<Save />}
 					color="primary"
@@ -150,6 +164,13 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 						Save
 				</Button>
 			</div>
+			<AlertSnackBar
+				severity="info"
+				message="Local mappings and templates copied to network"
+				open={showSnackbar}
+				onClose={() => { setShowSnackbar(false); }}
+				autoHideDuration={5000}
+			/>
 		</div>
 	);
 }
