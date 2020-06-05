@@ -24,8 +24,8 @@ export default function Settings({ selectedTabId }) {
 			setCustomMessageSettings(settings.customMessages);
 			setMessageReportSettings(settings.messageReports);
 			setTwilioSettings(settings.twilio);
-			setSharedConfigurationSettings(settings.shareData);
 		});
+		persistentStorage.getSharedConfigurationSettings().then(setSharedConfigurationSettings);
 	};
 
 	useEffect(() => {

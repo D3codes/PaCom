@@ -15,7 +15,9 @@ const removeMessageTemplateWithName = templateName => window.ipcRenderer.invoke(
 // Settings
 const getSettings = () => window.ipcRenderer.invoke('get-settings');
 
-const setSettings = (path, value) => window.ipcRenderer.invoke('set-settings', path, value);
+const getSharedConfigurationSettings = () => window.ipcRenderer.invoke('get-shared-configuration-settings');
+
+const setSettings = (path, value, forceLocal = false) => window.ipcRenderer.invoke('set-settings', path, value, forceLocal);
 
 const setAppointmentRemindersDateVerificationDays = days => setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
 
@@ -51,9 +53,9 @@ const setTwilioSmsEndpoint = endpoint => setSettings('settings.twilio.smsEndpoin
 
 const setTwilioCallEndpoint = endpoint => setSettings('settings.twilio.callEndpoint', endpoint);
 
-const setShareConfigBehavior = behavior => setSettings('settings.shareData.behavior', behavior);
+const setShareConfigBehavior = behavior => setSettings('settings.shareData.behavior', behavior, true);
 
-const setShareConfigLocation = location => setSettings('settings.shareData.location', location);
+const setShareConfigLocation = location => setSettings('settings.shareData.location', location, true);
 
 const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
 
@@ -65,6 +67,7 @@ export default {
 	addMessageTemplate,
 	removeMessageTemplateWithName,
 	getSettings,
+	getSharedConfigurationSettings,
 	setAppointmentRemindersDateVerificationAllowSend,
 	setAppointmentRemindersDateVerificationDays,
 	setAppointmentRemindersNotificationMethodPreferredAndSms,

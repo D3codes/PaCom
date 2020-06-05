@@ -1,7 +1,7 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Typography, Divider, withStyles
+	Button, Typography, Divider
 } from '@material-ui/core';
 import { Save, DesktopWindows, Storage } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';

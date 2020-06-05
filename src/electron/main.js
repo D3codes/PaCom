@@ -67,6 +67,8 @@ ipc.handle('remove-message-template', (event, templateName) => persistentStorage
 
 ipc.handle('get-settings', () => persistentStorage.getSettings());
 
-ipc.handle('set-settings', (event, settingsPath, value) => persistentStorage.setSettings(settingsPath, value));
+ipc.handle('get-shared-configuration-settings', () => persistentStorage.getSharedConfigurationSettings());
+
+ipc.handle('set-settings', (event, settingsPath, value, forceLocal = false) => persistentStorage.setSettings(settingsPath, value, forceLocal));
 
 ipc.handle('open-folder-dialog', () => filePicker.pickFolder());
