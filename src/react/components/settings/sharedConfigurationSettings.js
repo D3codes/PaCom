@@ -37,8 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 const AdvancedButton = withStyles({
 	root: {
-		textTransform: 'none',
-		paddingLeft: 0
+		textTransform: 'none'
 	}
 })(Button);
 
