@@ -17,13 +17,13 @@ jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('TwilioSettings', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<TwilioSettings twilio={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText } = render(<TwilioSettings twilio={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 		expect(getByText('Download Logs')).toBeDefined();
 		expect(getByText('Save')).toBeDefined();
 	});
 
 	it('has the save button disabled until there are changes to save', () => {
-		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 
 		expect(getByText('Save')).toBeDisabled();
 
@@ -34,10 +34,22 @@ describe('TwilioSettings', () => {
 		expect(getByText('Save')).toBeEnabled();
 	});
 
+	it('has the save button stay disabled if there are no write permissions', () => {
+		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={jest.fn()} hasWritePermission={false} />);
+
+		expect(getByText('Save')).toBeDisabled();
+
+		const sidField = getByTestId('sid-field').querySelector('input');
+		sidField.value = '9137050325';
+		Simulate.change(sidField);
+
+		expect(getByText('Save')).toBeDisabled();
+	});
+
 	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
 		persistentStorageMock.setTwilioSID.mockImplementation();
 		const reloadSettingsMock = jest.fn();
-		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={reloadSettingsMock} />);
+		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={reloadSettingsMock} hasWritePermission />);
 
 		const sidField = getByTestId('sid-field').querySelector('input');
 		sidField.value = '9137050325';
@@ -49,7 +61,7 @@ describe('TwilioSettings', () => {
 	});
 
 	it('does not enable the save button unless valid data is entered', () => {
-		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText, getByTestId } = render(<TwilioSettings twilio={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 		expect(getByText('Save')).toBeDisabled();
 
 		const phoneNumberField = getByTestId('phoneNumber-field').querySelector('input');
