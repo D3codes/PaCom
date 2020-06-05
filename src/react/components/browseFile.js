@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function BrowseFile({
-	onBrowseClick, filePath = '', label = '', disabled = false, error = false, helperText = ''
+	onBrowseClick, filePath = '', label = '', disabled = false, error = false, helperText = '', onFilePathChange
 }) {
 	const classes = useStyles();
 	return (
@@ -33,6 +33,8 @@ function BrowseFile({
 				helperText={helperText}
 				focused={!disabled}
 				fullWidth
+				data-testid="browse-field"
+				onChange={event => { onFilePathChange(event.target.value); }}
 				InputProps={{
 					notched: true,
 					startAdornment: (
@@ -57,7 +59,8 @@ BrowseFile.propTypes = {
 	label: PropTypes.string,
 	disabled: PropTypes.bool,
 	error: PropTypes.bool,
-	helperText: PropTypes.string
+	helperText: PropTypes.string,
+	onFilePathChange: PropTypes.func.isRequired
 };
 
 export default BrowseFile;

@@ -102,6 +102,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				helperText={!locationIsSpecifiedIfNetworkOptionSelected ? 'A location must be selected for the shared configuration' : ''}
 				disabled={selectedOption === BEHAVIOR.local}
 				required={selectedOption !== BEHAVIOR.local}
+				onFilePathChange={setLocation}
 			/>
 			<div className={classes.content}>
 				<Button

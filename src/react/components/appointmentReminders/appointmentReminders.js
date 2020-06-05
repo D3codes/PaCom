@@ -95,9 +95,14 @@ function AppointmentReminders() {
 		}
 	};
 
+	const handleFilePathChange = path => {
+		setFilePath(path);
+		// handle reload of appointments here
+	};
+
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} label="Import CSV" />
+			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />
 			{reminders
 				? <ReportTable reminders={reminders} />
 				: (
