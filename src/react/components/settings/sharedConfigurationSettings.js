@@ -1,6 +1,8 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Typography, Divider, withStyles } from '@material-ui/core';
+import {
+	Button, Typography, Divider, withStyles
+} from '@material-ui/core';
 import { Save, DesktopWindows, Storage } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import BrowseFile from '../browseFile';
@@ -32,14 +34,19 @@ const useStyles = makeStyles(theme => ({
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
+	},
+	buttonRoot: {
+		textTransform: 'none',
+		justifyContent: 'flex-start',
+		textAlign: 'left'
+	},
+	invisibleOutline: {
+		borderColor: 'rgba(0,0,0,0)',
+		'&:hover': {
+			borderColor: 'rgba(0,0,0,0)'
+		}
 	}
 }));
-
-const AdvancedButton = withStyles({
-	root: {
-		textTransform: 'none'
-	}
-})(Button);
 
 const BEHAVIOR = {
 	local: 0,
@@ -81,12 +88,12 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				required={selectedOption !== BEHAVIOR.local}
 			/>
 			<div className={classes.content}>
-				<AdvancedButton
+				<Button
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					className={classes.button}
 					color="primary"
-					variant={selectedOption === BEHAVIOR.local ? 'outlined' : 'text'}
-					style={{ textAlign: 'left' }}
+					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.local ? '' : classes.invisibleOutline }}
+					variant="outlined"
 					startIcon={(
 						<Fragment>
 							<DesktopWindows style={{ fontSize: '3rem', textAlign: 'left' }} />
@@ -97,13 +104,13 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 						<Typography variant="h5">LOCAL</Typography>
 						<Typography>Read and Write all message templates, provider mappings, and settings locally.</Typography>
 					</div>
-				</AdvancedButton>
-				<AdvancedButton
+				</Button>
+				<Button
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
 					className={classes.button}
 					color="primary"
-					style={{ textAlign: 'left' }}
-					variant={selectedOption === BEHAVIOR.networkReadOnly ? 'outlined' : 'text'}
+					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.networkReadOnly ? '' : classes.invisibleOutline }}
+					variant="outlined"
 					startIcon={(
 						<Fragment>
 							<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
@@ -114,13 +121,13 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 						<Typography variant="h5">NETWORK - READ ONLY</Typography>
 						<Typography>Read all message templates, provider mappings, and settings from a network location.</Typography>
 					</div>
-				</AdvancedButton>
-				<AdvancedButton
+				</Button>
+				<Button
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
 					className={classes.button}
 					color="primary"
-					style={{ textAlign: 'left' }}
-					variant={selectedOption === BEHAVIOR.networkReadAndWrite ? 'outlined' : 'text'}
+					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.networkReadAndWrite ? '' : classes.invisibleOutline }}
+					variant="outlined"
 					startIcon={(
 						<Fragment>
 							<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
@@ -131,7 +138,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 						<Typography variant="h5">NETWORK - READ AND WRITE</Typography>
 						<Typography>Read and Write all message templates, provider mappings, and settings from a network location.</Typography>
 					</div>
-				</AdvancedButton>
+				</Button>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button

@@ -4,6 +4,7 @@ import {
 	Button, InputAdornment, makeStyles, TextField
 } from '@material-ui/core';
 import { Folder } from '@material-ui/icons';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
 	browseContainer: {
@@ -14,6 +15,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	button: {
 		marginLeft: theme.spacing(2)
+	},
+	padding: {
+		paddingBottom: 23
 	}
 }));
 
@@ -22,7 +26,7 @@ function BrowseFile({
 }) {
 	const classes = useStyles();
 	return (
-		<div className={classes.browseContainer}>
+		<div className={clsx(classes.browseContainer, { [classes.padding]: !helperText })}>
 			<TextField
 				disabled={disabled}
 				error={error}
