@@ -24,10 +24,11 @@ const setStorageLocation = () => {
 	}
 };
 
-const getProviderMappings = () => {
-	setStorageLocation();
+const getProviderMappings = (forceLocal = false) => {
+	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
+	else setStorageLocation();
 	const providers = store.get(PROVIDER_MAPPINGS);
-	return providers ? JSON.parse(providers) : [];
+	return providers || [];
 };
 
 const removeProviderMappingWithSource = providerSource => {
@@ -35,7 +36,7 @@ const removeProviderMappingWithSource = providerSource => {
 	let providers = getProviderMappings();
 	if (!providers) return [];
 	providers = providers.filter(provider => provider.source !== providerSource);
-	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
+	store.set(PROVIDER_MAPPINGS, providers);
 	return getProviderMappings();
 };
 
@@ -43,22 +44,15 @@ const addProviderMapping = provider => {
 	setStorageLocation();
 	const providers = removeProviderMappingWithSource(provider.source);
 	providers.push(provider);
-	store.set(PROVIDER_MAPPINGS, JSON.stringify(providers));
+	store.set(PROVIDER_MAPPINGS, providers);
 	return getProviderMappings();
 };
 
-const getMessageTemplates = () => {
-	setStorageLocation();
+const getMessageTemplates = (forceLocal = false) => {
+	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
+	else setStorageLocation();
 	const templates = store.get(MESSAGE_TEMPLATES);
-	return templates ? JSON.parse(templates) : [];
-};
-
-const addMessageTemplate = messageTemplate => {
-	setStorageLocation();
-	const templates = getMessageTemplates();
-	templates.push(messageTemplate);
-	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
-	return getMessageTemplates();
+	return templates || [];
 };
 
 const removeMessageTemplateWithName = templateName => {
@@ -66,7 +60,15 @@ const removeMessageTemplateWithName = templateName => {
 	let templates = getMessageTemplates();
 	if (!templates) return [];
 	templates = templates.filter(template => template.name !== templateName);
-	store.set(MESSAGE_TEMPLATES, JSON.stringify(templates));
+	store.set(MESSAGE_TEMPLATES, templates);
+	return getMessageTemplates();
+};
+
+const addMessageTemplate = messageTemplate => {
+	setStorageLocation();
+	const templates = removeMessageTemplateWithName(messageTemplate.name);
+	templates.push(messageTemplate);
+	store.set(MESSAGE_TEMPLATES, templates);
 	return getMessageTemplates();
 };
 
@@ -94,6 +96,34 @@ const setSettings = (path, value, forceLocal = false) => {
 	return store.get(path);
 };
 
+const copyLocalToNetwork = () => {
+	const localMappings = getProviderMappings(true);
+	const localTemplates = getMessageTemplates(true);
+	const networkMappings = getProviderMappings();
+	const networkTemplates = getMessageTemplates();
+	let allMappingsAndTemplatesCopied = true;
+
+	localMappings.forEach(mapping => {
+		const existingMapping = networkMappings.filter(provider => provider.source === mapping.source).length > 0;
+		if (existingMapping) {
+			allMappingsAndTemplatesCopied = false;
+		} else {
+			addProviderMapping(mapping);
+		}
+	});
+
+	localTemplates.forEach(template => {
+		const existingTemplate = networkTemplates.filter(networkTemplate => networkTemplate.name === template.name).length > 0;
+		if (existingTemplate) {
+			allMappingsAndTemplatesCopied = false;
+		} else {
+			addMessageTemplate(template);
+		}
+	});
+
+	return allMappingsAndTemplatesCopied;
+};
+
 module.exports = {
 	getProviderMappings,
 	addProviderMapping,
@@ -102,5 +132,6 @@ module.exports = {
 	addMessageTemplate,
 	removeMessageTemplateWithName,
 	getSettings,
-	setSettings
+	setSettings,
+	copyLocalToNetwork
 };

@@ -57,6 +57,8 @@ const setShareConfigLocation = location => setSettings('settings.shareData.locat
 
 const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
 
+const copyLocalToNetwork = () => window.ipcRenderer.invoke('copy-local-to-network');
+
 export default {
 	getProviderMappings,
 	addProviderMapping,
@@ -81,5 +83,6 @@ export default {
 	setTwilioPhoneNumber,
 	setShareConfigBehavior,
 	setShareConfigLocation,
-	setAdminAccess
+	setAdminAccess,
+	copyLocalToNetwork
 };

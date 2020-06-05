@@ -70,3 +70,5 @@ ipc.handle('get-settings', (event, forceLocal = false) => persistentStorage.getS
 ipc.handle('set-settings', (event, settingsPath, value, forceLocal = false) => persistentStorage.setSettings(settingsPath, value, forceLocal));
 
 ipc.handle('open-folder-dialog', () => filePicker.pickFolder());
+
+ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork());

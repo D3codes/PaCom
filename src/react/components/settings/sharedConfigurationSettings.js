@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	Button, Typography, Divider
 } from '@material-ui/core';
-import { Save, DesktopWindows, Storage, FileCopy } from '@material-ui/icons';
+import {
+	Save, DesktopWindows, Storage, FileCopy
+} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import BrowseFile from '../browseFile';
 import persistentStorage from '../../utilities/persistentStorage';
@@ -59,6 +61,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 	const classes = useStyles();
 	const [selectedOption, setSelectedOption] = useState(sharedConfig.behavior);
 	const [location, setLocation] = useState(sharedConfig.location);
+	const [snackbarMessage, setSnackbarMessage] = useState('');
 	const [showSnackbar, setShowSnackbar] = useState(false);
 	const locationIsSpecifiedIfNetworkOptionSelected = useMemo(() => (
 		selectedOption === BEHAVIOR.local || location
@@ -75,7 +78,14 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 	};
 
 	const handleCopyToNetwork = () => {
-		setShowSnackbar(true);
+		persistentStorage.copyLocalToNetwork().then(allMappingsAndTemplatesCopied => {
+			if (allMappingsAndTemplatesCopied) {
+				setSnackbarMessage('Local mappings and templates copied to network');
+			} else {
+				setSnackbarMessage('Duplicate mappings or templates were not copied');
+			}
+			setShowSnackbar(true);
+		});
 	};
 
 	const browseForFolder = () => {
@@ -166,7 +176,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 			</div>
 			<AlertSnackBar
 				severity="info"
-				message="Local mappings and templates copied to network"
+				message={snackbarMessage}
 				open={showSnackbar}
 				onClose={() => { setShowSnackbar(false); }}
 				autoHideDuration={5000}
