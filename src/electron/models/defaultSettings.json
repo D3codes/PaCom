@@ -4,7 +4,9 @@
         "appointmentReminders": {
             "dateVerification": {
                 "numberOfDays": 3,
-                "allowSendOutsideRange": true
+                "endOfRange": null,
+                "allowSendOutsideRange": true,
+                "useBusinessDays": true
             },
             "notificationMethod": {
                 "sendToPreferredAndSms": false,
