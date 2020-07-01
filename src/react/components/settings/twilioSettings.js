@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function TwilioSettings({ twilio, reloadSettings }) {
+export default function TwilioSettings({ twilio, reloadSettings, hasWritePermission }) {
 	const classes = useStyles();
 	const [sid, setSid] = useState(twilio.SID);
 	const [authToken, setAuthToken] = useState(twilio.authToken);
@@ -103,11 +103,12 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 			<form className={classes.form} noValidate autoComplete="off">
 				<TextField
 					fullWidth
+					disabled={!hasWritePermission}
 					data-testid="sid-field"
 					label="SID"
 					variant="outlined"
 					value={sid}
-					focused
+					focused={hasWritePermission}
 					onChange={event => { setSid(event.target.value); }}
 					InputProps={{
 						startAdornment: (
@@ -120,11 +121,12 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 				/>
 				<TextField
 					fullWidth
+					disabled={!hasWritePermission}
 					id="authToken-field"
 					label="Authorization Token"
 					variant="outlined"
 					value={authToken}
-					focused
+					focused={hasWritePermission}
 					onChange={event => { setAuthToken(event.target.value); }}
 					InputProps={{
 						startAdornment: (
@@ -137,11 +139,12 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 				/>
 				<TextField
 					fullWidth
+					disabled={!hasWritePermission}
 					data-testid="phoneNumber-field"
 					onChange={event => { setPhoneNumber(event.target.value); }}
 					label="Phone Number"
 					variant="outlined"
-					focused
+					focused={hasWritePermission}
 					helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
 					error={!phoneNumberIsValid}
 					value={phoneNumber}
@@ -157,13 +160,14 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 				/>
 				<TextField
 					fullWidth
+					disabled={!hasWritePermission}
 					id="callEndpoint-field"
 					label="Call Endpoint"
 					variant="outlined"
 					helperText={callEndpointIsValid ? '' : 'Invalid Endpoint'}
 					error={!callEndpointIsValid}
 					value={callEndpoint}
-					focused
+					focused={hasWritePermission}
 					onChange={event => { setCallEndpoint(event.target.value); }}
 					InputProps={{
 						startAdornment: (
@@ -176,13 +180,14 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 				/>
 				<TextField
 					fullWidth
+					disabled={!hasWritePermission}
 					id="smsEndpoint-field"
 					label="SMS Endpoint"
 					variant="outlined"
 					helperText={smsEndpointIsValid ? '' : 'Invalid Endpoint'}
 					error={!smsEndpointIsValid}
 					value={smsEndpoint}
-					focused
+					focused={hasWritePermission}
 					onChange={event => { setSmsEndpoint(event.target.value); }}
 					InputProps={{
 						startAdornment: (
@@ -250,10 +255,10 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					</Popover>
 				</div>
 				<Button
-					disabled={!changesToSave || !phoneNumberIsValid || !smsEndpointIsValid || !callEndpointIsValid}
+					disabled={!hasWritePermission || !changesToSave || !phoneNumberIsValid || !smsEndpointIsValid || !callEndpointIsValid}
 					endIcon={<Save />}
 					color="primary"
-					variant={(changesToSave && phoneNumberIsValid && smsEndpointIsValid && callEndpointIsValid) ? 'contained' : 'outlined'}
+					variant={!hasWritePermission || !changesToSave || !phoneNumberIsValid || !smsEndpointIsValid || !callEndpointIsValid ? 'outlined' : 'contained'}
 					onClick={handleSave}>
 						Save
 				</Button>
@@ -272,5 +277,6 @@ TwilioSettings.propTypes = {
 			smsEndpoint: PropTypes.string
 		}.isRequired
 	),
-	reloadSettings: PropTypes.func.isRequired
+	reloadSettings: PropTypes.func.isRequired,
+	hasWritePermission: PropTypes.bool.isRequired
 };
