@@ -217,6 +217,9 @@ export default function MiniDrawer({
 										<ListItemText primary={label} />
 									</ListItem>
 								))}
+								<ListItem button key="disableAdminAccess" onClick={() => { persistentStorage.setAdminAccess(false).then(setAdminAccess); }} className={classes.nested}>
+									<ListItemText primary="Disable Admin Access" primaryTypographyProps={{ color: 'error' }} />
+								</ListItem>
 							</List>
 						</Collapse>
 					</List>
@@ -230,7 +233,7 @@ export default function MiniDrawer({
 				autoHideDuration={6000}
 				onClose={handleSnackbarClose}
 				severity={AlertSnackbar.Severities.Info}
-				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} for admin access`}
+				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} to enable admin access`}
 			/>
 		</Drawer>
 	);
