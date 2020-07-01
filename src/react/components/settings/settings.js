@@ -1,10 +1,12 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, {
+	useState, useEffect, useMemo, Fragment
+} from 'react';
 import PropTypes from 'prop-types';
 import AppointmentReminderSettings from './appointmentReminderSettings';
 import CustomMessageSettings from './customMessageSettings';
 import MessageReportSettings from './messageReportSettings';
 import TwilioSettings from './twilioSettings';
-import SharedDataSettings from './sharedDataSettings';
+import SharedConfigurationSettings from './sharedConfigurationSettings';
 import persistentStorage from '../../utilities/persistentStorage';
 import MiniDrawer from '../miniDrawer';
 
@@ -13,7 +15,8 @@ export default function Settings({ selectedTabId }) {
 	const [customMessageSettings, setCustomMessageSettings] = useState(null);
 	const [messageReportSettings, setMessageReportSettings] = useState(null);
 	const [twilioSettings, setTwilioSettings] = useState(null);
-	const [sharedDataSettings, setSharedDataSettings] = useState(null);
+	const [sharedConfigurationSettings, setSharedConfigurationSettings] = useState(null);
+	const hasWritePermission = useMemo(() => (sharedConfigurationSettings && sharedConfigurationSettings.behavior !== 1), [sharedConfigurationSettings]);
 
 	const reloadSettings = () => {
 		persistentStorage.getSettings().then(settings => {
@@ -21,8 +24,8 @@ export default function Settings({ selectedTabId }) {
 			setCustomMessageSettings(settings.customMessages);
 			setMessageReportSettings(settings.messageReports);
 			setTwilioSettings(settings.twilio);
-			setSharedDataSettings(settings.shareData);
 		});
+		persistentStorage.getSettings(true).then(settings => { setSharedConfigurationSettings(settings.shareData); });
 	};
 
 	useEffect(() => {
@@ -31,11 +34,40 @@ export default function Settings({ selectedTabId }) {
 
 	return (
 		<Fragment>
-			{selectedTabId === MiniDrawer.TabIds.APPOINTMENT_REMINDERS_SETTINGS && <AppointmentReminderSettings appointmentReminders={appointmentReminderSettings} />}
-			{selectedTabId === MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS && <CustomMessageSettings customMessage={customMessageSettings} />}
-			{selectedTabId === MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS && <MessageReportSettings messageReports={messageReportSettings} />}
-			{selectedTabId === MiniDrawer.TabIds.TWILIO_SETTINGS && <TwilioSettings twilio={twilioSettings} reloadSettings={reloadSettings} />}
-			{selectedTabId === MiniDrawer.TabIds.SHARED_DATA_SETTINGS && <SharedDataSettings sharedData={sharedDataSettings} />}
+			{selectedTabId === MiniDrawer.TabIds.APPOINTMENT_REMINDERS_SETTINGS && (
+				<AppointmentReminderSettings
+					appointmentReminders={appointmentReminderSettings}
+					hasWritePermission={hasWritePermission}
+					reloadSettings={reloadSettings}
+				/>
+			)}
+			{selectedTabId === MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS && (
+				<CustomMessageSettings
+					customMessage={customMessageSettings}
+					hasWritePermission={hasWritePermission}
+					reloadSettings={reloadSettings}
+				/>
+			)}
+			{selectedTabId === MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS && (
+				<MessageReportSettings
+					messageReports={messageReportSettings}
+					hasWritePermission={hasWritePermission}
+					reloadSettings={reloadSettings}
+				/>
+			)}
+			{selectedTabId === MiniDrawer.TabIds.TWILIO_SETTINGS && (
+				<TwilioSettings
+					twilio={twilioSettings}
+					reloadSettings={reloadSettings}
+					hasWritePermission={hasWritePermission}
+				/>
+			)}
+			{selectedTabId === MiniDrawer.TabIds.SHARED_CONFIGURATION_SETTINGS && (
+				<SharedConfigurationSettings
+					sharedConfig={sharedConfigurationSettings}
+					reloadSettings={reloadSettings}
+				/>
+			)}
 		</Fragment>
 	);
 }

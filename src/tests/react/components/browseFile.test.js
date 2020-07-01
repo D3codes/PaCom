@@ -5,7 +5,7 @@ import BrowseFile from '../../../react/components/browseFile';
 
 describe('BrowseFile', () => {
 	it('renders without crashing', () => {
-		const { container } = render(<BrowseFile onBrowseClick={jest.fn()} />);
+		const { container } = render(<BrowseFile onBrowseClick={jest.fn()} onFilePathChange={jest.fn()} />);
 		expect(container.firstChild.className.includes('browseContainer')).toBe(true);
 	});
 });

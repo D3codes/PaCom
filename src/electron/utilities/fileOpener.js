@@ -1,5 +1,5 @@
 const fs = require('fs');
-const pick = require('./filePicker');
+const { pick } = require('./filePicker');
 
 const open = async (filters, filePath) => {
 	if (!filePath) {
