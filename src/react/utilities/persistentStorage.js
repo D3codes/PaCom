@@ -13,9 +13,9 @@ const addMessageTemplate = template => window.ipcRenderer.invoke('add-message-te
 const removeMessageTemplateWithName = templateName => window.ipcRenderer.invoke('remove-message-template', templateName);
 
 // Settings
-const getSettings = () => window.ipcRenderer.invoke('get-settings');
+const getSettings = (forceLocal = false) => window.ipcRenderer.invoke('get-settings', forceLocal);
 
-const setSettings = (path, value) => window.ipcRenderer.invoke('set-settings', path, value);
+const setSettings = (path, value, forceLocal = false) => window.ipcRenderer.invoke('set-settings', path, value, forceLocal);
 
 const setAppointmentRemindersDateVerificationDays = days => setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
 
@@ -51,11 +51,13 @@ const setTwilioSmsEndpoint = endpoint => setSettings('settings.twilio.smsEndpoin
 
 const setTwilioCallEndpoint = endpoint => setSettings('settings.twilio.callEndpoint', endpoint);
 
-const setShareDataBehavior = behavior => setSettings('settings.shareData.behavior', behavior);
+const setShareConfigBehavior = behavior => setSettings('settings.shareData.behavior', behavior, true);
 
-const setShareDataLocation = location => setSettings('settings.shareData.location', location);
+const setShareConfigLocation = location => setSettings('settings.shareData.location', location, true);
 
 const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
+
+const copyLocalToNetwork = () => window.ipcRenderer.invoke('copy-local-to-network');
 
 export default {
 	getProviderMappings,
@@ -79,7 +81,8 @@ export default {
 	setTwilioSmsEndpoint,
 	setTwilioCallEndpoint,
 	setTwilioPhoneNumber,
-	setShareDataBehavior,
-	setShareDataLocation,
-	setAdminAccess
+	setShareConfigBehavior,
+	setShareConfigLocation,
+	setAdminAccess,
+	copyLocalToNetwork
 };

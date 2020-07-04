@@ -74,8 +74,8 @@ export const SUBSETTINGS_TABS = [
 	},
 	{
 		id: 'shrDta',
-		label: 'Shared Data',
-		title: 'Settings | Shared Data'
+		label: 'Shared Configuration',
+		title: 'Settings | Shared Configuration'
 	}
 ];
 
@@ -142,7 +142,7 @@ export default function MiniDrawer({
 
 	useEffect(() => {
 		getVersion().then(setVersion);
-		persistentStorage.getSettings().then(settings => {
+		persistentStorage.getSettings(true).then(settings => {
 			setAdminAccess(settings.adminAccess);
 		});
 	}, []);
@@ -217,6 +217,9 @@ export default function MiniDrawer({
 										<ListItemText primary={label} />
 									</ListItem>
 								))}
+								<ListItem button key="disableAdminAccess" onClick={() => { persistentStorage.setAdminAccess(false).then(setAdminAccess); }} className={classes.nested}>
+									<ListItemText primary="Disable Admin Access" primaryTypographyProps={{ color: 'error' }} />
+								</ListItem>
 							</List>
 						</Collapse>
 					</List>
@@ -230,7 +233,7 @@ export default function MiniDrawer({
 				autoHideDuration={6000}
 				onClose={handleSnackbarClose}
 				severity={AlertSnackbar.Severities.Info}
-				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} for admin access`}
+				message={`Click ${20 - clickCount} more time${20 - clickCount === 1 ? '' : 's'} to enable admin access`}
 			/>
 		</Drawer>
 	);
@@ -256,5 +259,5 @@ MiniDrawer.TabIds = {
 	CUSTOM_MESSAGE_SETTINGS: SUBSETTINGS_TABS[1].id,
 	MESSAGE_REPORT_SETTINGS: SUBSETTINGS_TABS[2].id,
 	TWILIO_SETTINGS: SUBSETTINGS_TABS[3].id,
-	SHARED_DATA_SETTINGS: SUBSETTINGS_TABS[4].id
+	SHARED_CONFIGURATION_SETTINGS: SUBSETTINGS_TABS[4].id
 };

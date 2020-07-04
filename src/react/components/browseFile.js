@@ -4,6 +4,7 @@ import {
 	Button, InputAdornment, makeStyles, TextField
 } from '@material-ui/core';
 import { Folder } from '@material-ui/icons';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
 	browseContainer: {
@@ -14,35 +15,52 @@ const useStyles = makeStyles(theme => ({
 	},
 	button: {
 		marginLeft: theme.spacing(2)
+	},
+	padding: {
+		paddingBottom: 23
 	}
 }));
 
-function BrowseFile({ onBrowseClick, filePath = '' }) {
+function BrowseFile({
+	onBrowseClick, filePath = '', label = '', disabled = false, error = false, helperText = '', onFilePathChange
+}) {
 	const classes = useStyles();
 	return (
-		<div className={classes.browseContainer}>
+		<div className={clsx(classes.browseContainer, { [classes.padding]: !helperText })}>
 			<TextField
-				focused
+				disabled={disabled}
+				error={error}
+				helperText={helperText}
+				focused={!disabled}
 				fullWidth
+				data-testid="browse-field"
+				onChange={event => { onFilePathChange(event.target.value); }}
 				InputProps={{
 					notched: true,
 					startAdornment: (
 						<InputAdornment className={classes.browseIcon} position="start"><Folder /></InputAdornment>
 					)
 				}}
-				label="Import CSV"
+				label={label}
 				size="small"
 				variant="outlined"
 				value={filePath}
 			/>
-			<Button className={classes.button} color="primary" onClick={onBrowseClick} variant="contained">Browse</Button>
+			<span>
+				<Button className={classes.button} color="primary" onClick={onBrowseClick} disabled={disabled} variant={disabled ? 'outlined' : 'contained'}>Browse</Button>
+			</span>
 		</div>
 	);
 }
 
 BrowseFile.propTypes = {
 	onBrowseClick: PropTypes.func.isRequired,
-	filePath: PropTypes.string
+	filePath: PropTypes.string,
+	label: PropTypes.string,
+	disabled: PropTypes.bool,
+	error: PropTypes.bool,
+	helperText: PropTypes.string,
+	onFilePathChange: PropTypes.func.isRequired
 };
 
 export default BrowseFile;

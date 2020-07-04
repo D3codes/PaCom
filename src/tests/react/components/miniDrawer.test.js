@@ -17,7 +17,7 @@ describe('MiniDrawer', () => {
 			customMessages: {},
 			messageReports: {},
 			twilio: {},
-			sharedData: {}
+			sharedConfig: {}
 		}));
 
 		const { queryByText } = render(
@@ -45,7 +45,7 @@ describe('MiniDrawer', () => {
 			customMessages: {},
 			messageReports: {},
 			twilio: {},
-			sharedData: {}
+			sharedConfig: {}
 		}));
 
 		const { queryByText } = render(
