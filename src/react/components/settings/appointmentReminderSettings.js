@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import NotificationMethod from './notificationMethod';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -23,7 +24,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	return (
 		<div className={classes.root}>
 			<div className={classes.notificationMethodContainer}>
-				<Typography>Notification Method</Typography>
+				<NotificationMethod />
 			</div>
 			<Divider />
 			<div className={classes.dateVerificationContainer}>
