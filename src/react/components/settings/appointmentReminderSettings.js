@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Divider } from '@material-ui/core';
+import { Typography, Divider, Select, FormControl, MenuItem, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import NotificationMethod from './notificationMethod';
 
@@ -24,11 +24,39 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	return (
 		<div className={classes.root}>
 			<div className={classes.notificationMethodContainer}>
-				<NotificationMethod />
+				<NotificationMethod notificationMethod={appointmentReminders.notificationMethod} reloadSettings={reloadSettings}/>
 			</div>
 			<Divider />
 			<div className={classes.dateVerificationContainer}>
-				<Typography>Date Verification</Typography>
+				<Typography variant="h5">Date Verification</Typography>
+				<Typography>Reminders should be sent</Typography>
+				<FormControl>
+					<Select
+					value={!endOfRange}
+					onChange={event => {setEndOfRange(5);}}
+					inputProps={{ 'aria-label': 'Without label' }}
+					>
+					<MenuItem value={true}>Exactly</MenuItem>
+					<MenuItem value={false}>Between</MenuItem>
+					</Select>
+				</FormControl>
+				<TextField type="number" value={numberOfDays} onChange={event => {}}/>
+				{ endOfRange && <>
+					<Typography display="inline"> - </Typography>
+					<TextField type="number" value={endOfRange} onChange={event => {}}/>
+				</>
+				}
+				<FormControl>
+					<Select
+					value={!useBusinessDays}
+					onChange={event => {}}
+					inputProps={{ 'aria-label': 'Without label' }}
+					>
+					<MenuItem value={true}>days</MenuItem>
+					<MenuItem value={false}>business days</MenuItem>
+					</Select>
+				</FormControl>
+				<Typography>before appointment.</Typography>
 			</div>
 		</div>
 	);

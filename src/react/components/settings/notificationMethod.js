@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react';
 import {
 	PermPhoneMsg, AddComment
 } from '@material-ui/icons';
+import PropTypes from 'prop-types';
 import { Typography, Button, Divider, Checkbox, FormControlLabel} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -11,11 +12,6 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		height: '100%'
 	},
-	content: {
-		flex: 1,
-		display: 'flex',
-		flexDirection: 'column'
-	},
 	buttonContent: {
 		display: 'flex',
 		flexDirection: 'column'
@@ -23,10 +19,6 @@ const useStyles = makeStyles(theme => ({
 	button: {
 		marginTop: theme.spacing(),
 		marginBottom: theme.spacing()
-	},
-	actionButtonContainer: {
-		display: 'flex',
-		justifyContent: 'space-between'
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
@@ -49,13 +41,14 @@ const BEHAVIOR = {
 	preferredAndSms: 1
 };
 
-export default function NotificationMethod({ sharedConfig, reloadSettings }) {
+export default function NotificationMethod({ notificationMethod, reloadSettings }) {
     const classes = useStyles();
-    const [selectedOption, setSelectedOption] = useState(BEHAVIOR.preferredOnly);
+	const [selectedOption, setSelectedOption] = useState(notificationMethod.sendToPreferredAndSms ? BEHAVIOR.preferredAndSms : BEHAVIOR.preferredOnly);
+	const [textHome, setTextHome] = useState(notificationMethod.textHomeIfCellNotAvailable);
     
     return (
 		<div className={classes.root}>
-			<Typography>Notification Method Component</Typography>
+			<Typography variant="h5">Notification Method</Typography>
             <Button
 					onClick={() => { setSelectedOption(BEHAVIOR.preferredOnly); }}
 					className={classes.button}
@@ -93,8 +86,8 @@ export default function NotificationMethod({ sharedConfig, reloadSettings }) {
             <FormControlLabel
                 control={
                     <Checkbox
-                        checked={false}
-                        name="checkedB"
+						onChange={event => {setTextHome(event.target.checked)}}
+                        checked={textHome}
                         color="primary"
                     />
                 }
@@ -105,4 +98,11 @@ export default function NotificationMethod({ sharedConfig, reloadSettings }) {
 }
 
 NotificationMethod.propTypes = {
+	notificationMethod: PropTypes.shape(
+		{
+			sendToPreferredAndSms: PropTypes.bool,
+			textHomeIfCellNotAvailable: PropTypes.bool
+		}.isRequired
+	),
+	reloadSettings: PropTypes.func.isRequired
 };
