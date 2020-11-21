@@ -5,7 +5,7 @@
             "dateVerification": {
                 "numberOfDays": 3,
                 "endOfRange": null,
-                "allowSendOutsideRange": 1,
+                "allowSendOutsideRange": 0,
                 "useBusinessDays": true
             },
             "notificationMethod": {
