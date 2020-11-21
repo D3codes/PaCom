@@ -37,7 +37,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	actionButtonContainer: {
 		display: 'flex',
-		justifyContent: 'space-between'
+		alignSelf: 'flex-end'
+	},
+	dateVerificationContainer: {
+		flex: 1
 	}
 }));
 
