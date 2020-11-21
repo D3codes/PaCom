@@ -36,53 +36,24 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const BEHAVIOR = {
-	preferredOnly: 0,
-	preferredAndSms: 1
-};
-
 export default function NotificationMethod({ notificationMethod, reloadSettings }) {
     const classes = useStyles();
-	const [selectedOption, setSelectedOption] = useState(notificationMethod.sendToPreferredAndSms ? BEHAVIOR.preferredAndSms : BEHAVIOR.preferredOnly);
+	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(notificationMethod.sendToPreferredAndSms);
 	const [textHome, setTextHome] = useState(notificationMethod.textHomeIfCellNotAvailable);
     
     return (
 		<div className={classes.root}>
 			<Typography variant="h4" color="primary">Notification Method</Typography>
-            <Button
-					onClick={() => { setSelectedOption(BEHAVIOR.preferredOnly); }}
-					className={classes.button}
-					color="primary"
-					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.preferredOnly ? '' : classes.invisibleOutline }}
-					variant="outlined"
-					startIcon={(
-						<Fragment>
-							<PermPhoneMsg style={{ fontSize: '3rem', textAlign: 'left' }} />
-							<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						</Fragment>
-					)}>
-					<div className={classes.buttonContent}>
-						<Typography variant="h5">Preferred Contact Method Only</Typography>
-						<Typography>Send messages to patient's preferred contact method only.</Typography>
-					</div>
-			</Button>
-            <Button
-					onClick={() => { setSelectedOption(BEHAVIOR.preferredAndSms); }}
-					className={classes.button}
-					color="primary"
-					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.preferredAndSms ? '' : classes.invisibleOutline }}
-					variant="outlined"
-					startIcon={(
-						<Fragment>
-							<AddComment style={{ fontSize: '3rem', textAlign: 'left' }} />
-							<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						</Fragment>
-					)}>
-					<div className={classes.buttonContent}>
-						<Typography variant="h5">Preferred Contact Method And SMS</Typography>
-						<Typography>Send messages to patient's preferred contact method and as SMS.</Typography>
-					</div>
-			</Button>
+			<FormControlLabel
+                control={
+                    <Checkbox
+						onChange={event => {setSendToPreferredAndSms(event.target.checked)}}
+                        checked={sendToPreferredAndSms}
+                        color="primary"
+                    />
+                }
+                label="Send messages via SMS as well as patient's preferred contact method."
+            />
             <FormControlLabel
                 control={
                     <Checkbox

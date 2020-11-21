@@ -71,6 +71,50 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 			<div className={classes.dateVerificationContainer}>
 				<Typography color="primary" variant="h4">Date Verification</Typography>
 				<div>
+					<Typography color="primary" variant="h5" display="inline">Reminders should be sent  </Typography>
+					<FormControl>
+						<Select
+						value={!endOfRange}
+						onChange={event => {setEndOfRange(endOfRange ? undefined : numberOfDays+1);}}
+						inputProps={{ 'aria-label': 'Without label' }}
+						>
+						<MenuItem value={true}>Exactly</MenuItem>
+						<MenuItem value={false}>Between</MenuItem>
+						</Select>
+					</FormControl>
+					<Typography variant="h5" display="inline">  </Typography>
+					<TextField
+						type="number" 
+						value={numberOfDays}
+						style={{width: 30}}
+						onChange={event => {setNumberOfDays(parseInt(event.target.value))}}
+						InputProps={{ inputProps: { min: 0 } }}
+					/>
+					{ endOfRange && <>
+						<Typography color="primary" variant="h5" display="inline" style={{bottom: 0}}>  to  </Typography>
+						<TextField
+							type="number"
+							value={endOfRange}
+							style={{width: 30}}
+							onChange={event => {setEndOfRange(parseInt(event.target.value))}}
+							InputProps={{ inputProps: { min: numberOfDays+1 } }}
+						/>
+					</>
+					}
+					<Typography variant="h5" display="inline">  </Typography>
+					<FormControl>
+						<Select
+						value={!useBusinessDays}
+						onChange={event => {}}
+						inputProps={{ 'aria-label': 'Without label' }}
+						>
+						<MenuItem value={true}>day(s)</MenuItem>
+						<MenuItem value={false}>business day(s)</MenuItem>
+						</Select>
+					</FormControl>
+					<Typography color="primary" variant="h5" display="inline">  before appointment.</Typography>
+				</div>
+				<div>
 					<Button
 						onClick={() => { setSelectedOption(0); }}
 						className={classes.button}
@@ -125,50 +169,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 							<Typography >Do not allow reminders to be sent outside of specified time.</Typography>
 						</div>
 					</Button>
-				</div>
-				<div>
-					<Typography color="primary" variant="h5" display="inline">Reminders should be sent  </Typography>
-					<FormControl>
-						<Select
-						value={!endOfRange}
-						onChange={event => {setEndOfRange(endOfRange ? undefined : numberOfDays+1);}}
-						inputProps={{ 'aria-label': 'Without label' }}
-						>
-						<MenuItem value={true}>Exactly</MenuItem>
-						<MenuItem value={false}>Between</MenuItem>
-						</Select>
-					</FormControl>
-					<Typography variant="h5" display="inline">  </Typography>
-					<TextField
-						type="number" 
-						value={numberOfDays}
-						style={{width: 30}}
-						onChange={event => {setNumberOfDays(parseInt(event.target.value))}}
-						InputProps={{ inputProps: { min: 0 } }}
-					/>
-					{ endOfRange && <>
-						<Typography color="primary" variant="h5" display="inline" style={{bottom: 0}}>  to  </Typography>
-						<TextField
-							type="number"
-							value={endOfRange}
-							style={{width: 30}}
-							onChange={event => {setEndOfRange(parseInt(event.target.value))}}
-							InputProps={{ inputProps: { min: numberOfDays+1 } }}
-						/>
-					</>
-					}
-					<Typography variant="h5" display="inline">  </Typography>
-					<FormControl>
-						<Select
-						value={!useBusinessDays}
-						onChange={event => {}}
-						inputProps={{ 'aria-label': 'Without label' }}
-						>
-						<MenuItem value={true}>day(s)</MenuItem>
-						<MenuItem value={false}>business day(s)</MenuItem>
-						</Select>
-					</FormControl>
-					<Typography color="primary" variant="h5" display="inline">  before appointment.</Typography>
 				</div>
 			</div>
 			<div className={classes.actionButtonContainer}>
