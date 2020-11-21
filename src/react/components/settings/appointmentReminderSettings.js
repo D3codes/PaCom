@@ -1,7 +1,7 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Warning, Block, Save
+	Warning, Block, Save, AlarmOff
 } from '@material-ui/icons';
 import { Typography, Divider, Select, FormControl, MenuItem, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -71,7 +71,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 			<div className={classes.dateVerificationContainer}>
 				<div>
 					<Typography color="primary" variant="h4">Date Verification</Typography>
-					<Typography variant="h5">Reminders should be sent</Typography>
+					<Typography variant="h5" display="inline">Reminders should be sent  </Typography>
 					<FormControl>
 						<Select
 						value={!endOfRange}
@@ -82,7 +82,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						<MenuItem value={false}>Between</MenuItem>
 						</Select>
 					</FormControl>
-					<Typography display="inline"> </Typography>
 					<TextField
 						type="number"
 						value={numberOfDays}
@@ -101,7 +100,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						/>
 					</>
 					}
-					<Typography display="inline"> </Typography>
 					<FormControl>
 						<Select
 						value={!useBusinessDays}
@@ -112,15 +110,33 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						<MenuItem value={false}>business day(s)</MenuItem>
 						</Select>
 					</FormControl>
-					<Typography variant="h5">before appointment.</Typography>
+					<Typography variant="h5" display="inline">  before appointment.</Typography>
 				</div>
 				<div>
-					<Button
-						onClick={() => { setSelectedOption(true); }}
+				<Button
+						onClick={() => { setSelectedOption(0); }}
 						className={classes.button}
 						color="primary"
 						style={{width:'100%'}}
-						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption ? '' : classes.invisibleOutline }}
+						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === 0 ? '' : classes.invisibleOutline }}
+						variant="outlined"
+						startIcon={(
+							<Fragment>
+								<AlarmOff style={{ fontSize: '3rem', textAlign: 'left' }} />
+								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+							</Fragment>
+						)}>
+						<div className={classes.buttonContent}>
+							<Typography variant="h5">Off</Typography>
+							<Typography>Do not verify the date before sending reminders.</Typography>
+						</div>
+					</Button>
+					<Button
+						onClick={() => { setSelectedOption(1); }}
+						className={classes.button}
+						color="primary"
+						style={{width:'100%'}}
+						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === 1? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
 							<Fragment>
@@ -134,11 +150,11 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						</div>
 					</Button>
 					<Button
-						onClick={() => { setSelectedOption(false); }}
+						onClick={() => { setSelectedOption(2); }}
 						className={classes.button}
 						color="primary"
 						style={{width:'100%'}}
-						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption ? classes.invisibleOutline : '' }}
+						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === 2 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
 							<Fragment>
@@ -173,7 +189,7 @@ AppointmentRemindersSettings.propTypes = {
 			dateVerification: {
 				numberOfDays: PropTypes.number,
 				endOfRange: PropTypes.number,
-				allowSendOutsideRange: PropTypes.bool,
+				allowSendOutsideRange: PropTypes.number,
 				useBusinessDays: PropTypes.bool
 			},
 			notificationMethod: {
