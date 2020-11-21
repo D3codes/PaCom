@@ -62,7 +62,7 @@ export default function NotificationMethod({ notificationMethod, reloadSettings 
                         color="primary"
                     />
                 }
-                label="Send SMS to phone number if cell is not available"
+                label="Send SMS to home phone number if cell is not available"
             />
 		</div>
 	);

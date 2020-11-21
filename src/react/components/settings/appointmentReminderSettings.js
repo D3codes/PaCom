@@ -41,6 +41,14 @@ const useStyles = makeStyles(theme => ({
 	},
 	dateVerificationContainer: {
 		flex: 1
+	},
+	divider: {
+		marginTop: theme.spacing(),
+		marginBottom: theme.spacing()
+	},
+	dateVerificationOptions: {
+		marginTop: theme.spacing(),
+		marginBottom: theme.spacing()
 	}
 }));
 
@@ -67,10 +75,10 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 			<div className={classes.notificationMethodContainer}>
 				<NotificationMethod notificationMethod={appointmentReminders.notificationMethod} reloadSettings={reloadSettings}/>
 			</div>
-			<Divider />
+			<Divider className={classes.divider}/>
 			<div className={classes.dateVerificationContainer}>
 				<Typography color="primary" variant="h4">Date Verification</Typography>
-				<div>
+				<div className={classes.dateVerificationOptions}>
 					<Typography color="primary" variant="h5" display="inline">Reminders should be sent  </Typography>
 					<FormControl>
 						<Select
