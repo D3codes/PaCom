@@ -1,7 +1,7 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Warning, Block
+	Warning, Block, Save
 } from '@material-ui/icons';
 import { Typography, Divider, Select, FormControl, MenuItem, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,6 +34,10 @@ const useStyles = makeStyles(theme => ({
 		'&:hover': {
 			borderColor: 'rgba(0,0,0,0)'
 		}
+	},
+	actionButtonContainer: {
+		display: 'flex',
+		justifyContent: 'space-between'
 	}
 }));
 
@@ -47,6 +51,13 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.notificationMethod.textHomeIfCellNotAvailable);
 
 	const [selectedOption, setSelectedOption] = useState(allowSendOutsideRange);
+	const changesToSave = useMemo(() => (
+		selectedOption !== appointmentReminders.allowSendOutsideRange
+	), [selectedOption, appointmentReminders]);
+	
+	const handleSave = () => {
+		
+	}
 
 	return (
 		<div className={classes.root}>
@@ -56,12 +67,12 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 			<Divider />
 			<div className={classes.dateVerificationContainer}>
 				<div>
-					<Typography variant="h5">Date Verification</Typography>
+					<Typography color="primary" variant="h4">Date Verification</Typography>
 					<Typography variant="h5">Reminders should be sent</Typography>
 					<FormControl>
 						<Select
 						value={!endOfRange}
-						onChange={event => {setEndOfRange(endOfRange ? undefined : 5);}}
+						onChange={event => {setEndOfRange(endOfRange ? undefined : numberOfDays+1);}}
 						inputProps={{ 'aria-label': 'Without label' }}
 						>
 						<MenuItem value={true}>Exactly</MenuItem>
@@ -105,6 +116,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						onClick={() => { setSelectedOption(true); }}
 						className={classes.button}
 						color="primary"
+						style={{width:'100%'}}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
@@ -122,6 +134,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						onClick={() => { setSelectedOption(false); }}
 						className={classes.button}
 						color="primary"
+						style={{width:'100%'}}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption ? classes.invisibleOutline : '' }}
 						variant="outlined"
 						startIcon={(
@@ -132,10 +145,20 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						)}>
 						<div className={classes.buttonContent}>
 							<Typography variant="h5">Block</Typography>
-							<Typography>Do not allow reminders to be sent outside of specified time.</Typography>
+							<Typography >Do not allow reminders to be sent outside of specified time.</Typography>
 						</div>
 					</Button>
 				</div>
+			</div>
+			<div className={classes.actionButtonContainer}>
+				<Button
+					disabled={!changesToSave}
+					endIcon={<Save />}
+					color="primary"
+					variant={changesToSave ? 'contained' : 'outlined'}
+					onClick={handleSave}>
+						Save
+				</Button>
 			</div>
 		</div>
 	);

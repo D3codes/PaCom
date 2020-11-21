@@ -48,7 +48,7 @@ export default function NotificationMethod({ notificationMethod, reloadSettings 
     
     return (
 		<div className={classes.root}>
-			<Typography variant="h5">Notification Method</Typography>
+			<Typography variant="h4" color="primary">Notification Method</Typography>
             <Button
 					onClick={() => { setSelectedOption(BEHAVIOR.preferredOnly); }}
 					className={classes.button}
