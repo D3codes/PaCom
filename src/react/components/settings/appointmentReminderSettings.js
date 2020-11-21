@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Divider, Select, FormControl, MenuItem, TextField } from '@material-ui/core';
+import {
+	Warning, Block
+} from '@material-ui/icons';
+import { Typography, Divider, Select, FormControl, MenuItem, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import NotificationMethod from './notificationMethod';
 
@@ -9,6 +12,28 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100%'
+	},
+	buttonContent: {
+		display: 'flex',
+		flexDirection: 'column'
+	},
+	button: {
+		marginTop: theme.spacing(),
+		marginBottom: theme.spacing()
+	},
+	adornmentDivider: {
+		margin: theme.spacing()
+	},
+	buttonRoot: {
+		textTransform: 'none',
+		justifyContent: 'flex-start',
+		textAlign: 'left'
+	},
+	invisibleOutline: {
+		borderColor: 'rgba(0,0,0,0)',
+		'&:hover': {
+			borderColor: 'rgba(0,0,0,0)'
+		}
 	}
 }));
 
@@ -21,6 +46,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(appointmentReminders.notificationMethod.sendToPreferredAndSms);
 	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.notificationMethod.textHomeIfCellNotAvailable);
 
+	const [selectedOption, setSelectedOption] = useState(allowSendOutsideRange);
+
 	return (
 		<div className={classes.root}>
 			<div className={classes.notificationMethodContainer}>
@@ -28,49 +55,87 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 			</div>
 			<Divider />
 			<div className={classes.dateVerificationContainer}>
-				<Typography variant="h5">Date Verification</Typography>
-				<Typography variant="h5">Reminders should be sent</Typography>
-				<FormControl>
-					<Select
-					value={!endOfRange}
-					onChange={event => {setEndOfRange(endOfRange ? undefined : 5);}}
-					inputProps={{ 'aria-label': 'Without label' }}
-					>
-					<MenuItem value={true}>Exactly</MenuItem>
-					<MenuItem value={false}>Between</MenuItem>
-					</Select>
-				</FormControl>
-				<Typography display="inline"> </Typography>
-				<TextField
-					type="number"
-					value={numberOfDays}
-					style={{width: 35}}
-					onChange={event => {setNumberOfDays(parseInt(event.target.value))}}
-					InputProps={{ inputProps: { min: 0 } }}
-				/>
-				{ endOfRange && <>
-					<Typography variant="h5" display="inline" style={{bottom: 0}}> to </Typography>
+				<div>
+					<Typography variant="h5">Date Verification</Typography>
+					<Typography variant="h5">Reminders should be sent</Typography>
+					<FormControl>
+						<Select
+						value={!endOfRange}
+						onChange={event => {setEndOfRange(endOfRange ? undefined : 5);}}
+						inputProps={{ 'aria-label': 'Without label' }}
+						>
+						<MenuItem value={true}>Exactly</MenuItem>
+						<MenuItem value={false}>Between</MenuItem>
+						</Select>
+					</FormControl>
+					<Typography display="inline"> </Typography>
 					<TextField
 						type="number"
-						value={endOfRange}
+						value={numberOfDays}
 						style={{width: 35}}
-						onChange={event => {setEndOfRange(parseInt(event.target.value))}}
-						InputProps={{ inputProps: { min: numberOfDays+1 } }}
+						onChange={event => {setNumberOfDays(parseInt(event.target.value))}}
+						InputProps={{ inputProps: { min: 0 } }}
 					/>
-				</>
-				}
-				<Typography display="inline"> </Typography>
-				<FormControl>
-					<Select
-					value={!useBusinessDays}
-					onChange={event => {}}
-					inputProps={{ 'aria-label': 'Without label' }}
-					>
-					<MenuItem value={true}>day(s)</MenuItem>
-					<MenuItem value={false}>business day(s)</MenuItem>
-					</Select>
-				</FormControl>
-				<Typography variant="h5">before appointment.</Typography>
+					{ endOfRange && <>
+						<Typography variant="h5" display="inline" style={{bottom: 0}}> to </Typography>
+						<TextField
+							type="number"
+							value={endOfRange}
+							style={{width: 35}}
+							onChange={event => {setEndOfRange(parseInt(event.target.value))}}
+							InputProps={{ inputProps: { min: numberOfDays+1 } }}
+						/>
+					</>
+					}
+					<Typography display="inline"> </Typography>
+					<FormControl>
+						<Select
+						value={!useBusinessDays}
+						onChange={event => {}}
+						inputProps={{ 'aria-label': 'Without label' }}
+						>
+						<MenuItem value={true}>day(s)</MenuItem>
+						<MenuItem value={false}>business day(s)</MenuItem>
+						</Select>
+					</FormControl>
+					<Typography variant="h5">before appointment.</Typography>
+				</div>
+				<div>
+					<Button
+						onClick={() => { setSelectedOption(true); }}
+						className={classes.button}
+						color="primary"
+						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption ? '' : classes.invisibleOutline }}
+						variant="outlined"
+						startIcon={(
+							<Fragment>
+								<Warning style={{ fontSize: '3rem', textAlign: 'left' }} />
+								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+							</Fragment>
+						)}>
+						<div className={classes.buttonContent}>
+							<Typography variant="h5">Warning</Typography>
+							<Typography>Show warning if reminders are sent outside of specified time.</Typography>
+						</div>
+					</Button>
+					<Button
+						onClick={() => { setSelectedOption(false); }}
+						className={classes.button}
+						color="primary"
+						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption ? classes.invisibleOutline : '' }}
+						variant="outlined"
+						startIcon={(
+							<Fragment>
+								<Block style={{ fontSize: '3rem', textAlign: 'left' }} />
+								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+							</Fragment>
+						)}>
+						<div className={classes.buttonContent}>
+							<Typography variant="h5">Block</Typography>
+							<Typography>Do not allow reminders to be sent outside of specified time.</Typography>
+						</div>
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
