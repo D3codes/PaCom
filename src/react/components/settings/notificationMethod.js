@@ -44,17 +44,19 @@ export default function NotificationMethod({
 			<FormControlLabel
 				control={(
 					<Checkbox
+						data-testid="preferredAndSms-id"
 						disabled={!hasWritePermission}
 						onChange={event => { setSendToPreferredAndSms(event.target.checked); }}
 						checked={sendToPreferredAndSms}
 						color="primary"
 					/>
 				)}
-				label="Send messages via SMS as well as patient's preferred contact method."
+				label="Send messages via SMS as well as patient's preferred contact method"
 			/>
 			<FormControlLabel
 				control={(
 					<Checkbox
+						data-testid="textHome-id"
 						disabled={!hasWritePermission}
 						onChange={event => { setTextHomeIfCellNotAvailable(event.target.checked); }}
 						checked={textHomeIfCellNotAvailable}
