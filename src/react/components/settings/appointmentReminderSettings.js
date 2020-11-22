@@ -143,30 +143,27 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 				</div>
 				<div>
 					<CustomButton
-						onClick={() => {setAllowSendOutsideRange(0);}}
+						onClick={() => { setAllowSendOutsideRange(0); }}
 						disabled={!hasWritePermission}
 						selected={allowSendOutsideRange === 0}
-						title={"OFF"}
-						description={"Do not verify the date before sending reminders."}
-					>
+						title="OFF"
+						description="Do not verify the date before sending reminders.">
 						<EventBusy style={{ fontSize: '3rem', textAlign: 'left' }} />
 					</CustomButton>
 					<CustomButton
-						onClick={() => {setAllowSendOutsideRange(1);}}
+						onClick={() => { setAllowSendOutsideRange(1); }}
 						disabled={!hasWritePermission}
 						selected={allowSendOutsideRange === 1}
-						title={"WARNING"}
-						description={"Show warning if reminders are sent outside of specified time."}
-					>
+						title="WARNING"
+						description="Show warning if reminders are sent outside of specified time.">
 						<Warning style={{ fontSize: '3rem', textAlign: 'left' }} />
 					</CustomButton>
 					<CustomButton
-						onClick={() => {setAllowSendOutsideRange(2);}}
+						onClick={() => { setAllowSendOutsideRange(2); }}
 						disabled={!hasWritePermission}
 						selected={allowSendOutsideRange === 2}
-						title={"BLOCK"}
-						description={"Do not allow reminders to be sent outside of specified time."}
-					>
+						title="BLOCK"
+						description="Do not allow reminders to be sent outside of specified time.">
 						<Block style={{ fontSize: '3rem', textAlign: 'left' }} />
 					</CustomButton>
 				</div>

@@ -1,8 +1,6 @@
-import React, { useState, useMemo, Fragment } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import {
-	Button, Typography, Divider
-} from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import {
 	Save, DesktopWindows, Storage, FileCopy
 } from '@material-ui/icons';
@@ -107,28 +105,25 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 			/>
 			<div className={classes.content}>
 				<CustomButton
-						onClick={() => {setSelectedOption(BEHAVIOR.local);}}
-						selected={selectedOption === BEHAVIOR.local}
-						title={"LOCAL"}
-						description={"Read and Write all message templates, provider mappings, and settings locally."}
-					>
-						<DesktopWindows style={{ fontSize: '3rem', textAlign: 'left' }} />
+					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
+					selected={selectedOption === BEHAVIOR.local}
+					title="LOCAL"
+					description="Read and Write all message templates, provider mappings, and settings locally.">
+					<DesktopWindows style={{ fontSize: '3rem', textAlign: 'left' }} />
 				</CustomButton>
 				<CustomButton
-						onClick={() => {setSelectedOption(BEHAVIOR.networkReadOnly);}}
-						selected={selectedOption === BEHAVIOR.networkReadOnly}
-						title={"NETWORK - READ ONLY"}
-						description={"Read all message templates, provider mappings, and settings from a network location."}
-					>
-						<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
+					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
+					selected={selectedOption === BEHAVIOR.networkReadOnly}
+					title="NETWORK - READ ONLY"
+					description="Read all message templates, provider mappings, and settings from a network location.">
+					<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
 				</CustomButton>
 				<CustomButton
-						onClick={() => {setSelectedOption(BEHAVIOR.networkReadAndWrite);}}
-						selected={selectedOption === BEHAVIOR.networkReadAndWrite}
-						title={"NETWORK - READ AND WRITE"}
-						description={"Read and Write all message templates, provider mappings, and settings from a network location."}
-					>
-						<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
+					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
+					selected={selectedOption === BEHAVIOR.networkReadAndWrite}
+					title="NETWORK - READ AND WRITE"
+					description="Read and Write all message templates, provider mappings, and settings from a network location.">
+					<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
 				</CustomButton>
 			</div>
 			<div className={classes.actionButtonContainer}>

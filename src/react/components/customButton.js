@@ -29,7 +29,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function CustomButton({onClick, disabled, selected, title, description, children}) {
+function CustomButton({
+	onClick, disabled, selected, title, description, children
+}) {
 	const classes = useStyles();
 
 	return (
@@ -60,7 +62,8 @@ CustomButton.propTypes = {
 	disabled: PropTypes.bool,
 	selected: PropTypes.bool.isRequired,
 	title: PropTypes.string,
-	description: PropTypes.string
+	description: PropTypes.string,
+	children: PropTypes.element
 };
 
 export default CustomButton;
