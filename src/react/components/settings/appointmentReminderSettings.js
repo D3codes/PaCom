@@ -5,6 +5,7 @@ import {
 } from '@material-ui/icons';
 import { Typography, Divider, Select, FormControl, MenuItem, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import persistentStorage from '../../utilities/persistentStorage';
 import NotificationMethod from './notificationMethod';
 
 const useStyles = makeStyles(theme => ({
@@ -69,7 +70,13 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	), [allowSendOutsideRange, numberOfDays, endOfRange, useBusinessDays, appointmentReminders]);
 	
 	const handleSave = () => {
-		
+		if(allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange) persistentStorage.setAllowSendOutsideRange(allowSendOutsideRange);
+		if(numberOfDays !== appointmentReminders.dateVerification.numberOfDays) persistentStorage.setNumberOfDays(numberOfDays);
+		if(endOfRange !== appointmentReminders.dateVerification.endOfRange) persistentStorage.setEndOfRange(endOfRange);
+		if(useBusinessDays !== appointmentReminders.dateVerification.useBusinessDays) persistentStorage.setUseBusinessDays(useBusinessDays);
+		if(sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms) persistentStorage.setSendToPreferredAndSmsForReminders(sendToPreferredAndSms);
+		if(textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable) persistentStorage.setTextHomeIfCellNotAvailableForReminders(textHomeIfCellNotAvailable);
+		reloadSettings();
 	}
 
 	return (
