@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function DescriptiveIconButton({
-	onClick, disabled = false, selected, title = '', description, Icon
+	onClick, disabled = false, selected, title = '', description = '', Icon
 }) {
 	const classes = useStyles();
 
@@ -63,7 +63,7 @@ DescriptiveIconButton.propTypes = {
 	selected: PropTypes.bool.isRequired,
 	title: PropTypes.string,
 	description: PropTypes.string,
-	Icon: PropTypes.node
+	Icon: PropTypes.node.isRequired
 };
 
 export default DescriptiveIconButton;
