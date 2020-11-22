@@ -1,7 +1,7 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Warning, Block, Save, AlarmOff
+	Warning, Block, Save, EventBusy
 } from '@material-ui/icons';
 import { Typography, Divider, Select, FormControl, MenuItem, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		alignSelf: 'flex-end'
 	},
-	dateVerificationContainer: {
+	notificationMethodContainer: {
 		flex: 1
 	},
 	divider: {
@@ -72,10 +72,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 
 	return (
 		<div className={classes.root}>
-			<div className={classes.notificationMethodContainer}>
-				<NotificationMethod notificationMethod={appointmentReminders.notificationMethod} reloadSettings={reloadSettings}/>
-			</div>
-			<Divider className={classes.divider}/>
 			<div className={classes.dateVerificationContainer}>
 				<Typography color="primary" variant="h4">Date Verification</Typography>
 				<div className={classes.dateVerificationOptions}>
@@ -132,7 +128,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						variant="outlined"
 						startIcon={(
 							<Fragment>
-								<AlarmOff style={{ fontSize: '3rem', textAlign: 'left' }} />
+								<EventBusy style={{ fontSize: '3rem', textAlign: 'left' }} />
 								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 							</Fragment>
 						)}>
@@ -178,6 +174,10 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						</div>
 					</Button>
 				</div>
+			</div>
+			<Divider className={classes.divider}/>
+			<div className={classes.notificationMethodContainer}>
+				<NotificationMethod notificationMethod={appointmentReminders.notificationMethod} reloadSettings={reloadSettings}/>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
