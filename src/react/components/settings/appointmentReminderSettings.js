@@ -61,10 +61,12 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(appointmentReminders.notificationMethod.sendToPreferredAndSms);
 	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.notificationMethod.textHomeIfCellNotAvailable);
 
-	const [selectedOption, setSelectedOption] = useState(allowSendOutsideRange);
 	const changesToSave = useMemo(() => (
-		selectedOption !== appointmentReminders.allowSendOutsideRange
-	), [selectedOption, appointmentReminders]);
+		allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange
+		|| numberOfDays !== appointmentReminders.dateVerification.numberOfDays
+		|| endOfRange !== appointmentReminders.dateVerification.endOfRange
+		|| useBusinessDays !== appointmentReminders.dateVerification.useBusinessDays
+	), [allowSendOutsideRange, numberOfDays, endOfRange, useBusinessDays, appointmentReminders]);
 	
 	const handleSave = () => {
 		
@@ -109,22 +111,22 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<FormControl>
 						<Select
 						value={!useBusinessDays}
-						onChange={event => {}}
+						onChange={event => {setUseBusinessDays(event.target.value)}}
 						inputProps={{ 'aria-label': 'Without label' }}
 						>
-						<MenuItem value={true}>day(s)</MenuItem>
-						<MenuItem value={false}>business day(s)</MenuItem>
+						<MenuItem value={false}>day(s)</MenuItem>
+						<MenuItem value={true}>business day(s)</MenuItem>
 						</Select>
 					</FormControl>
 					<Typography color="primary" variant="h5" display="inline">  before appointment.</Typography>
 				</div>
 				<div>
 					<Button
-						onClick={() => { setSelectedOption(0); }}
+						onClick={() => { setAllowSendOutsideRange(0); }}
 						className={classes.button}
 						color="primary"
 						style={{width:'100%'}}
-						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === 0 ? '' : classes.invisibleOutline }}
+						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 0 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
 							<Fragment>
@@ -138,11 +140,11 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						</div>
 					</Button>
 					<Button
-						onClick={() => { setSelectedOption(1); }}
+						onClick={() => { setAllowSendOutsideRange(1); }}
 						className={classes.button}
 						color="primary"
 						style={{width:'100%'}}
-						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === 1? '' : classes.invisibleOutline }}
+						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 1? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
 							<Fragment>
@@ -156,11 +158,11 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						</div>
 					</Button>
 					<Button
-						onClick={() => { setSelectedOption(2); }}
+						onClick={() => { setAllowSendOutsideRange(2); }}
 						className={classes.button}
 						color="primary"
 						style={{width:'100%'}}
-						classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === 2 ? '' : classes.invisibleOutline }}
+						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 2 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
 							<Fragment>
