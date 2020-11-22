@@ -86,23 +86,23 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					selected={selectedOption === BEHAVIOR.local}
 					title="LOCAL"
-					description="Read and Write all message templates, provider mappings, and settings locally.">
-					<DesktopWindows style={{ fontSize: '3rem', textAlign: 'left' }} />
-				</DescriptiveIconButton>
+					description="Read and Write all message templates, provider mappings, and settings locally."
+					Icon={DesktopWindows}
+				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
 					selected={selectedOption === BEHAVIOR.networkReadOnly}
 					title="NETWORK - READ ONLY"
-					description="Read all message templates, provider mappings, and settings from a network location.">
-					<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
-				</DescriptiveIconButton>
+					description="Read all message templates, provider mappings, and settings from a network location."
+					Icon={Storage}
+				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
 					selected={selectedOption === BEHAVIOR.networkReadAndWrite}
 					title="NETWORK - READ AND WRITE"
-					description="Read and Write all message templates, provider mappings, and settings from a network location.">
-					<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
-				</DescriptiveIconButton>
+					description="Read and Write all message templates, provider mappings, and settings from a network location."
+					Icon={Storage}
+				/>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button

@@ -30,13 +30,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function DescriptiveIconButton({
-	onClick, disabled, selected, title, description, children
+	onClick, disabled = false, selected, title = '', description, Icon
 }) {
 	const classes = useStyles();
 
 	return (
 		<Button
-			onClick={() => { onClick(); }}
+			onClick={onClick}
 			className={classes.button}
 			disabled={disabled}
 			color="primary"
@@ -44,7 +44,7 @@ function DescriptiveIconButton({
 			variant="outlined"
 			startIcon={(
 				<Fragment>
-					{children}
+					<Icon style={{ fontSize: '3rem', textAlign: 'left' }} />
 					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 				</Fragment>
 			)}>
@@ -63,7 +63,7 @@ DescriptiveIconButton.propTypes = {
 	selected: PropTypes.bool.isRequired,
 	title: PropTypes.string,
 	description: PropTypes.string,
-	children: PropTypes.element
+	Icon: PropTypes.node
 };
 
 export default DescriptiveIconButton;
