@@ -60,7 +60,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [numberOfDays, setNumberOfDays] = useState(appointmentReminders.dateVerification.numberOfDays);
 	const [endOfRange, setEndOfRange] = useState(appointmentReminders.dateVerification.endOfRange);
 	const [allowSendOutsideRange, setAllowSendOutsideRange] = useState(appointmentReminders.dateVerification.allowSendOutsideRange);
-	const [useBusinessDays, setUseBusinessDays] = useState(appointmentReminders.dateVerification.useBusinessDays);
+	const [shouldUseBusinessDays, setShouldUseBusinessDays] = useState(appointmentReminders.dateVerification.useBusinessDays);
 	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(appointmentReminders.notificationMethod.sendToPreferredAndSms);
 	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.notificationMethod.textHomeIfCellNotAvailable);
 
@@ -68,16 +68,16 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange
 		|| numberOfDays !== appointmentReminders.dateVerification.numberOfDays
 		|| endOfRange !== appointmentReminders.dateVerification.endOfRange
-		|| useBusinessDays !== appointmentReminders.dateVerification.useBusinessDays
+		|| shouldUseBusinessDays !== appointmentReminders.dateVerification.useBusinessDays
 		|| sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms
 		|| textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable
-	), [allowSendOutsideRange, numberOfDays, endOfRange, useBusinessDays, sendToPreferredAndSms, textHomeIfCellNotAvailable, appointmentReminders]);
+	), [allowSendOutsideRange, numberOfDays, endOfRange, shouldUseBusinessDays, sendToPreferredAndSms, textHomeIfCellNotAvailable, appointmentReminders]);
 
 	const handleSave = () => {
 		if (allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange) persistentStorage.setAllowSendOutsideRange(allowSendOutsideRange);
 		if (numberOfDays !== appointmentReminders.dateVerification.numberOfDays) persistentStorage.setNumberOfDays(numberOfDays);
 		if (endOfRange !== appointmentReminders.dateVerification.endOfRange) persistentStorage.setEndOfRange(endOfRange);
-		if (useBusinessDays !== appointmentReminders.dateVerification.useBusinessDays) persistentStorage.setUseBusinessDays(useBusinessDays);
+		if (shouldUseBusinessDays !== appointmentReminders.dateVerification.useBusinessDays) persistentStorage.setUseBusinessDays(shouldUseBusinessDays);
 		if (sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms) persistentStorage.setSendToPreferredAndSmsForReminders(sendToPreferredAndSms);
 		if (textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable) {
 			persistentStorage.setTextHomeIfCellNotAvailableForReminders(textHomeIfCellNotAvailable);
@@ -111,7 +111,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						InputProps={{ inputProps: { min: 0 } }}
 					/>
 					{ endOfRange && (
-						<React.Fragment>
+						<Fragment>
 							<Typography color="primary" variant="h5" display="inline" style={{ bottom: 0 }}>  to  </Typography>
 							<TextField
 								type="number"
@@ -121,14 +121,14 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 								onChange={event => { setEndOfRange(parseInt(event.target.value, 10)); }}
 								InputProps={{ inputProps: { min: numberOfDays + 1 } }}
 							/>
-						</React.Fragment>
+						</Fragment>
 					)}
 					<Typography variant="h5" display="inline">  </Typography>
 					<FormControl>
 						<Select
-							value={useBusinessDays}
+							value={shouldUseBusinessDays}
 							disabled={!hasWritePermission}
-							onChange={event => { setUseBusinessDays(event.target.value); }}
+							onChange={event => { setShouldUseBusinessDays(event.target.value); }}
 							inputProps={{ 'aria-label': 'Without label' }}>
 							<MenuItem value={false}>day(s)</MenuItem>
 							<MenuItem value>business day(s)</MenuItem>
@@ -211,7 +211,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					disabled={!hasWritePermission || !changesToSave}
 					endIcon={<Save />}
 					color="primary"
-					variant={hasWritePermission && changesToSave ? 'contained' : 'outlined'}
+					variant={(hasWritePermission && changesToSave) ? 'contained' : 'outlined'}
 					onClick={handleSave}>
 						Save
 				</Button>
