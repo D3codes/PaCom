@@ -95,9 +95,9 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						<Select
 							value={!endOfRange}
 							disabled={!hasWritePermission}
-							onChange={() => { setEndOfRange(endOfRange ? undefined : numberOfDays + 1); }}
+							onChange={event => { setEndOfRange(event.target.value ? null : numberOfDays + 1); }}
 							inputProps={{ 'aria-label': 'Without label' }}>
-							<MenuItem value>Exactly</MenuItem>
+							<MenuItem value={true}>Exactly</MenuItem>
 							<MenuItem value={false}>Between</MenuItem>
 						</Select>
 					</FormControl>
