@@ -11,7 +11,7 @@ import folderSelector from '../../utilities/folderSelector';
 import AlertSnackBar from '../alertSnackbar';
 import CustomButton from '../customButton';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
