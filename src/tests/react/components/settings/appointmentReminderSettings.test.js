@@ -32,7 +32,7 @@ describe('AppointmentReminderSettings', () => {
 
 		expect(getByText('Save')).toBeDisabled();
 
-		fireEvent.click(getByText('Warning'));
+		fireEvent.click(getByText('WARNING'));
 
 		expect(getByText('Save')).toBeEnabled();
 	});
@@ -42,7 +42,7 @@ describe('AppointmentReminderSettings', () => {
 
 		expect(getByText('Save')).toBeDisabled();
 
-		fireEvent.click(getByText('Warning'));
+		fireEvent.click(getByText('WARNING'));
 
 		expect(getByText('Save')).toBeDisabled();
 	});
@@ -52,7 +52,7 @@ describe('AppointmentReminderSettings', () => {
 		const reloadSettingsMock = jest.fn();
 		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={reloadSettingsMock} hasWritePermission />);
 
-		fireEvent.click(getByText('Warning'));
+		fireEvent.click(getByText('WARNING'));
 		fireEvent.click(getByText('Save'));
 
 		expect(persistentStorageMock.setAllowSendOutsideRange).toHaveBeenCalledTimes(1);
