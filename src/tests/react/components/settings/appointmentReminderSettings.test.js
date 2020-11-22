@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { Simulate } from 'react-dom/test-utils';
 import { render, fireEvent } from '@testing-library/react';
 import AppointmentReminderSettings from '../../../../react/components/settings/appointmentReminderSettings';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
@@ -22,14 +21,14 @@ jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('AppointmentReminderSettings', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission/>);
-		
+		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
+
 		expect(getByText('Date Verification')).toBeDefined();
 		expect(getByText('Notification Method')).toBeDefined();
 	});
 
 	it('has the save button disabled until there are changes to save', () => {
-		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission/>);
+		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 
 		expect(getByText('Save')).toBeDisabled();
 
@@ -39,7 +38,7 @@ describe('AppointmentReminderSettings', () => {
 	});
 
 	it('has the save button stay disabled if there are no write permissions', () => {
-		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission={false}/>);
+		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission={false} />);
 
 		expect(getByText('Save')).toBeDisabled();
 
@@ -51,7 +50,7 @@ describe('AppointmentReminderSettings', () => {
 	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
 		persistentStorageMock.setAllowSendOutsideRange.mockImplementation();
 		const reloadSettingsMock = jest.fn();
-		const { getByText, getByTestId } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={reloadSettingsMock} hasWritePermission/>);
+		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={reloadSettingsMock} hasWritePermission />);
 
 		fireEvent.click(getByText('Warning'));
 		fireEvent.click(getByText('Save'));
