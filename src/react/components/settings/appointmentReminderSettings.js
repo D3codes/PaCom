@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import persistentStorage from '../../utilities/persistentStorage';
 import NotificationMethod from './notificationMethod';
+import CustomButton from '../customButton';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -141,60 +142,33 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Typography color="primary" variant="h5" display="inline">  before appointment.</Typography>
 				</div>
 				<div>
-					<Button
-						onClick={() => { setAllowSendOutsideRange(0); }}
-						className={classes.button}
+					<CustomButton
+						onClick={() => {setAllowSendOutsideRange(0);}}
 						disabled={!hasWritePermission}
-						color="primary"
-						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 0 ? '' : classes.invisibleOutline }}
-						variant="outlined"
-						startIcon={(
-							<Fragment>
-								<EventBusy style={{ fontSize: '3rem', textAlign: 'left' }} />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</Fragment>
-						)}>
-						<div className={classes.buttonContent}>
-							<Typography variant="h5">Off</Typography>
-							<Typography>Do not verify the date before sending reminders.</Typography>
-						</div>
-					</Button>
-					<Button
-						onClick={() => { setAllowSendOutsideRange(1); }}
-						className={classes.button}
+						selected={allowSendOutsideRange === 0}
+						title={"OFF"}
+						description={"Do not verify the date before sending reminders."}
+					>
+						<EventBusy style={{ fontSize: '3rem', textAlign: 'left' }} />
+					</CustomButton>
+					<CustomButton
+						onClick={() => {setAllowSendOutsideRange(1);}}
 						disabled={!hasWritePermission}
-						color="primary"
-						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 1 ? '' : classes.invisibleOutline }}
-						variant="outlined"
-						startIcon={(
-							<Fragment>
-								<Warning style={{ fontSize: '3rem', textAlign: 'left' }} />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</Fragment>
-						)}>
-						<div className={classes.buttonContent}>
-							<Typography variant="h5">Warning</Typography>
-							<Typography>Show warning if reminders are sent outside of specified time.</Typography>
-						</div>
-					</Button>
-					<Button
-						onClick={() => { setAllowSendOutsideRange(2); }}
-						className={classes.button}
+						selected={allowSendOutsideRange === 1}
+						title={"WARNING"}
+						description={"Show warning if reminders are sent outside of specified time."}
+					>
+						<Warning style={{ fontSize: '3rem', textAlign: 'left' }} />
+					</CustomButton>
+					<CustomButton
+						onClick={() => {setAllowSendOutsideRange(2);}}
 						disabled={!hasWritePermission}
-						color="primary"
-						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 2 ? '' : classes.invisibleOutline }}
-						variant="outlined"
-						startIcon={(
-							<Fragment>
-								<Block style={{ fontSize: '3rem', textAlign: 'left' }} />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</Fragment>
-						)}>
-						<div className={classes.buttonContent}>
-							<Typography variant="h5">Block</Typography>
-							<Typography>Do not allow reminders to be sent outside of specified time.</Typography>
-						</div>
-					</Button>
+						selected={allowSendOutsideRange === 2}
+						title={"BLOCK"}
+						description={"Do not allow reminders to be sent outside of specified time."}
+					>
+						<Block style={{ fontSize: '3rem', textAlign: 'left' }} />
+					</CustomButton>
 				</div>
 			</div>
 			<Divider className={classes.divider} />

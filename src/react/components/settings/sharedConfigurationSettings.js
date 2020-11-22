@@ -11,6 +11,7 @@ import BrowseFile from '../browseFile';
 import persistentStorage from '../../utilities/persistentStorage';
 import folderSelector from '../../utilities/folderSelector';
 import AlertSnackBar from '../alertSnackbar';
+import CustomButton from '../customButton';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -105,57 +106,30 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				onFilePathChange={setLocation}
 			/>
 			<div className={classes.content}>
-				<Button
-					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
-					className={classes.button}
-					color="primary"
-					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.local ? '' : classes.invisibleOutline }}
-					variant="outlined"
-					startIcon={(
-						<Fragment>
-							<DesktopWindows style={{ fontSize: '3rem', textAlign: 'left' }} />
-							<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						</Fragment>
-					)}>
-					<div className={classes.buttonContent}>
-						<Typography variant="h5">LOCAL</Typography>
-						<Typography>Read and Write all message templates, provider mappings, and settings locally.</Typography>
-					</div>
-				</Button>
-				<Button
-					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
-					className={classes.button}
-					color="primary"
-					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.networkReadOnly ? '' : classes.invisibleOutline }}
-					variant="outlined"
-					startIcon={(
-						<Fragment>
-							<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
-							<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						</Fragment>
-					)}>
-					<div className={classes.buttonContent}>
-						<Typography variant="h5">NETWORK - READ ONLY</Typography>
-						<Typography>Read all message templates, provider mappings, and settings from a network location.</Typography>
-					</div>
-				</Button>
-				<Button
-					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
-					className={classes.button}
-					color="primary"
-					classes={{ root: classes.buttonRoot, outlinedPrimary: selectedOption === BEHAVIOR.networkReadAndWrite ? '' : classes.invisibleOutline }}
-					variant="outlined"
-					startIcon={(
-						<Fragment>
-							<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
-							<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						</Fragment>
-					)}>
-					<div className={classes.buttonContent}>
-						<Typography variant="h5">NETWORK - READ AND WRITE</Typography>
-						<Typography>Read and Write all message templates, provider mappings, and settings from a network location.</Typography>
-					</div>
-				</Button>
+				<CustomButton
+						onClick={() => {setSelectedOption(BEHAVIOR.local);}}
+						selected={selectedOption === BEHAVIOR.local}
+						title={"LOCAL"}
+						description={"Read and Write all message templates, provider mappings, and settings locally."}
+					>
+						<DesktopWindows style={{ fontSize: '3rem', textAlign: 'left' }} />
+				</CustomButton>
+				<CustomButton
+						onClick={() => {setSelectedOption(BEHAVIOR.networkReadOnly);}}
+						selected={selectedOption === BEHAVIOR.networkReadOnly}
+						title={"NETWORK - READ ONLY"}
+						description={"Read all message templates, provider mappings, and settings from a network location."}
+					>
+						<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
+				</CustomButton>
+				<CustomButton
+						onClick={() => {setSelectedOption(BEHAVIOR.networkReadAndWrite);}}
+						selected={selectedOption === BEHAVIOR.networkReadAndWrite}
+						title={"NETWORK - READ AND WRITE"}
+						description={"Read and Write all message templates, provider mappings, and settings from a network location."}
+					>
+						<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
+				</CustomButton>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
