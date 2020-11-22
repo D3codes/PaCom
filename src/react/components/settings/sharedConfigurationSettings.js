@@ -9,7 +9,7 @@ import BrowseFile from '../browseFile';
 import persistentStorage from '../../utilities/persistentStorage';
 import folderSelector from '../../utilities/folderSelector';
 import AlertSnackBar from '../alertSnackbar';
-import CustomButton from '../customButton';
+import DescriptiveIconButton from '../descriptiveIconButton';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -82,27 +82,27 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				onFilePathChange={setLocation}
 			/>
 			<div className={classes.content}>
-				<CustomButton
+				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					selected={selectedOption === BEHAVIOR.local}
 					title="LOCAL"
 					description="Read and Write all message templates, provider mappings, and settings locally.">
 					<DesktopWindows style={{ fontSize: '3rem', textAlign: 'left' }} />
-				</CustomButton>
-				<CustomButton
+				</DescriptiveIconButton>
+				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
 					selected={selectedOption === BEHAVIOR.networkReadOnly}
 					title="NETWORK - READ ONLY"
 					description="Read all message templates, provider mappings, and settings from a network location.">
 					<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
-				</CustomButton>
-				<CustomButton
+				</DescriptiveIconButton>
+				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
 					selected={selectedOption === BEHAVIOR.networkReadAndWrite}
 					title="NETWORK - READ AND WRITE"
 					description="Read and Write all message templates, provider mappings, and settings from a network location.">
 					<Storage style={{ fontSize: '3rem', textAlign: 'left' }} />
-				</CustomButton>
+				</DescriptiveIconButton>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button

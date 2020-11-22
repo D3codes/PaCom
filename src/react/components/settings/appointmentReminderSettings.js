@@ -9,7 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import persistentStorage from '../../utilities/persistentStorage';
 import NotificationMethod from './notificationMethod';
-import CustomButton from '../customButton';
+import DescriptiveIconButton from '../descriptiveIconButton';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -119,30 +119,30 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Typography color="primary" variant="h5" display="inline">  before appointment.</Typography>
 				</div>
 				<div>
-					<CustomButton
+					<DescriptiveIconButton
 						onClick={() => { setAllowSendOutsideRange(0); }}
 						disabled={!hasWritePermission}
 						selected={allowSendOutsideRange === 0}
 						title="OFF"
 						description="Do not verify the date before sending reminders.">
 						<EventBusy style={{ fontSize: '3rem', textAlign: 'left' }} />
-					</CustomButton>
-					<CustomButton
+					</DescriptiveIconButton>
+					<DescriptiveIconButton
 						onClick={() => { setAllowSendOutsideRange(1); }}
 						disabled={!hasWritePermission}
 						selected={allowSendOutsideRange === 1}
 						title="WARNING"
 						description="Show warning if reminders are sent outside of specified time.">
 						<Warning style={{ fontSize: '3rem', textAlign: 'left' }} />
-					</CustomButton>
-					<CustomButton
+					</DescriptiveIconButton>
+					<DescriptiveIconButton
 						onClick={() => { setAllowSendOutsideRange(2); }}
 						disabled={!hasWritePermission}
 						selected={allowSendOutsideRange === 2}
 						title="BLOCK"
 						description="Do not allow reminders to be sent outside of specified time.">
 						<Block style={{ fontSize: '3rem', textAlign: 'left' }} />
-					</CustomButton>
+					</DescriptiveIconButton>
 				</div>
 			</div>
 			<Divider className={classes.divider} />

@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function CustomButton({
+function DescriptiveIconButton({
 	onClick, disabled, selected, title, description, children
 }) {
 	const classes = useStyles();
@@ -57,7 +57,7 @@ function CustomButton({
 }
 
 
-CustomButton.propTypes = {
+DescriptiveIconButton.propTypes = {
 	onClick: PropTypes.func.isRequired,
 	disabled: PropTypes.bool,
 	selected: PropTypes.bool.isRequired,
@@ -66,4 +66,4 @@ CustomButton.propTypes = {
 	children: PropTypes.element
 };
 
-export default CustomButton;
+export default DescriptiveIconButton;
