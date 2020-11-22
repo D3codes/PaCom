@@ -36,10 +36,8 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function NotificationMethod({ notificationMethod, reloadSettings }) {
+export default function NotificationMethod({ sendToPreferredAndSms, setSendToPreferredAndSms, textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable, reloadSettings }) {
     const classes = useStyles();
-	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(notificationMethod.sendToPreferredAndSms);
-	const [textHome, setTextHome] = useState(notificationMethod.textHomeIfCellNotAvailable);
     
     return (
 		<div className={classes.root}>
@@ -57,8 +55,8 @@ export default function NotificationMethod({ notificationMethod, reloadSettings 
             <FormControlLabel
                 control={
                     <Checkbox
-						onChange={event => {setTextHome(event.target.checked)}}
-                        checked={textHome}
+						onChange={event => {setTextHomeIfCellNotAvailable(event.target.checked)}}
+                        checked={textHomeIfCellNotAvailable}
                         color="primary"
                     />
                 }
@@ -69,11 +67,9 @@ export default function NotificationMethod({ notificationMethod, reloadSettings 
 }
 
 NotificationMethod.propTypes = {
-	notificationMethod: PropTypes.shape(
-		{
-			sendToPreferredAndSms: PropTypes.bool,
-			textHomeIfCellNotAvailable: PropTypes.bool
-		}.isRequired
-	),
+	sendToPreferredAndSms: PropTypes.bool.isRequired,
+	setSendToPreferredAndSms: PropTypes.func.isRequired,
+	textHomeIfCellNotAvailable: PropTypes.bool.isRequired,
+	setTextHomeIfCellNotAvailable: PropTypes.func.isRequired,
 	reloadSettings: PropTypes.func.isRequired
 };

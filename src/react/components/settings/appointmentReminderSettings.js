@@ -67,7 +67,9 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		|| numberOfDays !== appointmentReminders.dateVerification.numberOfDays
 		|| endOfRange !== appointmentReminders.dateVerification.endOfRange
 		|| useBusinessDays !== appointmentReminders.dateVerification.useBusinessDays
-	), [allowSendOutsideRange, numberOfDays, endOfRange, useBusinessDays, appointmentReminders]);
+		|| sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms
+		|| textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable
+	), [allowSendOutsideRange, numberOfDays, endOfRange, useBusinessDays, sendToPreferredAndSms, textHomeIfCellNotAvailable, appointmentReminders]);
 	
 	const handleSave = () => {
 		if(allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange) persistentStorage.setAllowSendOutsideRange(allowSendOutsideRange);
@@ -186,7 +188,13 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 			</div>
 			<Divider className={classes.divider}/>
 			<div className={classes.notificationMethodContainer}>
-				<NotificationMethod notificationMethod={appointmentReminders.notificationMethod} reloadSettings={reloadSettings}/>
+				<NotificationMethod
+					sendToPreferredAndSms={sendToPreferredAndSms}
+					setSendToPreferredAndSms={setSendToPreferredAndSms}
+					textHomeIfCellNotAvailable={textHomeIfCellNotAvailable}
+					setTextHomeIfCellNotAvailable={setTextHomeIfCellNotAvailable}
+					reloadSettings={reloadSettings}
+				/>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
