@@ -17,29 +17,6 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		height: '100%'
 	},
-	buttonContent: {
-		display: 'flex',
-		flexDirection: 'column'
-	},
-	button: {
-		marginTop: theme.spacing(),
-		marginBottom: theme.spacing(),
-		width: '100%'
-	},
-	adornmentDivider: {
-		margin: theme.spacing()
-	},
-	buttonRoot: {
-		textTransform: 'none',
-		justifyContent: 'flex-start',
-		textAlign: 'left'
-	},
-	invisibleOutline: {
-		borderColor: 'rgba(0,0,0,0)',
-		'&:hover': {
-			borderColor: 'rgba(0,0,0,0)'
-		}
-	},
 	actionButtonContainer: {
 		display: 'flex',
 		alignSelf: 'flex-end'

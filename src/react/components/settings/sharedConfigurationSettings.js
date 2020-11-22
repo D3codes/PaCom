@@ -22,31 +22,9 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column'
 	},
-	buttonContent: {
-		display: 'flex',
-		flexDirection: 'column'
-	},
-	button: {
-		marginTop: theme.spacing(),
-		marginBottom: theme.spacing()
-	},
 	actionButtonContainer: {
 		display: 'flex',
 		justifyContent: 'space-between'
-	},
-	adornmentDivider: {
-		margin: theme.spacing()
-	},
-	buttonRoot: {
-		textTransform: 'none',
-		justifyContent: 'flex-start',
-		textAlign: 'left'
-	},
-	invisibleOutline: {
-		borderColor: 'rgba(0,0,0,0)',
-		'&:hover': {
-			borderColor: 'rgba(0,0,0,0)'
-		}
 	}
 }));
 
