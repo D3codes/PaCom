@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	button: {
 		marginTop: theme.spacing(),
-		marginBottom: theme.spacing()
+		marginBottom: theme.spacing(),
+		width: '100%'
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
@@ -52,6 +53,9 @@ const useStyles = makeStyles(theme => ({
 	dateVerificationOptions: {
 		marginTop: theme.spacing(),
 		marginBottom: theme.spacing()
+	},
+	dayInputField: {
+		width: 30
 	}
 }));
 
@@ -106,18 +110,18 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						type="number"
 						value={numberOfDays}
 						disabled={!hasWritePermission}
-						style={{ width: 30 }}
+						className={classes.dayInputField}
 						onChange={event => { setNumberOfDays(parseInt(event.target.value, 10)); }}
 						InputProps={{ inputProps: { min: 0 } }}
 					/>
 					{ endOfRange && (
 						<Fragment>
-							<Typography color="primary" variant="h5" display="inline" style={{ bottom: 0 }}>  to  </Typography>
+							<Typography color="primary" variant="h5" display="inline">  to  </Typography>
 							<TextField
 								type="number"
 								value={endOfRange}
 								disabled={!hasWritePermission}
-								style={{ width: 30 }}
+								className={classes.dayInputField}
 								onChange={event => { setEndOfRange(parseInt(event.target.value, 10)); }}
 								InputProps={{ inputProps: { min: numberOfDays + 1 } }}
 							/>
@@ -142,7 +146,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						className={classes.button}
 						disabled={!hasWritePermission}
 						color="primary"
-						style={{ width: '100%' }}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 0 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
@@ -161,7 +164,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						className={classes.button}
 						disabled={!hasWritePermission}
 						color="primary"
-						style={{ width: '100%' }}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 1 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
@@ -180,7 +182,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						className={classes.button}
 						disabled={!hasWritePermission}
 						color="primary"
-						style={{ width: '100%' }}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 2 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
