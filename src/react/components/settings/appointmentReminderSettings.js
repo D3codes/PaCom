@@ -90,6 +90,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<FormControl>
 						<Select
 						value={!endOfRange}
+						disabled={!hasWritePermission}
 						onChange={event => {setEndOfRange(endOfRange ? undefined : numberOfDays+1);}}
 						inputProps={{ 'aria-label': 'Without label' }}
 						>
@@ -101,6 +102,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<TextField
 						type="number" 
 						value={numberOfDays}
+						disabled={!hasWritePermission}
 						style={{width: 30}}
 						onChange={event => {setNumberOfDays(parseInt(event.target.value))}}
 						InputProps={{ inputProps: { min: 0 } }}
@@ -110,6 +112,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						<TextField
 							type="number"
 							value={endOfRange}
+							disabled={!hasWritePermission}
 							style={{width: 30}}
 							onChange={event => {setEndOfRange(parseInt(event.target.value))}}
 							InputProps={{ inputProps: { min: numberOfDays+1 } }}
@@ -120,6 +123,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<FormControl>
 						<Select
 						value={useBusinessDays}
+						disabled={!hasWritePermission}
 						onChange={event => {setUseBusinessDays(event.target.value)}}
 						inputProps={{ 'aria-label': 'Without label' }}
 						>
@@ -133,6 +137,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Button
 						onClick={() => { setAllowSendOutsideRange(0); }}
 						className={classes.button}
+						disabled={!hasWritePermission}
 						color="primary"
 						style={{width:'100%'}}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 0 ? '' : classes.invisibleOutline }}
@@ -151,6 +156,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Button
 						onClick={() => { setAllowSendOutsideRange(1); }}
 						className={classes.button}
+						disabled={!hasWritePermission}
 						color="primary"
 						style={{width:'100%'}}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 1? '' : classes.invisibleOutline }}
@@ -169,6 +175,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Button
 						onClick={() => { setAllowSendOutsideRange(2); }}
 						className={classes.button}
+						disabled={!hasWritePermission}
 						color="primary"
 						style={{width:'100%'}}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 2 ? '' : classes.invisibleOutline }}
@@ -193,15 +200,15 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					setSendToPreferredAndSms={setSendToPreferredAndSms}
 					textHomeIfCellNotAvailable={textHomeIfCellNotAvailable}
 					setTextHomeIfCellNotAvailable={setTextHomeIfCellNotAvailable}
-					reloadSettings={reloadSettings}
+					hasWritePermission={hasWritePermission}
 				/>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
-					disabled={!changesToSave}
+					disabled={!hasWritePermission || !changesToSave}
 					endIcon={<Save />}
 					color="primary"
-					variant={changesToSave ? 'contained' : 'outlined'}
+					variant={hasWritePermission && changesToSave ? 'contained' : 'outlined'}
 					onClick={handleSave}>
 						Save
 				</Button>

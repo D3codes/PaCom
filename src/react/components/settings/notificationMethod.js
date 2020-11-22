@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function NotificationMethod({ sendToPreferredAndSms, setSendToPreferredAndSms, textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable, reloadSettings }) {
+export default function NotificationMethod({ sendToPreferredAndSms, setSendToPreferredAndSms, textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable, hasWritePermission }) {
     const classes = useStyles();
     
     return (
@@ -42,6 +42,7 @@ export default function NotificationMethod({ sendToPreferredAndSms, setSendToPre
 			<FormControlLabel
                 control={
                     <Checkbox
+						disabled={!hasWritePermission}
 						onChange={event => {setSendToPreferredAndSms(event.target.checked)}}
                         checked={sendToPreferredAndSms}
                         color="primary"
@@ -52,6 +53,7 @@ export default function NotificationMethod({ sendToPreferredAndSms, setSendToPre
             <FormControlLabel
                 control={
                     <Checkbox
+						disabled={!hasWritePermission}
 						onChange={event => {setTextHomeIfCellNotAvailable(event.target.checked)}}
                         checked={textHomeIfCellNotAvailable}
                         color="primary"
@@ -68,5 +70,5 @@ NotificationMethod.propTypes = {
 	setSendToPreferredAndSms: PropTypes.func.isRequired,
 	textHomeIfCellNotAvailable: PropTypes.bool.isRequired,
 	setTextHomeIfCellNotAvailable: PropTypes.func.isRequired,
-	reloadSettings: PropTypes.func.isRequired
+	hasWritePermission: PropTypes.bool.isRequired
 };
