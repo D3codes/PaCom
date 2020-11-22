@@ -119,7 +119,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Typography variant="h5" display="inline">  </Typography>
 					<FormControl>
 						<Select
-						value={!useBusinessDays}
+						value={useBusinessDays}
 						onChange={event => {setUseBusinessDays(event.target.value)}}
 						inputProps={{ 'aria-label': 'Without label' }}
 						>

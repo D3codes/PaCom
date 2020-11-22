@@ -59,6 +59,18 @@ const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAcces
 
 const copyLocalToNetwork = () => window.ipcRenderer.invoke('copy-local-to-network');
 
+const setAllowSendOutsideRange = allowSend => setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allowSend);
+
+const setNumberOfDays = days => setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
+
+const setEndOfRange = end => setSettings('settings.appointmentReminders.dateVerification.endOfRange', end);
+
+const setUseBusinessDays = useBusinessDays => setSettings('settings.appointmentReminders.dateVerification.useBusinessDays', useBusinessDays);
+
+const setSendToPreferredAndSmsForReminders = preferredAndSms => setSettings('settings.appointmentReminders.notificationMethod.sendToPreferredAndSms', preferredAndSms);
+
+const setTextHomeIfCellNotAvailableForReminders = textHome => setSettings('settings.appointmentReminders.notificationMethod.textHomeIfCellNotAvailable', textHome);
+
 export default {
 	getProviderMappings,
 	addProviderMapping,
@@ -84,5 +96,11 @@ export default {
 	setShareConfigBehavior,
 	setShareConfigLocation,
 	setAdminAccess,
-	copyLocalToNetwork
+	copyLocalToNetwork,
+	setAllowSendOutsideRange,
+	setNumberOfDays,
+	setEndOfRange,
+	setUseBusinessDays,
+	setSendToPreferredAndSmsForReminders,
+	setTextHomeIfCellNotAvailableForReminders
 };

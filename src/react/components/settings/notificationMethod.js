@@ -1,9 +1,6 @@
-import React, { useState, Fragment } from 'react';
-import {
-	PermPhoneMsg, AddComment
-} from '@material-ui/icons';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Button, Divider, Checkbox, FormControlLabel} from '@material-ui/core';
+import { Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
