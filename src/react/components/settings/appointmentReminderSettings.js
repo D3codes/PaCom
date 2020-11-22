@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	Warning, Block, Save, EventBusy
 } from '@material-ui/icons';
-import { Typography, Divider, Select, FormControl, MenuItem, TextField, Button } from '@material-ui/core';
+import {
+	Typography, Divider, Select, FormControl, MenuItem, TextField, Button
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import persistentStorage from '../../utilities/persistentStorage';
 import NotificationMethod from './notificationMethod';
@@ -70,16 +72,18 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		|| sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms
 		|| textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable
 	), [allowSendOutsideRange, numberOfDays, endOfRange, useBusinessDays, sendToPreferredAndSms, textHomeIfCellNotAvailable, appointmentReminders]);
-	
+
 	const handleSave = () => {
-		if(allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange) persistentStorage.setAllowSendOutsideRange(allowSendOutsideRange);
-		if(numberOfDays !== appointmentReminders.dateVerification.numberOfDays) persistentStorage.setNumberOfDays(numberOfDays);
-		if(endOfRange !== appointmentReminders.dateVerification.endOfRange) persistentStorage.setEndOfRange(endOfRange);
-		if(useBusinessDays !== appointmentReminders.dateVerification.useBusinessDays) persistentStorage.setUseBusinessDays(useBusinessDays);
-		if(sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms) persistentStorage.setSendToPreferredAndSmsForReminders(sendToPreferredAndSms);
-		if(textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable) persistentStorage.setTextHomeIfCellNotAvailableForReminders(textHomeIfCellNotAvailable);
+		if (allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange) persistentStorage.setAllowSendOutsideRange(allowSendOutsideRange);
+		if (numberOfDays !== appointmentReminders.dateVerification.numberOfDays) persistentStorage.setNumberOfDays(numberOfDays);
+		if (endOfRange !== appointmentReminders.dateVerification.endOfRange) persistentStorage.setEndOfRange(endOfRange);
+		if (useBusinessDays !== appointmentReminders.dateVerification.useBusinessDays) persistentStorage.setUseBusinessDays(useBusinessDays);
+		if (sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms) persistentStorage.setSendToPreferredAndSmsForReminders(sendToPreferredAndSms);
+		if (textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable) {
+			persistentStorage.setTextHomeIfCellNotAvailableForReminders(textHomeIfCellNotAvailable);
+		}
 		reloadSettings();
-	}
+	};
 
 	return (
 		<div className={classes.root}>
@@ -89,46 +93,45 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Typography color="primary" variant="h5" display="inline">Reminders should be sent  </Typography>
 					<FormControl>
 						<Select
-						value={!endOfRange}
-						disabled={!hasWritePermission}
-						onChange={event => {setEndOfRange(endOfRange ? undefined : numberOfDays+1);}}
-						inputProps={{ 'aria-label': 'Without label' }}
-						>
-						<MenuItem value={true}>Exactly</MenuItem>
-						<MenuItem value={false}>Between</MenuItem>
+							value={!endOfRange}
+							disabled={!hasWritePermission}
+							onChange={() => { setEndOfRange(endOfRange ? undefined : numberOfDays + 1); }}
+							inputProps={{ 'aria-label': 'Without label' }}>
+							<MenuItem value>Exactly</MenuItem>
+							<MenuItem value={false}>Between</MenuItem>
 						</Select>
 					</FormControl>
 					<Typography variant="h5" display="inline">  </Typography>
 					<TextField
-						type="number" 
+						type="number"
 						value={numberOfDays}
 						disabled={!hasWritePermission}
-						style={{width: 30}}
-						onChange={event => {setNumberOfDays(parseInt(event.target.value))}}
+						style={{ width: 30 }}
+						onChange={event => { setNumberOfDays(parseInt(event.target.value, 10)); }}
 						InputProps={{ inputProps: { min: 0 } }}
 					/>
-					{ endOfRange && <>
-						<Typography color="primary" variant="h5" display="inline" style={{bottom: 0}}>  to  </Typography>
-						<TextField
-							type="number"
-							value={endOfRange}
-							disabled={!hasWritePermission}
-							style={{width: 30}}
-							onChange={event => {setEndOfRange(parseInt(event.target.value))}}
-							InputProps={{ inputProps: { min: numberOfDays+1 } }}
-						/>
-					</>
-					}
+					{ endOfRange && (
+						<React.Fragment>
+							<Typography color="primary" variant="h5" display="inline" style={{ bottom: 0 }}>  to  </Typography>
+							<TextField
+								type="number"
+								value={endOfRange}
+								disabled={!hasWritePermission}
+								style={{ width: 30 }}
+								onChange={event => { setEndOfRange(parseInt(event.target.value, 10)); }}
+								InputProps={{ inputProps: { min: numberOfDays + 1 } }}
+							/>
+						</React.Fragment>
+					)}
 					<Typography variant="h5" display="inline">  </Typography>
 					<FormControl>
 						<Select
-						value={useBusinessDays}
-						disabled={!hasWritePermission}
-						onChange={event => {setUseBusinessDays(event.target.value)}}
-						inputProps={{ 'aria-label': 'Without label' }}
-						>
-						<MenuItem value={false}>day(s)</MenuItem>
-						<MenuItem value={true}>business day(s)</MenuItem>
+							value={useBusinessDays}
+							disabled={!hasWritePermission}
+							onChange={event => { setUseBusinessDays(event.target.value); }}
+							inputProps={{ 'aria-label': 'Without label' }}>
+							<MenuItem value={false}>day(s)</MenuItem>
+							<MenuItem value>business day(s)</MenuItem>
 						</Select>
 					</FormControl>
 					<Typography color="primary" variant="h5" display="inline">  before appointment.</Typography>
@@ -139,7 +142,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						className={classes.button}
 						disabled={!hasWritePermission}
 						color="primary"
-						style={{width:'100%'}}
+						style={{ width: '100%' }}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 0 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
@@ -158,8 +161,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						className={classes.button}
 						disabled={!hasWritePermission}
 						color="primary"
-						style={{width:'100%'}}
-						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 1? '' : classes.invisibleOutline }}
+						style={{ width: '100%' }}
+						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 1 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
 							<Fragment>
@@ -177,7 +180,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						className={classes.button}
 						disabled={!hasWritePermission}
 						color="primary"
-						style={{width:'100%'}}
+						style={{ width: '100%' }}
 						classes={{ root: classes.buttonRoot, outlinedPrimary: allowSendOutsideRange === 2 ? '' : classes.invisibleOutline }}
 						variant="outlined"
 						startIcon={(
@@ -188,12 +191,12 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						)}>
 						<div className={classes.buttonContent}>
 							<Typography variant="h5">Block</Typography>
-							<Typography >Do not allow reminders to be sent outside of specified time.</Typography>
+							<Typography>Do not allow reminders to be sent outside of specified time.</Typography>
 						</div>
 					</Button>
 				</div>
 			</div>
-			<Divider className={classes.divider}/>
+			<Divider className={classes.divider} />
 			<div className={classes.notificationMethodContainer}>
 				<NotificationMethod
 					sendToPreferredAndSms={sendToPreferredAndSms}
