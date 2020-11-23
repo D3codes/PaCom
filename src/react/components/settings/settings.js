@@ -43,7 +43,7 @@ export default function Settings({ selectedTabId }) {
 			)}
 			{selectedTabId === MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS && (
 				<CustomMessageSettings
-					customMessage={customMessageSettings}
+					customMessages={customMessageSettings}
 					hasWritePermission={hasWritePermission}
 					reloadSettings={reloadSettings}
 				/>
