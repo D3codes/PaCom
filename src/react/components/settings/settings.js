@@ -9,6 +9,7 @@ import TwilioSettings from './twilioSettings';
 import SharedConfigurationSettings from './sharedConfigurationSettings';
 import persistentStorage from '../../utilities/persistentStorage';
 import MiniDrawer from '../miniDrawer';
+import AlertSnackbar from '../alertSnackbar';
 
 export default function Settings({ selectedTabId }) {
 	const [appointmentReminderSettings, setAppointmentReminderSettings] = useState(null);
@@ -66,6 +67,18 @@ export default function Settings({ selectedTabId }) {
 				<SharedConfigurationSettings
 					sharedConfig={sharedConfigurationSettings}
 					reloadSettings={reloadSettings}
+				/>
+			)}
+			{(selectedTabId === MiniDrawer.TabIds.APPOINTMENT_REMINDERS_SETTINGS
+			|| selectedTabId === MiniDrawer.TabIds.CUSTOM_MESSAGE_SETTINGS
+			|| selectedTabId === MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS
+			|| selectedTabId === MiniDrawer.TabIds.TWILIO_SETTINGS)
+			&& (
+				<AlertSnackbar
+					open={!hasWritePermission}
+					severity={AlertSnackbar.Severities.Info}
+					title="Configuration set to Network - Read Only"
+					message="Settings cannot be changed"
 				/>
 			)}
 		</Fragment>

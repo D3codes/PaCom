@@ -4,7 +4,7 @@ import { Snackbar, Slide } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 function AlertSnackbar({
-	severity, title = '', message = '', open, onClose, autoHideDuration = null
+	severity, title = '', message = '', open, onClose = null, autoHideDuration = null
 }) {
 	return (
 		<Snackbar
@@ -35,7 +35,7 @@ AlertSnackbar.propTypes = {
 	title: PropTypes.string,
 	message: PropTypes.string,
 	open: PropTypes.bool.isRequired,
-	onClose: PropTypes.func.isRequired,
+	onClose: PropTypes.func,
 	autoHideDuration: PropTypes.number
 };
 
