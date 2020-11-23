@@ -71,6 +71,10 @@ const setSendToPreferredAndSmsForReminders = preferredAndSms => setSettings('set
 
 const setTextHomeIfCellNotAvailableForReminders = textHome => setSettings('settings.appointmentReminders.notificationMethod.textHomeIfCellNotAvailable', textHome);
 
+const setSendToPreferredAndSmsForCustomMessages = preferredAndSms => setSettings('settings.customMessages.notificationMethod.sendToPreferredAndSms', preferredAndSms);
+
+const setTextHomeIfCellNotAvailableForCustomMessages = textHome => setSettings('settings.customMessages.notificationMethod.textHomeIfCellNotAvailable', textHome);
+
 export default {
 	getProviderMappings,
 	addProviderMapping,
@@ -102,5 +106,7 @@ export default {
 	setEndOfRange,
 	setUseBusinessDays,
 	setSendToPreferredAndSmsForReminders,
-	setTextHomeIfCellNotAvailableForReminders
+	setTextHomeIfCellNotAvailableForReminders,
+	setSendToPreferredAndSmsForCustomMessages,
+	setTextHomeIfCellNotAvailableForCustomMessages
 };
