@@ -1,9 +1,58 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+	TextField, List, ListItem, ListItemText, Typography
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
+const useStyles = makeStyles(theme => ({
+	root: {
+		display: 'flex',
+		flexDirection: 'column',
+		height: '100%'
+	},
+	listContainer: {
+		float: 'left'
+	},
+	list: {
+		height: '100%',
+		width: 100,
+		overflow: 'auto'
+	},
+	textField: {
+		float: 'left',
+		width: '50%',
+		height: '100%'
+	}
+}));
+
 function MessageTemplateComposer() {
+	const classes = useStyles();
+
 	return (
-		<p>Message Template Composer</p>
+		<div>
+			<TextField
+				label="Message"
+				multiline
+				rows={15}
+				variant="outlined"
+				className={classes.textField}
+			/>
+			<div className={classes.listContainer}>
+				<Typography color="primary" variant="h5" display="inline">Variables</Typography>
+				<List className={classes.list} dense={false}>
+					<ListItem>
+						<ListItemText primary="Testfdgfgdfgfdgdfgdfgfdgdgdfgdfgdfgdfgdfgdfg" />
+					</ListItem>
+					<ListItem>
+						<ListItemText primary="Test" />
+					</ListItem>
+					<ListItem>
+						<ListItemText primary="Test" />
+					</ListItem>
+				</List>
+			</div>
+		</div>
 	);
 }
 

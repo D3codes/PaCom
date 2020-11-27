@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 		flex: 1
 	},
 	sendTo: {
+		alignSelf: 'center'
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
@@ -34,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	messageTemplates: {
 		maxHeight: 200,
+		width: '100%',
 		overflow: 'auto'
 	},
 	composeContainer: {
@@ -113,7 +115,7 @@ export default function CustomMessage() {
 				)}
 			</div>
 			<div className={classes.composeContainer}>
-				<div className={classes.messageTemplatesContainer}>
+				<div className={classes.messageTemplatesContainer} style={{ float: 'left', width: '33%' }}>
 					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
 					<List className={classes.messageTemplates} dense={false}>
 						<ListItem>
@@ -138,7 +140,7 @@ export default function CustomMessage() {
 						</ListItem>
 					</List>
 				</div>
-				<MessageTemplateComposer />
+				<MessageTemplateComposer style={{ float: 'left', width: '66%' }} />
 			</div>
 			<div className={classes.actionButtonContainer}>
 				{!sendToAppointmentList
