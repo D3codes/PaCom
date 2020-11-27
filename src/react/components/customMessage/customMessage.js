@@ -4,6 +4,7 @@ import {
 	Typography, Switch, TextField, Divider, List, ListItem, ListItemText, Button
 } from '@material-ui/core';
 import { Phone, Send, Sms } from '@material-ui/icons';
+import clsx from 'clsx';
 import BrowseFile from '../browseFile';
 import csvImporter from '../../utilities/csvImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
@@ -28,6 +29,11 @@ const useStyles = makeStyles(theme => ({
 	sendTo: {
 		alignSelf: 'center'
 	},
+	padding: {
+		paddingBottom: 22
+	},
+	sendToTextFieldContainer: {
+	},
 	adornmentDivider: {
 		margin: theme.spacing()
 	},
@@ -40,6 +46,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	composeContainer: {
 		flex: 1
+	},
+	buttonSpacing: {
+		marginLeft: theme.spacing()
 	}
 }));
 
@@ -88,30 +97,32 @@ export default function CustomMessage() {
 				/>
 				<Typography color="primary" variant="h5" display="inline">Send To Appointment List</Typography>
 			</div>
-			<div>
+			<div className={classes.sendToTextFieldContainer}>
 				{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
 				{!sendToAppointmentList
 				&& (
-					<TextField
-						fullWidth
-						data-testid="phoneNumber-field"
-						onChange={event => { setPhoneNumber(event.target.value); }}
-						label="Phone Number"
-						variant="outlined"
-						focused
-						helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
-						error={!phoneNumberIsValid}
-						value={phoneNumber}
-						InputProps={{
-							startAdornment: (
-								<Fragment>
-									<Phone color="primary" />
-									<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-									<p>+1</p>
-								</Fragment>
-							)
-						}}
-					/>
+					<div className={clsx(classes.sendToTextFieldContainer, { [classes.padding]: phoneNumberIsValid })}>
+						<TextField
+							fullWidth
+							data-testid="phoneNumber-field"
+							onChange={event => { setPhoneNumber(event.target.value); }}
+							label="Phone Number"
+							variant="outlined"
+							focused
+							helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
+							error={!phoneNumberIsValid}
+							value={phoneNumber}
+							InputProps={{
+								startAdornment: (
+									<Fragment>
+										<Phone color="primary" />
+										<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+										<p>+1</p>
+									</Fragment>
+								)
+							}}
+						/>
+					</div>
 				)}
 			</div>
 			<div className={classes.composeContainer}>
@@ -153,6 +164,7 @@ export default function CustomMessage() {
 							variant={enableSendButtons ? 'contained' : 'outlined'}>
 							Send as SMS
 						</Button>
+						<div className={classes.buttonSpacing} />
 						<Button
 							disabled={!enableSendButtons}
 							color="primary"
