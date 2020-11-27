@@ -58,6 +58,7 @@ export default function CustomMessage() {
 	const [filePath, setFilePath] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
+	const enableSendButtons = useMemo(() => (sendToAppointmentList ? !!appointments : phoneNumberIsValid), [phoneNumberIsValid, sendToAppointmentList, appointments]);
 
 	const handleSwitch = event => {
 		setSendToAppointmentList(event.target.checked);
@@ -144,17 +145,17 @@ export default function CustomMessage() {
 				&& (
 					<Fragment>
 						<Button
-							disabled={!phoneNumberIsValid}
+							disabled={!enableSendButtons}
 							color="primary"
 							endIcon={<Sms />}
-							variant={phoneNumberIsValid ? 'contained' : 'outlined'}>
+							variant={enableSendButtons ? 'contained' : 'outlined'}>
 							Send as SMS
 						</Button>
 						<Button
-							disabled={!phoneNumberIsValid}
+							disabled={!enableSendButtons}
 							color="primary"
 							endIcon={<Phone />}
-							variant={phoneNumberIsValid ? 'contained' : 'outlined'}>
+							variant={enableSendButtons ? 'contained' : 'outlined'}>
 							Send as Call
 						</Button>
 					</Fragment>
@@ -162,9 +163,10 @@ export default function CustomMessage() {
 				{sendToAppointmentList
 				&& (
 					<Button
+						disabled={!enableSendButtons}
 						color="primary"
 						endIcon={<Send />}
-						variant="contained">
+						variant={enableSendButtons ? 'contained' : 'outlined'}>
 						Send
 					</Button>
 				)}
