@@ -1,10 +1,13 @@
 import React, { useState, Fragment, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Switch, TextField, Divider } from '@material-ui/core';
-import { Phone } from '@material-ui/icons';
+import {
+	Typography, Switch, TextField, Divider, List, ListItem, ListItemText, Button
+} from '@material-ui/core';
+import { Phone, Send, Sms } from '@material-ui/icons';
 import BrowseFile from '../browseFile';
 import csvImporter from '../../utilities/csvImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
+import MessageTemplateComposer from '../messageTemplateComposer';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -26,6 +29,15 @@ const useStyles = makeStyles(theme => ({
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
+	},
+	messageTemplatesContainer: {
+	},
+	messageTemplates: {
+		maxHeight: 200,
+		overflow: 'auto'
+	},
+	composeContainer: {
+		flex: 1
 	}
 }));
 
@@ -41,14 +53,14 @@ const selectedEhr = Ehrs.Pulse;
 
 export default function CustomMessage() {
 	const classes = useStyles();
-	const [checked, setChecked] = useState(false);
+	const [sendToAppointmentList, setSendToAppointmentList] = useState(false);
 	const [appointments, setAppointments] = useState(null);
 	const [filePath, setFilePath] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 
 	const handleSwitch = event => {
-		setChecked(event.target.checked);
+		setSendToAppointmentList(event.target.checked);
 	};
 
 	const handleBrowseClick = () => {
@@ -67,15 +79,15 @@ export default function CustomMessage() {
 			<div className={classes.sendTo}>
 				<Typography color="primary" variant="h5" display="inline">Send To Specific Number</Typography>
 				<Switch
-					checked={checked}
+					checked={sendToAppointmentList}
 					onChange={handleSwitch}
 					color="default"
 				/>
 				<Typography color="primary" variant="h5" display="inline">Send To Appointment List</Typography>
 			</div>
 			<div>
-				{checked && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
-				{!checked
+				{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
+				{!sendToAppointmentList
 				&& (
 					<TextField
 						fullWidth
@@ -99,11 +111,63 @@ export default function CustomMessage() {
 					/>
 				)}
 			</div>
-			<div>
-				Compose View
+			<div className={classes.composeContainer}>
+				<div className={classes.messageTemplatesContainer}>
+					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
+					<List className={classes.messageTemplates} dense={false}>
+						<ListItem>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
+					</List>
+				</div>
+				<MessageTemplateComposer />
 			</div>
-			<div>
-				Send Buttons
+			<div className={classes.actionButtonContainer}>
+				{!sendToAppointmentList
+				&& (
+					<Fragment>
+						<Button
+							disabled={!phoneNumberIsValid}
+							color="primary"
+							endIcon={<Sms />}
+							variant={phoneNumberIsValid ? 'contained' : 'outlined'}>
+							Send as SMS
+						</Button>
+						<Button
+							disabled={!phoneNumberIsValid}
+							color="primary"
+							endIcon={<Phone />}
+							variant={phoneNumberIsValid ? 'contained' : 'outlined'}>
+							Send as Call
+						</Button>
+					</Fragment>
+				)}
+				{sendToAppointmentList
+				&& (
+					<Button
+						color="primary"
+						endIcon={<Send />}
+						variant="contained">
+						Send
+					</Button>
+				)}
 			</div>
 		</div>
 	);
