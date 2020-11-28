@@ -1,8 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Button, makeStyles, TextField, Divider
-} from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import { Folder } from '@material-ui/icons';
 import clsx from 'clsx';
 import IconTextField from './iconTextField';
@@ -23,9 +21,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	undoPadding: {
 		height: 'calc(100% - 23px)'
-	},
-	adornmentDivider: {
-		margin: theme.spacing()
 	}
 }));
 
@@ -43,7 +38,7 @@ function BrowseFile({
 				Icon={Folder}
 				label={label}
 				value={filePath}
-				data-testid="browse-field"
+				testId="browse-field"
 			/>
 			<span>
 				<Button

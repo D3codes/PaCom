@@ -104,7 +104,7 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 				<div className={classes.padding}>
 					<IconTextField
 						disabled={!hasWritePermission}
-						data-testid="sid-field"
+						testId="sid-field"
 						label="SID"
 						value={sid}
 						onChange={setSid}
@@ -124,7 +124,7 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 				<div className={clsx({ [classes.padding]: phoneNumberIsValid })}>
 					<IconTextField
 						disabled={!hasWritePermission}
-						data-testid="phoneNumber-field"
+						testId="phoneNumber-field"
 						onChange={setPhoneNumber}
 						label="Phone Number"
 						helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}

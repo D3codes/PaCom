@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function IconTextField({
-	onChange, error = false, helperText = '', disabled = false, label, value = '', Icon, startAdornment = undefined
+	onChange, error = false, helperText = '', disabled = false, label, value = '', Icon, startAdornment = undefined, testId = ''
 }) {
 	const classes = useStyles();
 
@@ -35,6 +35,7 @@ function IconTextField({
 			label={label}
 			variant="outlined"
 			value={value}
+			data-testid={testId}
 		/>
 	);
 }
@@ -48,7 +49,8 @@ IconTextField.propTypes = {
 	disabled: PropTypes.bool.isRequired,
 	value: PropTypes.string,
 	Icon: PropTypes.node.isRequired,
-	startAdornment: PropTypes.string
+	startAdornment: PropTypes.string,
+	testId: PropTypes.string
 };
 
 export default IconTextField;
