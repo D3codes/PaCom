@@ -9,6 +9,7 @@ import BrowseFile from '../browseFile';
 import csvImporter from '../../utilities/csvImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import MessageTemplateComposer from '../messageTemplateComposer';
+import IconTextField from '../iconTextField';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -108,26 +109,16 @@ export default function CustomMessage() {
 				{!sendToAppointmentList
 				&& (
 					<div className={clsx(classes.sendToTextFieldContainer, { [classes.padding]: phoneNumberIsValid })}>
-						<TextField
-							fullWidth
+						<IconTextField
 							data-testid="phoneNumber-field"
-							onChange={event => { setPhoneNumber(event.target.value); }}
+							onChange={setPhoneNumber}
 							label="Phone Number"
-							variant="outlined"
 							focused
 							helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
 							error={!phoneNumberIsValid}
 							value={phoneNumber}
-							size="small"
-							InputProps={{
-								startAdornment: (
-									<Fragment>
-										<Phone color="primary" />
-										<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-										<p>+1</p>
-									</Fragment>
-								)
-							}}
+							Icon={Phone}
+							startAdornment="+1"
 						/>
 					</div>
 				)}

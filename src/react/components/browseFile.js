@@ -43,6 +43,7 @@ function BrowseFile({
 				Icon={Folder}
 				label={label}
 				value={filePath}
+				data-testid="browse-field"
 			/>
 			<span>
 				<Button
