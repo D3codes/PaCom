@@ -38,6 +38,8 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing()
 	},
 	messageTemplatesContainer: {
+		float: 'left',
+		width: '33%'
 	},
 	messageTemplates: {
 		maxHeight: 200,
@@ -49,6 +51,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	buttonSpacing: {
 		marginLeft: theme.spacing()
+	},
+	messageTemplateComposerContainer: {
+		float: 'left',
+		width: '66%'
 	}
 }));
 
@@ -126,7 +132,7 @@ export default function CustomMessage() {
 				)}
 			</div>
 			<div className={classes.composeContainer}>
-				<div className={classes.messageTemplatesContainer} style={{ float: 'left', width: '33%' }}>
+				<div className={classes.messageTemplatesContainer}>
 					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
 					<List className={classes.messageTemplates} dense={false}>
 						<ListItem>
@@ -151,7 +157,9 @@ export default function CustomMessage() {
 						</ListItem>
 					</List>
 				</div>
-				<MessageTemplateComposer style={{ float: 'left', width: '66%' }} />
+				<div className={classes.messageTemplateComposerContainer}>
+					<MessageTemplateComposer />
+				</div>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				{!sendToAppointmentList
