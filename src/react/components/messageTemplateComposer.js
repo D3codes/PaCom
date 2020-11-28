@@ -12,17 +12,21 @@ const useStyles = makeStyles(theme => ({
 		height: '100%'
 	},
 	listContainer: {
-		float: 'left'
+		float: 'left',
+		width: '50%'
 	},
 	list: {
 		height: '100%',
-		width: 100,
+		width: '100%',
 		overflow: 'auto'
 	},
 	textField: {
 		float: 'left',
 		width: '50%',
 		height: '100%'
+	},
+	darkListItem: {
+		backgroundColor: 'lightGrey'
 	}
 }));
 
@@ -41,13 +45,13 @@ function MessageTemplateComposer() {
 			<div className={classes.listContainer}>
 				<Typography color="primary" variant="h5" display="inline">Variables</Typography>
 				<List className={classes.list} dense={false}>
-					<ListItem>
+					<ListItem className={classes.darkListItem}>
 						<ListItemText primary="Testfdgfgdfgfdgdfgdfgfdgdgdfgdfgdfgdfgdfgdfg" />
 					</ListItem>
 					<ListItem>
 						<ListItemText primary="Test" />
 					</ListItem>
-					<ListItem>
+					<ListItem className={classes.darkListItem}>
 						<ListItemText primary="Test" />
 					</ListItem>
 				</List>

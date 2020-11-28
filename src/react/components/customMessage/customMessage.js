@@ -56,6 +56,9 @@ const useStyles = makeStyles(theme => ({
 	messageTemplateComposerContainer: {
 		float: 'left',
 		width: '66%'
+	},
+	darkListItem: {
+		backgroundColor: 'lightGrey'
 	}
 }));
 
@@ -127,7 +130,7 @@ export default function CustomMessage() {
 				<div className={classes.messageTemplatesContainer}>
 					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
 					<List className={classes.messageTemplates} dense={false}>
-						<ListItem>
+						<ListItem className={classes.darkListItem}>
 							<ListItemText
 								primary="Single-line item"
 							/>
@@ -137,7 +140,7 @@ export default function CustomMessage() {
 								primary="Single-line item"
 							/>
 						</ListItem>
-						<ListItem>
+						<ListItem className={classes.darkListItem}>
 							<ListItemText
 								primary="Single-line item"
 							/>
