@@ -52,6 +52,15 @@ function MessageTemplateComposer() {
 						<ListItemText primary="Test" />
 					</ListItem>
 					<ListItem className={classes.darkListItem}>
+						<ListItemText primary="Testfdgfgdfgfdgdfgdfgfdgdgdfgdfgdfgdfgdfgdfg" />
+					</ListItem>
+					<ListItem>
+						<ListItemText primary="Test" />
+					</ListItem>
+					<ListItem className={classes.darkListItem}>
+						<ListItemText primary="Testfdgfgdfgfdgdfgdfgfdgdgdfgdfgdfgdfgdfgdfg" />
+					</ListItem>
+					<ListItem>
 						<ListItemText primary="Test" />
 					</ListItem>
 				</List>

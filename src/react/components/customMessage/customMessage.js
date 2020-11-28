@@ -1,14 +1,14 @@
 import React, { useState, Fragment, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	Typography, Switch, TextField, Divider, List, ListItem, ListItemText, Button
+	Typography, Switch, List, ListItem, ListItemText, Button
 } from '@material-ui/core';
 import { Phone, Send, Sms } from '@material-ui/icons';
 import clsx from 'clsx';
 import BrowseFile from '../browseFile';
 import csvImporter from '../../utilities/csvImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
-import MessageTemplateComposer from '../messageTemplateComposer';
+import MessageTemplateComposer from '../messageTemplates/messageTemplateComposer';
 import IconTextField from '../iconTextField';
 
 // transformers
@@ -43,7 +43,6 @@ const useStyles = makeStyles(theme => ({
 		width: '33%'
 	},
 	messageTemplates: {
-		maxHeight: 200,
 		width: '100%',
 		overflow: 'auto'
 	},
@@ -130,6 +129,26 @@ export default function CustomMessage() {
 				<div className={classes.messageTemplatesContainer}>
 					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
 					<List className={classes.messageTemplates} dense={false}>
+						<ListItem className={classes.darkListItem}>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
+						<ListItem className={classes.darkListItem}>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemText
+								primary="Single-line item"
+							/>
+						</ListItem>
 						<ListItem className={classes.darkListItem}>
 							<ListItemText
 								primary="Single-line item"
