@@ -103,7 +103,7 @@ export default function CustomMessage() {
 				/>
 				<Typography color="primary" variant="h5" display="inline">Send To Appointment List</Typography>
 			</div>
-			<div className={classes.sendToTextFieldContainer}>
+			<div>
 				{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
 				{!sendToAppointmentList
 				&& (
@@ -118,6 +118,7 @@ export default function CustomMessage() {
 							helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
 							error={!phoneNumberIsValid}
 							value={phoneNumber}
+							size="small"
 							InputProps={{
 								startAdornment: (
 									<Fragment>

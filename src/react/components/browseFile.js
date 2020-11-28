@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, InputAdornment, makeStyles, TextField
+	Button, makeStyles, TextField, Divider
 } from '@material-ui/core';
 import { Folder } from '@material-ui/icons';
 import clsx from 'clsx';
@@ -14,10 +14,17 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.primary.main
 	},
 	button: {
-		marginLeft: theme.spacing(2)
+		marginLeft: theme.spacing(2),
+		height: '100%'
 	},
 	padding: {
 		paddingBottom: 23
+	},
+	undoPadding: {
+		height: 'calc(100% - 23px)'
+	},
+	adornmentDivider: {
+		margin: theme.spacing()
 	}
 }));
 
@@ -38,16 +45,25 @@ function BrowseFile({
 				InputProps={{
 					notched: true,
 					startAdornment: (
-						<InputAdornment className={classes.browseIcon} position="start"><Folder /></InputAdornment>
+						<Fragment>
+							<Folder color="primary" />
+							<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+						</Fragment>
 					)
 				}}
 				label={label}
-				size="small"
 				variant="outlined"
 				value={filePath}
 			/>
 			<span>
-				<Button className={classes.button} color="primary" onClick={onBrowseClick} disabled={disabled} variant={disabled ? 'outlined' : 'contained'}>Browse</Button>
+				<Button
+					className={clsx(classes.button, { [classes.undoPadding]: helperText })}
+					color="primary"
+					onClick={onBrowseClick}
+					disabled={disabled}
+					variant={disabled ? 'outlined' : 'contained'}>
+						Browse
+				</Button>
 			</span>
 		</div>
 	);
