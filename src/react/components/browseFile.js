@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import { Folder } from '@material-ui/icons';
 import clsx from 'clsx';
+import IconTextField from './iconTextField';
 
 const useStyles = makeStyles(theme => ({
 	browseContainer: {
@@ -34,25 +35,13 @@ function BrowseFile({
 	const classes = useStyles();
 	return (
 		<div className={clsx(classes.browseContainer, { [classes.padding]: !helperText })}>
-			<TextField
+			<IconTextField
 				disabled={disabled}
 				error={error}
 				helperText={helperText}
-				focused={!disabled}
-				fullWidth
-				data-testid="browse-field"
-				onChange={event => { onFilePathChange(event.target.value); }}
-				InputProps={{
-					notched: true,
-					startAdornment: (
-						<Fragment>
-							<Folder color="primary" />
-							<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						</Fragment>
-					)
-				}}
+				onChange={onFilePathChange}
+				Icon={Folder}
 				label={label}
-				variant="outlined"
 				value={filePath}
 			/>
 			<span>
