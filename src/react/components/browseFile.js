@@ -17,10 +17,10 @@ const useStyles = makeStyles(theme => ({
 		height: '100%'
 	},
 	padding: {
-		paddingBottom: 23
+		paddingBottom: 22
 	},
 	undoPadding: {
-		height: 'calc(100% - 23px)'
+		height: 'calc(100% - 22px)'
 	}
 }));
 
