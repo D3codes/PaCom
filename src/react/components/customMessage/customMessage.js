@@ -40,7 +40,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	messageTemplatesContainer: {
 		float: 'left',
-		width: '33%'
+		width: 'calc(33% - 10px)',
+		marginRight: '10px'
 	},
 	messageTemplates: {
 		width: '100%',

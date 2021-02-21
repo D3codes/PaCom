@@ -7,34 +7,40 @@ import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: '100%'
 	},
 	listContainer: {
 		float: 'left',
-		width: '50%'
+		width: 'calc(50% - 10px)',
+		overflowY: 'auto',
+		height: '100%'
 	},
 	list: {
-		height: '100%',
 		width: '100%',
-		overflow: 'auto'
+		overflowY: 'auto'
 	},
 	textField: {
 		float: 'left',
 		width: '50%',
-		height: '100%'
+		height: '100%',
+		marginRight: '10px'
 	},
 	darkListItem: {
-		backgroundColor: 'lightGrey'
+		backgroundColor: 'lightGrey',
+		borderRadius: '10px'
+	},
+	lightListItem: {
+		borderRadius: '10px'
 	}
 }));
+
+const variables = ['var1', 'var2', 'var3', 'var4', 'var5', 'var6', 'var7', 'var8', 'var9', 'var10', 'var11', 'var12', 'var13'];
 
 function MessageTemplateComposer() {
 	const classes = useStyles();
 
 	return (
-		<div>
+		<div className={classes.root}>
 			<TextField
 				label="Message"
 				multiline
@@ -45,24 +51,11 @@ function MessageTemplateComposer() {
 			<div className={classes.listContainer}>
 				<Typography color="primary" variant="h5" display="inline">Variables</Typography>
 				<List className={classes.list} dense={false}>
-					<ListItem className={classes.darkListItem}>
-						<ListItemText primary="Testfdgfgdfgfdgdfgdfgfdgdgdfgdfgdfgdfgdfgdfg" />
-					</ListItem>
-					<ListItem>
-						<ListItemText primary="Test" />
-					</ListItem>
-					<ListItem className={classes.darkListItem}>
-						<ListItemText primary="Testfdgfgdfgfdgdfgdfgfdgdgdfgdfgdfgdfgdfgdfg" />
-					</ListItem>
-					<ListItem>
-						<ListItemText primary="Test" />
-					</ListItem>
-					<ListItem className={classes.darkListItem}>
-						<ListItemText primary="Testfdgfgdfgfdgdfgdfgfdgdgdfgdfgdfgdfgdfgdfg" />
-					</ListItem>
-					<ListItem>
-						<ListItemText primary="Test" />
-					</ListItem>
+					{variables.map((variable, index) => (
+						<ListItem className={index % 2 === 0 ? classes.darkListItem : classes.lightListItem}>
+							<ListItemText primary={variable} />
+						</ListItem>
+					))}
 				</List>
 			</div>
 		</div>
