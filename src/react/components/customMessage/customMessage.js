@@ -48,14 +48,16 @@ const useStyles = makeStyles(theme => ({
 		overflow: 'auto'
 	},
 	composeContainer: {
-		flex: 1
+		flex: 1,
+		height: '200px'
 	},
 	buttonSpacing: {
 		marginLeft: theme.spacing()
 	},
 	messageTemplateComposerContainer: {
 		float: 'left',
-		width: '66%'
+		width: '66%',
+		height: '100%'
 	},
 	darkListItem: {
 		backgroundColor: 'lightGrey'

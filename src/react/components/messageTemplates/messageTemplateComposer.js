@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	list: {
 		width: '100%',
-		overflowY: 'auto'
+		overflowY: 'auto',
+		height: '100%'
 	},
 	textField: {
 		float: 'left',
