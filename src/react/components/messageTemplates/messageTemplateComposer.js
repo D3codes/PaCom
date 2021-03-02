@@ -1,19 +1,18 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	TextField, List, ListItem, ListItemText, Typography
+	TextField, List, ListItem, ListItemText, Typography, Card
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		height: '100%'
 	},
 	listContainer: {
 		float: 'left',
 		width: 'calc(50% - 10px)',
-		overflowY: 'auto',
-		height: '100%'
+		overflowY: 'hidden',
+		height: '90%'
 	},
 	list: {
 		width: '100%',
@@ -24,14 +23,11 @@ const useStyles = makeStyles(theme => ({
 		float: 'left',
 		width: '50%',
 		height: '100%',
-		marginRight: '10px'
+		marginRight: '10px',
+		marginTop: '32px'
 	},
 	darkListItem: {
-		backgroundColor: 'lightGrey',
-		borderRadius: '10px'
-	},
-	lightListItem: {
-		borderRadius: '10px'
+		backgroundColor: 'gainsboro'
 	}
 }));
 
@@ -49,16 +45,16 @@ function MessageTemplateComposer() {
 				variant="outlined"
 				className={classes.textField}
 			/>
-			<div className={classes.listContainer}>
-				<Typography color="primary" variant="h5" display="inline">Variables</Typography>
+			<Typography color="primary" variant="h5" display="inline">Variables</Typography>
+			<Card className={classes.listContainer}>
 				<List className={classes.list} dense={false}>
 					{variables.map((variable, index) => (
-						<ListItem className={index % 2 === 0 ? classes.darkListItem : classes.lightListItem}>
+						<ListItem className={index % 2 === 0 ? classes.darkListItem : ''}>
 							<ListItemText primary={variable} />
 						</ListItem>
 					))}
 				</List>
-			</div>
+			</Card>
 		</div>
 	);
 }

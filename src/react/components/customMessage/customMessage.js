@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	Typography, Switch, List, ListItem, ListItemText, Button
+	Typography, Switch, List, ListItem, ListItemText, Button, Card
 } from '@material-ui/core';
 import { Phone, Send, Sms } from '@material-ui/icons';
 import clsx from 'clsx';
@@ -41,11 +41,17 @@ const useStyles = makeStyles(theme => ({
 	messageTemplatesContainer: {
 		float: 'left',
 		width: 'calc(33% - 10px)',
-		marginRight: '10px'
+		marginRight: '10px',
+		height: '100%'
+	},
+	messageTemplatesListContainer: {
+		overflowY: 'hidden',
+		height: '90%'
 	},
 	messageTemplates: {
 		width: '100%',
-		overflow: 'auto'
+		overflowY: 'auto',
+		height: '100%'
 	},
 	composeContainer: {
 		flex: 1,
@@ -60,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 		height: '100%'
 	},
 	darkListItem: {
-		backgroundColor: 'lightGrey'
+		backgroundColor: 'gainsboro'
 	}
 }));
 
@@ -73,6 +79,8 @@ const transformersByEhr = {
 };
 
 const selectedEhr = Ehrs.Pulse;
+
+const variables = ['template1', 'template2', 'template3', 'template4', 'template5', 'template6', 'template7', 'template8', 'template9', 'template10', 'template11', 'template12', 'template13'];
 
 export default function CustomMessage() {
 	const classes = useStyles();
@@ -130,49 +138,16 @@ export default function CustomMessage() {
 			</div>
 			<div className={classes.composeContainer}>
 				<div className={classes.messageTemplatesContainer}>
-					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
-					<List className={classes.messageTemplates} dense={false}>
-						<ListItem className={classes.darkListItem}>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-						<ListItem>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-						<ListItem className={classes.darkListItem}>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-						<ListItem>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-						<ListItem className={classes.darkListItem}>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-						<ListItem>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-						<ListItem className={classes.darkListItem}>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-						<ListItem>
-							<ListItemText
-								primary="Single-line item"
-							/>
-						</ListItem>
-					</List>
+					<Typography color="primary" variant="h5" display="inline" classNem={classes.templatesText}>Templates</Typography>
+					<Card className={classes.messageTemplatesListContainer}>
+						<List className={classes.messageTemplates} dense={false}>
+							{variables.map((variable, index) => (
+								<ListItem className={index % 2 === 0 ? classes.darkListItem : ''}>
+									<ListItemText primary={variable} />
+								</ListItem>
+							))}
+						</List>
+					</Card>
 				</div>
 				<div className={classes.messageTemplateComposerContainer}>
 					<MessageTemplateComposer />
