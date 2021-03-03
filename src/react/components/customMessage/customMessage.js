@@ -1,14 +1,13 @@
 import React, { useState, Fragment, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	Typography, Switch, List, ListItem, ListItemText, Button, Card, Divider
+	Typography, Switch, List, ListItem, ListItemText, Button, Card, Divider, TextField
 } from '@material-ui/core';
 import { Phone, Send, Sms } from '@material-ui/icons';
 import clsx from 'clsx';
 import BrowseFile from '../browseFile';
 import csvImporter from '../../utilities/csvImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
-import MessageTemplateComposer from '../messageTemplates/messageTemplateComposer';
 import IconTextField from '../iconTextField';
 
 // transformers
@@ -64,6 +63,24 @@ const useStyles = makeStyles(theme => ({
 		float: 'left',
 		width: '66%',
 		height: '100%'
+	},
+	textField: {
+		float: 'left',
+		width: '50%',
+		height: '100%',
+		marginRight: '10px',
+		marginTop: '32px'
+	},
+	listContainer: {
+		float: 'left',
+		width: 'calc(50% - 10px)',
+		overflowY: 'hidden',
+		height: '90%'
+	},
+	list: {
+		width: '100%',
+		overflowY: 'auto',
+		height: '100%'
 	}
 }));
 
@@ -77,7 +94,22 @@ const transformersByEhr = {
 
 const selectedEhr = Ehrs.Pulse;
 
-const variables = ['template1', 'template2', 'template3', 'template4', 'template5', 'template6', 'template7', 'template8', 'template9', 'template10', 'template11', 'template12', 'template13'];
+const templates = [
+	{ name: 'template1', value: 'this is template1' },
+	{ name: 'template2', value: 'this is template2' },
+	{ name: 'template3', value: 'this is template3' },
+	{ name: 'template4', value: 'this is template4' },
+	{ name: 'template5', value: 'this is template5' }
+];
+
+const variables = [
+	{ name: 'Provider', value: '{{provider}}' },
+	{ name: 'Patient', value: '{{patient}}' },
+	{ name: 'Appt. Date', value: '{{date}}' },
+	{ name: 'Appt. Time', value: '{{time}}' },
+	{ name: 'Appt. Duration', value: '{{duration}}' },
+	{ name: 'Procedure', value: '{{procedure}}' }
+];
 
 export default function CustomMessage() {
 	const classes = useStyles();
@@ -87,6 +119,7 @@ export default function CustomMessage() {
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const enableSendButtons = useMemo(() => (sendToAppointmentList ? !!appointments : phoneNumberIsValid), [phoneNumberIsValid, sendToAppointmentList, appointments]);
+	const [message, setMessage] = useState('');
 
 	const handleSwitch = event => {
 		setSendToAppointmentList(event.target.checked);
@@ -101,6 +134,14 @@ export default function CustomMessage() {
 	const handleFilePathChange = path => {
 		setFilePath(path);
 		// handle reload of appointments here
+	};
+
+	const onTemplateSelect = template => {
+		setMessage(template);
+	};
+
+	const onVariableSelect = variable => {
+		setMessage(message + variable);
 	};
 
 	return (
@@ -138,10 +179,10 @@ export default function CustomMessage() {
 					<Typography color="primary" variant="h5" display="inline" classNem={classes.templatesText}>Templates</Typography>
 					<Card className={classes.messageTemplatesListContainer}>
 						<List className={classes.messageTemplates} dense={false}>
-							{variables.map(variable => (
+							{templates.map(template => (
 								<React.Fragment>
-									<ListItem button>
-										<ListItemText primary={variable} />
+									<ListItem button onClick={() => onTemplateSelect(template.value)}>
+										<ListItemText primary={template.name} />
 									</ListItem>
 									<Divider />
 								</React.Fragment>
@@ -150,7 +191,28 @@ export default function CustomMessage() {
 					</Card>
 				</div>
 				<div className={classes.messageTemplateComposerContainer}>
-					<MessageTemplateComposer />
+					<TextField
+						label="Message"
+						multiline
+						rows={15}
+						variant="outlined"
+						className={classes.textField}
+						value={message}
+						onChange={event => { setMessage(event.target.value); }}
+					/>
+					<Typography color="primary" variant="h5" display="inline">Variables</Typography>
+					<Card className={classes.listContainer}>
+						<List className={classes.list} dense={false}>
+							{variables.map(variable => (
+								<React.Fragment>
+									<ListItem button onClick={() => onVariableSelect(variable.value)}>
+										<ListItemText primary={variable.name} />
+									</ListItem>
+									<Divider />
+								</React.Fragment>
+							))}
+						</List>
+					</Card>
 				</div>
 			</div>
 			<div className={classes.actionButtonContainer}>
