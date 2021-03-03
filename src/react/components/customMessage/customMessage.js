@@ -71,13 +71,13 @@ const useStyles = makeStyles(theme => ({
 		marginRight: '10px',
 		marginTop: '32px'
 	},
-	listContainer: {
+	variableListContainer: {
 		float: 'left',
 		width: 'calc(50% - 10px)',
 		overflowY: 'hidden',
 		height: '90%'
 	},
-	list: {
+	variableList: {
 		width: '100%',
 		overflowY: 'auto',
 		height: '100%'
@@ -201,8 +201,8 @@ export default function CustomMessage() {
 						onChange={event => { setMessage(event.target.value); }}
 					/>
 					<Typography color="primary" variant="h5" display="inline">Variables</Typography>
-					<Card className={classes.listContainer}>
-						<List className={classes.list} dense={false}>
+					<Card className={classes.variableListContainer}>
+						<List className={classes.variableList} dense={false}>
 							{variables.map(variable => (
 								<React.Fragment>
 									<ListItem button onClick={() => onVariableSelect(variable.value)}>
