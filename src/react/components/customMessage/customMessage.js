@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	Typography, Switch, List, ListItem, ListItemText, Button, Card
+	Typography, Switch, List, ListItem, ListItemText, Button, Card, Divider
 } from '@material-ui/core';
 import { Phone, Send, Sms } from '@material-ui/icons';
 import clsx from 'clsx';
@@ -64,9 +64,6 @@ const useStyles = makeStyles(theme => ({
 		float: 'left',
 		width: '66%',
 		height: '100%'
-	},
-	darkListItem: {
-		backgroundColor: 'gainsboro'
 	}
 }));
 
@@ -141,10 +138,13 @@ export default function CustomMessage() {
 					<Typography color="primary" variant="h5" display="inline" classNem={classes.templatesText}>Templates</Typography>
 					<Card className={classes.messageTemplatesListContainer}>
 						<List className={classes.messageTemplates} dense={false}>
-							{variables.map((variable, index) => (
-								<ListItem className={index % 2 === 0 ? classes.darkListItem : ''}>
-									<ListItemText primary={variable} />
-								</ListItem>
+							{variables.map(variable => (
+								<React.Fragment>
+									<ListItem button>
+										<ListItemText primary={variable} />
+									</ListItem>
+									<Divider />
+								</React.Fragment>
 							))}
 						</List>
 					</Card>

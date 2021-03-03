@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	TextField, List, ListItem, ListItemText, Typography, Card
+	TextField, List, ListItem, ListItemText, Typography, Card, Divider
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -25,9 +25,6 @@ const useStyles = makeStyles(() => ({
 		height: '100%',
 		marginRight: '10px',
 		marginTop: '32px'
-	},
-	darkListItem: {
-		backgroundColor: 'gainsboro'
 	}
 }));
 
@@ -48,10 +45,13 @@ function MessageTemplateComposer() {
 			<Typography color="primary" variant="h5" display="inline">Variables</Typography>
 			<Card className={classes.listContainer}>
 				<List className={classes.list} dense={false}>
-					{variables.map((variable, index) => (
-						<ListItem className={index % 2 === 0 ? classes.darkListItem : ''}>
-							<ListItemText primary={variable} />
-						</ListItem>
+					{variables.map(variable => (
+						<React.Fragment>
+							<ListItem button>
+								<ListItemText primary={variable} />
+							</ListItem>
+							<Divider />
+						</React.Fragment>
 					))}
 				</List>
 			</Card>
