@@ -3,13 +3,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
 	Typography, Switch, Button, TextField
 } from '@material-ui/core';
-import { Phone, Send, Sms } from '@material-ui/icons';
+import {
+	Phone, Sms, ArrowForwardIos, ArrowBackIos
+} from '@material-ui/icons';
 import clsx from 'clsx';
 import BrowseFile from '../browseFile';
 import csvImporter from '../../utilities/csvImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import IconTextField from '../iconTextField';
 import ContainedLabeledList from '../containedLabeledList';
+import ReportTable from '../reportTable/reportTable';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -55,6 +58,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	buttonSpacing: {
 		marginLeft: theme.spacing()
+	},
+	backButton: {
+		width: '10%'
 	}
 }));
 
@@ -75,6 +81,7 @@ export default function CustomMessage() {
 	const [filePath, setFilePath] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [message, setMessage] = useState('');
+	const [showReportTable, setShowReportTable] = useState(false);
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const enableSendButtons = useMemo(() => (sendToAppointmentList ? !!appointments : phoneNumberIsValid), [phoneNumberIsValid, sendToAppointmentList, appointments]);
 
@@ -111,18 +118,6 @@ export default function CustomMessage() {
 		// handle reload of appointments here
 	};
 
-	const onTemplateSelect = template => {
-		setMessage(template);
-	};
-
-	const onVariableSelect = variable => {
-		setMessage(prevMessage => prevMessage + variable);
-	};
-
-	const onSendToAppointments = () => {
-		// show report table and begin sending
-	};
-
 	const onSendAsSms = () => {
 		// send as sms
 	};
@@ -133,88 +128,98 @@ export default function CustomMessage() {
 
 	return (
 		<div className={classes.root}>
-			<div className={classes.sendTo}>
-				<Typography color="primary" variant="h5" display="inline">Send To Specific Number</Typography>
-				<Switch
-					checked={sendToAppointmentList}
-					onChange={handleSwitch}
-					color="default"
-					data-testid="sendByToggle-id"
-				/>
-				<Typography color="primary" variant="h5" display="inline">Send To Appointment List</Typography>
-			</div>
-			<div>
-				{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
-				{!sendToAppointmentList
-				&& (
-					<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
-						<IconTextField
-							testId="phoneNumber-field"
-							disabled={false}
-							onChange={setPhoneNumber}
-							label="Phone Number"
-							focused
-							helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
-							error={!phoneNumberIsValid}
-							value={phoneNumber}
-							Icon={Phone}
-							startAdornment="+1"
+			{showReportTable && (
+				<React.Fragment>
+					<Button onClick={() => setShowReportTable(false)} className={classes.backButton} color="primary" startIcon={<ArrowBackIos />}>Back</Button>
+					<ReportTable reminders={appointments} />
+				</React.Fragment>
+			)}
+			{!showReportTable && (
+				<React.Fragment>
+					<div className={classes.sendTo}>
+						<Typography color="primary" variant="h5" display="inline">Send To Specific Number</Typography>
+						<Switch
+							checked={sendToAppointmentList}
+							onChange={handleSwitch}
+							color="default"
+							data-testid="sendByToggle-id"
 						/>
+						<Typography color="primary" variant="h5" display="inline">Send To Appointment List</Typography>
 					</div>
-				)}
-			</div>
-			<div className={classes.composeContainer}>
-				<div className={classes.listContainer}>
-					<ContainedLabeledList onClick={onTemplateSelect} label="Templates" items={messageTemplates} />
-				</div>
-				<TextField
-					label="Message"
-					multiline
-					rows={15}
-					variant="outlined"
-					className={classes.textField}
-					value={message}
-					onChange={event => { setMessage(event.target.value); }}
-				/>
-				<div className={classes.listContainer}>
-					<ContainedLabeledList onClick={onVariableSelect} label="Variables" items={variables} />
-				</div>
-			</div>
-			<div className={classes.actionButtonContainer}>
-				{!sendToAppointmentList
-				&& (
-					<Fragment>
-						<Button
-							disabled={!enableSendButtons}
-							color="primary"
-							endIcon={<Sms />}
-							variant={enableSendButtons ? 'contained' : 'outlined'}
-							onClick={onSendAsSms}>
-							Send as SMS
-						</Button>
-						<div className={classes.buttonSpacing} />
-						<Button
-							disabled={!enableSendButtons}
-							color="primary"
-							endIcon={<Phone />}
-							variant={enableSendButtons ? 'contained' : 'outlined'}
-							onClick={onSendAsCall}>
-							Send as Call
-						</Button>
-					</Fragment>
-				)}
-				{sendToAppointmentList
-				&& (
-					<Button
-						disabled={!enableSendButtons}
-						color="primary"
-						endIcon={<Send />}
-						variant={enableSendButtons ? 'contained' : 'outlined'}
-						onClick={onSendToAppointments}>
-						Send
-					</Button>
-				)}
-			</div>
+					<div>
+						{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
+						{!sendToAppointmentList
+						&& (
+							<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
+								<IconTextField
+									testId="phoneNumber-field"
+									disabled={false}
+									onChange={setPhoneNumber}
+									label="Phone Number"
+									focused
+									helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
+									error={!phoneNumberIsValid}
+									value={phoneNumber}
+									Icon={Phone}
+									startAdornment="+1"
+								/>
+							</div>
+						)}
+					</div>
+					<div className={classes.composeContainer}>
+						<div className={classes.listContainer}>
+							<ContainedLabeledList onClick={template => setMessage(template.value)} label="Templates" items={messageTemplates} />
+						</div>
+						<TextField
+							label="Message"
+							multiline
+							rows={15}
+							variant="outlined"
+							className={classes.textField}
+							value={message}
+							onChange={event => { setMessage(event.target.value); }}
+						/>
+						<div className={classes.listContainer}>
+							<ContainedLabeledList onClick={variable => setMessage(prevMessage => prevMessage + variable.value)} label="Variables" items={variables} />
+						</div>
+					</div>
+					<div className={classes.actionButtonContainer}>
+						{!sendToAppointmentList
+						&& (
+							<Fragment>
+								<Button
+									disabled={!enableSendButtons}
+									color="primary"
+									endIcon={<Sms />}
+									variant={enableSendButtons ? 'contained' : 'outlined'}
+									onClick={onSendAsSms}>
+									Send as SMS
+								</Button>
+								<div className={classes.buttonSpacing} />
+								<Button
+									disabled={!enableSendButtons}
+									color="primary"
+									endIcon={<Phone />}
+									variant={enableSendButtons ? 'contained' : 'outlined'}
+									onClick={onSendAsCall}>
+									Send as Call
+								</Button>
+							</Fragment>
+						)}
+						{sendToAppointmentList
+						&& (
+							<Button
+								disabled={!enableSendButtons}
+								color="primary"
+								endIcon={<ArrowForwardIos />}
+								variant={enableSendButtons ? 'contained' : 'outlined'}
+								onClick={() => setShowReportTable(true)}>
+								Continue
+							</Button>
+						)}
+					</div>
+				</React.Fragment>
+			)}
 		</div>
 	);
 }
