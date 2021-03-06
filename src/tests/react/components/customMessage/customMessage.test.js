@@ -29,6 +29,12 @@ describe('CustomMessage', () => {
 		expect(getByText('Send as Call')).toBeDisabled();
 
 		const phoneNumberField = getByTestId('phoneNumber-field').querySelector('input');
+		phoneNumberField.value = 'bad data';
+		Simulate.change(phoneNumberField);
+
+		expect(getByText('Send as SMS')).toBeDisabled();
+		expect(getByText('Send as Call')).toBeDisabled();
+
 		phoneNumberField.value = '1234567890';
 		Simulate.change(phoneNumberField);
 
