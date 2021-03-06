@@ -139,6 +139,7 @@ export default function CustomMessage() {
 					checked={sendToAppointmentList}
 					onChange={handleSwitch}
 					color="default"
+					data-testid="sendByToggle-id"
 				/>
 				<Typography color="primary" variant="h5" display="inline">Send To Appointment List</Typography>
 			</div>
@@ -148,7 +149,8 @@ export default function CustomMessage() {
 				&& (
 					<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
 						<IconTextField
-							data-testid="phoneNumber-field"
+							testId="phoneNumber-field"
+							disabled={false}
 							onChange={setPhoneNumber}
 							label="Phone Number"
 							focused

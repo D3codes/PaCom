@@ -29,7 +29,7 @@ function ContainedLabeledList({ onClick, label = '', items }) {
 			<Card className={classes.card}>
 				<List className={classes.list} dense={false}>
 					{items && items.map(item => (
-						<React.Fragment>
+						<React.Fragment key={JSON.stringify(item)}>
 							<ListItem button onClick={() => onClick(item.value)}>
 								<ListItemText primary={item.name} />
 							</ListItem>
