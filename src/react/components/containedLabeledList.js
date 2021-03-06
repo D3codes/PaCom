@@ -6,7 +6,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-	root: {
+	containedLabeledListContainer: {
 		height: '100%'
 	},
 	card: {
@@ -24,11 +24,11 @@ function ContainedLabeledList({ onClick, label = '', items }) {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.root}>
+		<div className={classes.containedLabeledListContainer}>
 			<Typography color="primary" variant="h5" display="inline">{label}</Typography>
 			<Card className={classes.card}>
 				<List className={classes.list} dense={false}>
-					{items.map(item => (
+					{items && items.map(item => (
 						<React.Fragment>
 							<ListItem button onClick={() => onClick(item.value)}>
 								<ListItemText primary={item.name} />

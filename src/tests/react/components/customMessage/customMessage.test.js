@@ -6,6 +6,6 @@ import CustomMessage from '../../../../react/components/customMessage/customMess
 describe('CustomMessage', () => {
 	it('renders without crashing', () => {
 		const { getByText } = render(<CustomMessage />);
-		expect(getByText('This is the Custom Message Content')).toBeDefined();
+		expect(getByText('Send To Specific Number')).toBeDefined();
 	});
 });
