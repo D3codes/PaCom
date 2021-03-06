@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	Typography, Switch, List, ListItem, ListItemText, Button, Card, Divider, TextField
+	Typography, Switch, Button, TextField
 } from '@material-ui/core';
 import { Phone, Send, Sms } from '@material-ui/icons';
 import clsx from 'clsx';
@@ -9,6 +9,7 @@ import BrowseFile from '../browseFile';
 import csvImporter from '../../utilities/csvImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import IconTextField from '../iconTextField';
+import ContainedLabeledList from '../containedLabeledList';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -39,14 +40,9 @@ const useStyles = makeStyles(theme => ({
 		flex: 1,
 		height: '200px'
 	},
-	messageTemplatesContainer: {
+	listContainer: {
 		float: 'left',
 		width: 'calc(33% - 10px)',
-		marginRight: '10px',
-		height: '100%'
-	},
-	messageTemplatesListContainer: {
-		overflowY: 'hidden',
 		height: '90%'
 	},
 	textField: {
@@ -54,18 +50,8 @@ const useStyles = makeStyles(theme => ({
 		width: '33%',
 		height: '100%',
 		marginRight: '10px',
+		marginLeft: '10px',
 		marginTop: '32px'
-	},
-	variableListContainer: {
-		float: 'left',
-		width: 'calc(33% - 10px)',
-		overflowY: 'hidden',
-		height: '90%'
-	},
-	list: {
-		width: '100%',
-		overflowY: 'auto',
-		height: '100%'
 	},
 	buttonSpacing: {
 		marginLeft: theme.spacing()
@@ -176,20 +162,8 @@ export default function CustomMessage() {
 				)}
 			</div>
 			<div className={classes.composeContainer}>
-				<div className={classes.messageTemplatesContainer}>
-					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
-					<Card className={classes.messageTemplatesListContainer}>
-						<List className={classes.list} dense={false}>
-							{messageTemplates.map(template => (
-								<React.Fragment>
-									<ListItem button onClick={() => onTemplateSelect(template.value)}>
-										<ListItemText primary={template.name} />
-									</ListItem>
-									<Divider />
-								</React.Fragment>
-							))}
-						</List>
-					</Card>
+				<div className={classes.listContainer}>
+					<ContainedLabeledList onClick={onTemplateSelect} label="Templates" items={messageTemplates} />
 				</div>
 				<TextField
 					label="Message"
@@ -200,19 +174,9 @@ export default function CustomMessage() {
 					value={message}
 					onChange={event => { setMessage(event.target.value); }}
 				/>
-				<Typography color="primary" variant="h5" display="inline">Variables</Typography>
-				<Card className={classes.variableListContainer}>
-					<List className={classes.list} dense={false}>
-						{variables.map(variable => (
-							<React.Fragment>
-								<ListItem button onClick={() => onVariableSelect(variable.value)}>
-									<ListItemText primary={variable.name} />
-								</ListItem>
-								<Divider />
-							</React.Fragment>
-						))}
-					</List>
-				</Card>
+				<div className={classes.listContainer}>
+					<ContainedLabeledList onClick={onVariableSelect} label="Variables" items={variables} />
+				</div>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				{!sendToAppointmentList
