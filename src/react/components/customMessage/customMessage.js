@@ -29,13 +29,15 @@ const useStyles = makeStyles(theme => ({
 	sendTo: {
 		alignSelf: 'center'
 	},
-	padding: {
+	phoneNumberPadding: {
 		paddingBottom: 22
-	},
-	sendToTextFieldContainer: {
 	},
 	adornmentDivider: {
 		margin: theme.spacing()
+	},
+	composeContainer: {
+		flex: 1,
+		height: '200px'
 	},
 	messageTemplatesContainer: {
 		float: 'left',
@@ -47,40 +49,26 @@ const useStyles = makeStyles(theme => ({
 		overflowY: 'hidden',
 		height: '90%'
 	},
-	messageTemplates: {
-		width: '100%',
-		overflowY: 'auto',
-		height: '100%'
-	},
-	composeContainer: {
-		flex: 1,
-		height: '200px'
-	},
-	buttonSpacing: {
-		marginLeft: theme.spacing()
-	},
-	messageTemplateComposerContainer: {
-		float: 'left',
-		width: '66%',
-		height: '100%'
-	},
 	textField: {
 		float: 'left',
-		width: '50%',
+		width: '33%',
 		height: '100%',
 		marginRight: '10px',
 		marginTop: '32px'
 	},
 	variableListContainer: {
 		float: 'left',
-		width: 'calc(50% - 10px)',
+		width: 'calc(33% - 10px)',
 		overflowY: 'hidden',
 		height: '90%'
 	},
-	variableList: {
+	list: {
 		width: '100%',
 		overflowY: 'auto',
 		height: '100%'
+	},
+	buttonSpacing: {
+		marginLeft: theme.spacing()
 	}
 }));
 
@@ -94,32 +82,33 @@ const transformersByEhr = {
 
 const selectedEhr = Ehrs.Pulse;
 
-const templates = [
-	{ name: 'template1', value: 'this is template1' },
-	{ name: 'template2', value: 'this is template2' },
-	{ name: 'template3', value: 'this is template3' },
-	{ name: 'template4', value: 'this is template4' },
-	{ name: 'template5', value: 'this is template5' }
-];
-
-const variables = [
-	{ name: 'Provider', value: '{{provider}}' },
-	{ name: 'Patient', value: '{{patient}}' },
-	{ name: 'Appt. Date', value: '{{date}}' },
-	{ name: 'Appt. Time', value: '{{time}}' },
-	{ name: 'Appt. Duration', value: '{{duration}}' },
-	{ name: 'Procedure', value: '{{procedure}}' }
-];
-
 export default function CustomMessage() {
 	const classes = useStyles();
 	const [sendToAppointmentList, setSendToAppointmentList] = useState(false);
 	const [appointments, setAppointments] = useState(null);
 	const [filePath, setFilePath] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
+	const [message, setMessage] = useState('');
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const enableSendButtons = useMemo(() => (sendToAppointmentList ? !!appointments : phoneNumberIsValid), [phoneNumberIsValid, sendToAppointmentList, appointments]);
-	const [message, setMessage] = useState('');
+
+	// TODO: get templates and variables from persistent storage, once added
+	const messageTemplates = [
+		{ name: 'template1', value: 'this is template1' },
+		{ name: 'template2', value: 'this is template2' },
+		{ name: 'template3', value: 'this is template3' },
+		{ name: 'template4', value: 'this is template4' },
+		{ name: 'template5', value: 'this is template5' }
+	];
+
+	const variables = [
+		{ name: 'Provider', value: '{{provider}}' },
+		{ name: 'Patient', value: '{{patient}}' },
+		{ name: 'Appt. Date', value: '{{date}}' },
+		{ name: 'Appt. Time', value: '{{time}}' },
+		{ name: 'Appt. Duration', value: '{{duration}}' },
+		{ name: 'Procedure', value: '{{procedure}}' }
+	];
 
 	const handleSwitch = event => {
 		setSendToAppointmentList(event.target.checked);
@@ -141,7 +130,19 @@ export default function CustomMessage() {
 	};
 
 	const onVariableSelect = variable => {
-		setMessage(message + variable);
+		setMessage(prevMessage => prevMessage + variable);
+	};
+
+	const onSendToAppointments = () => {
+		// show report table and begin sending
+	};
+
+	const onSendAsSms = () => {
+		// send as sms
+	};
+
+	const onSendAsCall = () => {
+		// send as call
 	};
 
 	return (
@@ -159,7 +160,7 @@ export default function CustomMessage() {
 				{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
 				{!sendToAppointmentList
 				&& (
-					<div className={clsx(classes.sendToTextFieldContainer, { [classes.padding]: phoneNumberIsValid })}>
+					<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
 						<IconTextField
 							data-testid="phoneNumber-field"
 							onChange={setPhoneNumber}
@@ -176,10 +177,10 @@ export default function CustomMessage() {
 			</div>
 			<div className={classes.composeContainer}>
 				<div className={classes.messageTemplatesContainer}>
-					<Typography color="primary" variant="h5" display="inline" classNem={classes.templatesText}>Templates</Typography>
+					<Typography color="primary" variant="h5" display="inline">Templates</Typography>
 					<Card className={classes.messageTemplatesListContainer}>
-						<List className={classes.messageTemplates} dense={false}>
-							{templates.map(template => (
+						<List className={classes.list} dense={false}>
+							{messageTemplates.map(template => (
 								<React.Fragment>
 									<ListItem button onClick={() => onTemplateSelect(template.value)}>
 										<ListItemText primary={template.name} />
@@ -190,30 +191,28 @@ export default function CustomMessage() {
 						</List>
 					</Card>
 				</div>
-				<div className={classes.messageTemplateComposerContainer}>
-					<TextField
-						label="Message"
-						multiline
-						rows={15}
-						variant="outlined"
-						className={classes.textField}
-						value={message}
-						onChange={event => { setMessage(event.target.value); }}
-					/>
-					<Typography color="primary" variant="h5" display="inline">Variables</Typography>
-					<Card className={classes.variableListContainer}>
-						<List className={classes.variableList} dense={false}>
-							{variables.map(variable => (
-								<React.Fragment>
-									<ListItem button onClick={() => onVariableSelect(variable.value)}>
-										<ListItemText primary={variable.name} />
-									</ListItem>
-									<Divider />
-								</React.Fragment>
-							))}
-						</List>
-					</Card>
-				</div>
+				<TextField
+					label="Message"
+					multiline
+					rows={15}
+					variant="outlined"
+					className={classes.textField}
+					value={message}
+					onChange={event => { setMessage(event.target.value); }}
+				/>
+				<Typography color="primary" variant="h5" display="inline">Variables</Typography>
+				<Card className={classes.variableListContainer}>
+					<List className={classes.list} dense={false}>
+						{variables.map(variable => (
+							<React.Fragment>
+								<ListItem button onClick={() => onVariableSelect(variable.value)}>
+									<ListItemText primary={variable.name} />
+								</ListItem>
+								<Divider />
+							</React.Fragment>
+						))}
+					</List>
+				</Card>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				{!sendToAppointmentList
@@ -223,7 +222,8 @@ export default function CustomMessage() {
 							disabled={!enableSendButtons}
 							color="primary"
 							endIcon={<Sms />}
-							variant={enableSendButtons ? 'contained' : 'outlined'}>
+							variant={enableSendButtons ? 'contained' : 'outlined'}
+							onClick={onSendAsSms}>
 							Send as SMS
 						</Button>
 						<div className={classes.buttonSpacing} />
@@ -231,7 +231,8 @@ export default function CustomMessage() {
 							disabled={!enableSendButtons}
 							color="primary"
 							endIcon={<Phone />}
-							variant={enableSendButtons ? 'contained' : 'outlined'}>
+							variant={enableSendButtons ? 'contained' : 'outlined'}
+							onClick={onSendAsCall}>
 							Send as Call
 						</Button>
 					</Fragment>
@@ -242,7 +243,8 @@ export default function CustomMessage() {
 						disabled={!enableSendButtons}
 						color="primary"
 						endIcon={<Send />}
-						variant={enableSendButtons ? 'contained' : 'outlined'}>
+						variant={enableSendButtons ? 'contained' : 'outlined'}
+						onClick={onSendToAppointments}>
 						Send
 					</Button>
 				)}
