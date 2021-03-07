@@ -29,7 +29,6 @@ AlertSnackbar.Severities = {
 	Success: 'success'
 };
 
-
 AlertSnackbar.propTypes = {
 	severity: PropTypes.oneOf(Object.values(AlertSnackbar.Severities)).isRequired,
 	title: PropTypes.string,

@@ -56,7 +56,6 @@ function DescriptiveIconButton({
 	);
 }
 
-
 DescriptiveIconButton.propTypes = {
 	onClick: PropTypes.func.isRequired,
 	disabled: PropTypes.bool,

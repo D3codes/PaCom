@@ -25,20 +25,20 @@ describe('CustomMessage', () => {
 	it('keeps send  buttons disabled until valid phone number entered', () => {
 		const { getByText, getByTestId } = render(<CustomMessage />);
 
-		expect(getByText('Send as SMS')).toBeDisabled();
-		expect(getByText('Send as Call')).toBeDisabled();
+		expect(getByText('Send as SMS').parentElement).toBeDisabled();
+		expect(getByText('Send as Call').parentElement).toBeDisabled();
 
 		const phoneNumberField = getByTestId('phoneNumber-field').querySelector('input');
 		phoneNumberField.value = 'bad data';
 		Simulate.change(phoneNumberField);
 
-		expect(getByText('Send as SMS')).toBeDisabled();
-		expect(getByText('Send as Call')).toBeDisabled();
+		expect(getByText('Send as SMS').parentElement).toBeDisabled();
+		expect(getByText('Send as Call').parentElement).toBeDisabled();
 
 		phoneNumberField.value = '1234567890';
 		Simulate.change(phoneNumberField);
 
-		expect(getByText('Send as SMS')).toBeEnabled();
-		expect(getByText('Send as Call')).toBeEnabled();
+		expect(getByText('Send as SMS').parentElement).toBeEnabled();
+		expect(getByText('Send as Call').parentElement).toBeEnabled();
 	});
 });
