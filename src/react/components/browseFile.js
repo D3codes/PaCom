@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Button, InputAdornment, makeStyles, TextField
-} from '@material-ui/core';
+import { Button, makeStyles } from '@material-ui/core';
 import { Folder } from '@material-ui/icons';
 import clsx from 'clsx';
+import IconTextField from './iconTextField';
 
 const useStyles = makeStyles(theme => ({
 	browseContainer: {
@@ -14,10 +13,14 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.primary.main
 	},
 	button: {
-		marginLeft: theme.spacing(2)
+		marginLeft: theme.spacing(2),
+		height: '100%'
 	},
 	padding: {
-		paddingBottom: 23
+		paddingBottom: 22
+	},
+	undoPadding: {
+		height: 'calc(100% - 22px)'
 	}
 }));
 
@@ -27,27 +30,25 @@ function BrowseFile({
 	const classes = useStyles();
 	return (
 		<div className={clsx(classes.browseContainer, { [classes.padding]: !helperText })}>
-			<TextField
+			<IconTextField
 				disabled={disabled}
 				error={error}
 				helperText={helperText}
-				focused={!disabled}
-				fullWidth
-				data-testid="browse-field"
-				onChange={event => { onFilePathChange(event.target.value); }}
-				InputProps={{
-					notched: true,
-					startAdornment: (
-						<InputAdornment className={classes.browseIcon} position="start"><Folder /></InputAdornment>
-					)
-				}}
+				onChange={onFilePathChange}
+				Icon={Folder}
 				label={label}
-				size="small"
-				variant="outlined"
 				value={filePath}
+				testId="browse-field"
 			/>
 			<span>
-				<Button className={classes.button} color="primary" onClick={onBrowseClick} disabled={disabled} variant={disabled ? 'outlined' : 'contained'}>Browse</Button>
+				<Button
+					className={clsx(classes.button, { [classes.undoPadding]: helperText })}
+					color="primary"
+					onClick={onBrowseClick}
+					disabled={disabled}
+					variant={disabled ? 'outlined' : 'contained'}>
+						Browse
+				</Button>
 			</span>
 		</div>
 	);
