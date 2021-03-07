@@ -82,8 +82,7 @@ function CustomMessage() {
 	const [message, setMessage] = useState('');
 	const [showReportTable, setShowReportTable] = useState(false);
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
-
-	let enableButtoms = sendToAppointmentList ? !!appointments : phoneNumberIsValid;
+	const enableButtoms = sendToAppointmentList ? !!appointments : phoneNumberIsValid;
 
 	// TODO: get templates and variables from persistent storage, once added
 	const messageTemplates = [
