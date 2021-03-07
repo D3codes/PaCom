@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Typography, Divider, Card, List, ListItem, ListItemText
+	Typography, Card, List, ListItem, ListItemText
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -20,21 +20,22 @@ const useStyles = makeStyles(() => ({
 	}
 }));
 
-function ContainedLabeledList({ onClick, label = '', items }) {
+function ContainedLabeledList({ onClick, label = '', items = null }) {
 	const classes = useStyles();
 
 	return (
 		<div className={classes.containedLabeledListContainer}>
 			<Typography color="primary" variant="h5" display="inline">{label}</Typography>
 			<Card className={classes.card}>
-				<List className={classes.list} dense={false}>
+				<List className={classes.list}>
 					{items && items.map(item => (
-						<React.Fragment key={JSON.stringify(item)}>
-							<ListItem button onClick={() => onClick(item)}>
-								<ListItemText primary={item.name} />
-							</ListItem>
-							<Divider />
-						</React.Fragment>
+						<ListItem
+							key={JSON.stringify(item)}
+							divider
+							button
+							onClick={() => onClick(item)}>
+							<ListItemText primary={item.name} />
+						</ListItem>
 					))}
 				</List>
 			</Card>

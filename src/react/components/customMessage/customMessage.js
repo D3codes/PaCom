@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 		marginLeft: '10px',
 		marginTop: '32px'
 	},
-	buttonSpacing: {
+	farRightActionButton: {
 		marginLeft: theme.spacing()
 	},
 	backButton: {
@@ -69,12 +69,12 @@ const Ehrs = {
 };
 
 const transformersByEhr = {
-	Pulse: fromPulse
+	[Ehrs.Pulse]: fromPulse
 };
 
 const selectedEhr = Ehrs.Pulse;
 
-export default function CustomMessage() {
+function CustomMessage() {
 	const classes = useStyles();
 	const [sendToAppointmentList, setSendToAppointmentList] = useState(false);
 	const [appointments, setAppointments] = useState(null);
@@ -83,7 +83,6 @@ export default function CustomMessage() {
 	const [message, setMessage] = useState('');
 	const [showReportTable, setShowReportTable] = useState(false);
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
-	const enableSendButtons = useMemo(() => (sendToAppointmentList ? !!appointments : phoneNumberIsValid), [phoneNumberIsValid, sendToAppointmentList, appointments]);
 
 	// TODO: get templates and variables from persistent storage, once added
 	const messageTemplates = [
@@ -129,13 +128,19 @@ export default function CustomMessage() {
 	return (
 		<div className={classes.root}>
 			{showReportTable && (
-				<React.Fragment>
-					<Button onClick={() => setShowReportTable(false)} className={classes.backButton} color="primary" startIcon={<ArrowBackIos />}>Back</Button>
+				<Fragment>
+					<Button
+						onClick={() => setShowReportTable(false)}
+						className={classes.backButton}
+						color="primary"
+						startIcon={<ArrowBackIos />}>
+						Back
+					</Button>
 					<ReportTable reminders={appointments} />
-				</React.Fragment>
+				</Fragment>
 			)}
 			{!showReportTable && (
-				<React.Fragment>
+				<Fragment>
 					<div className={classes.sendTo}>
 						<Typography color="primary" variant="h5" display="inline">Send To Specific Number</Typography>
 						<Switch
@@ -148,12 +153,10 @@ export default function CustomMessage() {
 					</div>
 					<div>
 						{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
-						{!sendToAppointmentList
-						&& (
+						{!sendToAppointmentList && (
 							<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
 								<IconTextField
 									testId="phoneNumber-field"
-									disabled={false}
 									onChange={setPhoneNumber}
 									label="Phone Number"
 									focused
@@ -188,20 +191,20 @@ export default function CustomMessage() {
 						&& (
 							<Fragment>
 								<Button
-									disabled={!enableSendButtons}
+									disabled={!(sendToAppointmentList ? !!appointments : phoneNumberIsValid)}
 									color="primary"
 									endIcon={<Sms />}
-									variant={enableSendButtons ? 'contained' : 'outlined'}
+									variant={(sendToAppointmentList ? !!appointments : phoneNumberIsValid) ? 'contained' : 'outlined'}
 									onClick={onSendAsSms}>
 									Send as SMS
 								</Button>
-								<div className={classes.buttonSpacing} />
 								<Button
-									disabled={!enableSendButtons}
+									disabled={!(sendToAppointmentList ? !!appointments : phoneNumberIsValid)}
 									color="primary"
 									endIcon={<Phone />}
-									variant={enableSendButtons ? 'contained' : 'outlined'}
-									onClick={onSendAsCall}>
+									variant={(sendToAppointmentList ? !!appointments : phoneNumberIsValid) ? 'contained' : 'outlined'}
+									onClick={onSendAsCall}
+									className={classes.farRightActionButton}>
 									Send as Call
 								</Button>
 							</Fragment>
@@ -209,17 +212,19 @@ export default function CustomMessage() {
 						{sendToAppointmentList
 						&& (
 							<Button
-								disabled={!enableSendButtons}
+								disabled={!(sendToAppointmentList ? !!appointments : phoneNumberIsValid)}
 								color="primary"
 								endIcon={<ArrowForwardIos />}
-								variant={enableSendButtons ? 'contained' : 'outlined'}
+								variant={(sendToAppointmentList ? !!appointments : phoneNumberIsValid) ? 'contained' : 'outlined'}
 								onClick={() => setShowReportTable(true)}>
 								Continue
 							</Button>
 						)}
 					</div>
-				</React.Fragment>
+				</Fragment>
 			)}
 		</div>
 	);
 }
+
+export default CustomMessage;
