@@ -187,8 +187,7 @@ function CustomMessage() {
 						</div>
 					</div>
 					<div className={classes.actionButtonContainer}>
-						{!sendToAppointmentList
-						&& (
+						{!sendToAppointmentList && (
 							<Fragment>
 								<Button
 									disabled={!enableButtoms}
@@ -209,8 +208,7 @@ function CustomMessage() {
 								</Button>
 							</Fragment>
 						)}
-						{sendToAppointmentList
-						&& (
+						{sendToAppointmentList && (
 							<Button
 								disabled={!enableButtoms}
 								color="primary"
