@@ -41,15 +41,14 @@ const useStyles = makeStyles(theme => ({
 	},
 	composeContainer: {
 		flex: 1,
-		height: '200px'
+		height: '200px',
+		display: 'flex'
 	},
 	listContainer: {
-		float: 'left',
 		width: 'calc(33% - 10px)',
 		height: '90%'
 	},
 	textField: {
-		float: 'left',
 		width: '33%',
 		height: '100%',
 		marginRight: '10px',
@@ -83,6 +82,8 @@ function CustomMessage() {
 	const [message, setMessage] = useState('');
 	const [showReportTable, setShowReportTable] = useState(false);
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
+
+	let enableButtoms = sendToAppointmentList ? !!appointments : phoneNumberIsValid;
 
 	// TODO: get templates and variables from persistent storage, once added
 	const messageTemplates = [
@@ -191,18 +192,18 @@ function CustomMessage() {
 						&& (
 							<Fragment>
 								<Button
-									disabled={!(sendToAppointmentList ? !!appointments : phoneNumberIsValid)}
+									disabled={!enableButtoms}
 									color="primary"
 									endIcon={<Sms />}
-									variant={(sendToAppointmentList ? !!appointments : phoneNumberIsValid) ? 'contained' : 'outlined'}
+									variant={enableButtoms ? 'contained' : 'outlined'}
 									onClick={onSendAsSms}>
 									Send as SMS
 								</Button>
 								<Button
-									disabled={!(sendToAppointmentList ? !!appointments : phoneNumberIsValid)}
+									disabled={!enableButtoms}
 									color="primary"
 									endIcon={<Phone />}
-									variant={(sendToAppointmentList ? !!appointments : phoneNumberIsValid) ? 'contained' : 'outlined'}
+									variant={enableButtoms ? 'contained' : 'outlined'}
 									onClick={onSendAsCall}
 									className={classes.farRightActionButton}>
 									Send as Call
@@ -212,10 +213,10 @@ function CustomMessage() {
 						{sendToAppointmentList
 						&& (
 							<Button
-								disabled={!(sendToAppointmentList ? !!appointments : phoneNumberIsValid)}
+								disabled={!enableButtoms}
 								color="primary"
 								endIcon={<ArrowForwardIos />}
-								variant={(sendToAppointmentList ? !!appointments : phoneNumberIsValid) ? 'contained' : 'outlined'}
+								variant={enableButtoms ? 'contained' : 'outlined'}
 								onClick={() => setShowReportTable(true)}>
 								Continue
 							</Button>
