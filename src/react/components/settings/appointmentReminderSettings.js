@@ -172,16 +172,16 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 AppointmentRemindersSettings.propTypes = {
 	appointmentReminders: PropTypes.shape(
 		{
-			dateVerification: {
+			dateVerification: PropTypes.shape({
 				numberOfDays: PropTypes.number,
 				endOfRange: PropTypes.number,
 				allowSendOutsideRange: PropTypes.number,
 				useBusinessDays: PropTypes.bool
-			},
-			notificationMethod: {
+			}),
+			notificationMethod: PropTypes.shape({
 				sendToPreferredAndSms: PropTypes.bool,
 				textHomeIfCellNotAvailable: PropTypes.bool
-			}
+			})
 		}
 	).isRequired,
 	reloadSettings: PropTypes.func.isRequired,

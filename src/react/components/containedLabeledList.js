@@ -43,7 +43,6 @@ function ContainedLabeledList({ onClick, label = '', items = null }) {
 	);
 }
 
-
 ContainedLabeledList.propTypes = {
 	onClick: PropTypes.func.isRequired,
 	label: PropTypes.string,

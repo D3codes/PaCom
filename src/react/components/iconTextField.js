@@ -40,7 +40,6 @@ function IconTextField({
 	);
 }
 
-
 IconTextField.propTypes = {
 	onChange: PropTypes.func.isRequired,
 	error: PropTypes.bool,

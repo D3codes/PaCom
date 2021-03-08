@@ -22,12 +22,12 @@ describe('CustomMessageSettings', () => {
 	it('has the save button disabled until there are changes to save', () => {
 		const { getByText, getByTestId } = render(<CustomMessageSettings customMessages={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 
-		expect(getByText('Save')).toBeDisabled();
+		expect(getByText('Save').parentElement).toBeDisabled();
 
 		const preferredAndSmsCheckbox = getByTestId('preferredAndSms-id').querySelector('input');
 		fireEvent.click(preferredAndSmsCheckbox);
 
-		expect(getByText('Save')).toBeEnabled();
+		expect(getByText('Save').parentElement).toBeEnabled();
 	});
 
 	it('sends updated values to persistent storage and calls reloadSettings on save', () => {

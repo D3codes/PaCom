@@ -47,7 +47,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network')).toBeDisabled();
+		expect(getByText('Copy local to network').parentElement).toBeDisabled();
 	});
 
 	it('disables the copy local to network button if behavior is set to network - ready only', () => {
@@ -57,7 +57,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network')).toBeDisabled();
+		expect(getByText('Copy local to network').parentElement).toBeDisabled();
 	});
 
 	it('disables the copy local to network button if no location is defined', () => {
@@ -67,7 +67,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network')).toBeDisabled();
+		expect(getByText('Copy local to network').parentElement).toBeDisabled();
 	});
 
 	it('enables the copy local to network button if behavior is set to network - ready and write and a location is defined', () => {
@@ -77,7 +77,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network')).toBeEnabled();
+		expect(getByText('Copy local to network').parentElement).toBeEnabled();
 	});
 
 	it('has the save button disabled until there are changes to save', () => {
@@ -87,13 +87,13 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText, getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Save')).toBeDisabled();
+		expect(getByText('Save').parentElement).toBeDisabled();
 
 		const browseField = getByTestId('browse-field').querySelector('input');
 		browseField.value = 'C:\\new\\test\\location';
 		Simulate.change(browseField);
 
-		expect(getByText('Save')).toBeEnabled();
+		expect(getByText('Save').parentElement).toBeEnabled();
 	});
 
 	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
