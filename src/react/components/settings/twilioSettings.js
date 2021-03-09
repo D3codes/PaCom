@@ -1,9 +1,7 @@
-import React, { useState, useMemo, Fragment } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-	TextField, Button, Popover, Divider
-} from '@material-ui/core';
+import { Button, Popover } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
 	Save, CloudDownload, Language, Phone, VpnKey, Security
@@ -12,9 +10,11 @@ import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
 } from '@material-ui/pickers';
+import clsx from 'clsx';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import validateTwilioEndpoint from '../../validators/validateTwilioEndpoint';
 import persistentStorage from '../../utilities/persistentStorage';
+import IconTextField from '../iconTextField';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -41,19 +41,19 @@ const useStyles = makeStyles(theme => ({
 		justifyContent: 'space-between',
 		padding: theme.spacing(2)
 	},
-	adornmentDivider: {
-		margin: theme.spacing()
-	},
 	popover: {
 		marginLeft: theme.spacing(3),
 		marginTop: theme.spacing()
 	},
 	popoverInner: {
 		border: `3px solid ${theme.palette.primary.main}`
+	},
+	padding: {
+		paddingBottom: 22
 	}
 }));
 
-export default function TwilioSettings({ twilio, reloadSettings }) {
+export default function TwilioSettings({ twilio, reloadSettings, hasWritePermission }) {
 	const classes = useStyles();
 	const [sid, setSid] = useState(twilio.SID);
 	const [authToken, setAuthToken] = useState(twilio.authToken);
@@ -101,98 +101,63 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 	return (
 		<div className={classes.root}>
 			<form className={classes.form} noValidate autoComplete="off">
-				<TextField
-					fullWidth
-					data-testid="sid-field"
-					label="SID"
-					variant="outlined"
-					value={sid}
-					focused
-					onChange={event => { setSid(event.target.value); }}
-					InputProps={{
-						startAdornment: (
-							<Fragment>
-								<VpnKey color="primary" />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</Fragment>
-						)
-					}}
-				/>
-				<TextField
-					fullWidth
-					id="authToken-field"
-					label="Authorization Token"
-					variant="outlined"
-					value={authToken}
-					focused
-					onChange={event => { setAuthToken(event.target.value); }}
-					InputProps={{
-						startAdornment: (
-							<Fragment>
-								<Security color="primary" />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</Fragment>
-						)
-					}}
-				/>
-				<TextField
-					fullWidth
-					data-testid="phoneNumber-field"
-					onChange={event => { setPhoneNumber(event.target.value); }}
-					label="Phone Number"
-					variant="outlined"
-					focused
-					helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
-					error={!phoneNumberIsValid}
-					value={phoneNumber}
-					InputProps={{
-						startAdornment: (
-							<Fragment>
-								<Phone color="primary" />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-								<p>+1</p>
-							</Fragment>
-						)
-					}}
-				/>
-				<TextField
-					fullWidth
-					id="callEndpoint-field"
-					label="Call Endpoint"
-					variant="outlined"
-					helperText={callEndpointIsValid ? '' : 'Invalid Endpoint'}
-					error={!callEndpointIsValid}
-					value={callEndpoint}
-					focused
-					onChange={event => { setCallEndpoint(event.target.value); }}
-					InputProps={{
-						startAdornment: (
-							<Fragment>
-								<Language color="primary" />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</Fragment>
-						)
-					}}
-				/>
-				<TextField
-					fullWidth
-					id="smsEndpoint-field"
-					label="SMS Endpoint"
-					variant="outlined"
-					helperText={smsEndpointIsValid ? '' : 'Invalid Endpoint'}
-					error={!smsEndpointIsValid}
-					value={smsEndpoint}
-					focused
-					onChange={event => { setSmsEndpoint(event.target.value); }}
-					InputProps={{
-						startAdornment: (
-							<Fragment>
-								<Language color="primary" />
-								<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-							</Fragment>
-						)
-					}}
-				/>
+				<div className={classes.padding}>
+					<IconTextField
+						disabled={!hasWritePermission}
+						testId="sid-field"
+						label="SID"
+						value={sid}
+						onChange={setSid}
+						Icon={VpnKey}
+					/>
+				</div>
+				<div className={classes.padding}>
+					<IconTextField
+						disabled={!hasWritePermission}
+						id="authToken-field"
+						label="Authorization Token"
+						value={authToken}
+						onChange={setAuthToken}
+						Icon={Security}
+					/>
+				</div>
+				<div className={clsx({ [classes.padding]: phoneNumberIsValid })}>
+					<IconTextField
+						disabled={!hasWritePermission}
+						testId="phoneNumber-field"
+						onChange={setPhoneNumber}
+						label="Phone Number"
+						helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
+						error={!phoneNumberIsValid}
+						value={phoneNumber}
+						Icon={Phone}
+						startAdornment="+1"
+					/>
+				</div>
+				<div className={clsx({ [classes.padding]: callEndpointIsValid })}>
+					<IconTextField
+						disabled={!hasWritePermission}
+						id="callEndpoint-field"
+						label="Call Endpoint"
+						helperText={callEndpointIsValid ? '' : 'Invalid Endpoint'}
+						error={!callEndpointIsValid}
+						value={callEndpoint}
+						onChange={setCallEndpoint}
+						Icon={Language}
+					/>
+				</div>
+				<div className={clsx({ [classes.padding]: smsEndpointIsValid })}>
+					<IconTextField
+						disabled={!hasWritePermission}
+						id="smsEndpoint-field"
+						label="SMS Endpoint"
+						helperText={smsEndpointIsValid ? '' : 'Invalid Endpoint'}
+						error={!smsEndpointIsValid}
+						value={smsEndpoint}
+						onChange={setSmsEndpoint}
+						Icon={Language}
+					/>
+				</div>
 			</form>
 			<div className={classes.buttonContainer}>
 				<div className={classes.root}>
@@ -250,10 +215,10 @@ export default function TwilioSettings({ twilio, reloadSettings }) {
 					</Popover>
 				</div>
 				<Button
-					disabled={!changesToSave || !phoneNumberIsValid || !smsEndpointIsValid || !callEndpointIsValid}
+					disabled={!hasWritePermission || !changesToSave || !phoneNumberIsValid || !smsEndpointIsValid || !callEndpointIsValid}
 					endIcon={<Save />}
 					color="primary"
-					variant={(changesToSave && phoneNumberIsValid && smsEndpointIsValid && callEndpointIsValid) ? 'contained' : 'outlined'}
+					variant={!hasWritePermission || !changesToSave || !phoneNumberIsValid || !smsEndpointIsValid || !callEndpointIsValid ? 'outlined' : 'contained'}
 					onClick={handleSave}>
 						Save
 				</Button>
@@ -272,5 +237,6 @@ TwilioSettings.propTypes = {
 			smsEndpoint: PropTypes.string
 		}.isRequired
 	),
-	reloadSettings: PropTypes.func.isRequired
+	reloadSettings: PropTypes.func.isRequired,
+	hasWritePermission: PropTypes.bool.isRequired
 };

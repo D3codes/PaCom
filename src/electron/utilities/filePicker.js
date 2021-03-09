@@ -24,4 +24,12 @@ const pick = async filters => {
 	});
 };
 
-module.exports = pick;
+const pickFolder = () => dialog.showOpenDialog({
+	properties: ['openDirectory']
+}).then(folders => {
+	if (folders) return folders.filePaths[0];
+	return '';
+});
+
+exports.pick = pick;
+exports.pickFolder = pickFolder;

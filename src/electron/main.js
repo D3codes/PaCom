@@ -5,13 +5,14 @@ const path = require('path');
 
 const projectPackage = require('../../package.json');
 const open = require('./utilities/fileOpener');
+const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
 
 const { app, BrowserWindow, ipcMain: ipc } = electron;
 let mainWindow;
 
 function createWindow() {
-	mainWindow = new BrowserWindow({ width: 1200, height: 800, webPreferences: { nodeIntegration: true, preload: `${__dirname}/preload.js` } });
+	mainWindow = new BrowserWindow({ width: 1200, height: 800, webPreferences: { contextIsolation: false, nodeIntegration: true, preload: `${__dirname}/preload.js` } });
 	mainWindow.setMenuBarVisibility(false);
 
 	mainWindow.loadURL(
@@ -64,6 +65,10 @@ ipc.handle('add-message-template', (event, template) => persistentStorage.addMes
 
 ipc.handle('remove-message-template', (event, templateName) => persistentStorage.removeMessageTemplateWithName(templateName));
 
-ipc.handle('get-settings', () => persistentStorage.getSettings());
+ipc.handle('get-settings', (event, forceLocal = false) => persistentStorage.getSettings(forceLocal));
 
-ipc.handle('set-settings', (event, settingsPath, value) => persistentStorage.setSettings(settingsPath, value));
+ipc.handle('set-settings', (event, settingsPath, value, forceLocal = false) => persistentStorage.setSettings(settingsPath, value, forceLocal));
+
+ipc.handle('open-folder-dialog', () => filePicker.pickFolder());
+
+ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork());
