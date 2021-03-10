@@ -1,6 +1,6 @@
 {
-  "name": "convalesce",
-  "version": "0.1.0",
+  "name": "pacom",
+  "version": "2.0.0",
   "private": true,
   "main": "src/electron/main.js",
   "homepage": "./",
@@ -11,7 +11,7 @@
     ],
     "publish": {
       "provider": "github",
-      "repo": "convalesce",
+      "repo": "PaCom",
       "owner": "d526f861"
     }
   },
