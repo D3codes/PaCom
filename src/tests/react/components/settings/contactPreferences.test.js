@@ -2,12 +2,12 @@ import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { Simulate } from 'react-dom/test-utils';
 import { render } from '@testing-library/react';
-import NotificationMethod from '../../../../react/components/settings/notificationMethod';
+import ContactPreferences from '../../../../react/components/settings/contactPreferences';
 
-describe('NotificationMethod', () => {
+describe('ContactPreferences', () => {
 	it('renders without crashing', () => {
 		const { getByText } = render(
-			<NotificationMethod
+			<ContactPreferences
 				sendToPreferredAndSms
 				setSendToPreferredAndSms={jest.fn()}
 				textHomeIfCellNotAvailable
@@ -22,7 +22,7 @@ describe('NotificationMethod', () => {
 	it('calls setSendToPreferredAndSms when checkbox is clicked', () => {
 		const setSendToPreferredAndSmsMock = jest.fn();
 		const { getByTestId } = render(
-			<NotificationMethod
+			<ContactPreferences
 				sendToPreferredAndSms
 				setSendToPreferredAndSms={setSendToPreferredAndSmsMock}
 				textHomeIfCellNotAvailable
@@ -40,7 +40,7 @@ describe('NotificationMethod', () => {
 	it('calls setTextHomeIfCellNotAvailable when checkbox is clicked', () => {
 		const setTextHomeIfCellNotAvailableMock = jest.fn();
 		const { getByTestId } = render(
-			<NotificationMethod
+			<ContactPreferences
 				sendToPreferredAndSms
 				setSendToPreferredAndSms={jest.fn()}
 				textHomeIfCellNotAvailable
@@ -57,7 +57,7 @@ describe('NotificationMethod', () => {
 
 	it('has checkboxes enabled when there are write permissions', () => {
 		const { getByTestId } = render(
-			<NotificationMethod
+			<ContactPreferences
 				sendToPreferredAndSms
 				setSendToPreferredAndSms={jest.fn()}
 				textHomeIfCellNotAvailable
@@ -75,7 +75,7 @@ describe('NotificationMethod', () => {
 
 	it('has checkboxes disabled when there are no write permissions', () => {
 		const { getByTestId } = render(
-			<NotificationMethod
+			<ContactPreferences
 				sendToPreferredAndSms
 				setSendToPreferredAndSms={jest.fn()}
 				textHomeIfCellNotAvailable

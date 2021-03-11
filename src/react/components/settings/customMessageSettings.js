@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { Save } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import persistentStorage from '../../utilities/persistentStorage';
-import NotificationMethod from './notificationMethod';
+import ContactPreferences from './contactPreferences';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -16,26 +16,26 @@ const useStyles = makeStyles(() => ({
 		display: 'flex',
 		alignSelf: 'flex-end'
 	},
-	notificationMethodContainer: {
+	contactPreferencesContainer: {
 		flex: 1
 	}
 }));
 
 export default function CustomMessageSettings({ customMessages, reloadSettings, hasWritePermission }) {
 	const classes = useStyles();
-	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(customMessages.notificationMethod.sendToPreferredAndSms);
-	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(customMessages.notificationMethod.textHomeIfCellNotAvailable);
+	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(customMessages.contactPreferences.sendToPreferredAndSms);
+	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(customMessages.contactPreferences.textHomeIfCellNotAvailable);
 
 	const changesToSave = useMemo(() => (
-		sendToPreferredAndSms !== customMessages.notificationMethod.sendToPreferredAndSms
-		|| textHomeIfCellNotAvailable !== customMessages.notificationMethod.textHomeIfCellNotAvailable
+		sendToPreferredAndSms !== customMessages.contactPreferences.sendToPreferredAndSms
+		|| textHomeIfCellNotAvailable !== customMessages.contactPreferences.textHomeIfCellNotAvailable
 	), [sendToPreferredAndSms, textHomeIfCellNotAvailable, customMessages]);
 
 	const handleSave = () => {
-		if (sendToPreferredAndSms !== customMessages.notificationMethod.sendToPreferredAndSms) {
+		if (sendToPreferredAndSms !== customMessages.contactPreferences.sendToPreferredAndSms) {
 			persistentStorage.setSendToPreferredAndSmsForCustomMessages(sendToPreferredAndSms);
 		}
-		if (textHomeIfCellNotAvailable !== customMessages.notificationMethod.textHomeIfCellNotAvailable) {
+		if (textHomeIfCellNotAvailable !== customMessages.contactPreferences.textHomeIfCellNotAvailable) {
 			persistentStorage.setTextHomeIfCellNotAvailableForCustomMessages(textHomeIfCellNotAvailable);
 		}
 		reloadSettings();
@@ -43,8 +43,9 @@ export default function CustomMessageSettings({ customMessages, reloadSettings, 
 
 	return (
 		<div className={classes.root}>
-			<div className={classes.notificationMethodContainer}>
-				<NotificationMethod
+			<div className={classes.contactPreferencesContainer}>
+				<Typography color="primary" variant="h4">Contact Preferences</Typography>
+				<ContactPreferences
 					sendToPreferredAndSms={sendToPreferredAndSms}
 					setSendToPreferredAndSms={setSendToPreferredAndSms}
 					textHomeIfCellNotAvailable={textHomeIfCellNotAvailable}
@@ -69,7 +70,7 @@ export default function CustomMessageSettings({ customMessages, reloadSettings, 
 CustomMessageSettings.propTypes = {
 	customMessages: PropTypes.shape(
 		{
-			notificationMethod: {
+			contactPreferences: {
 				sendToPreferredAndSms: PropTypes.bool,
 				textHomeIfCellNotAvailable: PropTypes.bool
 			}

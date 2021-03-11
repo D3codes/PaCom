@@ -5,7 +5,7 @@ import CustomMessageSettings from '../../../../react/components/settings/customM
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
 const testSettings = {
-	notificationMethod: {
+	contactPreferences: {
 		sendToPreferredAndSms: false,
 		textHomeIfCellNotAvailable: false
 	}
