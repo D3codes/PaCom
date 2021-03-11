@@ -12,7 +12,18 @@ const { app, BrowserWindow, ipcMain: ipc } = electron;
 let mainWindow;
 
 function createWindow() {
-	mainWindow = new BrowserWindow({ width: 1200, height: 800, webPreferences: { contextIsolation: false, nodeIntegration: true, preload: `${__dirname}/preload.js` } });
+	mainWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
+		minWidth: 1200,
+		minHeight: 800,
+		title: 'PaCom',
+		webPreferences: {
+			contextIsolation: false,
+			nodeIntegration: true,
+			preload: `${__dirname}/preload.js`
+		}
+	});
 	mainWindow.setMenuBarVisibility(false);
 
 	mainWindow.loadURL(
@@ -52,6 +63,12 @@ ipc.handle('open-csv-dialog', () => {
 ipc.handle('open-file', (event, filePath) => open([], filePath));
 
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
+
+ipc.handle('get-dynamic-values', (event, includeDefault = true) => persistentStorage.getDynamicValues(false, includeDefault));
+
+ipc.handle('add-dynamic-value', (event, value) => persistentStorage.addDynamicValue(value));
+
+ipc.handle('remove-dynamic-value', (event, valueName) => persistentStorage.removeDynamicValueWithName(valueName));
 
 ipc.handle('get-provider-mappings', () => persistentStorage.getProviderMappings());
 

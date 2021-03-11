@@ -1,46 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100%'
-	},
-	buttonContent: {
-		display: 'flex',
-		flexDirection: 'column'
-	},
-	button: {
-		marginTop: theme.spacing(),
-		marginBottom: theme.spacing()
-	},
-	adornmentDivider: {
-		margin: theme.spacing()
-	},
-	buttonRoot: {
-		textTransform: 'none',
-		justifyContent: 'flex-start',
-		textAlign: 'left'
-	},
-	invisibleOutline: {
-		borderColor: 'rgba(0,0,0,0)',
-		'&:hover': {
-			borderColor: 'rgba(0,0,0,0)'
-		}
 	}
-}));
+});
 
-export default function NotificationMethod({
+export default function ContactPreferences({
 	sendToPreferredAndSms, setSendToPreferredAndSms, textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable, hasWritePermission
 }) {
 	const classes = useStyles();
 
 	return (
 		<div className={classes.root}>
-			<Typography variant="h4" color="primary">Notification Method</Typography>
 			<FormControlLabel
 				control={(
 					<Checkbox
@@ -69,7 +46,7 @@ export default function NotificationMethod({
 	);
 }
 
-NotificationMethod.propTypes = {
+ContactPreferences.propTypes = {
 	sendToPreferredAndSms: PropTypes.bool.isRequired,
 	setSendToPreferredAndSms: PropTypes.func.isRequired,
 	textHomeIfCellNotAvailable: PropTypes.bool.isRequired,

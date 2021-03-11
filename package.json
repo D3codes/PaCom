@@ -1,6 +1,6 @@
 {
-  "name": "convalesce",
-  "version": "0.1.0",
+  "name": "pacom",
+  "version": "2.0.0",
   "private": true,
   "main": "src/electron/main.js",
   "homepage": "./",
@@ -11,12 +11,12 @@
     ],
     "publish": {
       "provider": "github",
-      "repo": "convalesce",
+      "repo": "PaCom",
       "owner": "d526f861"
     }
   },
   "dependencies": {
-    "@date-io/date-fns": "^2.10.8",
+    "@date-io/date-fns": "^1.3.6",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
