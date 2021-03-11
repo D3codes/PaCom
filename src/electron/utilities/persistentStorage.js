@@ -26,10 +26,11 @@ const setStorageLocation = () => {
 	}
 };
 
-const getDynamicValues = (forceLocal = false) => {
+const getDynamicValues = (forceLocal = false, includeDefault = true) => {
 	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
 	else setStorageLocation();
 	const values = store.get(DYNAMIC_VALUES);
+	if (!includeDefault) return values || [];
 	return values ? defaultDynamicValues.concat(values) : defaultDynamicValues;
 };
 
@@ -125,10 +126,10 @@ const setSettings = (path, value, forceLocal = false) => {
 const copyLocalToNetwork = () => {
 	const localMappings = getProviderMappings(true);
 	const localTemplates = getMessageTemplates(true);
-	const localDynamicValues = getDynamicValues(true);
+	const localDynamicValues = getDynamicValues(true, false);
 	const networkMappings = getProviderMappings();
 	const networkTemplates = getMessageTemplates();
-	const networkDynamicValues = getDynamicValues();
+	const networkDynamicValues = getDynamicValues(false, false);
 	let allDataCopied = true;
 
 	localMappings.forEach(mapping => {

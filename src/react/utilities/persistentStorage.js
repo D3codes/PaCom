@@ -1,5 +1,5 @@
 // Dynamic Values
-const getDynamicValues = () => window.ipcRenderer.invoke('get-dynamic-values');
+const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values', includeDefault);
 
 const addDynamicValue = value => window.ipcRenderer.invoke('add-dynamic-value', value);
 

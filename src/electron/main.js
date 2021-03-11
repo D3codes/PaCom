@@ -64,7 +64,7 @@ ipc.handle('open-file', (event, filePath) => open([], filePath));
 
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
 
-ipc.handle('get-dynamic-values', () => persistentStorage.getDynamicValues());
+ipc.handle('get-dynamic-values', (event, includeDefault = true) => persistentStorage.getDynamicValues(false, includeDefault));
 
 ipc.handle('add-dynamic-value', (event, value) => persistentStorage.addDynamicValue(value));
 
