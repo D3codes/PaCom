@@ -110,7 +110,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 				</AccordionSummary>
 				<AccordionDetails className={classes.root}>
 					<div className={classes.defaultCallReminderContainer}>
-						<Typography variant="h5" color="primary">Default Call Reminder</Typography>
+						<Typography variant="h5" color="primary">Default Call Reminder Template</Typography>
+						<Typography>This will be the message template that is used when sending appointment reminders via phone call and no overrides are selected.</Typography>
 						<FormControl>
 							<Select
 								value={defaultPhoneReminder || ''}
@@ -127,7 +128,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					</div>
 					<Divider className={classes.adornmentDivider} />
 					<div>
-						<Typography variant="h5" color="primary">Default SMS Reminder</Typography>
+						<Typography variant="h5" color="primary">Default SMS Reminder Template</Typography>
+						<Typography>This will be the message template that is used when sending appointment reminders via SMS message and no overrides are selected.</Typography>
 						<FormControl>
 							<Select
 								value={defaultSmsReminder || ''}
