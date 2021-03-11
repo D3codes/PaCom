@@ -110,7 +110,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 				</AccordionSummary>
 				<AccordionDetails className={classes.root}>
 					<div className={classes.defaultCallReminderContainer}>
-						<Typography variant="h5" display="inline">Default Call Reminder    </Typography>
+						<Typography variant="h5" color="primary">Default Call Reminder</Typography>
 						<FormControl>
 							<Select
 								value={defaultPhoneReminder || ''}
@@ -125,8 +125,9 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 							</Select>
 						</FormControl>
 					</div>
+					<Divider className={classes.adornmentDivider} />
 					<div>
-						<Typography variant="h5" display="inline">Default SMS Reminder    </Typography>
+						<Typography variant="h5" color="primary">Default SMS Reminder</Typography>
 						<FormControl>
 							<Select
 								value={defaultSmsReminder || ''}
