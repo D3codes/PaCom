@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Checkbox, FormControlLabel } from '@material-ui/core';
+import {
+	Typography,
+	Checkbox,
+	FormControlLabel,
+	Accordion,
+	AccordionSummary,
+	AccordionDetails
+} from '@material-ui/core';
+import { ExpandMore } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -40,31 +48,39 @@ export default function NotificationMethod({
 
 	return (
 		<div className={classes.root}>
-			<Typography variant="h4" color="primary">Notification Method</Typography>
-			<FormControlLabel
-				control={(
-					<Checkbox
-						data-testid="preferredAndSms-id"
-						disabled={!hasWritePermission}
-						onChange={event => { setSendToPreferredAndSms(event.target.checked); }}
-						checked={sendToPreferredAndSms}
-						color="primary"
+			<Accordion>
+				<AccordionSummary
+					expandIcon={<ExpandMore />}
+					id="dateVerification-header">
+					<Typography color="primary" variant="h4">Notification Method</Typography>
+				</AccordionSummary>
+				<AccordionDetails className={classes.root}>
+					<FormControlLabel
+						control={(
+							<Checkbox
+								data-testid="preferredAndSms-id"
+								disabled={!hasWritePermission}
+								onChange={event => { setSendToPreferredAndSms(event.target.checked); }}
+								checked={sendToPreferredAndSms}
+								color="primary"
+							/>
+						)}
+						label="Send messages via SMS as well as patient's preferred contact method"
 					/>
-				)}
-				label="Send messages via SMS as well as patient's preferred contact method"
-			/>
-			<FormControlLabel
-				control={(
-					<Checkbox
-						data-testid="textHome-id"
-						disabled={!hasWritePermission}
-						onChange={event => { setTextHomeIfCellNotAvailable(event.target.checked); }}
-						checked={textHomeIfCellNotAvailable}
-						color="primary"
+					<FormControlLabel
+						control={(
+							<Checkbox
+								data-testid="textHome-id"
+								disabled={!hasWritePermission}
+								onChange={event => { setTextHomeIfCellNotAvailable(event.target.checked); }}
+								checked={textHomeIfCellNotAvailable}
+								color="primary"
+							/>
+						)}
+						label="Send SMS to home phone number if cell is not available"
 					/>
-				)}
-				label="Send SMS to home phone number if cell is not available"
-			/>
+				</AccordionDetails>
+			</Accordion>
 		</div>
 	);
 }
