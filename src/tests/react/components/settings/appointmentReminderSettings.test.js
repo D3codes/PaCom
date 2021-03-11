@@ -14,6 +14,10 @@ const testSettings = {
 	contactPreferences: {
 		sendToPreferredAndSms: false,
 		textHomeIfCellNotAvailable: false
+	},
+	defaultReminderTemplates: {
+		phone: null,
+		sms: null
 	}
 };
 
