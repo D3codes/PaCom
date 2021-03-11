@@ -64,6 +64,12 @@ ipc.handle('open-file', (event, filePath) => open([], filePath));
 
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
 
+ipc.handle('get-dynamic-values', () => persistentStorage.getDynamicValues());
+
+ipc.handle('add-dynamic-value', (event, value) => persistentStorage.addDynamicValue(value));
+
+ipc.handle('remove-dynamic-value', (event, valueName) => persistentStorage.removeDynamicValueWithName(valueName));
+
 ipc.handle('get-provider-mappings', () => persistentStorage.getProviderMappings());
 
 ipc.handle('add-provider-mapping', (event, mapping) => persistentStorage.addProviderMapping(mapping));

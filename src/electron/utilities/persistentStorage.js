@@ -2,9 +2,11 @@
 const Store = require('electron-store');
 const { app } = require('electron');
 const defaultSettings = require('../models/defaultSettings.json');
+const defaultDynamicValues = require('../models/defaultDynamicValues.json');
 
 let store = new Store();
 
+const DYNAMIC_VALUES = 'dynamicValues';
 const PROVIDER_MAPPINGS = 'providerMappings';
 const MESSAGE_TEMPLATES = 'messageTemplates';
 const SETTINGS = 'settings';
@@ -22,6 +24,30 @@ const setStorageLocation = () => {
 			settings = defaultSettings;
 		}
 	}
+};
+
+const getDynamicValues = (forceLocal = false) => {
+	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
+	else setStorageLocation();
+	const values = store.get(DYNAMIC_VALUES);
+	return defaultDynamicValues.concat(values);
+};
+
+const removeDynamicValueWithName = valueName => {
+	setStorageLocation();
+	let values = getDynamicValues();
+	if (!values) return [];
+	values = values.filter(value => value.name !== valueName);
+	store.set(DYNAMIC_VALUES, values);
+	return getDynamicValues();
+};
+
+const addDynamicValue = value => {
+	setStorageLocation();
+	const values = removeDynamicValueWithName(value.name);
+	values.push(value);
+	store.set(DYNAMIC_VALUES, values);
+	return getDynamicValues();
 };
 
 const getProviderMappings = (forceLocal = false) => {
@@ -99,14 +125,16 @@ const setSettings = (path, value, forceLocal = false) => {
 const copyLocalToNetwork = () => {
 	const localMappings = getProviderMappings(true);
 	const localTemplates = getMessageTemplates(true);
+	const localDynamicValues = getDynamicValues(true);
 	const networkMappings = getProviderMappings();
 	const networkTemplates = getMessageTemplates();
-	let allMappingsAndTemplatesCopied = true;
+	const networkDynamicValues = getDynamicValues();
+	let allDataCopied = true;
 
 	localMappings.forEach(mapping => {
 		const existingMapping = networkMappings.filter(provider => provider.source === mapping.source).length > 0;
 		if (existingMapping) {
-			allMappingsAndTemplatesCopied = false;
+			allDataCopied = false;
 		} else {
 			addProviderMapping(mapping);
 		}
@@ -115,16 +143,28 @@ const copyLocalToNetwork = () => {
 	localTemplates.forEach(template => {
 		const existingTemplate = networkTemplates.filter(networkTemplate => networkTemplate.name === template.name).length > 0;
 		if (existingTemplate) {
-			allMappingsAndTemplatesCopied = false;
+			allDataCopied = false;
 		} else {
 			addMessageTemplate(template);
 		}
 	});
 
-	return allMappingsAndTemplatesCopied;
+	localDynamicValues.forEach(value => {
+		const existingValue = networkDynamicValues.filter(networkValue => networkValue.name === value.name).length > 0;
+		if (existingValue) {
+			allDataCopied = false;
+		} else {
+			addDynamicValue(value);
+		}
+	});
+
+	return allDataCopied;
 };
 
 module.exports = {
+	getDynamicValues,
+	addDynamicValue,
+	removeDynamicValueWithName,
 	getProviderMappings,
 	addProviderMapping,
 	removeProviderMappingWithSource,

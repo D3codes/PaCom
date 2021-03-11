@@ -1,3 +1,10 @@
+// Dynamic Values
+const getDynamicValues = () => window.ipcRenderer.invoke('get-dynamic-values');
+
+const addDynamicValue = value => window.ipcRenderer.invoke('add-dynamic-value', value);
+
+const removeDynamicValueWithName = valueName => window.ipcRenderer.invoke('remove-dynamic-value', valueName);
+
 // Provider Mappings
 const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings');
 
@@ -108,5 +115,8 @@ export default {
 	setSendToPreferredAndSmsForReminders,
 	setTextHomeIfCellNotAvailableForReminders,
 	setSendToPreferredAndSmsForCustomMessages,
-	setTextHomeIfCellNotAvailableForCustomMessages
+	setTextHomeIfCellNotAvailableForCustomMessages,
+	getDynamicValues,
+	addDynamicValue,
+	removeDynamicValueWithName
 };

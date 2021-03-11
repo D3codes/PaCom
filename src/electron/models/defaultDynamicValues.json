@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Provider",
+        "default": true
+    },
+    {
+        "name": "Patient Name",
+        "default": true
+    },
+    {
+        "name": "Appointment Date",
+        "default": true
+    },
+    {
+        "name": "Appointment Time",
+        "default": true
+    },
+    {
+        "name": "Appointment Duration",
+        "default": true
+    }
+]
