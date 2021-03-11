@@ -82,6 +82,10 @@ const setSendToPreferredAndSmsForCustomMessages = preferredAndSms => setSettings
 
 const setTextHomeIfCellNotAvailableForCustomMessages = textHome => setSettings('settings.customMessages.contactPreferences.textHomeIfCellNotAvailable', textHome);
 
+const setDefaultPhoneReminder = messageTemplateName => setSettings('settings.appointmentReminders.defaultReminderTemplates.phone', messageTemplateName);
+
+const setDefaultSmsReminder = messageTemplateName => setSettings('settings.appointmentReminders.defaultReminderTemplates.sms', messageTemplateName);
+
 export default {
 	getProviderMappings,
 	addProviderMapping,
@@ -118,5 +122,7 @@ export default {
 	setTextHomeIfCellNotAvailableForCustomMessages,
 	getDynamicValues,
 	addDynamicValue,
-	removeDynamicValueWithName
+	removeDynamicValueWithName,
+	setDefaultPhoneReminder,
+	setDefaultSmsReminder
 };
