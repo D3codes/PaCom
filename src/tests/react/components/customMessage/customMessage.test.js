@@ -30,18 +30,19 @@ const testTemplates = [
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('CustomMessage', () => {
-	beforeAll(() => {
+	it('renders without crashing', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
-	});
 
-	it('renders without crashing', () => {
 		const { getByText } = render(<CustomMessage />);
 
 		expect(getByText('Send To Specific Number')).toBeDefined();
 	});
 
 	it('switches views when toggled', () => {
+		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
+		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
+
 		const { getByText, getByTestId } = render(<CustomMessage />);
 
 		expect(getByText('Invalid Phone Number')).toBeDefined();
@@ -53,6 +54,9 @@ describe('CustomMessage', () => {
 	});
 
 	it('keeps send  buttons disabled until valid phone number entered', () => {
+		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
+		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
+
 		const { getByText, getByTestId } = render(<CustomMessage />);
 
 		expect(getByText('Send as SMS').parentElement).toBeDisabled();
