@@ -35,21 +35,6 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const messageTemplates = [
-	{
-		name: 'Template 1',
-		value: 'This is template 1.'
-	},
-	{
-		name: 'Template 2',
-		value: 'This is template 2.'
-	},
-	{
-		name: 'Template 3',
-		value: 'This is template 3.'
-	}
-];
-
 export default function AppointmentRemindersSettings({ appointmentReminders, reloadSettings, hasWritePermission }) {
 	const classes = useStyles();
 	const [numberOfDays, setNumberOfDays] = useState(appointmentReminders.dateVerification.numberOfDays);
@@ -96,6 +81,22 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		if (defaultSmsReminder !== appointmentReminders.defaultReminderTemplates.sms) persistentStorage.setDefaultSmsReminder(defaultSmsReminder);
 		reloadSettings();
 	};
+
+	// TODO: get from persistent storage once implemented
+	const messageTemplates = [
+		{
+			name: 'Template 1',
+			value: 'This is template 1.'
+		},
+		{
+			name: 'Template 2',
+			value: 'This is template 2.'
+		},
+		{
+			name: 'Template 3',
+			value: 'This is template 3.'
+		}
+	];
 
 	return (
 		<div className={classes.root}>
