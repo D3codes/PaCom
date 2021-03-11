@@ -1,7 +1,7 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Warning, Block, Save, EventBusy, ExpandMore, Today
+	Warning, Block, Save, EventBusy, ExpandMore, Today, Schedule
 } from '@material-ui/icons';
 import {
 	Typography, Divider, Select, FormControl, MenuItem, TextField, Button, Accordion, AccordionSummary, AccordionDetails
@@ -24,18 +24,31 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		alignSelf: 'flex-end'
 	},
-	divider: {
-		marginTop: theme.spacing(),
-		marginBottom: theme.spacing()
-	},
 	dateVerificationOptions: {
-		marginTop: theme.spacing(),
 		marginBottom: theme.spacing()
 	},
 	dayInputField: {
 		width: 30
+	},
+	defaultCallReminderContainer: {
+		marginBottom: theme.spacing()
 	}
 }));
+
+const messageTemplates = [
+	{
+		name: 'Template 1',
+		value: 'This is template 1.'
+	},
+	{
+		name: 'Template 2',
+		value: 'This is template 2.'
+	},
+	{
+		name: 'Template 3',
+		value: 'This is template 3.'
+	}
+];
 
 export default function AppointmentRemindersSettings({ appointmentReminders, reloadSettings, hasWritePermission }) {
 	const classes = useStyles();
@@ -45,6 +58,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [shouldUseBusinessDays, setShouldUseBusinessDays] = useState(appointmentReminders.dateVerification.useBusinessDays);
 	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(appointmentReminders.contactPreferences.sendToPreferredAndSms);
 	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.contactPreferences.textHomeIfCellNotAvailable);
+	const [defaultPhoneReminder, setDefaultPhoneReminder] = useState(appointmentReminders.defaultReminderTemplates.phone);
+	const [defaultSmsReminder, setDefaultSmsReminder] = useState(appointmentReminders.defaultReminderTemplates.sms);
 
 	const changesToSave = useMemo(() => (
 		allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange
@@ -53,7 +68,19 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		|| shouldUseBusinessDays !== appointmentReminders.dateVerification.useBusinessDays
 		|| sendToPreferredAndSms !== appointmentReminders.contactPreferences.sendToPreferredAndSms
 		|| textHomeIfCellNotAvailable !== appointmentReminders.contactPreferences.textHomeIfCellNotAvailable
-	), [allowSendOutsideRange, numberOfDays, endOfRange, shouldUseBusinessDays, sendToPreferredAndSms, textHomeIfCellNotAvailable, appointmentReminders]);
+		|| defaultPhoneReminder !== appointmentReminders.defaultReminderTemplates.phone
+		|| defaultSmsReminder !== appointmentReminders.defaultReminderTemplates.sms
+	), [
+		allowSendOutsideRange,
+		numberOfDays,
+		endOfRange,
+		shouldUseBusinessDays,
+		sendToPreferredAndSms,
+		textHomeIfCellNotAvailable,
+		defaultPhoneReminder,
+		defaultSmsReminder,
+		appointmentReminders
+	]);
 
 	const handleSave = () => {
 		if (allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange) persistentStorage.setAllowSendOutsideRange(allowSendOutsideRange);
@@ -69,6 +96,49 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 
 	return (
 		<div className={classes.root}>
+			<Accordion>
+				<AccordionSummary
+					expandIcon={<ExpandMore />}
+					id="dateVerification-header">
+					<Schedule color="primary" style={{ fontSize: '3rem', textAlign: 'left' }} />
+					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+					<Typography color="primary" variant="h4">Default Appointment Reminders</Typography>
+				</AccordionSummary>
+				<AccordionDetails className={classes.root}>
+					<div className={classes.defaultCallReminderContainer}>
+						<Typography variant="h5" display="inline">Default Call Reminder    </Typography>
+						<FormControl>
+							<Select
+								value={defaultPhoneReminder || ''}
+								disabled={!hasWritePermission}
+								onChange={event => { setDefaultPhoneReminder(event.target.value); }}
+								inputProps={{ 'aria-label': 'Without label' }}>
+								{messageTemplates && messageTemplates.map(template => (
+									<MenuItem value={template.name}>
+										{template.name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</div>
+					<div>
+						<Typography variant="h5" display="inline">Default SMS Reminder    </Typography>
+						<FormControl>
+							<Select
+								value={defaultSmsReminder || ''}
+								disabled={!hasWritePermission}
+								onChange={event => { setDefaultSmsReminder(event.target.value); }}
+								inputProps={{ 'aria-label': 'Without label' }}>
+								{messageTemplates && messageTemplates.map(template => (
+									<MenuItem value={template.name}>
+										{template.name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</div>
+				</AccordionDetails>
+			</Accordion>
 			<Accordion>
 				<AccordionSummary
 					expandIcon={<ExpandMore />}
@@ -186,6 +256,10 @@ AppointmentRemindersSettings.propTypes = {
 			contactPreferences: PropTypes.shape({
 				sendToPreferredAndSms: PropTypes.bool,
 				textHomeIfCellNotAvailable: PropTypes.bool
+			}),
+			defaultReminderTemplates: PropTypes.shape({
+				phone: PropTypes.string,
+				sms: PropTypes.string
 			})
 		}
 	).isRequired,
