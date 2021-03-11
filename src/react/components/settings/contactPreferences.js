@@ -1,14 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Typography,
-	Checkbox,
-	FormControlLabel,
-	Accordion,
-	AccordionSummary,
-	AccordionDetails
+	Typography, Checkbox, FormControlLabel, Accordion, AccordionSummary, AccordionDetails, Divider
 } from '@material-ui/core';
-import { ExpandMore } from '@material-ui/icons';
+import { ExpandMore, SettingsPhone } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -41,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function NotificationMethod({
+export default function ContactPreferences({
 	sendToPreferredAndSms, setSendToPreferredAndSms, textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable, hasWritePermission
 }) {
 	const classes = useStyles();
@@ -52,7 +47,9 @@ export default function NotificationMethod({
 				<AccordionSummary
 					expandIcon={<ExpandMore />}
 					id="dateVerification-header">
-					<Typography color="primary" variant="h4">Notification Method</Typography>
+					<SettingsPhone color="primary" style={{ fontSize: '3rem', textAlign: 'left' }} />
+					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+					<Typography color="primary" variant="h4">Contact Preferences</Typography>
 				</AccordionSummary>
 				<AccordionDetails className={classes.root}>
 					<FormControlLabel
@@ -85,7 +82,7 @@ export default function NotificationMethod({
 	);
 }
 
-NotificationMethod.propTypes = {
+ContactPreferences.propTypes = {
 	sendToPreferredAndSms: PropTypes.bool.isRequired,
 	setSendToPreferredAndSms: PropTypes.func.isRequired,
 	textHomeIfCellNotAvailable: PropTypes.bool.isRequired,

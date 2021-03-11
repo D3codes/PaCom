@@ -24,7 +24,7 @@ describe('AppointmentReminderSettings', () => {
 		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 
 		expect(getByText('Date Verification')).toBeDefined();
-		expect(getByText('Notification Method')).toBeDefined();
+		expect(getByText('Contact Preferences')).toBeDefined();
 	});
 
 	it('has the save button disabled until there are changes to save', () => {

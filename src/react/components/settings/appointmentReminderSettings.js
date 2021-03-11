@@ -1,14 +1,14 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Warning, Block, Save, EventBusy, ExpandMore
+	Warning, Block, Save, EventBusy, ExpandMore, Today
 } from '@material-ui/icons';
 import {
-	Typography, Select, FormControl, MenuItem, TextField, Button, Accordion, AccordionSummary, AccordionDetails
+	Typography, Divider, Select, FormControl, MenuItem, TextField, Button, Accordion, AccordionSummary, AccordionDetails
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import persistentStorage from '../../utilities/persistentStorage';
-import NotificationMethod from './notificationMethod';
+import ContactPreferences from './contactPreferences';
 import DescriptiveIconButton from '../descriptiveIconButton';
 
 const useStyles = makeStyles(theme => ({
@@ -17,12 +17,12 @@ const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		height: '100%'
 	},
+	adornmentDivider: {
+		margin: theme.spacing()
+	},
 	actionButtonContainer: {
 		display: 'flex',
 		alignSelf: 'flex-end'
-	},
-	notificationMethodContainer: {
-		flex: 1
 	},
 	divider: {
 		marginTop: theme.spacing(),
@@ -73,6 +73,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 				<AccordionSummary
 					expandIcon={<ExpandMore />}
 					id="dateVerification-header">
+					<Today color="primary" style={{ fontSize: '3rem', textAlign: 'left' }} />
+					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 					<Typography color="primary" variant="h4">Date Verification</Typography>
 				</AccordionSummary>
 				<AccordionDetails className={classes.root}>
@@ -151,7 +153,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					</div>
 				</AccordionDetails>
 			</Accordion>
-			<NotificationMethod
+			<ContactPreferences
 				sendToPreferredAndSms={sendToPreferredAndSms}
 				setSendToPreferredAndSms={setSendToPreferredAndSms}
 				textHomeIfCellNotAvailable={textHomeIfCellNotAvailable}

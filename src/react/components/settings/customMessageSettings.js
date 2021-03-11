@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 import { Save } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import persistentStorage from '../../utilities/persistentStorage';
-import NotificationMethod from './notificationMethod';
+import ContactPreferences from './contactPreferences';
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -44,7 +44,7 @@ export default function CustomMessageSettings({ customMessages, reloadSettings, 
 	return (
 		<div className={classes.root}>
 			<div className={classes.notificationMethodContainer}>
-				<NotificationMethod
+				<ContactPreferences
 					sendToPreferredAndSms={sendToPreferredAndSms}
 					setSendToPreferredAndSms={setSendToPreferredAndSms}
 					textHomeIfCellNotAvailable={textHomeIfCellNotAvailable}
