@@ -1,7 +1,7 @@
 import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Warning, Block, Save, EventBusy, ExpandMore, Today, Schedule
+	Warning, Block, Save, EventBusy, ExpandMore, Today, Schedule, SettingsPhone
 } from '@material-ui/icons';
 import {
 	Typography, Divider, Select, FormControl, MenuItem, TextField, Button, Accordion, AccordionSummary, AccordionDetails
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 	dayInputField: {
 		width: 30
 	},
-	defaultCallReminderContainer: {
+	accordion: {
 		marginBottom: theme.spacing()
 	}
 }));
@@ -60,6 +60,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.contactPreferences.textHomeIfCellNotAvailable);
 	const [defaultPhoneReminder, setDefaultPhoneReminder] = useState(appointmentReminders.defaultReminderTemplates.phone);
 	const [defaultSmsReminder, setDefaultSmsReminder] = useState(appointmentReminders.defaultReminderTemplates.sms);
+	const [openAccordion, setOpenAccordion] = useState(null);
 
 	const changesToSave = useMemo(() => (
 		allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange
@@ -98,7 +99,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 
 	return (
 		<div className={classes.root}>
-			<Accordion>
+			<Accordion expanded={openAccordion === 1} onChange={(event, expanded) => setOpenAccordion(expanded ? 1 : null)} className={classes.accordion}>
 				<AccordionSummary
 					expandIcon={<ExpandMore />}
 					id="dateVerification-header">
@@ -141,7 +142,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					</div>
 				</AccordionDetails>
 			</Accordion>
-			<Accordion>
+			<Accordion expanded={openAccordion === 2} onChange={(event, expanded) => setOpenAccordion(expanded ? 2 : null)} className={classes.accordion}>
 				<AccordionSummary
 					expandIcon={<ExpandMore />}
 					id="dateVerification-header">
@@ -225,13 +226,26 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					</div>
 				</AccordionDetails>
 			</Accordion>
-			<ContactPreferences
-				sendToPreferredAndSms={sendToPreferredAndSms}
-				setSendToPreferredAndSms={setSendToPreferredAndSms}
-				textHomeIfCellNotAvailable={textHomeIfCellNotAvailable}
-				setTextHomeIfCellNotAvailable={setTextHomeIfCellNotAvailable}
-				hasWritePermission={hasWritePermission}
-			/>
+			<div className={classes.root}>
+				<Accordion expanded={openAccordion === 3} onChange={(event, expanded) => setOpenAccordion(expanded ? 3 : null)}>
+					<AccordionSummary
+						expandIcon={<ExpandMore />}
+						id="dateVerification-header">
+						<SettingsPhone color="primary" style={{ fontSize: '3rem', textAlign: 'left' }} />
+						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+						<Typography color="primary" variant="h4">Contact Preferences</Typography>
+					</AccordionSummary>
+					<AccordionDetails>
+						<ContactPreferences
+							sendToPreferredAndSms={sendToPreferredAndSms}
+							setSendToPreferredAndSms={setSendToPreferredAndSms}
+							textHomeIfCellNotAvailable={textHomeIfCellNotAvailable}
+							setTextHomeIfCellNotAvailable={setTextHomeIfCellNotAvailable}
+							hasWritePermission={hasWritePermission}
+						/>
+					</AccordionDetails>
+				</Accordion>
+			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
 					disabled={!hasWritePermission || !changesToSave}
