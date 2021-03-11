@@ -43,16 +43,16 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [endOfRange, setEndOfRange] = useState(appointmentReminders.dateVerification.endOfRange);
 	const [allowSendOutsideRange, setAllowSendOutsideRange] = useState(appointmentReminders.dateVerification.allowSendOutsideRange);
 	const [shouldUseBusinessDays, setShouldUseBusinessDays] = useState(appointmentReminders.dateVerification.useBusinessDays);
-	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(appointmentReminders.notificationMethod.sendToPreferredAndSms);
-	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.notificationMethod.textHomeIfCellNotAvailable);
+	const [sendToPreferredAndSms, setSendToPreferredAndSms] = useState(appointmentReminders.contactPreferences.sendToPreferredAndSms);
+	const [textHomeIfCellNotAvailable, setTextHomeIfCellNotAvailable] = useState(appointmentReminders.contactPreferences.textHomeIfCellNotAvailable);
 
 	const changesToSave = useMemo(() => (
 		allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange
 		|| numberOfDays !== appointmentReminders.dateVerification.numberOfDays
 		|| endOfRange !== appointmentReminders.dateVerification.endOfRange
 		|| shouldUseBusinessDays !== appointmentReminders.dateVerification.useBusinessDays
-		|| sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms
-		|| textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable
+		|| sendToPreferredAndSms !== appointmentReminders.contactPreferences.sendToPreferredAndSms
+		|| textHomeIfCellNotAvailable !== appointmentReminders.contactPreferences.textHomeIfCellNotAvailable
 	), [allowSendOutsideRange, numberOfDays, endOfRange, shouldUseBusinessDays, sendToPreferredAndSms, textHomeIfCellNotAvailable, appointmentReminders]);
 
 	const handleSave = () => {
@@ -60,8 +60,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		if (numberOfDays !== appointmentReminders.dateVerification.numberOfDays) persistentStorage.setNumberOfDays(numberOfDays);
 		if (endOfRange !== appointmentReminders.dateVerification.endOfRange) persistentStorage.setEndOfRange(endOfRange);
 		if (shouldUseBusinessDays !== appointmentReminders.dateVerification.useBusinessDays) persistentStorage.setUseBusinessDays(shouldUseBusinessDays);
-		if (sendToPreferredAndSms !== appointmentReminders.notificationMethod.sendToPreferredAndSms) persistentStorage.setSendToPreferredAndSmsForReminders(sendToPreferredAndSms);
-		if (textHomeIfCellNotAvailable !== appointmentReminders.notificationMethod.textHomeIfCellNotAvailable) {
+		if (sendToPreferredAndSms !== appointmentReminders.contactPreferences.sendToPreferredAndSms) persistentStorage.setSendToPreferredAndSmsForReminders(sendToPreferredAndSms);
+		if (textHomeIfCellNotAvailable !== appointmentReminders.contactPreferences.textHomeIfCellNotAvailable) {
 			persistentStorage.setTextHomeIfCellNotAvailableForReminders(textHomeIfCellNotAvailable);
 		}
 		reloadSettings();
@@ -183,7 +183,7 @@ AppointmentRemindersSettings.propTypes = {
 				allowSendOutsideRange: PropTypes.number,
 				useBusinessDays: PropTypes.bool
 			}),
-			notificationMethod: PropTypes.shape({
+			contactPreferences: PropTypes.shape({
 				sendToPreferredAndSms: PropTypes.bool,
 				textHomeIfCellNotAvailable: PropTypes.bool
 			})

@@ -33,9 +33,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		alignSelf: 'flex-end'
 	},
-	notificationMethodContainer: {
-		flex: 1
-	},
 	sendTo: {
 		alignSelf: 'center'
 	},

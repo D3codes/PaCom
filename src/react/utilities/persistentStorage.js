@@ -28,19 +28,19 @@ const setAppointmentRemindersDateVerificationDays = days => setSettings('setting
 
 const setAppointmentRemindersDateVerificationAllowSend = allow => setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allow);
 
-const setAppointmentRemindersNotificationMethodPreferredAndSms = preferredAndSms => setSettings(
-	'settings.appointmentReminders.notificationMethod.sendToPreferredAndSms',
+const setAppointmentRemindersContactPreferencesPreferredAndSms = preferredAndSms => setSettings(
+	'settings.appointmentReminders.contactPreferences.sendToPreferredAndSms',
 	preferredAndSms
 );
 
-const setAppointmentRemindersNotificationMethodTextHomeIfCellNotAvailable = textHome => setSettings(
-	'settings.appointmentReminders.notificationMethod.textHomeIfCellNotAvailable',
+const setAppointmentRemindersContactPreferencesTextHomeIfCellNotAvailable = textHome => setSettings(
+	'settings.appointmentReminders.contactPreferences.textHomeIfCellNotAvailable',
 	textHome
 );
 
-const setCustomMessagesNotificationMethodPreferredAndSms = preferredAndSms => setSettings('settings.customMessages.notificationMethod.sendToPreferredAndSms', preferredAndSms);
+const setCustomMessagesContactPreferencesPreferredAndSms = preferredAndSms => setSettings('settings.customMessages.contactPreferences.sendToPreferredAndSms', preferredAndSms);
 
-const setCustomMessagesNotificationMethodTextHomeIfCellNotAvailable = textHome => setSettings('settings.customMessages.notificationMethod.textHomeIfCellNotAvailable', textHome);
+const setCustomMessagesContactPreferencesTextHomeIfCellNotAvailable = textHome => setSettings('settings.customMessages.contactPreferences.textHomeIfCellNotAvailable', textHome);
 
 const setMessageReportsAutosave = autosave => setSettings('settings.messageReports.autosaveReports', autosave);
 
@@ -74,13 +74,13 @@ const setEndOfRange = end => setSettings('settings.appointmentReminders.dateVeri
 
 const setUseBusinessDays = useBusinessDays => setSettings('settings.appointmentReminders.dateVerification.useBusinessDays', useBusinessDays);
 
-const setSendToPreferredAndSmsForReminders = preferredAndSms => setSettings('settings.appointmentReminders.notificationMethod.sendToPreferredAndSms', preferredAndSms);
+const setSendToPreferredAndSmsForReminders = preferredAndSms => setSettings('settings.appointmentReminders.contactPreferences.sendToPreferredAndSms', preferredAndSms);
 
-const setTextHomeIfCellNotAvailableForReminders = textHome => setSettings('settings.appointmentReminders.notificationMethod.textHomeIfCellNotAvailable', textHome);
+const setTextHomeIfCellNotAvailableForReminders = textHome => setSettings('settings.appointmentReminders.contactPreferences.textHomeIfCellNotAvailable', textHome);
 
-const setSendToPreferredAndSmsForCustomMessages = preferredAndSms => setSettings('settings.customMessages.notificationMethod.sendToPreferredAndSms', preferredAndSms);
+const setSendToPreferredAndSmsForCustomMessages = preferredAndSms => setSettings('settings.customMessages.contactPreferences.sendToPreferredAndSms', preferredAndSms);
 
-const setTextHomeIfCellNotAvailableForCustomMessages = textHome => setSettings('settings.customMessages.notificationMethod.textHomeIfCellNotAvailable', textHome);
+const setTextHomeIfCellNotAvailableForCustomMessages = textHome => setSettings('settings.customMessages.contactPreferences.textHomeIfCellNotAvailable', textHome);
 
 export default {
 	getProviderMappings,
@@ -92,10 +92,10 @@ export default {
 	getSettings,
 	setAppointmentRemindersDateVerificationAllowSend,
 	setAppointmentRemindersDateVerificationDays,
-	setAppointmentRemindersNotificationMethodPreferredAndSms,
-	setAppointmentRemindersNotificationMethodTextHomeIfCellNotAvailable,
-	setCustomMessagesNotificationMethodPreferredAndSms,
-	setCustomMessagesNotificationMethodTextHomeIfCellNotAvailable,
+	setAppointmentRemindersContactPreferencesPreferredAndSms,
+	setAppointmentRemindersContactPreferencesTextHomeIfCellNotAvailable,
+	setCustomMessagesContactPreferencesPreferredAndSms,
+	setCustomMessagesContactPreferencesTextHomeIfCellNotAvailable,
 	setMessageReportsAutosave,
 	setMessageReportsAutosaveLocation,
 	setMessageReportsLastReport,

@@ -11,7 +11,7 @@ const testSettings = {
 		allowSendOutsideRange: 0,
 		useBusinessDays: true
 	},
-	notificationMethod: {
+	contactPreferences: {
 		sendToPreferredAndSms: false,
 		textHomeIfCellNotAvailable: false
 	}

@@ -8,13 +8,13 @@
                 "allowSendOutsideRange": 0,
                 "useBusinessDays": true
             },
-            "notificationMethod": {
+            "contactPreferences": {
                 "sendToPreferredAndSms": false,
                 "textHomeIfCellNotAvailable": false
             }
         },
         "customMessages": {
-            "notificationMethod": {
+            "contactPreferences": {
                 "sendToPreferredAndSms": false,
                 "textHomeIfCellNotAvailable": false
             }

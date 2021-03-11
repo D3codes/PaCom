@@ -4,7 +4,7 @@ import { Simulate } from 'react-dom/test-utils';
 import { render } from '@testing-library/react';
 import ContactPreferences from '../../../../react/components/settings/contactPreferences';
 
-describe('NotificationMethod', () => {
+describe('ContactPreferences', () => {
 	it('renders without crashing', () => {
 		const { getByText } = render(
 			<ContactPreferences
