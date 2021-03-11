@@ -119,7 +119,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 								onChange={event => { setDefaultPhoneReminder(event.target.value); }}
 								inputProps={{ 'aria-label': 'Without label' }}>
 								{messageTemplates && messageTemplates.map(template => (
-									<MenuItem value={template.name}>
+									<MenuItem value={template.name} key={`${JSON.stringify(template)}-call`}>
 										{template.name}
 									</MenuItem>
 								))}
@@ -137,7 +137,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 								onChange={event => { setDefaultSmsReminder(event.target.value); }}
 								inputProps={{ 'aria-label': 'Without label' }}>
 								{messageTemplates && messageTemplates.map(template => (
-									<MenuItem value={template.name}>
+									<MenuItem value={template.name} key={`${JSON.stringify(template)}-sms`}>
 										{template.name}
 									</MenuItem>
 								))}
