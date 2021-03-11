@@ -112,7 +112,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<div className={classes.defaultCallReminderContainer}>
 						<Typography variant="h5" color="primary">Default Call Reminder Template</Typography>
 						<Typography>This will be the message template that is used when sending appointment reminders via phone call and no overrides are selected.</Typography>
-						<FormControl>
+						<FormControl variant="outlined">
 							<Select
 								value={defaultPhoneReminder || ''}
 								disabled={!hasWritePermission}
@@ -130,7 +130,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<div>
 						<Typography variant="h5" color="primary">Default SMS Reminder Template</Typography>
 						<Typography>This will be the message template that is used when sending appointment reminders via SMS message and no overrides are selected.</Typography>
-						<FormControl>
+						<FormControl variant="outlined">
 							<Select
 								value={defaultSmsReminder || ''}
 								disabled={!hasWritePermission}
