@@ -32,6 +32,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	accordion: {
 		marginBottom: theme.spacing()
+	},
+	accordionDetails: {
+		display: 'flex',
+		flexDirection: 'column',
+		height: '100%'
 	}
 }));
 
@@ -98,9 +103,18 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		}
 	];
 
+	const ACCORDIONS = {
+		DEFAULT_REMINDERS: 1,
+		DATE_VERIFICATION: 2,
+		CONTACT_PREFERENCES: 3
+	};
+
 	return (
 		<div className={classes.root}>
-			<Accordion expanded={openAccordion === 1} onChange={(event, expanded) => setOpenAccordion(expanded ? 1 : null)} className={classes.accordion}>
+			<Accordion
+				expanded={openAccordion === ACCORDIONS.DEFAULT_REMINDERS}
+				onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DEFAULT_REMINDERS : null)}
+				className={classes.accordion}>
 				<AccordionSummary
 					expandIcon={<ExpandMore />}
 					id="dateVerification-header">
@@ -108,7 +122,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 					<Typography color="primary" variant="h4">Default Appointment Reminders</Typography>
 				</AccordionSummary>
-				<AccordionDetails className={classes.root}>
+				<AccordionDetails className={classes.accordionDetails}>
 					<div className={classes.defaultCallReminderContainer}>
 						<Typography variant="h5" color="primary">Default Call Reminder Template</Typography>
 						<Typography>This will be the message template that is used when sending appointment reminders via phone call and no overrides are selected.</Typography>
@@ -119,7 +133,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 								onChange={event => { setDefaultPhoneReminder(event.target.value); }}
 								inputProps={{ 'aria-label': 'Without label' }}>
 								{messageTemplates && messageTemplates.map(template => (
-									<MenuItem value={template.name} key={`${JSON.stringify(template)}-call`}>
+									<MenuItem value={template.name} key={JSON.stringify(template)}>
 										{template.name}
 									</MenuItem>
 								))}
@@ -137,7 +151,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 								onChange={event => { setDefaultSmsReminder(event.target.value); }}
 								inputProps={{ 'aria-label': 'Without label' }}>
 								{messageTemplates && messageTemplates.map(template => (
-									<MenuItem value={template.name} key={`${JSON.stringify(template)}-sms`}>
+									<MenuItem value={template.name} key={JSON.stringify(template)}>
 										{template.name}
 									</MenuItem>
 								))}
@@ -146,7 +160,10 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					</div>
 				</AccordionDetails>
 			</Accordion>
-			<Accordion expanded={openAccordion === 2} onChange={(event, expanded) => setOpenAccordion(expanded ? 2 : null)} className={classes.accordion}>
+			<Accordion
+				expanded={openAccordion === ACCORDIONS.DATE_VERIFICATION}
+				onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DATE_VERIFICATION : null)}
+				className={classes.accordion}>
 				<AccordionSummary
 					expandIcon={<ExpandMore />}
 					id="dateVerification-header">
@@ -154,7 +171,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 					<Typography color="primary" variant="h4">Date Verification</Typography>
 				</AccordionSummary>
-				<AccordionDetails className={classes.root}>
+				<AccordionDetails className={classes.accordionDetails}>
 					<div className={classes.dateVerificationOptions}>
 						<Typography variant="h5" display="inline">Reminders should be sent  </Typography>
 						<FormControl>
@@ -230,8 +247,10 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 					</div>
 				</AccordionDetails>
 			</Accordion>
-			<div className={classes.root}>
-				<Accordion expanded={openAccordion === 3} onChange={(event, expanded) => setOpenAccordion(expanded ? 3 : null)}>
+			<div className={classes.accordionDetails}>
+				<Accordion
+					expanded={openAccordion === ACCORDIONS.CONTACT_PREFERENCES}
+					onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.CONTACT_PREFERENCES : null)}>
 					<AccordionSummary
 						expandIcon={<ExpandMore />}
 						id="dateVerification-header">
