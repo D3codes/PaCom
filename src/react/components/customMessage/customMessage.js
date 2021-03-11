@@ -1,4 +1,9 @@
-import React, { useState, Fragment, useMemo } from 'react';
+import React, {
+	useState,
+	Fragment,
+	useMemo,
+	useEffect
+} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
 	Typography, Switch, Button, TextField
@@ -13,6 +18,7 @@ import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import IconTextField from '../iconTextField';
 import ContainedLabeledList from '../containedLabeledList';
 import ReportTable from '../reportTable/reportTable';
+import persistentStorage from '../../utilities/persistentStorage';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -83,24 +89,21 @@ function CustomMessage() {
 	const [showReportTable, setShowReportTable] = useState(false);
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const enableButtoms = sendToAppointmentList ? !!appointments : phoneNumberIsValid;
+	const [messageTemplates, setMessageTemplates] = useState(null);
+	const [dynamicValues, setDynamicValues] = useState(null);
 
-	// TODO: get templates and variables from persistent storage, once added
-	const messageTemplates = [
-		{ name: 'template1', value: 'this is template1' },
-		{ name: 'template2', value: 'this is template2' },
-		{ name: 'template3', value: 'this is template3' },
-		{ name: 'template4', value: 'this is template4' },
-		{ name: 'template5', value: 'this is template5' }
-	];
+	const reloadTemplatesAndValues = () => {
+		persistentStorage.getDynamicValues().then(values => {
+			setDynamicValues(values);
+		});
+		persistentStorage.getMessageTemplates().then(templates => {
+			setMessageTemplates(templates);
+		});
+	};
 
-	const variables = [
-		{ name: 'Provider', value: '{{provider}}' },
-		{ name: 'Patient', value: '{{patient}}' },
-		{ name: 'Appt. Date', value: '{{date}}' },
-		{ name: 'Appt. Time', value: '{{time}}' },
-		{ name: 'Appt. Duration', value: '{{duration}}' },
-		{ name: 'Procedure', value: '{{procedure}}' }
-	];
+	useEffect(() => {
+		reloadTemplatesAndValues();
+	}, []);
 
 	const handleSwitch = event => {
 		setSendToAppointmentList(event.target.checked);
@@ -183,7 +186,7 @@ function CustomMessage() {
 							onChange={event => { setMessage(event.target.value); }}
 						/>
 						<div className={classes.listContainer}>
-							<ContainedLabeledList onClick={variable => setMessage(prevMessage => prevMessage + variable.value)} label="Variables" items={variables} />
+							<ContainedLabeledList onClick={value => setMessage(prevMessage => `${prevMessage}{{${value.name}}}`)} label="Dynamic Values" items={dynamicValues} />
 						</div>
 					</div>
 					<div className={classes.actionButtonContainer}>

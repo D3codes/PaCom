@@ -30,7 +30,7 @@ const getDynamicValues = (forceLocal = false) => {
 	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
 	else setStorageLocation();
 	const values = store.get(DYNAMIC_VALUES);
-	return defaultDynamicValues.concat(values);
+	return values ? defaultDynamicValues.concat(values) : defaultDynamicValues;
 };
 
 const removeDynamicValueWithName = valueName => {
