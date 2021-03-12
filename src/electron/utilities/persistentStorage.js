@@ -1,7 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const Store = require('electron-store');
 const { app } = require('electron');
-const defaultSettings = require('../models/defaultSettings.json');
+const isDev = require('electron-is-dev');
+const defaultSettings = isDev
+	? require('../models/devSettings.json')
+	: require('../models/defaultSettings.json');
 const defaultDynamicValues = require('../models/defaultDynamicValues.json');
 
 let store = new Store();
