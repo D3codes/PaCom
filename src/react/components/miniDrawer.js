@@ -220,7 +220,7 @@ export default function MiniDrawer({
 								<ListItem
 									button
 									key="disableAdminAccess"
-									onClick={() => { persistentStorage.setAdminAccess(false).then(setAdminAccess); }}
+									onClick={() => { persistentStorage.setAdminAccess(false).then(setAdminAccess); onTabSelect(PRIMARY_TABS[0].id); }}
 									className={classes.nested}>
 									<ListItemText primary="Disable Admin Access" primaryTypographyProps={{ color: 'error' }} />
 								</ListItem>
