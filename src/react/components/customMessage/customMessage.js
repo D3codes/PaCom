@@ -19,6 +19,8 @@ import IconTextField from '../iconTextField';
 import ContainedLabeledList from '../containedLabeledList';
 import ReportTable from '../reportTable/reportTable';
 import persistentStorage from '../../utilities/persistentStorage';
+import twilio from '../../utilities/twilioClient';
+import AlertSnackBar from '../alertSnackbar';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -88,6 +90,9 @@ function CustomMessage() {
 	const enableButtoms = sendToAppointmentList ? !!appointments : phoneNumberIsValid;
 	const [messageTemplates, setMessageTemplates] = useState(null);
 	const [dynamicValues, setDynamicValues] = useState(null);
+	const [snackbarSeverity, setSnackbarSeverity] = useState('');
+	const [showSnackbar, setShowSnackbar] = useState(false);
+	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	const reloadTemplatesAndValues = () => {
 		persistentStorage.getDynamicValues().then(values => {
@@ -118,11 +123,19 @@ function CustomMessage() {
 	};
 
 	const onSendAsSms = () => {
-		// send as sms
+		twilio.sendSMS(phoneNumber, message).then(sentSuccessfully => {
+			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarMessage(sentSuccessfully ? 'SMS message sent successfully' : 'Error sending the SMS message');
+			setShowSnackbar(true);
+		});
 	};
 
 	const onSendAsCall = () => {
-		// send as call
+		twilio.sendCall(phoneNumber, message).then(sentSuccessfully => {
+			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarMessage(sentSuccessfully ? 'Phone call sent successfully' : 'Error sending the phone call');
+			setShowSnackbar(true);
+		});
 	};
 
 	return (
@@ -221,6 +234,13 @@ function CustomMessage() {
 					</div>
 				</Fragment>
 			)}
+			<AlertSnackBar
+				severity={snackbarSeverity}
+				message={snackbarMessage}
+				open={showSnackbar}
+				onClose={() => { setShowSnackbar(false); }}
+				autoHideDuration={5000}
+			/>
 		</div>
 	);
 }

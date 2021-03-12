@@ -1,6 +1,6 @@
 {
     "settings": {
-        "adminAccess": false,
+        "adminAccess": true,
         "appointmentReminders": {
             "dateVerification": {
                 "numberOfDays": 3,
@@ -29,11 +29,11 @@
             "lastReport": ""
         },
         "twilio": {
-			"SID": "",
-			"authToken": "",
-			"phoneNumber": "",
-			"smsEndpoint": "",
-			"callEndpoint": ""
+			"SID": "AC63677480d512ca668eb026a5f418c106",
+			"authToken": "28989ab6698acc744599cd35813f00fa",
+			"phoneNumber": "5305561059",
+			"smsEndpoint": "https://studio.twilio.com/v1/Flows/FW35be051ebea3362492d9ecea25d8d107/Executions",
+			"callEndpoint": "https://studio.twilio.com/v1/Flows/FW9b54e08b0cc711b2e640fc74d7a06fee/Executions"
 		},
         "shareData": {
             "behavior": 0,
