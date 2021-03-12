@@ -3,6 +3,9 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Simulate } from 'react-dom/test-utils';
 import MessageReportSettings from '../../../../react/components/settings/messageReportSettings';
+import persistentStorageMock from '../../../../react/utilities/persistentStorage';
+
+jest.mock('../../../../react/utilities/persistentStorage');
 
 const testSettings = {
 	autosaveReports: false,
@@ -55,5 +58,24 @@ describe('MessageReportSettings', () => {
 		const { getByText } = render(<MessageReportSettings messageReports={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 
 		expect(getByText('View Last Report').parentElement).toBeEnabled();
+	});
+
+	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
+		persistentStorageMock.setMessageReportsAutosaveLocation.mockImplementation();
+		const settings = {
+			autosaveReports: true,
+			autosaveLocation: 'C:\\test\\location',
+			lastReport: ''
+		};
+		const reloadSettingsMock = jest.fn();
+		const { getByText, getByTestId } = render(<MessageReportSettings messageReports={settings} reloadSettings={reloadSettingsMock} />);
+
+		const browseField = getByTestId('browse-field').querySelector('input');
+		browseField.value = 'C:\\new\\test\\location';
+		Simulate.change(browseField);
+		fireEvent.click(getByText('Save'));
+
+		expect(persistentStorageMock.setMessageReportsAutosaveLocation).toHaveBeenCalledTimes(1);
+		expect(reloadSettingsMock).toBeCalled();
 	});
 });
