@@ -123,17 +123,17 @@ function CustomMessage() {
 	};
 
 	const onSendAsSms = () => {
-		twilio.sendSMS(phoneNumber, message).then(ok => {
-			setSnackbarSeverity(ok ? 'success' : 'error');
-			setSnackbarMessage(ok ? 'SMS message sent successfully' : 'Error sending the SMS message');
+		twilio.sendSMS(phoneNumber, message).then(sentSuccessfully => {
+			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarMessage(sentSuccessfully ? 'SMS message sent successfully' : 'Error sending the SMS message');
 			setShowSnackbar(true);
 		});
 	};
 
 	const onSendAsCall = () => {
-		twilio.sendCall(phoneNumber, message).then(ok => {
-			setSnackbarSeverity(ok ? 'success' : 'error');
-			setSnackbarMessage(ok ? 'Phone call sent successfully' : 'Error sending the phone call');
+		twilio.sendCall(phoneNumber, message).then(sentSuccessfully => {
+			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarMessage(sentSuccessfully ? 'Phone call sent successfully' : 'Error sending the phone call');
 			setShowSnackbar(true);
 		});
 	};
