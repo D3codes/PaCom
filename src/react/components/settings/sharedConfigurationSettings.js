@@ -136,11 +136,8 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 SharedConfigurationSettings.propTypes = {
 	sharedConfig: PropTypes.shape(
 		{
-			SID: PropTypes.string,
-			authToken: PropTypes.string,
-			phoneNumber: PropTypes.string,
-			callEndpoint: PropTypes.string,
-			smsEndpoint: PropTypes.string
+			behavior: PropTypes.number,
+			location: PropTypes.string
 		}.isRequired
 	),
 	reloadSettings: PropTypes.func.isRequired
