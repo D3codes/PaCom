@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import {
-	Save, List, SaveAlt, Close
+	Save, Description, SaveAlt, Close
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import BrowseFile from '../browseFile';
@@ -83,7 +83,7 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 					variant={!messageReports.lastReport ? 'outlined' : 'contained'}
 					color="primary"
 					onClick={handleViewLastReport}
-					startIcon={<List />}>
+					startIcon={<Description />}>
 					View Last Report
 				</Button>
 				<Button
