@@ -168,6 +168,11 @@ export default function MiniDrawer({
 		}
 	};
 
+	const handleAdminDisable = () => {
+		persistentStorage.setAdminAccess(false).then(setAdminAccess);
+		onTabSelect(PRIMARY_TABS[0].id);
+	};
+
 	return (
 		<Drawer
 			variant="permanent"
@@ -220,7 +225,7 @@ export default function MiniDrawer({
 								<ListItem
 									button
 									key="disableAdminAccess"
-									onClick={() => { persistentStorage.setAdminAccess(false).then(setAdminAccess); onTabSelect(PRIMARY_TABS[0].id); }}
+									onClick={handleAdminDisable}
 									className={classes.nested}>
 									<ListItemText primary="Disable Admin Access" primaryTypographyProps={{ color: 'error' }} />
 								</ListItem>
