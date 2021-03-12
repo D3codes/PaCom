@@ -10,7 +10,7 @@ import persistentStorage from '../../utilities/persistentStorage';
 import folderSelector from '../../utilities/folderSelector';
 import DescriptiveIconButton from '../descriptiveIconButton';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 		display: 'flex',
 		justifyContent: 'space-between'
 	}
-}));
+});
 
 export default function MessageReportSettings({ messageReports, hasWritePermission, reloadSettings }) {
 	const classes = useStyles();
@@ -92,7 +92,7 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 					color="primary"
 					variant={changesToSave && !autoSaveOnAndLocationNotSet ? 'contained' : 'outlined'}
 					onClick={handleSave}>
-						Save
+					Save
 				</Button>
 			</div>
 		</div>
