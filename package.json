@@ -10,7 +10,8 @@
     "appId": "health.convalesce.pacom",
     "mac": {
       "category": "public.app-category.utilities",
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "build/icons/icon_mac.png"
     },
     "win": {
       "icon": "build/icons/icon_win.ico"
