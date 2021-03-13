@@ -2,13 +2,26 @@
   "name": "PaCom",
   "version": "2.0.0",
   "author": "Convalesce Healthcare Solutions <support@convalesce.health> (http://convalesce.health)",
+  "description": "A Patient Communication Solution",
   "private": true,
   "main": "src/electron/main.js",
   "homepage": "./",
   "build": {
+    "appId": "health.convalesce.pacom",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "icon": "build/icons/icon_win.ico"
+    },
+    "nsis": {
+      "installerIcon": "build/icons/icon_win.ico"
+    },
     "files": [
-      "build/**/*",
-      "node_modules/**/*"
+      "**/build/**/*",
+      "node_modules/**/*",
+      "**/*",
+      "**/build/icon.*"
     ],
     "publish": {
       "provider": "github",
