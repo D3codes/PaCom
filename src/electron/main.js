@@ -8,8 +8,106 @@ const open = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
 
-const { app, BrowserWindow, ipcMain: ipc } = electron;
+const {
+	app, BrowserWindow, Menu, shell, ipcMain: ipc
+} = electron;
 let mainWindow;
+
+const isMac = process.platform === 'darwin';
+const menuTemplate = [
+	// { role: 'appMenu' }
+	...(isMac ? [{
+		label: app.name,
+		submenu: [
+			{ role: 'about' },
+			{ type: 'separator' },
+			{ role: 'hide' },
+			{ role: 'hideothers' },
+			{ role: 'unhide' },
+			{ type: 'separator' },
+			{ role: 'quit' }
+		]
+	}] : []),
+	// { role: 'fileMenu' }
+	{
+		label: 'File',
+		submenu: [
+			isMac ? { role: 'close' } : { role: 'quit' }
+		]
+	},
+	// { role: 'editMenu' }
+	{
+		label: 'Edit',
+		submenu: [
+			{ role: 'undo' },
+			{ role: 'redo' },
+			{ type: 'separator' },
+			{ role: 'cut' },
+			{ role: 'copy' },
+			{ role: 'paste' },
+			...(isMac ? [
+				{ role: 'delete' },
+				{ role: 'selectAll' },
+				{ type: 'separator' },
+				{
+					label: 'Speech',
+					submenu: [
+						{ role: 'startSpeaking' },
+						{ role: 'stopSpeaking' }
+					]
+				}
+			] : [
+				{ role: 'delete' },
+				{ type: 'separator' },
+				{ role: 'selectAll' }
+			])
+		]
+	},
+	// { role: 'viewMenu' }
+	{
+		label: 'View',
+		submenu: [
+			{ role: 'reload' },
+			{ role: 'forceReload' },
+			{ role: 'toggleDevTools' },
+			{ type: 'separator' },
+			{ role: 'resetZoom' },
+			{ role: 'zoomIn' },
+			{ role: 'zoomOut' },
+			{ type: 'separator' },
+			{ role: 'togglefullscreen' }
+		]
+	},
+	// { role: 'windowMenu' }
+	{
+		label: 'Window',
+		submenu: [
+			{ role: 'minimize' },
+			{ role: 'zoom' },
+			...(isMac ? [
+				{ type: 'separator' },
+				{ role: 'front' },
+				{ type: 'separator' },
+				{ role: 'window' }
+			] : [
+				{ role: 'close' }
+			])
+		]
+	},
+	{
+		role: 'help',
+		submenu: [
+			{
+				label: 'Learn More',
+				click: async () => {
+					await shell.openExternal('http://convalesce.health');
+				}
+			}
+		]
+	}
+];
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
