@@ -9,7 +9,8 @@
   "build": {
     "appId": "health.convalesce.pacom",
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "target": "dmg"
     },
     "win": {
       "icon": "build/icons/icon_win.ico"
@@ -19,9 +20,7 @@
     },
     "files": [
       "**/build/**/*",
-      "node_modules/**/*",
-      "**/*",
-      "**/build/icon.*"
+      "node_modules/**/*"
     ],
     "publish": {
       "provider": "github",
