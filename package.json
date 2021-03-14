@@ -48,8 +48,7 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-file-drop": "^3.1.2",
-    "react-scripts": "4.0.3",
-    "twilio": "^3.57.0"
+    "react-scripts": "4.0.3"
   },
   "scripts": {
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
