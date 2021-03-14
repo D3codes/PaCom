@@ -57,9 +57,9 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 	const handleCopyToNetwork = () => {
 		persistentStorage.copyLocalToNetwork().then(allMappingsAndTemplatesCopied => {
 			if (allMappingsAndTemplatesCopied) {
-				setSnackbarMessage('Local mappings and templates copied to network');
+				setSnackbarMessage('All local data was copied to network');
 			} else {
-				setSnackbarMessage('Duplicate mappings or templates were not copied');
+				setSnackbarMessage('Duplicate data was not copied');
 			}
 			setShowSnackbar(true);
 		});
@@ -86,21 +86,21 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					selected={selectedOption === BEHAVIOR.local}
 					title="LOCAL"
-					description="Read and Write all message templates, provider mappings, and settings locally."
+					description="Read and Write all message templates, provider mappings, dynamic values, and settings locally."
 					Icon={DesktopWindows}
 				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
 					selected={selectedOption === BEHAVIOR.networkReadOnly}
 					title="NETWORK - READ ONLY"
-					description="Read all message templates, provider mappings, and settings from a network location."
+					description="Read all message templates, provider mappings, dynamic values, and settings from a network location."
 					Icon={Storage}
 				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
 					selected={selectedOption === BEHAVIOR.networkReadAndWrite}
 					title="NETWORK - READ AND WRITE"
-					description="Read and Write all message templates, provider mappings, and settings from a network location."
+					description="Read and Write all message templates, provider mappings, dynamic values, and settings from a network location."
 					Icon={Storage}
 				/>
 			</div>
@@ -136,11 +136,8 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 SharedConfigurationSettings.propTypes = {
 	sharedConfig: PropTypes.shape(
 		{
-			SID: PropTypes.string,
-			authToken: PropTypes.string,
-			phoneNumber: PropTypes.string,
-			callEndpoint: PropTypes.string,
-			smsEndpoint: PropTypes.string
+			behavior: PropTypes.number,
+			location: PropTypes.string
 		}.isRequired
 	),
 	reloadSettings: PropTypes.func.isRequired

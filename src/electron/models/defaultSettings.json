@@ -8,13 +8,17 @@
                 "allowSendOutsideRange": 0,
                 "useBusinessDays": true
             },
-            "notificationMethod": {
+            "contactPreferences": {
                 "sendToPreferredAndSms": false,
                 "textHomeIfCellNotAvailable": false
+            },
+            "defaultReminderTemplates": {
+                "phone": null,
+                "sms": null
             }
         },
         "customMessages": {
-            "notificationMethod": {
+            "contactPreferences": {
                 "sendToPreferredAndSms": false,
                 "textHomeIfCellNotAvailable": false
             }
@@ -25,12 +29,12 @@
             "lastReport": ""
         },
         "twilio": {
-            "SID": "",
-            "authToken": "",
-            "phoneNumber": "",
-            "smsEndpoint": "",
-            "callEndpoint": ""
-        },
+			"SID": "",
+			"authToken": "",
+			"phoneNumber": "",
+			"smsEndpoint": "",
+			"callEndpoint": ""
+		},
         "shareData": {
             "behavior": 0,
             "location": ""

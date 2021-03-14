@@ -8,11 +8,120 @@ const open = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
 
-const { app, BrowserWindow, ipcMain: ipc } = electron;
+const {
+	app, BrowserWindow, Menu, shell, ipcMain: ipc
+} = electron;
 let mainWindow;
 
+const isMac = process.platform === 'darwin';
+const menuTemplate = [
+	// { role: 'appMenu' }
+	...(isMac ? [{
+		label: app.name,
+		submenu: [
+			{ role: 'about' },
+			{ type: 'separator' },
+			{ role: 'hide' },
+			{ role: 'hideothers' },
+			{ role: 'unhide' },
+			{ type: 'separator' },
+			{ role: 'quit' }
+		]
+	}] : []),
+	// { role: 'fileMenu' }
+	{
+		label: 'File',
+		submenu: [
+			isMac ? { role: 'close' } : { role: 'quit' }
+		]
+	},
+	// { role: 'editMenu' }
+	{
+		label: 'Edit',
+		submenu: [
+			{ role: 'undo' },
+			{ role: 'redo' },
+			{ type: 'separator' },
+			{ role: 'cut' },
+			{ role: 'copy' },
+			{ role: 'paste' },
+			...(isMac ? [
+				{ role: 'delete' },
+				{ role: 'selectAll' },
+				{ type: 'separator' },
+				{
+					label: 'Speech',
+					submenu: [
+						{ role: 'startSpeaking' },
+						{ role: 'stopSpeaking' }
+					]
+				}
+			] : [
+				{ role: 'delete' },
+				{ type: 'separator' },
+				{ role: 'selectAll' }
+			])
+		]
+	},
+	// { role: 'viewMenu' }
+	{
+		label: 'View',
+		submenu: [
+			{ role: 'reload' },
+			{ role: 'forceReload' },
+			{ role: 'toggleDevTools' },
+			{ type: 'separator' },
+			{ role: 'resetZoom' },
+			{ role: 'zoomIn' },
+			{ role: 'zoomOut' },
+			{ type: 'separator' },
+			{ role: 'togglefullscreen' }
+		]
+	},
+	// { role: 'windowMenu' }
+	{
+		label: 'Window',
+		submenu: [
+			{ role: 'minimize' },
+			{ role: 'zoom' },
+			...(isMac ? [
+				{ type: 'separator' },
+				{ role: 'front' },
+				{ type: 'separator' },
+				{ role: 'window' }
+			] : [
+				{ role: 'close' }
+			])
+		]
+	},
+	{
+		role: 'help',
+		submenu: [
+			{
+				label: 'Learn More',
+				click: async () => {
+					await shell.openExternal('http://convalesce.health');
+				}
+			}
+		]
+	}
+];
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
+
 function createWindow() {
-	mainWindow = new BrowserWindow({ width: 1200, height: 800, webPreferences: { nodeIntegration: true, preload: `${__dirname}/preload.js` } });
+	mainWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
+		minWidth: 1200,
+		minHeight: 800,
+		title: 'PaCom',
+		webPreferences: {
+			contextIsolation: false,
+			nodeIntegration: true,
+			preload: `${__dirname}/preload.js`
+		}
+	});
 	mainWindow.setMenuBarVisibility(false);
 
 	mainWindow.loadURL(
@@ -52,6 +161,12 @@ ipc.handle('open-csv-dialog', () => {
 ipc.handle('open-file', (event, filePath) => open([], filePath));
 
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
+
+ipc.handle('get-dynamic-values', (event, includeDefault = true) => persistentStorage.getDynamicValues(false, includeDefault));
+
+ipc.handle('add-dynamic-value', (event, value) => persistentStorage.addDynamicValue(value));
+
+ipc.handle('remove-dynamic-value', (event, valueName) => persistentStorage.removeDynamicValueWithName(valueName));
 
 ipc.handle('get-provider-mappings', () => persistentStorage.getProviderMappings());
 

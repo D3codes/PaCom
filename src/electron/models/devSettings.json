@@ -1,0 +1,43 @@
+{
+    "settings": {
+        "adminAccess": true,
+        "appointmentReminders": {
+            "dateVerification": {
+                "numberOfDays": 3,
+                "endOfRange": null,
+                "allowSendOutsideRange": 0,
+                "useBusinessDays": true
+            },
+            "contactPreferences": {
+                "sendToPreferredAndSms": false,
+                "textHomeIfCellNotAvailable": false
+            },
+            "defaultReminderTemplates": {
+                "phone": null,
+                "sms": null
+            }
+        },
+        "customMessages": {
+            "contactPreferences": {
+                "sendToPreferredAndSms": false,
+                "textHomeIfCellNotAvailable": false
+            }
+        },
+        "messageReports": {
+            "autosaveReports": false,
+            "autosaveLocation": "",
+            "lastReport": ""
+        },
+        "twilio": {
+			"SID": "AC63677480d512ca668eb026a5f418c106",
+			"authToken": "28989ab6698acc744599cd35813f00fa",
+			"phoneNumber": "5305561059",
+			"smsEndpoint": "https://studio.twilio.com/v1/Flows/FW35be051ebea3362492d9ecea25d8d107/Executions",
+			"callEndpoint": "https://studio.twilio.com/v1/Flows/FW9b54e08b0cc711b2e640fc74d7a06fee/Executions"
+		},
+        "shareData": {
+            "behavior": 0,
+            "location": ""
+        }
+    }
+}
