@@ -33,12 +33,12 @@ const sendCall = (phoneNumber, message) => {
 	return sendMessage(phoneNumber, message, false);
 };
 
-const getLogs = async (getCalls, date) => {
+const getLogs = async (endpoint, date) => {
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
 
 	const url = TWILIO_API_BASE_URL
 		+ twilioSettings.SID
-		+ (getCalls ? TWILIO_GET_CALLS_ENDPOINT : TWILIO_GET_MESSAGES_ENDPOINT)
+		+ endpoint
 		+ date.toISOString().slice(0, 10).replace(/-/g, '/');
 
 	const response = await fetch(url, {
@@ -53,12 +53,12 @@ const getLogs = async (getCalls, date) => {
 };
 
 const getSMSLogs = async date => {
-	const data = await getLogs(false, date);
+	const data = await getLogs(TWILIO_GET_MESSAGES_ENDPOINT, date);
 	return data.messages;
 };
 
 const getCallLogs = async date => {
-	const data = await getLogs(true, date);
+	const data = await getLogs(TWILIO_GET_CALLS_ENDPOINT, date);
 	return data.calls;
 };
 

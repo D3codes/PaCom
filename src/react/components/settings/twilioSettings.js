@@ -99,8 +99,16 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 		reloadSettings();
 	};
 
-	const handleDownloadLogs = async getCalls => {
-		const logs = getCalls ? await twilioClient.getCallLogs(selectedDate) : await twilioClient.getSMSLogs(selectedDate);
+	const handleDownloadMessages = async () => {
+		const logs = await twilioClient.getSMSLogs(selectedDate);
+		// eslint-disable-next-line no-console
+		console.log(logs);
+		// TODO: Save to file
+	};
+
+	const handleDownloadCalls = async () => {
+		const logs = await twilio.getCallLogs(selectedDate);
+		// eslint-disable-next-line no-console
 		console.log(logs);
 		// TODO: Save to file
 	};
@@ -212,13 +220,13 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 							</div>
 							<div className={classes.downloadButtonContainer}>
 								<Button
-									onClick={() => { handleDownloadLogs(true); }}
+									onClick={() => { handleDownloadCalls(); }}
 									variant="contained"
 									color="primary">
 									Call Logs
 								</Button>
 								<Button
-									onClick={() => { handleDownloadLogs(false); }}
+									onClick={() => { handleDownloadMessages(); }}
 									variant="contained"
 									color="primary">
 									SMS Logs
