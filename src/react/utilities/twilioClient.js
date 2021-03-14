@@ -36,10 +36,7 @@ const sendCall = (phoneNumber, message) => {
 const getLogs = async (endpoint, date) => {
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
 
-	const url = TWILIO_API_BASE_URL
-		+ twilioSettings.SID
-		+ endpoint
-		+ date.toISOString().slice(0, 10).replace(/-/g, '/');
+	const url = `${TWILIO_API_BASE_URL}${twilioSettings.SID}${endpoint}${date.toISOString().slice(0, 10).replace(/-/g, '/')}`;
 
 	const response = await fetch(url, {
 		method: 'GET',

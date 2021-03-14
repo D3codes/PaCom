@@ -107,7 +107,7 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 	};
 
 	const handleDownloadCalls = async () => {
-		const logs = await twilio.getCallLogs(selectedDate);
+		const logs = await twilioClient.getCallLogs(selectedDate);
 		// eslint-disable-next-line no-console
 		console.log(logs);
 		// TODO: Save to file
