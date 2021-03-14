@@ -15,6 +15,7 @@ import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import validateTwilioEndpoint from '../../validators/validateTwilioEndpoint';
 import persistentStorage from '../../utilities/persistentStorage';
 import IconTextField from '../iconTextField';
+import twilioClient from '../../utilities/twilioClient';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -96,6 +97,20 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 		if (callEndpoint !== twilio.callEndpoint) persistentStorage.setTwilioCallEndpoint(callEndpoint);
 		if (smsEndpoint !== twilio.smsEndpoint) persistentStorage.setTwilioSmsEndpoint(smsEndpoint);
 		reloadSettings();
+	};
+
+	const handleDownloadMessages = async () => {
+		const logs = await twilioClient.getSMSLogs(selectedDate);
+		// eslint-disable-next-line no-console
+		console.log(logs);
+		// TODO: Save to file
+	};
+
+	const handleDownloadCalls = async () => {
+		const logs = await twilio.getCallLogs(selectedDate);
+		// eslint-disable-next-line no-console
+		console.log(logs);
+		// TODO: Save to file
 	};
 
 	return (
@@ -204,10 +219,16 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 								</MuiPickersUtilsProvider>
 							</div>
 							<div className={classes.downloadButtonContainer}>
-								<Button variant="contained" color="primary">
+								<Button
+									onClick={() => { handleDownloadCalls(); }}
+									variant="contained"
+									color="primary">
 									Call Logs
 								</Button>
-								<Button variant="contained" color="primary">
+								<Button
+									onClick={() => { handleDownloadMessages(); }}
+									variant="contained"
+									color="primary">
 									SMS Logs
 								</Button>
 							</div>
