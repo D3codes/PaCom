@@ -4,7 +4,7 @@ import Add from '@material-ui/icons/Add';
 
 import ProviderMappingsTable from './providerMappingsTable';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
 	buttonContainer: {
 		display: 'flex',
 		justifyContent: 'flex-end'
@@ -23,21 +23,23 @@ const useStyles = makeStyles(() => ({
 		display: 'flex',
 		flexFlow: 'column'
 	}
-}));
+});
 
 export default function ProviderMappings() {
 	const classes = useStyles();
-	const [providers] = useState(null); // TODO: Get provider mappings from storage
+	const [providers] = useState(); // TODO: Get provider mappings from storage
 	const [isAddShown, setIsAddShown] = useState(false);
 
 	const handleAddClick = () => {
 		setIsAddShown(true);
 	};
 
+	const showProviderMappingsTable = providers || isAddShown;
+
 	return (
 		<div className={classes.providerMappingsContainer}>
-			{(providers || isAddShown) && <ProviderMappingsTable isAddShown={isAddShown} providers={providers} />}
-			{!(providers || isAddShown) && (
+			{showProviderMappingsTable && <ProviderMappingsTable isAddShown={isAddShown} providers={providers} />}
+			{!showProviderMappingsTable && (
 				<div className={classes.noProviderMappingsContainer}>
 					<Typography className={classes.noProviderMappingsText} color="textSecondary">No Provider Mappings</Typography>
 				</div>

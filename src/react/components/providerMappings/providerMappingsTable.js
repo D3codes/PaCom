@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	tableHeadCell: {
 		backgroundColor: theme.palette.primary.main,
-		color: theme.palette.common.white
+		color: theme.palette.primary.contrastText
 	}
 }));
 
@@ -58,7 +58,7 @@ function ProviderMappingsTable({ isAddShown = false, providers = null }) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{providers && providers.map(provider => (
+					{providers?.map(provider => (
 						<ProviderMappingsTableRow key={provider.source} provider={provider} />
 					))}
 					{isAddShown && (
