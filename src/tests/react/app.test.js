@@ -22,7 +22,7 @@ describe('App', () => {
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => ([]));
 
 		const { getAllByText } = render(<App />);
-		expect(getAllByText('Send Appointment Reminders')).toHaveLength(2);
+		expect(getAllByText('Appointment Reminders')).toHaveLength(2);
 	});
 
 	// TODO: Add tests for MiniDrawer state management
