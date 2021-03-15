@@ -1,3 +1,5 @@
+import Provider from '../models/provider';
+
 // Dynamic Values
 const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values', includeDefault);
 
@@ -6,11 +8,13 @@ const addDynamicValue = value => window.ipcRenderer.invoke('add-dynamic-value', 
 const removeDynamicValueWithName = valueName => window.ipcRenderer.invoke('remove-dynamic-value', valueName);
 
 // Provider Mappings
-const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings');
+const transformMappings = providerMappings => providerMappings.map(({ source, target, phonetic }) => new Provider(source, target, phonetic));
 
-const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-mapping', mapping);
+const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings').then(transformMappings);
 
-const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource);
+const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-mapping', mapping).then(transformMappings);
+
+const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource).then(transformMappings);
 
 // Message Templates
 const getMessageTemplates = () => window.ipcRenderer.invoke('get-message-templates');
