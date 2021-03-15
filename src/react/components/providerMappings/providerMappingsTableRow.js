@@ -70,7 +70,7 @@ function ProviderMappingsTableRow({
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('target', '-')}</Typography></TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('phonetic', '-')}</Typography></TableCell>
 			<TableCell align="center" className={classes.tableCell}>
-				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick} data-testid="more-vert">
+				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
 					<MoreVert />
 				</IconButton>
 				<Menu anchorEl={moreMenuAnchorEl} open={Boolean(moreMenuAnchorEl)} onClose={handleMoreMenuClose}>
