@@ -26,30 +26,32 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ProviderMappingsTableRow({ provider }) {
+function ProviderMappingsTableRow({
+	hasWritePermission = false, onEdit, onRemove, provider
+}) {
 	const classes = useStyles();
-	const [moreMenuAnchorEl, setMoreMenuAchorEl] = useState(false);
+	const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState(false);
 
 	function handleEditClick() {
-		setMoreMenuAchorEl(null);
-		// TODO: Edit logic
+		setMoreMenuAnchorEl(null);
+		onEdit(provider);
 	}
 
 	function handleRemoveClick() {
-		setMoreMenuAchorEl(null);
-		// TODO: Remove logic
+		setMoreMenuAnchorEl(null);
+		onRemove(provider);
 	}
 
 	function handleMoreClick(event) {
-		setMoreMenuAchorEl(event.currentTarget);
+		setMoreMenuAnchorEl(event.currentTarget);
 	}
 
 	function handleMoreMenuClose() {
-		setMoreMenuAchorEl(null);
+		setMoreMenuAnchorEl(null);
 	}
 
 	return (
-		<TableRow key={provider.source}>
+		<TableRow hover key={provider.source}>
 			<TableCell className={classes.tableCell}>
 				<Typography variant="body2">
 					{!provider.get('target') && !provider.get('phonetic') && (
@@ -61,7 +63,7 @@ function ProviderMappingsTableRow({ provider }) {
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('target', '-')}</Typography></TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('phonetic', '-')}</Typography></TableCell>
 			<TableCell align="center" className={classes.tableCell}>
-				<IconButton onClick={handleMoreClick}>
+				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
 					<MoreVert />
 				</IconButton>
 				<Menu anchorEl={moreMenuAnchorEl} open={Boolean(moreMenuAnchorEl)} onClose={handleMoreMenuClose}>
@@ -80,6 +82,9 @@ function ProviderMappingsTableRow({ provider }) {
 }
 
 ProviderMappingsTableRow.propTypes = {
+	hasWritePermission: PropTypes.bool,
+	onEdit: PropTypes.func.isRequired,
+	onRemove: PropTypes.func.isRequired,
 	provider: PropTypes.instanceOf(Provider).isRequired
 };
 
