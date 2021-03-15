@@ -8,6 +8,7 @@ import {
 } from '@material-ui/icons';
 
 import Provider from '../../models/provider';
+import messageController from '../../utilities/messageController';
 
 const useStyles = makeStyles(theme => ({
 	moreMenuItem: {
@@ -38,8 +39,14 @@ function ProviderMappingsTableRow({
 	}
 
 	function handleRemoveClick() {
-		setMoreMenuAnchorEl(null);
-		onRemove(provider);
+		const title = 'Please confirm provider removal';
+		const message = 'Removing this provider disallows messages containing that provider from being sent.';
+		messageController.showWarning(title, message).then(({ response }) => {
+			if (response === 0) {
+				setMoreMenuAnchorEl(null);
+				onRemove(provider);
+			}
+		});
 	}
 
 	function handleMoreClick(event) {
@@ -63,17 +70,17 @@ function ProviderMappingsTableRow({
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('target', '-')}</Typography></TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('phonetic', '-')}</Typography></TableCell>
 			<TableCell align="center" className={classes.tableCell}>
-				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
+				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick} data-testid="more-vert">
 					<MoreVert />
 				</IconButton>
 				<Menu anchorEl={moreMenuAnchorEl} open={Boolean(moreMenuAnchorEl)} onClose={handleMoreMenuClose}>
 					<MenuItem className={classes.moreMenuItem} onClick={handleEditClick}>
-						<Edit color="inherit" />
-						<Typography className={classes.moreMenuText} color="inherit">Edit</Typography>
+						<Edit color="primary" />
+						<Typography className={classes.moreMenuText} color="primary">Edit</Typography>
 					</MenuItem>
 					<MenuItem className={classes.moreMenuItem} onClick={handleRemoveClick}>
-						<DeleteForever color="inherit" />
-						<Typography className={classes.moreMenuText} color="inherit">Remove</Typography>
+						<DeleteForever color="error" />
+						<Typography className={classes.moreMenuText} color="error">Remove</Typography>
 					</MenuItem>
 				</Menu>
 			</TableCell>

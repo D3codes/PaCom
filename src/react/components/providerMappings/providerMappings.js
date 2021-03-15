@@ -7,8 +7,9 @@ import persistentStorage from '../../utilities/persistentStorage';
 import AlertSnackbar from '../alertSnackbar';
 import ProviderMappingModal from './providerMappingModal';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	buttonContainer: {
+		marginTop: theme.spacing(2),
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
 		display: 'flex',
 		flexFlow: 'column'
 	}
-});
+}));
 
 export default function ProviderMappings() {
 	const classes = useStyles();
@@ -39,16 +40,22 @@ export default function ProviderMappings() {
 
 	const handleAddClick = () => setIsModalOpen(true);
 
+	const handleCancel = () => setIsModalOpen(false);
+
 	const handleEdit = providerMapping => {
 		setEditingProvider(providerMapping);
+		setIsModalOpen(true);
 	};
 
 	const handleRemove = providerMapping => {
 		persistentStorage.removeProviderMappingWithSource(providerMapping.source).then(setProviders);
 	};
 
-	const handleSave = providerMapping => {
+	const handleSave = (providerMapping, previousProviderMapping) => {
+		if (previousProviderMapping) persistentStorage.removeProviderMappingWithSource(previousProviderMapping.source);
 		persistentStorage.addProviderMapping(providerMapping).then(setProviders);
+		setIsModalOpen(false);
+		setEditingProvider(null);
 	};
 
 	return (
@@ -64,8 +71,11 @@ export default function ProviderMappings() {
 				<Button color="primary" endIcon={<Add />} onClick={handleAddClick} variant="contained">Add</Button>
 			</div>
 			<ProviderMappingModal
+				onCancel={handleCancel}
+				onSave={handleSave}
 				open={isModalOpen}
 				provider={editingProvider}
+				providers={providers}
 			/>
 			{hasWritePermission !== null && (
 				<AlertSnackbar

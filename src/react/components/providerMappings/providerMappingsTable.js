@@ -72,7 +72,7 @@ function ProviderMappingsTable({
 								className={classes.noProviderMappingsText}
 								align="center"
 								colSpan={4}>
-								No Provider Mappings Found
+								No Provider Mappings
 							</TableCell>
 						</TableRow>
 					)}
