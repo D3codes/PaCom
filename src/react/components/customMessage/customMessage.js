@@ -87,12 +87,15 @@ function CustomMessage() {
 	const [message, setMessage] = useState('');
 	const [showReportTable, setShowReportTable] = useState(false);
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
-	const enableButtoms = sendToAppointmentList ? !!appointments : phoneNumberIsValid;
+	const messageIsValid = useMemo(() => (sendToAppointmentList || !message.match(/{{.+}}/g)), [sendToAppointmentList, message]);
 	const [messageTemplates, setMessageTemplates] = useState(null);
 	const [dynamicValues, setDynamicValues] = useState(null);
 	const [snackbarSeverity, setSnackbarSeverity] = useState('');
 	const [showSnackbar, setShowSnackbar] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
+	const enableSendButtons = useMemo(() => (
+		(sendToAppointmentList ? !!appointments : phoneNumberIsValid && messageIsValid) && message
+	), [sendToAppointmentList, appointments, phoneNumberIsValid, messageIsValid, message]);
 
 	const reloadTemplatesAndValues = () => {
 		persistentStorage.getDynamicValues().then(values => {
@@ -187,6 +190,8 @@ function CustomMessage() {
 							<ContainedLabeledList onClick={template => setMessage(template.value)} label="Templates" items={messageTemplates} />
 						</div>
 						<TextField
+							error={!messageIsValid}
+							helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
 							label="Message"
 							multiline
 							rows={15}
@@ -196,25 +201,30 @@ function CustomMessage() {
 							onChange={event => { setMessage(event.target.value); }}
 						/>
 						<div className={classes.listContainer}>
-							<ContainedLabeledList onClick={value => setMessage(prevMessage => `${prevMessage}{{${value.name}}}`)} label="Dynamic Values" items={dynamicValues} />
+							<ContainedLabeledList
+								onClick={value => setMessage(prevMessage => `${prevMessage}{{${value.name}}}`)}
+								label="Dynamic Values"
+								items={dynamicValues}
+								disabled={!sendToAppointmentList}
+							/>
 						</div>
 					</div>
 					<div className={classes.actionButtonContainer}>
 						{!sendToAppointmentList && (
 							<Fragment>
 								<Button
-									disabled={!enableButtoms}
+									disabled={!enableSendButtons}
 									color="primary"
 									endIcon={<Sms />}
-									variant={enableButtoms ? 'contained' : 'outlined'}
+									variant={enableSendButtons ? 'contained' : 'outlined'}
 									onClick={onSendAsSms}>
 									Send as SMS
 								</Button>
 								<Button
-									disabled={!enableButtoms}
+									disabled={!enableSendButtons}
 									color="primary"
 									endIcon={<Phone />}
-									variant={enableButtoms ? 'contained' : 'outlined'}
+									variant={enableSendButtons ? 'contained' : 'outlined'}
 									onClick={onSendAsCall}
 									className={classes.farRightActionButton}>
 									Send as Call
@@ -223,10 +233,10 @@ function CustomMessage() {
 						)}
 						{sendToAppointmentList && (
 							<Button
-								disabled={!enableButtoms}
+								disabled={!enableSendButtons}
 								color="primary"
 								endIcon={<ArrowForwardIos />}
-								variant={enableButtoms ? 'contained' : 'outlined'}
+								variant={enableSendButtons ? 'contained' : 'outlined'}
 								onClick={() => setShowReportTable(true)}>
 								Continue
 							</Button>
