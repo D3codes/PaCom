@@ -4,25 +4,25 @@ import { makeStyles, TextField } from '@material-ui/core';
 import ContainedLabeledList from '../containedLabeledList';
 import persistentStorage from '../../utilities/persistentStorage';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		height: '100%'
 	},
 	listContainer: {
-		width: 'calc(50% - 10px)',
+		width: `calc(50% - ${theme.spacing()}px)`,
 		height: '90%'
 	},
 	textField: {
 		width: '50%',
 		height: '100%',
-		marginRight: '10px',
+		marginRight: theme.spacing(),
 		marginTop: '32px'
 	}
-});
+}));
 
 function MessageCompose({
-	messageIsValid, setMessage, message, disableDynamicValues = false, helperText = ''
+	messageIsValid, onMessageChange, onAppend, message, disableDynamicValues = false, helperText = ''
 }) {
 	const classes = useStyles();
 
@@ -49,12 +49,12 @@ function MessageCompose({
 				variant="outlined"
 				className={classes.textField}
 				value={message}
-				onChange={event => { setMessage(event.target.value); }}
+				onChange={event => { onMessageChange(event.target.value); }}
 				data-testId="message-field"
 			/>
 			<div className={classes.listContainer}>
 				<ContainedLabeledList
-					onClick={value => setMessage(prevMessage => `${prevMessage}{{${value.name}}}`)}
+					onClick={value => onAppend(`{{${value.name}}}`)}
 					label="Dynamic Values"
 					items={dynamicValues}
 					disabled={disableDynamicValues}
@@ -66,7 +66,8 @@ function MessageCompose({
 
 MessageCompose.propTypes = {
 	messageIsValid: PropTypes.bool.isRequired,
-	setMessage: PropTypes.func.isRequired,
+	onMessageChange: PropTypes.func.isRequired,
+	onAppend: PropTypes.func.isRequired,
 	message: PropTypes.string.isRequired,
 	disableDynamicValues: PropTypes.bool,
 	helperText: PropTypes.string

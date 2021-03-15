@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 		overflowY: 'hidden',
 		height: '100%',
 		display: 'flex',
-		alignContent: 'center',
+		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	list: {
@@ -23,8 +23,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	placeholderText: {
 		fontStyle: 'italic',
-		color: theme.palette.text.secondary,
-		alignSelf: 'center'
+		color: theme.palette.text.secondary
 	}
 }));
 
@@ -37,12 +36,12 @@ function ContainedLabeledList({
 		<div className={classes.containedLabeledListContainer}>
 			<Typography color="primary" variant="h5" display="inline">{label}</Typography>
 			<Card className={classes.card}>
-				{(items?.length > 0) && (
+				{items?.length > 0 && (
 					<List className={classes.list}>
-						{items && items.map(item => (
+						{items.map(item => (
 							<ListItem
 								disabled={disabled}
-								key={JSON.stringify(item)}
+								key={item.name}
 								divider
 								button
 								onClick={() => onClick(item)}>

@@ -51,13 +51,13 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex'
 	},
 	listContainer: {
-		width: 'calc(33% - 10px)',
+		width: `calc(33% - ${theme.spacing()}px)`,
 		height: '90%'
 	},
 	messageComposeContainer: {
 		height: '100%',
-		width: '66%',
-		marginLeft: '10px'
+		width: '67%',
+		marginLeft: theme.spacing()
 	},
 	farRightActionButton: {
 		marginLeft: theme.spacing()
@@ -92,7 +92,7 @@ function CustomMessage() {
 	const [showSnackbar, setShowSnackbar] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 	const enableSendButtons = useMemo(() => (
-		(sendToAppointmentList ? !!appointments : phoneNumberIsValid && messageIsValid) && message
+		(sendToAppointmentList ? appointments : phoneNumberIsValid && messageIsValid) && message
 	), [sendToAppointmentList, appointments, phoneNumberIsValid, messageIsValid, message]);
 
 	useEffect(() => {
@@ -103,6 +103,14 @@ function CustomMessage() {
 
 	const handleSwitch = event => {
 		setSendToAppointmentList(event.target.checked);
+	};
+
+	const handleMessageChange = newMessage => {
+		setMessage(newMessage);
+	};
+
+	const handleMessageAppend = value => {
+		setMessage(prevMessage => `${prevMessage}${value}`);
 	};
 
 	const handleBrowseClick = () => {
@@ -184,7 +192,8 @@ function CustomMessage() {
 							<MessageCompose
 								messageIsValid={messageIsValid}
 								message={message}
-								setMessage={setMessage}
+								onMessageChange={handleMessageChange}
+								onAppend={handleMessageAppend}
 								disableDynamicValues={!sendToAppointmentList}
 								helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
 							/>
