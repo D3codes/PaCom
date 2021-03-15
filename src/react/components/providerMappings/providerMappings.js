@@ -62,7 +62,14 @@ export default function ProviderMappings() {
 				providers={providers}
 			/>
 			<div className={classes.buttonContainer}>
-				<Button color="primary" endIcon={<Add />} onClick={handleAddClick} variant="contained">Add</Button>
+				<Button
+					color="primary"
+					endIcon={<Add />}
+					onClick={handleAddClick}
+					disabled={!hasWritePermission}
+					variant={hasWritePermission ? 'contained' : 'outlined'}>
+					Add
+				</Button>
 			</div>
 			<ProviderMappingModal
 				onCancel={handleCancel}
