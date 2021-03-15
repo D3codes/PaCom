@@ -1,34 +1,29 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import {
-	AppBar, CssBaseline, makeStyles, Toolbar, Typography, ClickAwayListener
+	AppBar, CssBaseline, makeStyles, Toolbar, Typography, ThemeProvider
 } from '@material-ui/core';
+
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
 import CustomMessage from './components/customMessage/customMessage';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
-import MiniDrawer, { DRAWER_OPEN_WIDTH, DRAWER_CLOSED_WIDTH, SUBSETTINGS_TABS } from './components/miniDrawer';
+import MiniDrawer, { DRAWER_WIDTH } from './components/drawer/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
 import Settings from './components/settings/settings';
+import paComTheme from './theme';
 
 const useStyles = makeStyles(theme => ({
-	root: {
+	content: {
 		display: 'flex',
 		height: '100%'
 	},
 	appBar: {
-		marginLeft: DRAWER_CLOSED_WIDTH,
-		width: `calc(100% - ${DRAWER_CLOSED_WIDTH}px)`,
-		transition: theme.transitions.create(['width', 'margin'])
-	},
-	appBarShift: {
-		marginLeft: DRAWER_OPEN_WIDTH,
-		width: `calc(100% - ${DRAWER_OPEN_WIDTH}px)`,
-		transition: theme.transitions.create(['width', 'margin'])
+		marginLeft: DRAWER_WIDTH,
+		width: `calc(100% - ${DRAWER_WIDTH}px)`
 	},
 	container: {
 		height: '100%'
 	},
-	content: {
+	main: {
 		flexGrow: 1,
 		padding: theme.spacing(3),
 		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
@@ -50,62 +45,33 @@ function getTitle(tabId) {
 
 export default function App() {
 	const classes = useStyles();
-	const [open, setOpen] = useState(false);
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
-	const [settingsOpen, setSettingsOpen] = useState(false);
-
-	const handleChevronClick = () => {
-		setOpen(prevOpen => !prevOpen);
-		setSettingsOpen(prevSettingsOpen => !open && prevSettingsOpen && SUBSETTINGS_TABS.some(subTab => subTab.id === selectedTabId));
-	};
-
-	const handleTabSelect = tabId => {
-		const isSettingsTab = tabId === MiniDrawer.TabIds.SETTINGS;
-		if (!isSettingsTab) setSelectedTabId(tabId);
-		if (isSettingsTab) setSettingsOpen(prevSettingsOpen => !prevSettingsOpen);
-		if (!open && isSettingsTab) setOpen(true);
-	};
-
-	const handleClickAway = () => {
-		setSettingsOpen(false);
-		setOpen(false);
-	};
 
 	const title = getTitle(selectedTabId);
 
 	return (
-		<div className={classes.root}>
-			<CssBaseline />
-			<ClickAwayListener onClickAway={handleClickAway}>
-				<div>
-					<MiniDrawer
-						open={open}
-						onChevronClick={handleChevronClick}
-						onTabSelect={handleTabSelect}
-						selectedTabId={selectedTabId}
-						settingsOpen={settingsOpen}
-					/>
-				</div>
-			</ClickAwayListener>
-			<AppBar
-				position="fixed"
-				className={clsx(classes.appBar, {
-					[classes.appBarShift]: open
-				})}>
-				<Toolbar>
-					<Typography variant="h6" noWrap>
-						{title}
-					</Typography>
-				</Toolbar>
-			</AppBar>
-			<main className={classes.content}>
-				<div className={classes.toolbar} />
-				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders />}
-				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
-				{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
-				{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
-				<Settings selectedTabId={selectedTabId} />
-			</main>
-		</div>
+		<ThemeProvider theme={paComTheme}>
+			<div className={classes.content}>
+				<CssBaseline />
+				<MiniDrawer onTabSelect={setSelectedTabId} selectedTabId={selectedTabId} />
+				<AppBar
+					position="fixed"
+					className={classes.appBar}>
+					<Toolbar>
+						<Typography variant="h6" noWrap>
+							{title}
+						</Typography>
+					</Toolbar>
+				</AppBar>
+				<main className={classes.main}>
+					<div className={classes.toolbar} />
+					{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders />}
+					{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
+					{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
+					{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
+					<Settings selectedTabId={selectedTabId} />
+				</main>
+			</div>
+		</ThemeProvider>
 	);
 }
