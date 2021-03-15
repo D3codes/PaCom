@@ -75,7 +75,7 @@ theme = {
 		},
 		MuiIconButton: {
 			root: {
-				padding: theme.spacing(1)
+				padding: theme.spacing()
 			}
 		},
 		MuiTooltip: {
@@ -97,24 +97,19 @@ theme = {
 		MuiListItemText: {
 			primary: {
 				fontWeight: theme.typography.fontWeightMedium,
-				color: theme.palette.primary.contrastText,
 				fontSize: 14
+			},
+			inset: {
+				paddingLeft: 28
 			}
 		},
 		MuiListItemIcon: {
 			root: {
-				color: theme.palette.primary.contrastText,
 				marginRight: theme.spacing(),
 				minWidth: 0,
 				'& svg': {
 					fontSize: 20
 				}
-			}
-		},
-		MuiAvatar: {
-			root: {
-				width: 32,
-				height: 32
 			}
 		}
 	}

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render } from '@testing-library/react';
 import getVersionMock from '../../../react/utilities/getVersion';
-import MiniDrawer from '../../../react/components/miniDrawer';
+import MiniDrawer from '../../../react/components/drawer/miniDrawer';
 import persistentStorageMock from '../../../react/utilities/persistentStorage';
 
 jest.mock('../../../react/utilities/getVersion');
@@ -30,8 +30,8 @@ describe('MiniDrawer', () => {
 			/>
 		);
 
-		expect(queryByText('Send Appointment Reminders')).toBeDefined();
-		expect(queryByText('Send Custom Message')).toBeDefined();
+		expect(queryByText('Appointment Reminders')).toBeDefined();
+		expect(queryByText('Custom Message')).toBeDefined();
 		expect(queryByText('Provider Mappings')).toBeNull();
 		expect(queryByText('Message Templates')).toBeNull();
 		expect(queryByText('Settings')).toBeNull();

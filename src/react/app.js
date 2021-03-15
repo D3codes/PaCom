@@ -6,24 +6,24 @@ import {
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
 import CustomMessage from './components/customMessage/customMessage';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
-import MiniDrawer, { DRAWER_OPEN_WIDTH } from './components/miniDrawer';
+import MiniDrawer, { DRAWER_WIDTH } from './components/drawer/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
 import Settings from './components/settings/settings';
 import paComTheme from './theme';
 
 const useStyles = makeStyles(theme => ({
-	main: {
+	content: {
 		display: 'flex',
 		height: '100%'
 	},
 	appBar: {
-		marginLeft: DRAWER_OPEN_WIDTH,
-		width: `calc(100% - ${DRAWER_OPEN_WIDTH}px)`
+		marginLeft: DRAWER_WIDTH,
+		width: `calc(100% - ${DRAWER_WIDTH}px)`
 	},
 	container: {
 		height: '100%'
 	},
-	content: {
+	main: {
 		flexGrow: 1,
 		padding: theme.spacing(3),
 		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
@@ -46,25 +46,14 @@ function getTitle(tabId) {
 export default function App() {
 	const classes = useStyles();
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
-	const [settingsOpen, setSettingsOpen] = useState(false);
-
-	const handleTabSelect = tabId => {
-		const isSettingsTab = tabId === MiniDrawer.TabIds.SETTINGS;
-		if (!isSettingsTab) setSelectedTabId(tabId);
-		if (isSettingsTab) setSettingsOpen(prevSettingsOpen => !prevSettingsOpen);
-	};
 
 	const title = getTitle(selectedTabId);
 
 	return (
 		<ThemeProvider theme={paComTheme}>
-			<div className={classes.main}>
+			<div className={classes.content}>
 				<CssBaseline />
-				<MiniDrawer
-					onTabSelect={handleTabSelect}
-					selectedTabId={selectedTabId}
-					settingsOpen={settingsOpen}
-				/>
+				<MiniDrawer onTabSelect={setSelectedTabId} selectedTabId={selectedTabId} />
 				<AppBar
 					position="fixed"
 					className={classes.appBar}>
@@ -74,7 +63,7 @@ export default function App() {
 						</Typography>
 					</Toolbar>
 				</AppBar>
-				<main className={classes.content}>
+				<main className={classes.main}>
 					<div className={classes.toolbar} />
 					{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders />}
 					{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}

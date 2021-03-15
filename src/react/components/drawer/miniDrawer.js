@@ -1,31 +1,31 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import {
-	Divider, Drawer, List, ListItem, ListItemText, makeStyles, Typography, Collapse, ListItemIcon
+	Drawer, makeStyles, Typography, Button
 } from '@material-ui/core';
 import {
-	PermPhoneMsg, PersonPin, RateReview, Settings, ExpandMore, Schedule
+	PermPhoneMsg, PersonPin, RateReview, Schedule
 } from '@material-ui/icons';
-import AlertSnackbar from './alertSnackbar';
+import AlertSnackbar from '../alertSnackbar';
 
-import getVersion from '../utilities/getVersion';
-import persistentStorage from '../utilities/persistentStorage';
+import getVersion from '../../utilities/getVersion';
+import persistentStorage from '../../utilities/persistentStorage';
+import CategorySection from './categorySection';
 
-export const DRAWER_OPEN_WIDTH = 280;
+export const DRAWER_WIDTH = 206;
 
 const PRIMARY_TABS = [
 	{
 		Icon: Schedule,
 		id: 'sndApptRmdrs',
-		label: 'Send Appointment Reminders',
-		title: 'Send Appointment Reminders'
+		label: 'Appointment Reminders',
+		title: 'Appointment Reminders'
 	},
 	{
 		Icon: PermPhoneMsg,
 		id: 'sndCstmMsg',
-		label: 'Send Custom Message',
-		title: 'Send Custom Message'
+		label: 'Custom Message',
+		title: 'Custom Message'
 	}
 ];
 
@@ -44,13 +44,7 @@ const SECONDARY_TABS = [
 	}
 ];
 
-const SETTINGS_TAB = {
-	Icon: Settings,
-	id: 'stngs',
-	label: 'Settings'
-};
-
-export const SUBSETTINGS_TABS = [
+export const SETTINGS_TABS = [
 	{
 		id: 'aptRmndrs',
 		label: 'Appointment Reminders',
@@ -79,13 +73,23 @@ export const SUBSETTINGS_TABS = [
 ];
 
 const useStyles = makeStyles(theme => ({
+	buttonWrapper: {
+		color: theme.palette.error.main,
+		marginBottom: theme.spacing()
+	},
+	categoryHeader: {
+		paddingBottom: theme.spacing()
+	},
+	categoryHeaderText: {
+		color: theme.palette.primary.contrastText
+	},
 	drawer: {
-		width: DRAWER_OPEN_WIDTH,
+		width: DRAWER_WIDTH,
 		flexShrink: 0,
 		whiteSpace: 'nowrap'
 	},
-	icon: {
-		fontSize: '2rem'
+	drawerPaper: {
+		width: 'inherit'
 	},
 	toolbar: {
 		display: 'flex',
@@ -95,13 +99,18 @@ const useStyles = makeStyles(theme => ({
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar
 	},
-	versionContainer: {
+	bottomContainer: {
 		position: 'fixed',
 		bottom: 0,
-		alignSelf: 'center',
 		paddingBottom: theme.spacing(),
+		width: 'inherit'
+	},
+	version: {
+		color: theme.palette.primary.contrastText,
 		cursor: 'default',
-		userSelect: 'none'
+		userSelect: 'none',
+		display: 'flex',
+		justifyContent: 'center'
 	},
 	nested: {
 		paddingLeft: theme.spacing(4)
@@ -109,7 +118,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function MiniDrawer({
-	onTabSelect, selectedTabId = PRIMARY_TABS[0].id, settingsOpen = false
+	onTabSelect, selectedTabId = PRIMARY_TABS[0].id
 }) {
 	const classes = useStyles();
 	const [version, setVersion] = useState(null);
@@ -158,61 +167,48 @@ export default function MiniDrawer({
 	return (
 		<Drawer
 			variant="permanent"
+			classes={{ paper: classes.drawerPaper }}
 			className={classes.drawer}>
 			<div className={classes.toolbar} />
-			<Divider />
-			<List>
-				{PRIMARY_TABS.map(({ Icon, id, label }) => (
-					<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
-						<ListItemIcon>
-							<Icon className={classes.icon} />
-						</ListItemIcon>
-						<ListItemText primary={label} />
-					</ListItem>
-				))}
-			</List>
+			<CategorySection
+				items={PRIMARY_TABS}
+				onItemSelect={onTabSelect}
+				selectedItemId={selectedTabId}
+				title="Send"
+			/>
 			{adminAccess && (
 				<Fragment>
-					<Divider />
-					<List>
-						{SECONDARY_TABS.map(({ Icon, id, label }) => (
-							<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
-								<ListItemIcon className={classes.icon}>
-									<Icon />
-								</ListItemIcon>
-								<ListItemText primary={label} />
-							</ListItem>
-						))}
-						<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some(subtab => subtab.id === selectedTabId)}>
-							<ListItemIcon>
-								<SETTINGS_TAB.Icon className={classes.icon} />
-							</ListItemIcon>
-							<ListItemText primary={SETTINGS_TAB.label} />
-							<ListItemIcon>
-								<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
-							</ListItemIcon>
-						</ListItem>
-						<Collapse in={settingsOpen} timeout="auto" unmountOnExit>
-							<List disablePadding>
-								{SUBSETTINGS_TABS.map(({ id, label }) => (
-									<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId} className={classes.nested}>
-										<ListItemText primary={label} />
-									</ListItem>
-								))}
-								<ListItem
-									button
-									key="disableAdminAccess"
-									onClick={handleAdminDisable}
-									className={classes.nested}>
-									<ListItemText primary="Disable Admin Access" primaryTypographyProps={{ color: 'error' }} />
-								</ListItem>
-							</List>
-						</Collapse>
-					</List>
+					<CategorySection
+						items={SECONDARY_TABS}
+						onItemSelect={onTabSelect}
+						selectedItemId={selectedTabId}
+						title="Create"
+					/>
+					<CategorySection
+						inset
+						items={SETTINGS_TABS}
+						onItemSelect={onTabSelect}
+						selectedItemId={selectedTabId}
+						title="Settings"
+					/>
 				</Fragment>
 			)}
-			<div className={classes.versionContainer}>
-				{version && <Typography onClick={handleVersionClick} color="textSecondary" variant="caption">{version}</Typography>}
+			<div className={classes.bottomContainer}>
+				{adminAccess && (
+					<div className={classes.buttonWrapper}>
+						<Button color="inherit" fullWidth onClick={handleAdminDisable}>Disable Admin Access</Button>
+					</div>
+				)}
+				{version && (
+					<div>
+						<Typography
+							className={classes.version}
+							onClick={handleVersionClick}
+							variant="caption">
+							{version}
+						</Typography>
+					</div>
+				)}
 			</div>
 			<AlertSnackbar
 				open={showSnackbar}
@@ -227,21 +223,19 @@ export default function MiniDrawer({
 
 MiniDrawer.propTypes = {
 	onTabSelect: PropTypes.func.isRequired,
-	selectedTabId: PropTypes.string,
-	settingsOpen: PropTypes.bool.isRequired
+	selectedTabId: PropTypes.string
 };
 
-MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS).concat(SUBSETTINGS_TABS);
+MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS).concat(SETTINGS_TABS);
 
 MiniDrawer.TabIds = {
 	SEND_APPOINTMENT_REMINDERS: PRIMARY_TABS[0].id,
 	SEND_CUSTOM_MESSAGE: PRIMARY_TABS[1].id,
 	PROVIDER_MAPPINGS: SECONDARY_TABS[0].id,
 	MESSAGE_TEMPLATES: SECONDARY_TABS[1].id,
-	SETTINGS: SETTINGS_TAB.id,
-	APPOINTMENT_REMINDERS_SETTINGS: SUBSETTINGS_TABS[0].id,
-	CUSTOM_MESSAGE_SETTINGS: SUBSETTINGS_TABS[1].id,
-	MESSAGE_REPORT_SETTINGS: SUBSETTINGS_TABS[2].id,
-	TWILIO_SETTINGS: SUBSETTINGS_TABS[3].id,
-	SHARED_CONFIGURATION_SETTINGS: SUBSETTINGS_TABS[4].id
+	APPOINTMENT_REMINDERS_SETTINGS: SETTINGS_TABS[0].id,
+	CUSTOM_MESSAGE_SETTINGS: SETTINGS_TABS[1].id,
+	MESSAGE_REPORT_SETTINGS: SETTINGS_TABS[2].id,
+	TWILIO_SETTINGS: SETTINGS_TABS[3].id,
+	SHARED_CONFIGURATION_SETTINGS: SETTINGS_TABS[4].id
 };

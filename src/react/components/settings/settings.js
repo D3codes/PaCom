@@ -8,7 +8,7 @@ import MessageReportSettings from './messageReportSettings';
 import TwilioSettings from './twilioSettings';
 import SharedConfigurationSettings from './sharedConfigurationSettings';
 import persistentStorage from '../../utilities/persistentStorage';
-import MiniDrawer from '../miniDrawer';
+import MiniDrawer from '../drawer/miniDrawer';
 import AlertSnackbar from '../alertSnackbar';
 
 export default function Settings({ selectedTabId }) {
