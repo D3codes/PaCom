@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Simulate } from 'react-dom/test-utils';
 import CustomMessage from '../../../../react/components/customMessage/customMessage';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
