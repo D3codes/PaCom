@@ -53,7 +53,7 @@ describe('CustomMessage', () => {
 		expect(getByText('Browse')).toBeDefined();
 	});
 
-	it('keeps send  buttons disabled until valid phone number entered', () => {
+	it('keeps send buttons disabled when no message entered', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
 
@@ -72,7 +72,7 @@ describe('CustomMessage', () => {
 		phoneNumberField.value = '1234567890';
 		Simulate.change(phoneNumberField);
 
-		expect(getByText('Send as SMS').parentElement).toBeEnabled();
-		expect(getByText('Send as Call').parentElement).toBeEnabled();
+		expect(getByText('Send as SMS').parentElement).toBeDisabled();
+		expect(getByText('Send as Call').parentElement).toBeDisabled();
 	});
 });

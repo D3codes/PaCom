@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	Typography, Switch, Button, TextField
+	Typography, Switch, Button
 } from '@material-ui/core';
 import {
 	Phone, Sms, ArrowForwardIos, ArrowBackIos
@@ -21,6 +21,7 @@ import ReportTable from '../reportTable/reportTable';
 import persistentStorage from '../../utilities/persistentStorage';
 import twilio from '../../utilities/twilioClient';
 import AlertSnackBar from '../alertSnackbar';
+import MessageCompose from './messageCompose';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -50,15 +51,13 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex'
 	},
 	listContainer: {
-		width: 'calc(33% - 10px)',
+		width: `calc(33% - ${theme.spacing()}px)`,
 		height: '90%'
 	},
-	textField: {
-		width: '33%',
+	messageComposeContainer: {
 		height: '100%',
-		marginRight: '10px',
-		marginLeft: '10px',
-		marginTop: '32px'
+		width: '67%',
+		marginLeft: theme.spacing()
 	},
 	farRightActionButton: {
 		marginLeft: theme.spacing()
@@ -87,28 +86,31 @@ function CustomMessage() {
 	const [message, setMessage] = useState('');
 	const [showReportTable, setShowReportTable] = useState(false);
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
-	const enableButtoms = sendToAppointmentList ? !!appointments : phoneNumberIsValid;
+	const messageIsValid = useMemo(() => (sendToAppointmentList || !message.match(/{{.+}}/g)), [sendToAppointmentList, message]);
 	const [messageTemplates, setMessageTemplates] = useState(null);
-	const [dynamicValues, setDynamicValues] = useState(null);
 	const [snackbarSeverity, setSnackbarSeverity] = useState('');
 	const [showSnackbar, setShowSnackbar] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
+	const enableSendButtons = useMemo(() => (
+		(sendToAppointmentList ? appointments : phoneNumberIsValid && messageIsValid) && message
+	), [sendToAppointmentList, appointments, phoneNumberIsValid, messageIsValid, message]);
 
-	const reloadTemplatesAndValues = () => {
-		persistentStorage.getDynamicValues().then(values => {
-			setDynamicValues(values);
-		});
+	useEffect(() => {
 		persistentStorage.getMessageTemplates().then(templates => {
 			setMessageTemplates(templates);
 		});
-	};
-
-	useEffect(() => {
-		reloadTemplatesAndValues();
 	}, []);
 
 	const handleSwitch = event => {
 		setSendToAppointmentList(event.target.checked);
+	};
+
+	const handleMessageChange = newMessage => {
+		setMessage(newMessage);
+	};
+
+	const handleMessageAppend = value => {
+		setMessage(prevMessage => `${prevMessage}${value}`);
 	};
 
 	const handleBrowseClick = () => {
@@ -186,35 +188,33 @@ function CustomMessage() {
 						<div className={classes.listContainer}>
 							<ContainedLabeledList onClick={template => setMessage(template.value)} label="Templates" items={messageTemplates} />
 						</div>
-						<TextField
-							label="Message"
-							multiline
-							rows={15}
-							variant="outlined"
-							className={classes.textField}
-							value={message}
-							onChange={event => { setMessage(event.target.value); }}
-						/>
-						<div className={classes.listContainer}>
-							<ContainedLabeledList onClick={value => setMessage(prevMessage => `${prevMessage}{{${value.name}}}`)} label="Dynamic Values" items={dynamicValues} />
+						<div className={classes.messageComposeContainer}>
+							<MessageCompose
+								messageIsValid={messageIsValid}
+								message={message}
+								onMessageChange={handleMessageChange}
+								onAppend={handleMessageAppend}
+								disableDynamicValues={!sendToAppointmentList}
+								helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
+							/>
 						</div>
 					</div>
 					<div className={classes.actionButtonContainer}>
 						{!sendToAppointmentList && (
 							<Fragment>
 								<Button
-									disabled={!enableButtoms}
+									disabled={!enableSendButtons}
 									color="primary"
 									endIcon={<Sms />}
-									variant={enableButtoms ? 'contained' : 'outlined'}
+									variant={enableSendButtons ? 'contained' : 'outlined'}
 									onClick={onSendAsSms}>
 									Send as SMS
 								</Button>
 								<Button
-									disabled={!enableButtoms}
+									disabled={!enableSendButtons}
 									color="primary"
 									endIcon={<Phone />}
-									variant={enableButtoms ? 'contained' : 'outlined'}
+									variant={enableSendButtons ? 'contained' : 'outlined'}
 									onClick={onSendAsCall}
 									className={classes.farRightActionButton}>
 									Send as Call
@@ -223,10 +223,10 @@ function CustomMessage() {
 						)}
 						{sendToAppointmentList && (
 							<Button
-								disabled={!enableButtoms}
+								disabled={!enableSendButtons}
 								color="primary"
 								endIcon={<ArrowForwardIos />}
-								variant={enableButtoms ? 'contained' : 'outlined'}
+								variant={enableSendButtons ? 'contained' : 'outlined'}
 								onClick={() => setShowReportTable(true)}>
 								Continue
 							</Button>

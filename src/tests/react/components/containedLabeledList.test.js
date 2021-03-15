@@ -32,4 +32,11 @@ describe('ContainedLabeledList', () => {
 
 		expect(onClickMock).toBeCalled();
 	});
+
+	it('renders placeholder text when no items passed', () => {
+		const { getByText } = render(<ContainedLabeledList onClick={jest.fn()} label="Test Labels" items={[]} />);
+
+		expect(getByText('Test Labels'));
+		expect(getByText('No Test Labels Found'));
+	});
 });
