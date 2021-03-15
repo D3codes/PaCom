@@ -2,9 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
-	IconButton, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography
+	makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography
 } from '@material-ui/core';
-import Save from '@material-ui/icons/Save';
 
 import Provider from '../../models/provider';
 import ProviderMappingsTableRow from './providerMappingsTableRow';
@@ -16,8 +15,14 @@ const useStyles = makeStyles(theme => ({
 	lastTableHeadCell: {
 		borderTopRightRadius: 4
 	},
+	noProviderMappingsText: {
+		borderBottom: 'none',
+		fontStyle: 'italic',
+		color: theme.palette.text.secondary
+	},
 	providerTable: {
-		flex: 1
+		flex: 1,
+		overflowY: 'auto'
 	},
 	tableCell: {
 		padding: theme.spacing()
@@ -28,8 +33,11 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ProviderMappingsTable({ isAddShown = false, providers = null }) {
+function ProviderMappingsTable({
+	hasWritePermission = false, onEdit, onRemove, providers = null
+}) {
 	const classes = useStyles();
+
 	return (
 		<div className={classes.providerTable}>
 			<Table padding="none" stickyHeader>
@@ -58,42 +66,25 @@ function ProviderMappingsTable({ isAddShown = false, providers = null }) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{providers?.map(provider => (
-						<ProviderMappingsTableRow key={provider.source} provider={provider} />
-					))}
-					{isAddShown && (
+					{!providers?.length && (
 						<TableRow>
-							<TableCell className={classes.tableCell}>
-								<TextField
-									fullWidth
-									label="Source"
-									margin="dense"
-									placeholder="Source..."
-								/>
-							</TableCell>
-							<TableCell className={classes.tableCell}>
-								<TextField
-									fullWidth
-									label="SMS"
-									margin="dense"
-									placeholder="SMS..."
-								/>
-							</TableCell>
-							<TableCell className={classes.tableCell}>
-								<TextField
-									fullWidth
-									label="Phonetic"
-									margin="dense"
-									placeholder="Phonetic..."
-								/>
-							</TableCell>
-							<TableCell align="center" className={classes.tableCell}>
-								<IconButton color="primary">
-									<Save />
-								</IconButton>
+							<TableCell
+								className={classes.noProviderMappingsText}
+								align="center"
+								colSpan={4}>
+								No Provider Mappings
 							</TableCell>
 						</TableRow>
 					)}
+					{providers?.map(provider => (
+						<ProviderMappingsTableRow
+							hasWritePermission={hasWritePermission}
+							key={provider.source}
+							onEdit={onEdit}
+							onRemove={onRemove}
+							provider={provider}
+						/>
+					))}
 				</TableBody>
 			</Table>
 		</div>
@@ -101,7 +92,9 @@ function ProviderMappingsTable({ isAddShown = false, providers = null }) {
 }
 
 ProviderMappingsTable.propTypes = {
-	isAddShown: PropTypes.bool,
+	hasWritePermission: PropTypes.bool,
+	onEdit: PropTypes.func.isRequired,
+	onRemove: PropTypes.func.isRequired,
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider))
 };
 

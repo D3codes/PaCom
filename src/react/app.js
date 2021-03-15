@@ -25,6 +25,9 @@ const useStyles = makeStyles(theme => ({
 		width: `calc(100% - ${DRAWER_OPEN_WIDTH}px)`,
 		transition: theme.transitions.create(['width', 'margin'])
 	},
+	container: {
+		height: '100%'
+	},
 	content: {
 		flexGrow: 1,
 		padding: theme.spacing(3),
@@ -37,23 +40,12 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(0, 1),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar
-	},
-	showContainer: {
-		display: 'initial',
-		height: '100%'
-	},
-	hideContainer: {
-		display: 'none'
 	}
 }));
 
 function getTitle(tabId) {
 	const foundTab = MiniDrawer.Tabs.find(tab => tab.id === tabId);
 	return foundTab ? foundTab.title : '';
-}
-
-function getClassNameForTab(selectedTabId, tabId, classes) {
-	return tabId === selectedTabId ? classes.showContainer : classes.hideContainer;
 }
 
 export default function App() {
@@ -108,18 +100,10 @@ export default function App() {
 			</AppBar>
 			<main className={classes.content}>
 				<div className={classes.toolbar} />
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS, classes)}>
-					<AppointmentReminders />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE, classes)}>
-					<CustomMessage />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.PROVIDER_MAPPINGS, classes)}>
-					<ProviderMappings />
-				</div>
-				<div className={getClassNameForTab(selectedTabId, MiniDrawer.TabIds.MESSAGE_TEMPLATES, classes)}>
-					<MessageTemplates />
-				</div>
+				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders />}
+				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
+				{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
+				{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
 				<Settings selectedTabId={selectedTabId} />
 			</main>
 		</div>
