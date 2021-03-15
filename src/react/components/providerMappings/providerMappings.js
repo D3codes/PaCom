@@ -13,12 +13,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
-	noProviderMappingsContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		flex: 1,
-		justifyContent: 'center'
-	},
 	providerMappingsContainer: {
 		height: '100%',
 		display: 'flex',

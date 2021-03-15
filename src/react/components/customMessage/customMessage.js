@@ -186,7 +186,7 @@ function CustomMessage() {
 					</div>
 					<div className={classes.composeContainer}>
 						<div className={classes.listContainer}>
-							<ContainedLabeledList onClick={template => setMessage(template.value)} label="Templates" items={messageTemplates} />
+							<ContainedLabeledList onClick={template => setMessage(template.body)} label="Templates" items={messageTemplates} />
 						</div>
 						<div className={classes.messageComposeContainer}>
 							<MessageCompose

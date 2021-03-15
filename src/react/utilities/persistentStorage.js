@@ -1,4 +1,5 @@
 import Provider from '../models/provider';
+import Template from '../models/template';
 
 // Dynamic Values
 const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values', includeDefault);
@@ -17,11 +18,13 @@ const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-ma
 const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource).then(transformMappings);
 
 // Message Templates
-const getMessageTemplates = () => window.ipcRenderer.invoke('get-message-templates');
+const transformTemplates = messageTemplates => messageTemplates.map(({ name, body }) => new Template(name, body));
 
-const addMessageTemplate = template => window.ipcRenderer.invoke('add-message-template', template);
+const getMessageTemplates = () => window.ipcRenderer.invoke('get-message-templates').then(transformTemplates);
 
-const removeMessageTemplateWithName = templateName => window.ipcRenderer.invoke('remove-message-template', templateName);
+const addMessageTemplate = template => window.ipcRenderer.invoke('add-message-template', template).then(transformTemplates);
+
+const removeMessageTemplateWithName = templateName => window.ipcRenderer.invoke('remove-message-template', templateName).then(transformTemplates);
 
 // Settings
 const getSettings = (forceLocal = false) => window.ipcRenderer.invoke('get-settings', forceLocal);

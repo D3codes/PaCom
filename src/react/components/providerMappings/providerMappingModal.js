@@ -105,7 +105,7 @@ function ProviderMappingModal({
 					endIcon={<Save />}
 					onClick={handleSave}
 					color="primary"
-					variant="contained">
+					variant={isSaveDisabled ? 'outlined' : 'contained'}>
 					Save
 				</Button>
 			</DialogActions>

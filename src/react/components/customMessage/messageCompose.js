@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, TextField } from '@material-ui/core';
+import clsx from 'clsx';
 import ContainedLabeledList from '../containedLabeledList';
 import persistentStorage from '../../utilities/persistentStorage';
 
@@ -16,13 +17,18 @@ const useStyles = makeStyles(theme => ({
 	textField: {
 		width: '50%',
 		height: '100%',
-		marginRight: theme.spacing(),
+		marginRight: theme.spacing()
+	},
+	textFieldMargin: {
 		marginTop: theme.spacing(4)
+	},
+	containerHeight: {
+		height: '320px'
 	}
 }));
 
 function MessageCompose({
-	messageIsValid, onMessageChange, onAppend, message, disableDynamicValues = false, helperText = ''
+	messageIsValid, onMessageChange, onAppend, message, disableDynamicValues = false, helperText = '', padMessageBox = true
 }) {
 	const classes = useStyles();
 
@@ -39,7 +45,7 @@ function MessageCompose({
 	}, []);
 
 	return (
-		<div className={classes.root}>
+		<div className={clsx(classes.root, { [classes.containerHeight]: !padMessageBox })}>
 			<TextField
 				error={!messageIsValid}
 				helperText={helperText}
@@ -47,7 +53,7 @@ function MessageCompose({
 				multiline
 				rows={15}
 				variant="outlined"
-				className={classes.textField}
+				className={clsx(classes.textField, { [classes.textFieldMargin]: padMessageBox })}
 				value={message}
 				onChange={event => { onMessageChange(event.target.value); }}
 				data-testId="message-field"
@@ -57,7 +63,7 @@ function MessageCompose({
 					onClick={value => onAppend(`{{${value.name}}}`)}
 					label="Dynamic Values"
 					items={dynamicValues}
-					disabled={disableDynamicValues}
+					disabled={disableDynamicValues && dynamicValues}
 				/>
 			</div>
 		</div>
@@ -70,7 +76,8 @@ MessageCompose.propTypes = {
 	onAppend: PropTypes.func.isRequired,
 	message: PropTypes.string.isRequired,
 	disableDynamicValues: PropTypes.bool,
-	helperText: PropTypes.string
+	helperText: PropTypes.string,
+	padMessageBox: PropTypes.bool
 };
 
 export default MessageCompose;
