@@ -24,7 +24,8 @@ describe('MessageCompose', () => {
 		const { getByText } = render(
 			<MessageCompose
 				messageIsValid
-				setMessage={jest.fn()}
+				onMessageChange={jest.fn()}
+				onAppend={jest.fn()}
 				message="Test Message"
 			/>
 		);
@@ -39,7 +40,8 @@ describe('MessageCompose', () => {
 		const { getByText } = render(
 			<MessageCompose
 				messageIsValid
-				setMessage={jest.fn()}
+				onMessageChage={jest.fn()}
+				onAppend={jest.fn()}
 				message="Test Message"
 				disableDynamicValues
 				helperText="Test Helper Text"
