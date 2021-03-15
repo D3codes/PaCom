@@ -77,12 +77,6 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.error.main,
 		marginBottom: theme.spacing()
 	},
-	categoryHeader: {
-		paddingBottom: theme.spacing()
-	},
-	categoryHeaderText: {
-		color: theme.palette.primary.contrastText
-	},
 	drawer: {
 		width: DRAWER_WIDTH,
 		flexShrink: 0,
@@ -111,9 +105,6 @@ const useStyles = makeStyles(theme => ({
 		userSelect: 'none',
 		display: 'flex',
 		justifyContent: 'center'
-	},
-	nested: {
-		paddingLeft: theme.spacing(4)
 	}
 }));
 
