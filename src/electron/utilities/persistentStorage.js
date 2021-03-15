@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const Store = require('electron-store');
 const { app } = require('electron');
 const isDev = require('electron-is-dev');

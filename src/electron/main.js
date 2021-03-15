@@ -9,7 +9,7 @@ const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
 
 const {
-	app, BrowserWindow, Menu, shell, ipcMain: ipc
+	dialog, app, BrowserWindow, Menu, shell, ipcMain: ipc
 } = electron;
 let mainWindow;
 
@@ -152,6 +152,18 @@ app.on('activate', () => {
 	}
 });
 
+// Alert Window
+const showAlert = (title, message, type, buttons, defaultId, cancelId) => dialog.showMessageBox({
+	browserWindow: mainWindow,
+	title,
+	type,
+	buttons,
+	message: title,
+	defaultId,
+	cancelId,
+	detail: message
+});
+
 // Listeners
 ipc.handle('open-csv-dialog', () => {
 	const filter = [{ name: 'CSV', extensions: ['csv'] }];
@@ -187,3 +199,5 @@ ipc.handle('set-settings', (event, settingsPath, value, forceLocal = false) => p
 ipc.handle('open-folder-dialog', () => filePicker.pickFolder());
 
 ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork());
+
+ipc.handle('show-alert', (event, title, message, type, buttons, defaultId, cancelId) => showAlert(title, message, type, buttons, defaultId, cancelId));
