@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-	Typography, Switch, Button, TextField
+	Typography, Switch, Button
 } from '@material-ui/core';
 import {
 	Phone, Sms, ArrowForwardIos, ArrowBackIos
@@ -21,6 +21,7 @@ import ReportTable from '../reportTable/reportTable';
 import persistentStorage from '../../utilities/persistentStorage';
 import twilio from '../../utilities/twilioClient';
 import AlertSnackBar from '../alertSnackbar';
+import MessageCompose from './messageCompose';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -53,12 +54,10 @@ const useStyles = makeStyles(theme => ({
 		width: 'calc(33% - 10px)',
 		height: '90%'
 	},
-	textField: {
-		width: '33%',
+	messageComposeContainer: {
 		height: '100%',
-		marginRight: '10px',
-		marginLeft: '10px',
-		marginTop: '32px'
+		width: '66%',
+		marginLeft: '10px'
 	},
 	farRightActionButton: {
 		marginLeft: theme.spacing()
@@ -89,7 +88,6 @@ function CustomMessage() {
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const messageIsValid = useMemo(() => (sendToAppointmentList || !message.match(/{{.+}}/g)), [sendToAppointmentList, message]);
 	const [messageTemplates, setMessageTemplates] = useState(null);
-	const [dynamicValues, setDynamicValues] = useState(null);
 	const [snackbarSeverity, setSnackbarSeverity] = useState('');
 	const [showSnackbar, setShowSnackbar] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -97,17 +95,10 @@ function CustomMessage() {
 		(sendToAppointmentList ? !!appointments : phoneNumberIsValid && messageIsValid) && message
 	), [sendToAppointmentList, appointments, phoneNumberIsValid, messageIsValid, message]);
 
-	const reloadTemplatesAndValues = () => {
-		persistentStorage.getDynamicValues().then(values => {
-			setDynamicValues(values);
-		});
+	useEffect(() => {
 		persistentStorage.getMessageTemplates().then(templates => {
 			setMessageTemplates(templates);
 		});
-	};
-
-	useEffect(() => {
-		reloadTemplatesAndValues();
 	}, []);
 
 	const handleSwitch = event => {
@@ -189,24 +180,13 @@ function CustomMessage() {
 						<div className={classes.listContainer}>
 							<ContainedLabeledList onClick={template => setMessage(template.value)} label="Templates" items={messageTemplates} />
 						</div>
-						<TextField
-							error={!messageIsValid}
-							helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
-							label="Message"
-							multiline
-							rows={15}
-							variant="outlined"
-							className={classes.textField}
-							value={message}
-							onChange={event => { setMessage(event.target.value); }}
-							data-testId="message-field"
-						/>
-						<div className={classes.listContainer}>
-							<ContainedLabeledList
-								onClick={value => setMessage(prevMessage => `${prevMessage}{{${value.name}}}`)}
-								label="Dynamic Values"
-								items={dynamicValues}
-								disabled={!sendToAppointmentList}
+						<div className={classes.messageComposeContainer}>
+							<MessageCompose
+								messageIsValid={messageIsValid}
+								message={message}
+								setMessage={setMessage}
+								disableDynamicValues={!sendToAppointmentList}
+								helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
 							/>
 						</div>
 					</div>
