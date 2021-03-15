@@ -1,6 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
-const Store = require('electron-store');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { app } = require('electron');
+const Store = require('electron-store');
 const isDev = require('electron-is-dev');
 const defaultSettings = isDev
 	? require('../models/devSettings.json')
