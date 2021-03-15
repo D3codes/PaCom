@@ -2,18 +2,17 @@ import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	Divider, Drawer, IconButton, List, ListItem, ListItemText, makeStyles, Typography, Collapse
+	Divider, Drawer, List, ListItem, ListItemText, makeStyles, Typography, Collapse, ListItemIcon
 } from '@material-ui/core';
 import {
-	PermPhoneMsg, ChevronRight, PersonPin, RateReview, Settings, ExpandMore, Schedule
+	PermPhoneMsg, PersonPin, RateReview, Settings, ExpandMore, Schedule
 } from '@material-ui/icons';
 import AlertSnackbar from './alertSnackbar';
 
 import getVersion from '../utilities/getVersion';
 import persistentStorage from '../utilities/persistentStorage';
 
-export const DRAWER_OPEN_WIDTH = 300;
-export const DRAWER_CLOSED_WIDTH = 65;
+export const DRAWER_OPEN_WIDTH = 280;
 
 const PRIMARY_TABS = [
 	{
@@ -85,19 +84,8 @@ const useStyles = makeStyles(theme => ({
 		flexShrink: 0,
 		whiteSpace: 'nowrap'
 	},
-	drawerOpen: {
-		width: DRAWER_OPEN_WIDTH,
-		transition: theme.transitions.create('width'),
-		overflowX: 'hidden'
-	},
-	drawerClose: {
-		transition: theme.transitions.create('width'),
-		overflowX: 'hidden',
-		width: DRAWER_CLOSED_WIDTH
-	},
 	icon: {
-		fontSize: '2rem',
-		marginRight: theme.spacing(3)
+		fontSize: '2rem'
 	},
 	toolbar: {
 		display: 'flex',
@@ -115,19 +103,13 @@ const useStyles = makeStyles(theme => ({
 		cursor: 'default',
 		userSelect: 'none'
 	},
-	collapsed: {
-		transition: theme.transitions.create('transform')
-	},
-	expanded: {
-		transform: 'rotate(-180deg)'
-	},
 	nested: {
 		paddingLeft: theme.spacing(4)
 	}
 }));
 
 export default function MiniDrawer({
-	open = false, onChevronClick, onTabSelect, selectedTabId = PRIMARY_TABS[0].id, settingsOpen = false
+	onTabSelect, selectedTabId = PRIMARY_TABS[0].id, settingsOpen = false
 }) {
 	const classes = useStyles();
 	const [version, setVersion] = useState(null);
@@ -176,26 +158,15 @@ export default function MiniDrawer({
 	return (
 		<Drawer
 			variant="permanent"
-			className={clsx(classes.drawer, {
-				[classes.drawerOpen]: open,
-				[classes.drawerClose]: !open
-			})}
-			classes={{
-				paper: clsx({
-					[classes.drawerOpen]: open,
-					[classes.drawerClose]: !open
-				})
-			}}>
-			<div className={classes.toolbar}>
-				<IconButton onClick={onChevronClick}>
-					<ChevronRight className={clsx(classes.collapsed, { [classes.expanded]: open })} />
-				</IconButton>
-			</div>
+			className={classes.drawer}>
+			<div className={classes.toolbar} />
 			<Divider />
 			<List>
 				{PRIMARY_TABS.map(({ Icon, id, label }) => (
 					<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
-						<Icon className={classes.icon} color="primary" />
+						<ListItemIcon>
+							<Icon className={classes.icon} />
+						</ListItemIcon>
 						<ListItemText primary={label} />
 					</ListItem>
 				))}
@@ -206,14 +177,20 @@ export default function MiniDrawer({
 					<List>
 						{SECONDARY_TABS.map(({ Icon, id, label }) => (
 							<ListItem button key={id} onClick={() => onTabSelect(id)} selected={id === selectedTabId}>
-								<Icon className={classes.icon} color="primary" />
+								<ListItemIcon className={classes.icon}>
+									<Icon />
+								</ListItemIcon>
 								<ListItemText primary={label} />
 							</ListItem>
 						))}
 						<ListItem button onClick={() => onTabSelect(SETTINGS_TAB.id)} selected={!settingsOpen && SUBSETTINGS_TABS.some(subtab => subtab.id === selectedTabId)}>
-							<SETTINGS_TAB.Icon className={classes.icon} color="primary" />
+							<ListItemIcon>
+								<SETTINGS_TAB.Icon className={classes.icon} />
+							</ListItemIcon>
 							<ListItemText primary={SETTINGS_TAB.label} />
-							<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
+							<ListItemIcon>
+								<ExpandMore className={clsx(classes.collapsed, { [classes.expanded]: settingsOpen })} />
+							</ListItemIcon>
 						</ListItem>
 						<Collapse in={settingsOpen} timeout="auto" unmountOnExit>
 							<List disablePadding>
@@ -249,8 +226,6 @@ export default function MiniDrawer({
 }
 
 MiniDrawer.propTypes = {
-	open: PropTypes.bool,
-	onChevronClick: PropTypes.func.isRequired,
 	onTabSelect: PropTypes.func.isRequired,
 	selectedTabId: PropTypes.string,
 	settingsOpen: PropTypes.bool.isRequired
