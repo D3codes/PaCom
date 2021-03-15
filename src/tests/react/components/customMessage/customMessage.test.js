@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { Simulate } from 'react-dom/test-utils';
 import CustomMessage from '../../../../react/components/customMessage/customMessage';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
@@ -53,7 +53,7 @@ describe('CustomMessage', () => {
 		expect(getByText('Browse')).toBeDefined();
 	});
 
-	it('keeps send  buttons disabled until valid phone number entered', () => {
+	it('keeps send buttons disabled with valid phone number no message', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
 
@@ -72,7 +72,22 @@ describe('CustomMessage', () => {
 		phoneNumberField.value = '1234567890';
 		Simulate.change(phoneNumberField);
 
-		expect(getByText('Send as SMS').parentElement).toBeEnabled();
-		expect(getByText('Send as Call').parentElement).toBeEnabled();
+		expect(getByText('Send as SMS').parentElement).toBeDisabled();
+		expect(getByText('Send as Call').parentElement).toBeDisabled();
+	});
+
+	it('keeps send buttons disabled if sending to specific number and message contains dynamic values', () => {
+		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
+		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
+
+		const { getByText, getByTestId } = render(<CustomMessage />);
+
+		const messageField = getByTestId('message-field').querySelector('input');
+		messageField.value = '{{dynamic value}}';
+		Simulate.change(messageField);
+
+		expect(getByText('Send as SMS').parentElement).toBeDisabled();
+		expect(getByText('Send as Call').parentElement).toBeDisabled();
+		expect(getByText('Messages sent to a specific number cannot contain dynamic values.')).toBeDefined();
 	});
 });

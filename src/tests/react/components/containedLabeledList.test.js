@@ -32,4 +32,21 @@ describe('ContainedLabeledList', () => {
 
 		expect(onClickMock).toBeCalled();
 	});
+
+	it('renders placeholder text when no items passed', () => {
+		const { getByText } = render(<ContainedLabeledList onClick={jest.fn()} label="Test Labels" items={[]} />);
+
+		expect(getByText('Test Labels'));
+		expect(getByText('No Test Labels Found'));
+	});
+
+	it('disabled all items', () => {
+		const onClickMock = jest.fn();
+		const { getByText } = render(<ContainedLabeledList onClick={onClickMock} items={testItems} disabled />);
+
+		expect(getByText('1'));
+		fireEvent.click(getByText('1'));
+
+		expect(onClickMock).toHaveBeenCalledTimes(0);
+	});
 });

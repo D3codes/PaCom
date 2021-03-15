@@ -199,6 +199,7 @@ function CustomMessage() {
 							className={classes.textField}
 							value={message}
 							onChange={event => { setMessage(event.target.value); }}
+							data-testId="message-field"
 						/>
 						<div className={classes.listContainer}>
 							<ContainedLabeledList
