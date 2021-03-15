@@ -8,6 +8,7 @@ import {
 } from '@material-ui/icons';
 
 import Provider from '../../models/provider';
+import messageController from '../../utilities/messageController';
 
 const useStyles = makeStyles(theme => ({
 	moreMenuItem: {
@@ -26,30 +27,38 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ProviderMappingsTableRow({ provider }) {
+function ProviderMappingsTableRow({
+	hasWritePermission = false, onEdit, onRemove, provider
+}) {
 	const classes = useStyles();
-	const [moreMenuAnchorEl, setMoreMenuAchorEl] = useState(false);
+	const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState(false);
 
 	function handleEditClick() {
-		setMoreMenuAchorEl(null);
-		// TODO: Edit logic
+		setMoreMenuAnchorEl(null);
+		onEdit(provider);
 	}
 
 	function handleRemoveClick() {
-		setMoreMenuAchorEl(null);
-		// TODO: Remove logic
+		const title = 'Please confirm provider removal';
+		const message = 'Removing this provider disallows messages containing that provider from being sent.';
+		messageController.showWarning(title, message).then(({ response }) => {
+			if (response === 0) {
+				setMoreMenuAnchorEl(null);
+				onRemove(provider);
+			}
+		});
 	}
 
 	function handleMoreClick(event) {
-		setMoreMenuAchorEl(event.currentTarget);
+		setMoreMenuAnchorEl(event.currentTarget);
 	}
 
 	function handleMoreMenuClose() {
-		setMoreMenuAchorEl(null);
+		setMoreMenuAnchorEl(null);
 	}
 
 	return (
-		<TableRow key={provider.source}>
+		<TableRow hover key={provider.source}>
 			<TableCell className={classes.tableCell}>
 				<Typography variant="body2">
 					{!provider.get('target') && !provider.get('phonetic') && (
@@ -61,17 +70,17 @@ function ProviderMappingsTableRow({ provider }) {
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('target', '-')}</Typography></TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('phonetic', '-')}</Typography></TableCell>
 			<TableCell align="center" className={classes.tableCell}>
-				<IconButton onClick={handleMoreClick}>
+				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
 					<MoreVert />
 				</IconButton>
 				<Menu anchorEl={moreMenuAnchorEl} open={Boolean(moreMenuAnchorEl)} onClose={handleMoreMenuClose}>
 					<MenuItem className={classes.moreMenuItem} onClick={handleEditClick}>
-						<Edit color="inherit" />
-						<Typography className={classes.moreMenuText} color="inherit">Edit</Typography>
+						<Edit color="primary" />
+						<Typography className={classes.moreMenuText} color="primary">Edit</Typography>
 					</MenuItem>
 					<MenuItem className={classes.moreMenuItem} onClick={handleRemoveClick}>
-						<DeleteForever color="inherit" />
-						<Typography className={classes.moreMenuText} color="inherit">Remove</Typography>
+						<DeleteForever color="error" />
+						<Typography className={classes.moreMenuText} color="error">Remove</Typography>
 					</MenuItem>
 				</Menu>
 			</TableCell>
@@ -80,6 +89,9 @@ function ProviderMappingsTableRow({ provider }) {
 }
 
 ProviderMappingsTableRow.propTypes = {
+	hasWritePermission: PropTypes.bool,
+	onEdit: PropTypes.func.isRequired,
+	onRemove: PropTypes.func.isRequired,
 	provider: PropTypes.instanceOf(Provider).isRequired
 };
 
