@@ -53,7 +53,7 @@ describe('CustomMessage', () => {
 		expect(getByText('Browse')).toBeDefined();
 	});
 
-	it('keeps send buttons disabled with valid phone number no message', () => {
+	it('keeps send buttons disabled when no message entered', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
 
@@ -74,20 +74,5 @@ describe('CustomMessage', () => {
 
 		expect(getByText('Send as SMS').parentElement).toBeDisabled();
 		expect(getByText('Send as Call').parentElement).toBeDisabled();
-	});
-
-	it('keeps send buttons disabled if sending to specific number and message contains dynamic values', () => {
-		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
-		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
-
-		const { getByText, getByTestId } = render(<CustomMessage />);
-
-		const messageField = getByTestId('message-field').querySelector('input');
-		messageField.value = '{{dynamic value}}';
-		Simulate.change(messageField);
-
-		expect(getByText('Send as SMS').parentElement).toBeDisabled();
-		expect(getByText('Send as Call').parentElement).toBeDisabled();
-		expect(getByText('Messages sent to a specific number cannot contain dynamic values.')).toBeDefined();
 	});
 });
