@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 		width: '50%',
 		height: '100%',
 		marginRight: theme.spacing(),
-		marginTop: '32px'
+		marginTop: theme.spacing(4)
 	}
 }));
 
