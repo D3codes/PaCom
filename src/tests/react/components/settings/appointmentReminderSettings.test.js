@@ -25,6 +25,7 @@ jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('AppointmentReminderSettings', () => {
 	it('renders without crashing', () => {
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 
 		expect(getByText('Date Verification')).toBeDefined();
@@ -32,6 +33,7 @@ describe('AppointmentReminderSettings', () => {
 	});
 
 	it('has the save button disabled until there are changes to save', () => {
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
 
 		expect(getByText('Save').parentElement).toBeDisabled();
@@ -42,6 +44,7 @@ describe('AppointmentReminderSettings', () => {
 	});
 
 	it('has the save button stay disabled if there are no write permissions', () => {
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={jest.fn()} hasWritePermission={false} />);
 
 		expect(getByText('Save').parentElement).toBeDisabled();
@@ -52,6 +55,7 @@ describe('AppointmentReminderSettings', () => {
 	});
 
 	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.setAllowSendOutsideRange.mockImplementation();
 		const reloadSettingsMock = jest.fn();
 		const { getByText } = render(<AppointmentReminderSettings appointmentReminders={testSettings} reloadSettings={reloadSettingsMock} hasWritePermission />);
