@@ -66,6 +66,10 @@ function ProviderMappingModal({
 			const newProviderMapping = new Provider(source, target, phonetic);
 			onSave(newProviderMapping, provider);
 			applyInitialState();
+
+			const title = 'Update Dynamic Values';
+			const message = 'Make sure to update any dynamic values to include a mapping for new providers.';
+			messageController.showInfo(title, message);
 		}
 	};
 
