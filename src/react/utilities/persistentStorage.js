@@ -34,30 +34,47 @@ const getSettings = (forceLocal = false) => window.ipcRenderer.invoke('get-setti
 
 const setSettings = (path, value, forceLocal = false) => window.ipcRenderer.invoke('set-settings', path, value, forceLocal);
 
-const setAppointmentRemindersDateVerificationDays = days => setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
+const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
 
-const setAppointmentRemindersDateVerificationAllowSend = allow => setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allow);
+// Appointment Reminder Settings
 
-const setAppointmentRemindersContactPreferencesPreferredAndSms = preferredAndSms => setSettings(
-	'settings.appointmentReminders.contactPreferences.sendToPreferredAndSms',
-	preferredAndSms
-);
+const setDefaultPhoneReminder = messageTemplateName => setSettings('settings.appointmentReminders.defaultReminderTemplates.phone', messageTemplateName);
 
-const setAppointmentRemindersContactPreferencesTextHomeIfCellNotAvailable = textHome => setSettings(
-	'settings.appointmentReminders.contactPreferences.textHomeIfCellNotAvailable',
-	textHome
-);
+const setDefaultSmsReminder = messageTemplateName => setSettings('settings.appointmentReminders.defaultReminderTemplates.sms', messageTemplateName);
 
-const setCustomMessagesContactPreferencesPreferredAndSms = preferredAndSms => setSettings('settings.customMessages.contactPreferences.sendToPreferredAndSms', preferredAndSms);
+const setSendToPreferredAndSmsForReminders = preferredAndSms => setSettings('settings.appointmentReminders.contactPreferences.sendToPreferredAndSms', preferredAndSms);
 
-const setCustomMessagesContactPreferencesTextHomeIfCellNotAvailable = textHome => setSettings('settings.customMessages.contactPreferences.textHomeIfCellNotAvailable', textHome);
+const setTextHomeIfCellNotAvailableForReminders = textHome => setSettings('settings.appointmentReminders.contactPreferences.textHomeIfCellNotAvailable', textHome);
 
+const setAllowSendOutsideRange = allowSend => setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allowSend);
+
+const setNumberOfDays = days => setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
+
+const setEndOfRange = end => setSettings('settings.appointmentReminders.dateVerification.endOfRange', end);
+
+const setUseBusinessDays = useBusinessDays => setSettings('settings.appointmentReminders.dateVerification.useBusinessDays', useBusinessDays);
+
+// Custom Message Settings
+const setSendToPreferredAndSmsForCustomMessages = preferredAndSms => setSettings('settings.customMessages.contactPreferences.sendToPreferredAndSms', preferredAndSms);
+
+const setTextHomeIfCellNotAvailableForCustomMessages = textHome => setSettings('settings.customMessages.contactPreferences.textHomeIfCellNotAvailable', textHome);
+
+const setAllowSendOutsideRangeForCustomMessages = allowSend => setSettings('settings.customMessages.dateVerification.allowSendOutsideRange', allowSend);
+
+const setNumberOfDaysForCustomMessages = days => setSettings('settings.customMessages.dateVerification.numberOfDays', days);
+
+const setEndOfRangeForCustomMessage = end => setSettings('settings.customMessages.dateVerification.endOfRange', end);
+
+const setUseBusinessDaysForCustomMessages = useBusinessDays => setSettings('settings.customMessages.dateVerification.useBusinessDays', useBusinessDays);
+
+// Message Report Settings
 const setMessageReportsAutosave = autosave => setSettings('settings.messageReports.autosaveReports', autosave);
 
 const setMessageReportsAutosaveLocation = location => setSettings('settings.messageReports.autosaveLocation', location);
 
 const setMessageReportsLastReport = report => setSettings('settings.messageReports.lastReport', report);
 
+// Twilio Settings
 const setTwilioSID = sid => setSettings('settings.twilio.SID', sid);
 
 const setTwilioAuthToken = authToken => setSettings('settings.twilio.authToken', authToken);
@@ -68,33 +85,12 @@ const setTwilioSmsEndpoint = endpoint => setSettings('settings.twilio.smsEndpoin
 
 const setTwilioCallEndpoint = endpoint => setSettings('settings.twilio.callEndpoint', endpoint);
 
+// Shared Configuration Settings
 const setShareConfigBehavior = behavior => setSettings('settings.shareData.behavior', behavior, true);
 
 const setShareConfigLocation = location => setSettings('settings.shareData.location', location, true);
 
-const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
-
 const copyLocalToNetwork = () => window.ipcRenderer.invoke('copy-local-to-network');
-
-const setAllowSendOutsideRange = allowSend => setSettings('settings.appointmentReminders.dateVerification.allowSendOutsideRange', allowSend);
-
-const setNumberOfDays = days => setSettings('settings.appointmentReminders.dateVerification.numberOfDays', days);
-
-const setEndOfRange = end => setSettings('settings.appointmentReminders.dateVerification.endOfRange', end);
-
-const setUseBusinessDays = useBusinessDays => setSettings('settings.appointmentReminders.dateVerification.useBusinessDays', useBusinessDays);
-
-const setSendToPreferredAndSmsForReminders = preferredAndSms => setSettings('settings.appointmentReminders.contactPreferences.sendToPreferredAndSms', preferredAndSms);
-
-const setTextHomeIfCellNotAvailableForReminders = textHome => setSettings('settings.appointmentReminders.contactPreferences.textHomeIfCellNotAvailable', textHome);
-
-const setSendToPreferredAndSmsForCustomMessages = preferredAndSms => setSettings('settings.customMessages.contactPreferences.sendToPreferredAndSms', preferredAndSms);
-
-const setTextHomeIfCellNotAvailableForCustomMessages = textHome => setSettings('settings.customMessages.contactPreferences.textHomeIfCellNotAvailable', textHome);
-
-const setDefaultPhoneReminder = messageTemplateName => setSettings('settings.appointmentReminders.defaultReminderTemplates.phone', messageTemplateName);
-
-const setDefaultSmsReminder = messageTemplateName => setSettings('settings.appointmentReminders.defaultReminderTemplates.sms', messageTemplateName);
 
 export default {
 	getProviderMappings,
@@ -104,12 +100,6 @@ export default {
 	addMessageTemplate,
 	removeMessageTemplateWithName,
 	getSettings,
-	setAppointmentRemindersDateVerificationAllowSend,
-	setAppointmentRemindersDateVerificationDays,
-	setAppointmentRemindersContactPreferencesPreferredAndSms,
-	setAppointmentRemindersContactPreferencesTextHomeIfCellNotAvailable,
-	setCustomMessagesContactPreferencesPreferredAndSms,
-	setCustomMessagesContactPreferencesTextHomeIfCellNotAvailable,
 	setMessageReportsAutosave,
 	setMessageReportsAutosaveLocation,
 	setMessageReportsLastReport,
@@ -134,5 +124,9 @@ export default {
 	addDynamicValue,
 	removeDynamicValueWithName,
 	setDefaultPhoneReminder,
-	setDefaultSmsReminder
+	setDefaultSmsReminder,
+	setAllowSendOutsideRangeForCustomMessages,
+	setEndOfRangeForCustomMessage,
+	setNumberOfDaysForCustomMessages,
+	setUseBusinessDaysForCustomMessages
 };
