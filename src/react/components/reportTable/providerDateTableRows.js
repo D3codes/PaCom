@@ -53,7 +53,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	providerDateCell: {
 		backgroundColor: theme.palette.primary.light,
-		color: theme.palette.common.white
+		color: theme.palette.grey.A400,
+		position: 'sticky',
+		top: 41
 	},
 	providerDateText: {
 		padding: theme.spacing(0.5, 1)
