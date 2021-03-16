@@ -18,8 +18,9 @@ describe('App', () => {
 			twilio: {},
 			sharedConfig: {}
 		}));
-		persistentStorageMock.getDynamicValues.mockImplementation(async () => ([]));
-		persistentStorageMock.getMessageTemplates.mockImplementation(async () => ([]));
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
 
 		const { getAllByText } = render(<App />);
 		expect(getAllByText('Appointment Reminders')).toHaveLength(2);

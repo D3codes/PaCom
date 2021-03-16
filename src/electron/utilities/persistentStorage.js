@@ -74,7 +74,7 @@ const removeProviderMappingWithSource = providerSource => {
 const addProviderMapping = provider => {
 	setStorageLocation();
 	const providers = removeProviderMappingWithSource(provider.source);
-	providers.push(provider);
+	providers.unshift(provider);
 	store.set(PROVIDER_MAPPINGS, providers);
 	return getProviderMappings();
 };

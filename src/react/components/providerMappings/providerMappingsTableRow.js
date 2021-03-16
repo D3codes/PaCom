@@ -20,6 +20,10 @@ const useStyles = makeStyles(theme => ({
 	tableCell: {
 		padding: theme.spacing()
 	},
+	unmappedSource: {
+		display: 'inline-flex',
+		alignItems: 'center'
+	},
 	warningIcon: {
 		color: theme.palette.warning.main,
 		paddingRight: theme.spacing(),
@@ -57,11 +61,13 @@ function ProviderMappingsTableRow({
 		setMoreMenuAnchorEl(null);
 	}
 
+	const isUnmappedProvider = !provider.get('target') && !provider.get('phonetic');
+
 	return (
 		<TableRow hover key={provider.source}>
 			<TableCell className={classes.tableCell}>
-				<Typography variant="body2">
-					{!provider.get('target') && !provider.get('phonetic') && (
+				<Typography variant="body2" className={isUnmappedProvider && classes.unmappedSource}>
+					{isUnmappedProvider && (
 						<Warning className={classes.warningIcon} />
 					)}
 					{provider.get('source')}

@@ -5,7 +5,7 @@ import Provider from '../models/provider';
 import Reminder from '../models/reminder';
 import { NullValueException } from '../exceptions';
 
-export default rows => {
+export default (rows, providerMappings) => {
 	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
 
 	const reminders = [];
@@ -15,7 +15,7 @@ export default rows => {
 		// This shift is removing the company from the row
 		rows[index - 1].shift();
 		const [
-			paddedProvider = null,
+			paddedProvider = '',
 			appointmentDate = null
 		] = rows[index - 1];
 		const [
@@ -35,7 +35,8 @@ export default rows => {
 
 		const patient = new Patient(accountNumber, name, contactMethods, preferredContactMethod, dateOfBirth);
 
-		const provider = new Provider(paddedProvider);
+		const existingProvider = providerMappings?.find(providerMapping => paddedProvider.includes(providerMapping.source));
+		const provider = new Provider(paddedProvider, existingProvider?.target, existingProvider?.phonetic);
 
 		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration);
 
