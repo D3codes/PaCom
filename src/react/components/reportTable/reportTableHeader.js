@@ -66,11 +66,6 @@ function ReportTableHeader() {
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit">
-						Work
-					</Typography>
-				</TableCell>
-				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit">
 						Home
 					</Typography>
 				</TableCell>
