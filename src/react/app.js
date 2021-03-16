@@ -8,6 +8,7 @@ import CustomMessage from './components/customMessage/customMessage';
 import MessageTemplates from './components/messageTemplates/messageTemplates';
 import MiniDrawer, { DRAWER_WIDTH } from './components/drawer/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
+import DynamicValues from './components/dynamicValues/dynamicValues';
 import Settings from './components/settings/settings';
 import paComTheme from './theme';
 
@@ -69,6 +70,7 @@ export default function App() {
 					{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
 					{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
 					{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
+					{selectedTabId === MiniDrawer.TabIds.DYNAMIC_VALUES && <DynamicValues />}
 					<Settings selectedTabId={selectedTabId} />
 				</main>
 			</div>

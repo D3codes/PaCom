@@ -4,7 +4,7 @@ import {
 	Drawer, makeStyles, Typography, Button
 } from '@material-ui/core';
 import {
-	PermPhoneMsg, PersonPin, RateReview, Schedule
+	PermPhoneMsg, PersonPin, RateReview, Schedule, DynamicFeed
 } from '@material-ui/icons';
 import AlertSnackbar from '../alertSnackbar';
 
@@ -41,6 +41,12 @@ const SECONDARY_TABS = [
 		id: 'msgTmplts',
 		label: 'Message Templates',
 		title: 'Message Templates'
+	},
+	{
+		Icon: DynamicFeed,
+		id: 'dynVals',
+		label: 'Dynamic Values',
+		title: 'Dynamic Values'
 	}
 ];
 
@@ -224,6 +230,7 @@ MiniDrawer.TabIds = {
 	SEND_CUSTOM_MESSAGE: PRIMARY_TABS[1].id,
 	PROVIDER_MAPPINGS: SECONDARY_TABS[0].id,
 	MESSAGE_TEMPLATES: SECONDARY_TABS[1].id,
+	DYNAMIC_VALUES: SECONDARY_TABS[2].id,
 	APPOINTMENT_REMINDERS_SETTINGS: SETTINGS_TABS[0].id,
 	CUSTOM_MESSAGE_SETTINGS: SETTINGS_TABS[1].id,
 	MESSAGE_REPORT_SETTINGS: SETTINGS_TABS[2].id,
