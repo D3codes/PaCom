@@ -18,7 +18,6 @@ describe('ReportTableHeader', () => {
 		expect(getByText('Account')).toBeDefined();
 		expect(getByText('Date of Birth')).toBeDefined();
 		expect(getByText('Notify By')).toBeDefined();
-		expect(getByText('Work')).toBeDefined();
 		expect(getByText('Home')).toBeDefined();
 		expect(getByText('Cell')).toBeDefined();
 	});

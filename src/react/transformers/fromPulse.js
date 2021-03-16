@@ -24,8 +24,7 @@ export default rows => {
 			name = null,
 			accountNumber = null,
 			dateOfBirth = null,
-			preferredContactMethod = null,
-			workPhone = null,
+			preferredContactMethod = null,,
 			homePhone = null,
 			cellPhone = null
 		] = row;
@@ -33,7 +32,6 @@ export default rows => {
 		const contactMethods = [];
 		if (homePhone) contactMethods.push(ContactMethod.Home(homePhone));
 		if (cellPhone) contactMethods.push(ContactMethod.Cell(cellPhone));
-		if (workPhone) contactMethods.push(ContactMethod.Work(workPhone));
 
 		const patient = new Patient(accountNumber, name, contactMethods, preferredContactMethod, dateOfBirth);
 
