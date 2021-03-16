@@ -70,7 +70,7 @@ function MessageTemplateModal({
 	const isSaveDisabled = !(name && body);
 
 	return (
-		<Dialog fullWidth open={open}>
+		<Dialog fullWidth open={open} maxWidth="md">
 			<DialogTitle>{template ? 'Edit' : 'Add'} Message Template</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<TextField
