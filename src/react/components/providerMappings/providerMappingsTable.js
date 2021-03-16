@@ -41,6 +41,12 @@ function ProviderMappingsTable({
 	return (
 		<div className={classes.providerTable}>
 			<Table padding="none" stickyHeader>
+				<colgroup>
+					<col style={{ width: '30%' }} />
+					<col style={{ width: '30%' }} />
+					<col style={{ width: '30%' }} />
+					<col style={{ width: '10%' }} />
+				</colgroup>
 				<TableHead>
 					<TableRow>
 						<TableCell className={clsx(classes.firstTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
