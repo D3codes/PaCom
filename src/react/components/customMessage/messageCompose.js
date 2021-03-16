@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MessageCompose({
-	messageIsValid, onMessageChange, onAppend, message, disableDynamicValues = false, helperText = '', modal = false
+	messageIsValid, onMessageChange, onAppend, message, disableDynamicValues = false, helperText = '', modal = false, defaultDynamicValues = false
 }) {
 	const classes = useStyles();
 
@@ -36,7 +36,7 @@ function MessageCompose({
 
 	const reloadValues = () => {
 		persistentStorage.getDynamicValues().then(values => {
-			setDynamicValues(values);
+			setDynamicValues(defaultDynamicValues ? values.filter(val => val.fromApptList) : values);
 		});
 	};
 
@@ -56,12 +56,12 @@ function MessageCompose({
 				className={clsx(classes.textField, { [classes.textFieldMargin]: !modal })}
 				value={message}
 				onChange={event => { onMessageChange(event.target.value); }}
-				data-testId="message-field"
+				data-testid="message-field"
 			/>
 			<div className={classes.listContainer}>
 				<ContainedLabeledList
 					onClick={value => onAppend(`{{${value.name}}}`)}
-					label="Dynamic Values"
+					label={defaultDynamicValues ? 'System Dynamic Values' : 'Dynamic Values'}
 					items={dynamicValues}
 					disabled={disableDynamicValues && dynamicValues}
 				/>
@@ -77,7 +77,8 @@ MessageCompose.propTypes = {
 	message: PropTypes.string.isRequired,
 	disableDynamicValues: PropTypes.bool,
 	helperText: PropTypes.string,
-	modal: PropTypes.bool
+	modal: PropTypes.bool,
+	defaultDynamicValues: PropTypes.bool
 };
 
 export default MessageCompose;

@@ -139,6 +139,7 @@ function DynamicValueModal({
 						onAppend={handleValueAppend}
 						message={value}
 						modal
+						defaultDynamicValues
 					/>
 				)}
 			</DialogContent>
