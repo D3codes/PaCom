@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MessageCompose({
-	messageIsValid, onMessageChange, onAppend, message, disableDynamicValues = false, helperText = '', padMessageBox = true
+	messageIsValid, onMessageChange, onAppend, message, disableDynamicValues = false, helperText = '', modal = false
 }) {
 	const classes = useStyles();
 
@@ -45,7 +45,7 @@ function MessageCompose({
 	}, []);
 
 	return (
-		<div className={clsx(classes.root, { [classes.containerHeight]: !padMessageBox })}>
+		<div className={clsx(classes.root, { [classes.containerHeight]: modal })}>
 			<TextField
 				error={!messageIsValid}
 				helperText={helperText}
@@ -53,7 +53,7 @@ function MessageCompose({
 				multiline
 				rows={15}
 				variant="outlined"
-				className={clsx(classes.textField, { [classes.textFieldMargin]: padMessageBox })}
+				className={clsx(classes.textField, { [classes.textFieldMargin]: !modal })}
 				value={message}
 				onChange={event => { onMessageChange(event.target.value); }}
 				data-testId="message-field"
@@ -77,7 +77,7 @@ MessageCompose.propTypes = {
 	message: PropTypes.string.isRequired,
 	disableDynamicValues: PropTypes.bool,
 	helperText: PropTypes.string,
-	padMessageBox: PropTypes.bool
+	modal: PropTypes.bool
 };
 
 export default MessageCompose;

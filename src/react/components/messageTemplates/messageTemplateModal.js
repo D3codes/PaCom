@@ -86,7 +86,7 @@ function MessageTemplateModal({
 					onMessageChange={handleBodyChange}
 					onAppend={handleBodyAppend}
 					message={body}
-					padMessageBox={false}
+					modal
 				/>
 			</DialogContent>
 			<DialogActions>
