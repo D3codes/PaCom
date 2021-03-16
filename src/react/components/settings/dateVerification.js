@@ -40,7 +40,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 	return (
 		<Fragment>
 			<div className={classes.dateVerificationOptions}>
-				<Typography variant="h5" display="inline">Reminders should be sent  </Typography>
+				<Typography variant="h6" display="inline">Reminders should be sent  </Typography>
 				<FormControl>
 					<Select
 						value={!endOfRange}
@@ -51,7 +51,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 						<MenuItem value={false}>Between</MenuItem>
 					</Select>
 				</FormControl>
-				<Typography variant="h5" display="inline">  </Typography>
+				<Typography variant="h6" display="inline">  </Typography>
 				<TextField
 					type="number"
 					value={numberOfDays}
@@ -62,7 +62,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 				/>
 				{ endOfRange && (
 					<Fragment>
-						<Typography variant="h5" display="inline">  to  </Typography>
+						<Typography variant="h6" display="inline">  to  </Typography>
 						<TextField
 							type="number"
 							value={endOfRange}
@@ -73,7 +73,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 						/>
 					</Fragment>
 				)}
-				<Typography variant="h5" display="inline">  </Typography>
+				<Typography variant="h6" display="inline">  </Typography>
 				<FormControl>
 					<Select
 						value={shouldUseBusinessDays}
@@ -84,7 +84,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 						<MenuItem value>business day(s)</MenuItem>
 					</Select>
 				</FormControl>
-				<Typography variant="h5" display="inline">  before appointment.</Typography>
+				<Typography variant="h6" display="inline">  before appointment.</Typography>
 			</div>
 			<div>
 				<DescriptiveIconButton
