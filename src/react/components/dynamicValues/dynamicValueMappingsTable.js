@@ -43,8 +43,8 @@ function DynamicValueMappingsTable({
 		<div className={classes.dynamicValueTable}>
 			<Table padding="none" stickyHeader>
 				<colgroup>
-					<col style={{ width: '20%' }} />
-					<col style={{ width: '70%' }} />
+					<col style={{ width: '30%' }} />
+					<col style={{ width: '60%' }} />
 					<col style={{ width: '10%' }} />
 				</colgroup>
 				<TableHead>
@@ -82,7 +82,6 @@ function DynamicValueMappingsTable({
 							key={provider.source}
 							onEdit={onEdit}
 							providerSource={provider.source}
-							providerTarget={provider.target}
 							value={mappings.find(mapping => mapping.providerSource === provider.source)?.value || ''}
 						/>
 					))}

@@ -77,17 +77,12 @@ function DynamicValueModal({
 		setValue(val);
 	};
 
-	const handleCancel = () => {
-		onCancel();
-		applyInitialState();
-	};
-
 	const handleSave = () => {
 		const existingValue = !dynamicValue && dynamicValues?.find(val => val.name === name);
 		const existingDefaultValue = defaultValues?.find(val => val.name === name);
 		if (existingDefaultValue) {
 			const title = 'Dynamic Value Name Already in Use';
-			const message = `${name} is reserved for system level dynamic values. Use a different name to continue.`;
+			const message = `${name} is reserved for report level dynamic values. Use a different name to continue.`;
 			messageController.showInfo(title, message);
 		} else if (existingValue) {
 			const title = 'Dynamic Value Name Already in Use';
@@ -109,7 +104,7 @@ function DynamicValueModal({
 	const saveDisabled = !name || dynamicValue?.mappings === mappings;
 
 	return (
-		<Dialog fullWidth open={open} maxWidth="md">
+		<Dialog fullWidth open={open} maxWidth="md" onExited={applyInitialState}>
 			{!editProvider && <DialogTitle>{dynamicValue ? 'Edit' : 'Add'} Dynamic Value</DialogTitle>}
 			{editProvider && <DialogTitle>Value for {providers.find(provider => provider.source === editProvider).target}</DialogTitle>}
 			<DialogContent className={classes.dialogContent}>
@@ -145,7 +140,7 @@ function DynamicValueModal({
 			</DialogContent>
 			{!editProvider && (
 				<DialogActions>
-					<Button onClick={handleCancel} color="primary">Cancel</Button>
+					<Button onClick={onCancel} color="primary">Cancel</Button>
 					<Button
 						disabled={saveDisabled}
 						endIcon={<Save />}
