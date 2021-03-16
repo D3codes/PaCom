@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function DateVerification({ dateVerification, setDateVerification, hasWritePermission = false }) {
+export default function DateVerification({ dateVerification, onChange, hasWritePermission = false }) {
 	const classes = useStyles();
 	const [numberOfDays, setNumberOfDays] = useState(dateVerification.numberOfDays);
 	const [endOfRange, setEndOfRange] = useState(dateVerification.endOfRange);
@@ -34,7 +34,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 			allowSendOutsideRange,
 			useBusinessDays: shouldUseBusinessDays
 		};
-		setDateVerification(newDateVerification);
+		onChange(newDateVerification);
 	}, [numberOfDays, endOfRange, allowSendOutsideRange, shouldUseBusinessDays]);
 
 	return (
@@ -51,7 +51,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 						<MenuItem value={false}>Between</MenuItem>
 					</Select>
 				</FormControl>
-				<Typography variant="h6" display="inline">  </Typography>
+				&nbsp;
 				<TextField
 					type="number"
 					value={numberOfDays}
@@ -73,7 +73,7 @@ export default function DateVerification({ dateVerification, setDateVerification
 						/>
 					</Fragment>
 				)}
-				<Typography variant="h6" display="inline">  </Typography>
+                &nbsp;
 				<FormControl>
 					<Select
 						value={shouldUseBusinessDays}
@@ -123,6 +123,6 @@ DateVerification.propTypes = {
 		allowSendOutsideRange: PropTypes.number,
 		useBusinessDays: PropTypes.bool
 	}).isRequired,
-	setDateVerification: PropTypes.func.isRequired,
+	onChange: PropTypes.func.isRequired,
 	hasWritePermission: PropTypes.bool
 };

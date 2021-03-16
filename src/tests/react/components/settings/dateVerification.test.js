@@ -12,16 +12,16 @@ const testSettings = {
 
 describe('DateVerification', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<DateVerification dateVerification={testSettings} setDateVerification={jest.fn()} hasWritePermission />);
+		const { getByText } = render(<DateVerification dateVerification={testSettings} onChange={jest.fn()} hasWritePermission />);
 
 		expect(getByText('OFF')).toBeDefined();
 		expect(getByText('WARNING')).toBeDefined();
 		expect(getByText('BLOCK')).toBeDefined();
 	});
 
-	it('calls setDateVerification on change', () => {
+	it('calls onChange function on change', () => {
 		const setDateVerificationMock = jest.fn();
-		const { getByText } = render(<DateVerification dateVerification={testSettings} setDateVerification={setDateVerificationMock} hasWritePermission />);
+		const { getByText } = render(<DateVerification dateVerification={testSettings} onChange={setDateVerificationMock} hasWritePermission />);
 
 		fireEvent.click(getByText('WARNING'));
 
@@ -29,7 +29,7 @@ describe('DateVerification', () => {
 	});
 
 	it('disables buttons when there are no write permissions', () => {
-		const { getByText } = render(<DateVerification dateVerification={testSettings} setDateVerification={jest.fn()} />);
+		const { getByText } = render(<DateVerification dateVerification={testSettings} onChange={jest.fn()} />);
 
 		expect(getByText('OFF').parentElement.parentElement.parentElement).toBeDisabled();
 		expect(getByText('WARNING').parentElement.parentElement.parentElement).toBeDisabled();

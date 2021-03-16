@@ -33,6 +33,10 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		height: '100%'
+	},
+	accordionIcon: {
+		fontSize: '3rem',
+		textAlign: 'left'
 	}
 }));
 
@@ -102,10 +106,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 				expanded={openAccordion === ACCORDIONS.DEFAULT_REMINDERS}
 				onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DEFAULT_REMINDERS : null)}
 				className={classes.accordion}>
-				<AccordionSummary
-					expandIcon={<ExpandMore />}
-					id="dateVerification-header">
-					<Schedule color="primary" style={{ fontSize: '3rem', textAlign: 'left' }} />
+				<AccordionSummary expandIcon={<ExpandMore />}>
+					<Schedule color="primary" className={classes.accordionIcon} />
 					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 					<Typography color="primary" variant="h4">Default Appointment Reminders</Typography>
 				</AccordionSummary>
@@ -151,17 +153,15 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 				expanded={openAccordion === ACCORDIONS.DATE_VERIFICATION}
 				onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DATE_VERIFICATION : null)}
 				className={classes.accordion}>
-				<AccordionSummary
-					expandIcon={<ExpandMore />}
-					id="dateVerification-header">
-					<Today color="primary" style={{ fontSize: '3rem', textAlign: 'left' }} />
+				<AccordionSummary expandIcon={<ExpandMore />}>
+					<Today color="primary" className={classes.accordionIcon} />
 					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 					<Typography color="primary" variant="h4">Date Verification</Typography>
 				</AccordionSummary>
 				<AccordionDetails className={classes.accordionDetails}>
 					<DateVerification
 						dateVerification={dateVerification}
-						setDateVerification={setDateVerification}
+						onChange={setDateVerification}
 						hasWritePermission={hasWritePermission}
 					/>
 				</AccordionDetails>
@@ -170,10 +170,8 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 				<Accordion
 					expanded={openAccordion === ACCORDIONS.CONTACT_PREFERENCES}
 					onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.CONTACT_PREFERENCES : null)}>
-					<AccordionSummary
-						expandIcon={<ExpandMore />}
-						id="dateVerification-header">
-						<SettingsPhone color="primary" style={{ fontSize: '3rem', textAlign: 'left' }} />
+					<AccordionSummary expandIcon={<ExpandMore />}>
+						<SettingsPhone color="primary" className={classes.accordionIcon} />
 						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 						<Typography color="primary" variant="h4">Contact Preferences</Typography>
 					</AccordionSummary>
