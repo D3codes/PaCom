@@ -16,6 +16,7 @@ import valiDate from '../../utilities/dateValidator';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
+import Provider from '../../models/provider';
 
 const AllowSendOutsideRange = {
 	NoValidation: 0,
@@ -92,8 +93,12 @@ async function validateAppointmentDates(reminders, dateVerificationSettings) {
 }
 
 function addUnknownProviders(reminders) {
-	const unknownProviders = new Set(reminders.map(reminder => reminder.getIn(['appointment', 'provider'])).filter(provider => !provider.get('target')));
-	unknownProviders?.forEach(persistentStorage.addProviderMapping);
+	const unknownProviderSources = reminders
+		.map(reminder => reminder.getIn(['appointment', 'provider']))
+		.filter(provider => !provider.get('target'))
+		.map(({ source }) => source);
+	const distinctSources = new Set(unknownProviderSources);
+	distinctSources.forEach(source => persistentStorage.addProviderMapping(new Provider(source)));
 }
 
 function AppointmentReminders() {
