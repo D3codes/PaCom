@@ -5,6 +5,12 @@ import CustomMessageSettings from '../../../../react/components/settings/customM
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
 const testSettings = {
+	dateVerification: {
+		numberOfDays: 4,
+		endOfRange: 5,
+		allowSendOutsideRange: 0,
+		useBusinessDays: false
+	},
 	contactPreferences: {
 		sendToPreferredAndSms: false,
 		textHomeIfCellNotAvailable: false

@@ -36,6 +36,12 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+const ACCORDIONS = {
+	DEFAULT_REMINDERS: 1,
+	DATE_VERIFICATION: 2,
+	CONTACT_PREFERENCES: 3
+};
+
 export default function AppointmentRemindersSettings({ appointmentReminders, reloadSettings, hasWritePermission }) {
 	const classes = useStyles();
 	// Date Verification Values
@@ -88,12 +94,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		if (defaultPhoneReminder !== appointmentReminders.defaultReminderTemplates.phone) persistentStorage.setDefaultPhoneReminder(defaultPhoneReminder);
 		if (defaultSmsReminder !== appointmentReminders.defaultReminderTemplates.sms) persistentStorage.setDefaultSmsReminder(defaultSmsReminder);
 		reloadSettings();
-	};
-
-	const ACCORDIONS = {
-		DEFAULT_REMINDERS: 1,
-		DATE_VERIFICATION: 2,
-		CONTACT_PREFERENCES: 3
 	};
 
 	return (

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function DateVerification({ dateVerification, setDateVerification, hasWritePermission }) {
+export default function DateVerification({ dateVerification, setDateVerification, hasWritePermission = false }) {
 	const classes = useStyles();
 	const [numberOfDays, setNumberOfDays] = useState(dateVerification.numberOfDays);
 	const [endOfRange, setEndOfRange] = useState(dateVerification.endOfRange);
@@ -124,5 +124,5 @@ DateVerification.propTypes = {
 		useBusinessDays: PropTypes.bool
 	}).isRequired,
 	setDateVerification: PropTypes.func.isRequired,
-	hasWritePermission: PropTypes.bool.isRequired
+	hasWritePermission: PropTypes.bool
 };
