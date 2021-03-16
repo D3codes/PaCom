@@ -16,7 +16,13 @@ function ReportActions({ sendDisabled = false }) {
 	return (
 		<div className={classes.actionContainer}>
 			<Button color="primary" startIcon={<Publish />} variant="contained">Export</Button>
-			<Button color="primary" disabled={sendDisabled} endIcon={<Send />} variant="contained">Send</Button>
+			<Button
+				color="primary"
+				disabled={sendDisabled}
+				endIcon={<Send />}
+				variant={sendDisabled ? 'outlined' : 'contained'}>
+				Send
+			</Button>
 		</div>
 	);
 }

@@ -15,6 +15,10 @@ const useStyles = makeStyles(theme => ({
 	tableCell: {
 		padding: theme.spacing()
 	},
+	unmappedSource: {
+		display: 'inline-flex',
+		alignItems: 'center'
+	},
 	warningIcon: {
 		color: theme.palette.warning.main,
 		paddingRight: theme.spacing(),
@@ -23,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function DynamicValueMappingsTableRow({
-	onEdit, providerSource, providerTarget, value = ''
+	onEdit, providerSource, value = ''
 }) {
 	const classes = useStyles();
 
@@ -34,11 +38,11 @@ function DynamicValueMappingsTableRow({
 	return (
 		<TableRow hover>
 			<TableCell className={classes.tableCell}>
-				<Typography variant="body2">
+				<Typography className={!value && classes.unmappedSource} variant="body2">
 					{!value && (
 						<Warning className={classes.warningIcon} />
 					)}
-					{providerTarget}
+					{providerSource}
 				</Typography>
 			</TableCell>
 			<TableCell className={classes.tableCell}>
@@ -58,7 +62,6 @@ function DynamicValueMappingsTableRow({
 DynamicValueMappingsTableRow.propTypes = {
 	onEdit: PropTypes.func.isRequired,
 	providerSource: PropTypes.string.isRequired,
-	providerTarget: PropTypes.string.isRequired,
 	value: PropTypes.string
 };
 

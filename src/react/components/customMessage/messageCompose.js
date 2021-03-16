@@ -61,7 +61,7 @@ function MessageCompose({
 			<div className={classes.listContainer}>
 				<ContainedLabeledList
 					onClick={value => onAppend(`{{${value.name}}}`)}
-					label={defaultDynamicValues ? 'System Dynamic Values' : 'Dynamic Values'}
+					label={defaultDynamicValues ? 'Report Dynamic Values' : 'Dynamic Values'}
 					items={dynamicValues}
 					disabled={disableDynamicValues && dynamicValues}
 				/>
