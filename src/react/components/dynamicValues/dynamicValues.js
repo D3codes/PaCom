@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, makeStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
-import ProviderMappingsTable from './providerMappingsTable';
+import DynamicValuesTable from './dynamicValuesTable';
 import persistentStorage from '../../utilities/persistentStorage';
 import AlertSnackbar from '../alertSnackbar';
-import ProviderMappingModal from './providerMappingModal';
+import DynamicValueModal from './dynamicValueModal';
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
@@ -13,55 +13,62 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
-	providerMappingsContainer: {
+	dynamicValuesContainer: {
 		height: '100%',
 		display: 'flex',
 		flexFlow: 'column'
 	}
 }));
 
-export default function ProviderMappings() {
+export default function DynamicValues() {
 	const classes = useStyles();
+	const [dynamicValues, setDynamicValues] = useState(null);
 	const [providers, setProviders] = useState(null);
 	const [hasWritePermission, setHasWritePermission] = useState(null);
-	const [editingProvider, setEditingProvider] = useState(null);
+	const [editingValue, setEditingValue] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [defaultValues, setDefaultValues] = useState([]);
 
 	useEffect(() => {
-		persistentStorage.getProviderMappings().then(setProviders);
+		persistentStorage.getDynamicValues(false).then(setDynamicValues);
 		persistentStorage.getSettings(true).then(settings => setHasWritePermission(settings.shareData.behavior !== 1));
+		persistentStorage.getProviderMappings().then(setProviders);
+		persistentStorage.getDynamicValues().then(values => {
+			setDefaultValues(values.filter(val => val.fromApptList));
+		});
 	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
 
 	const handleCancel = () => {
-		setEditingProvider(null);
+		setEditingValue(null);
 		setIsModalOpen(false);
 	};
 
-	const handleEdit = providerMapping => {
-		setEditingProvider(providerMapping);
+	const handleEdit = dynamicValue => {
+		setEditingValue(dynamicValue);
 		setIsModalOpen(true);
 	};
 
-	const handleRemove = providerMapping => {
-		persistentStorage.removeProviderMappingWithSource(providerMapping.source).then(setProviders);
+	const handleRemove = dynamicValue => {
+		persistentStorage.removeDynamicValueWithName(dynamicValue.name, false).then(setDynamicValues);
 	};
 
-	const handleSave = (providerMapping, previousProviderMapping) => {
-		if (previousProviderMapping) persistentStorage.removeProviderMappingWithSource(previousProviderMapping.source);
-		persistentStorage.addProviderMapping(providerMapping).then(setProviders);
+	const handleSave = (dynamicValue, previousDynamicValue) => {
+		if (previousDynamicValue) persistentStorage.removeDynamicValueWithName(previousDynamicValue.name, false);
+		persistentStorage.addDynamicValue(dynamicValue, false).then(setDynamicValues);
 		setIsModalOpen(false);
-		setEditingProvider(null);
+		setEditingValue(null);
 	};
 
 	return (
-		<div className={classes.providerMappingsContainer}>
-			<ProviderMappingsTable
+		<div className={classes.dynamicValuesContainer}>
+			<DynamicValuesTable
 				hasWritePermission={hasWritePermission}
 				onEdit={handleEdit}
 				onRemove={handleRemove}
 				onSave={handleSave}
+				dynamicValues={dynamicValues}
 				providers={providers}
 			/>
 			<div className={classes.buttonContainer}>
@@ -74,12 +81,14 @@ export default function ProviderMappings() {
 					Add
 				</Button>
 			</div>
-			<ProviderMappingModal
+			<DynamicValueModal
 				onCancel={handleCancel}
 				onSave={handleSave}
-				open={isModalOpen}
-				provider={editingProvider}
 				providers={providers}
+				open={isModalOpen}
+				dynamicValue={editingValue}
+				dynamicValues={dynamicValues}
+				defaultValues={defaultValues}
 			/>
 			{hasWritePermission !== null && (
 				<AlertSnackbar

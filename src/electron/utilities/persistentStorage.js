@@ -37,21 +37,22 @@ const getDynamicValues = (forceLocal = false, includeDefault = true) => {
 	return values ? defaultDynamicValues.concat(values) : defaultDynamicValues;
 };
 
-const removeDynamicValueWithName = valueName => {
+const removeDynamicValueWithName = (valueName, includeDefault = true) => {
 	setStorageLocation();
-	let values = getDynamicValues();
+	let values = getDynamicValues(false, false);
 	if (!values) return [];
 	values = values.filter(value => value.name !== valueName);
 	store.set(DYNAMIC_VALUES, values);
-	return getDynamicValues();
+	return getDynamicValues(false, includeDefault);
 };
 
-const addDynamicValue = value => {
+const addDynamicValue = (value, includeDefault = true) => {
+	if (value.fromApptList) return getDynamicValues();
 	setStorageLocation();
-	const values = removeDynamicValueWithName(value.name);
+	const values = removeDynamicValueWithName(value.name, false);
 	values.push(value);
 	store.set(DYNAMIC_VALUES, values);
-	return getDynamicValues();
+	return getDynamicValues(false, includeDefault);
 };
 
 const getProviderMappings = (forceLocal = false) => {
