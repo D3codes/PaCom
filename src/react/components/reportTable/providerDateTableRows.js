@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	statusCell: {
 		display: 'flex',
-		justifyContant: 'space-between',
+		justifyContent: 'space-between',
 		alignContent: 'center'
 	},
 	statusContainer: {
@@ -131,11 +131,6 @@ function ProviderDateTableRows({ providerDateText, reminders }) {
 					<TableCell className={classes.tableCell}>
 						<Typography variant="body2">
 							{reminder.getIn(['patient', 'preferredContactMethod'], NA)}
-						</Typography>
-					</TableCell>
-					<TableCell className={classes.tableCell}>
-						<Typography variant="body2">
-							{(reminder.patient && reminder.patient.getPhoneNumberByType(ContactMethod.Types.Work)) || NA}
 						</Typography>
 					</TableCell>
 					<TableCell className={classes.tableCell}>
