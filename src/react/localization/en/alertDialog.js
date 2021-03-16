@@ -7,7 +7,7 @@ exports.UnmappedProvidersWarningMessage = UnmappedProvidersWarningMessage;
 
 // Date Verification Warning
 const DateVerificationWarningTitle = 'Appointments Outside of Specified Range';
-const DateVerificationWarningMessage = 'Appointments in the appointment list are outside of the specified range. '
+const DateVerificationWarningMessage = 'Appointments are outside of the specified range. '
                                      + 'Ensure appointment list is correct before continuing.';
 exports.DateVerificationWarningTitle = DateVerificationWarningTitle;
 exports.DateVerificationWarningMessage = DateVerificationWarningMessage;
