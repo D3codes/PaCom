@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ReportTable({ reminders = null }) {
+function ReportTable({ reminders = null, sendDisabled = false }) {
 	const classes = useStyles();
 	const remindersByProviderAndDate = reminders ? groupRemindersByProviderAndDate(reminders) : null;
 	return (
@@ -72,13 +72,14 @@ function ReportTable({ reminders = null }) {
 					</Table>
 				</div>
 			)}
-			<ReportActions />
+			<ReportActions sendDisabled={sendDisabled} />
 		</Fragment>
 	);
 }
 
 ReportTable.propTypes = {
-	reminders: PropTypes.arrayOf(PropTypes.instanceOf(Reminder))
+	reminders: PropTypes.arrayOf(PropTypes.instanceOf(Reminder)),
+	sendDisabled: PropTypes.bool
 };
 
 export default ReportTable;
