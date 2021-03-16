@@ -17,12 +17,7 @@ import valiDate from '../../utilities/dateValidator';
 // transformers
 import fromPulse from '../../transformers/fromPulse';
 import Provider from '../../models/provider';
-
-const AllowSendOutsideRange = {
-	NoValidation: 0,
-	ShowWarning: 1,
-	Block: 2
-};
+import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 
 const Ehrs = {
 	Pulse: 'Pulse'

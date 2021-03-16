@@ -18,6 +18,12 @@
             }
         },
         "customMessages": {
+            "dateVerification": {
+                "numberOfDays": 3,
+                "endOfRange": null,
+                "allowSendOutsideRange": 0,
+                "useBusinessDays": true
+            },
             "contactPreferences": {
                 "sendToPreferredAndSms": false,
                 "textHomeIfCellNotAvailable": false
