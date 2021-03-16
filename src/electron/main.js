@@ -176,9 +176,9 @@ ipc.handle('request-version', () => (projectPackage ? projectPackage.version : n
 
 ipc.handle('get-dynamic-values', (event, includeDefault = true) => persistentStorage.getDynamicValues(false, includeDefault));
 
-ipc.handle('add-dynamic-value', (event, value) => persistentStorage.addDynamicValue(value));
+ipc.handle('add-dynamic-value', (event, value, includeDefault) => persistentStorage.addDynamicValue(value, includeDefault));
 
-ipc.handle('remove-dynamic-value', (event, valueName) => persistentStorage.removeDynamicValueWithName(valueName));
+ipc.handle('remove-dynamic-value', (event, valueName, includeDefault) => persistentStorage.removeDynamicValueWithName(valueName, includeDefault));
 
 ipc.handle('get-provider-mappings', () => persistentStorage.getProviderMappings());
 

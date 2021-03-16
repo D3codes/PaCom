@@ -13,12 +13,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
-	noMessageTemplatesContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		flex: 1,
-		justifyContent: 'center'
-	},
 	messageTemplatesContainer: {
 		height: '100%',
 		display: 'flex',
@@ -40,7 +34,10 @@ export default function MessageTemplates() {
 
 	const handleAddClick = () => setIsModalOpen(true);
 
-	const handleCancel = () => setIsModalOpen(false);
+	const handleCancel = () => {
+		setEditingTemplate(null);
+		setIsModalOpen(false);
+	};
 
 	const handleEdit = messageTemplate => {
 		setEditingTemplate(messageTemplate);

@@ -34,7 +34,10 @@ export default function ProviderMappings() {
 
 	const handleAddClick = () => setIsModalOpen(true);
 
-	const handleCancel = () => setIsModalOpen(false);
+	const handleCancel = () => {
+		setEditingProvider(null);
+		setIsModalOpen(false);
+	};
 
 	const handleEdit = providerMapping => {
 		setEditingProvider(providerMapping);
