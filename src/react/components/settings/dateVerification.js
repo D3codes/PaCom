@@ -10,6 +10,7 @@ import {
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import DescriptiveIconButton from '../descriptiveIconButton';
+import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 
 const useStyles = makeStyles(theme => ({
 	dateVerificationOptions: {
@@ -86,32 +87,30 @@ export default function DateVerification({ dateVerification, onChange, hasWriteP
 				</FormControl>
 				<Typography variant="h6" display="inline">  before appointment.</Typography>
 			</div>
-			<div>
-				<DescriptiveIconButton
-					onClick={() => { setAllowSendOutsideRange(0); }}
-					disabled={!hasWritePermission}
-					selected={allowSendOutsideRange === 0}
-					title="OFF"
-					description="Do not verify the date before sending reminders."
-					Icon={EventBusy}
-				/>
-				<DescriptiveIconButton
-					onClick={() => { setAllowSendOutsideRange(1); }}
-					disabled={!hasWritePermission}
-					selected={allowSendOutsideRange === 1}
-					title="WARNING"
-					description="Show warning if reminders are sent outside of specified time."
-					Icon={Warning}
-				/>
-				<DescriptiveIconButton
-					onClick={() => { setAllowSendOutsideRange(2); }}
-					disabled={!hasWritePermission}
-					selected={allowSendOutsideRange === 2}
-					title="BLOCK"
-					description="Do not allow reminders to be sent outside of specified time."
-					Icon={Block}
-				/>
-			</div>
+			<DescriptiveIconButton
+				onClick={() => { setAllowSendOutsideRange(AllowSendOutsideRange.NoValidation); }}
+				disabled={!hasWritePermission}
+				selected={allowSendOutsideRange === AllowSendOutsideRange.NoValidation}
+				title="OFF"
+				description="Do not verify the date before sending reminders."
+				Icon={EventBusy}
+			/>
+			<DescriptiveIconButton
+				onClick={() => { setAllowSendOutsideRange(AllowSendOutsideRange.ShowWarning); }}
+				disabled={!hasWritePermission}
+				selected={allowSendOutsideRange === AllowSendOutsideRange.ShowWarning}
+				title="WARNING"
+				description="Show warning if reminders are sent outside of specified time."
+				Icon={Warning}
+			/>
+			<DescriptiveIconButton
+				onClick={() => { setAllowSendOutsideRange(AllowSendOutsideRange.Block); }}
+				disabled={!hasWritePermission}
+				selected={allowSendOutsideRange === AllowSendOutsideRange.Block}
+				title="BLOCK"
+				description="Do not allow reminders to be sent outside of specified time."
+				Icon={Block}
+			/>
 		</Fragment>
 	);
 }
