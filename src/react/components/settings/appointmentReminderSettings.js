@@ -1,4 +1,6 @@
-import React, { useState, useMemo, Fragment } from 'react';
+import React, {
+	useState, useMemo, Fragment, useEffect
+} from 'react';
 import PropTypes from 'prop-types';
 import {
 	Warning, Block, Save, EventBusy, ExpandMore, Today, Schedule, SettingsPhone
@@ -51,6 +53,11 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 	const [defaultPhoneReminder, setDefaultPhoneReminder] = useState(appointmentReminders.defaultReminderTemplates.phone);
 	const [defaultSmsReminder, setDefaultSmsReminder] = useState(appointmentReminders.defaultReminderTemplates.sms);
 	const [openAccordion, setOpenAccordion] = useState(null);
+	const [messageTemplates, setMessageTemplates] = useState(null);
+
+	useEffect(() => {
+		persistentStorage.getMessageTemplates().then(setMessageTemplates);
+	}, []);
 
 	const changesToSave = useMemo(() => (
 		allowSendOutsideRange !== appointmentReminders.dateVerification.allowSendOutsideRange
@@ -86,22 +93,6 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 		if (defaultSmsReminder !== appointmentReminders.defaultReminderTemplates.sms) persistentStorage.setDefaultSmsReminder(defaultSmsReminder);
 		reloadSettings();
 	};
-
-	// TODO: get from persistent storage once implemented
-	const messageTemplates = [
-		{
-			name: 'Template 1',
-			value: 'This is template 1.'
-		},
-		{
-			name: 'Template 2',
-			value: 'This is template 2.'
-		},
-		{
-			name: 'Template 3',
-			value: 'This is template 3.'
-		}
-	];
 
 	const ACCORDIONS = {
 		DEFAULT_REMINDERS: 1,
