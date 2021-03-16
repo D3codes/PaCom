@@ -200,7 +200,7 @@ ipc.handle('set-settings', (event, settingsPath, value, forceLocal = false) => p
 
 ipc.handle('open-folder-dialog', () => filePicker.pickFolder());
 
-ipc.handle('save-file-dialog', (event, fileName) => filePicker.saveFile(fileName));
+ipc.handle('save-file-dialog', (event, fileName) => filePicker.pickSave(fileName));
 
 ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork());
 
