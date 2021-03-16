@@ -31,5 +31,13 @@ const pickFolder = () => dialog.showOpenDialog({
 	return '';
 });
 
+const pickSave = fileName => dialog.showSaveDialog({
+	properties: ['createDirectory'], defaultPath: fileName
+}).then(res => {
+	if (res.canceled) return '';
+	return res.filePath;
+});
+
 exports.pick = pick;
 exports.pickFolder = pickFolder;
+exports.pickSave = pickSave;
