@@ -51,9 +51,9 @@ function MessageTemplateModal({
 	const handleSave = () => {
 		const existingTemplate = !template && templates?.find(temp => temp.name === name);
 		if (existingTemplate) {
-			const title = 'Template name already in use';
-			const message = 'Saving will overwrite the existing message template. Do you want to continue?';
-			messageController.showWarning(title, message).then(({ response }) => {
+			const title = 'Template Name Already in Use';
+			const message = 'Saving will overwrite the existing message template. Do you want to save anyway?';
+			messageController.confirmSave(title, message).then(({ response }) => {
 				if (response === 0) {
 					const newMessageTemplate = new Template(name, body);
 					onSave(newMessageTemplate, template);

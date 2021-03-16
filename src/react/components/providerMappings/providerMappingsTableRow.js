@@ -39,9 +39,9 @@ function ProviderMappingsTableRow({
 	}
 
 	function handleRemoveClick() {
-		const title = 'Please confirm provider removal';
-		const message = 'Removing this provider disallows messages containing that provider from being sent.';
-		messageController.showWarning(title, message).then(({ response }) => {
+		const title = 'Delete Provider Mapping';
+		const message = `Are you sure you want to delete the mapping for ${provider.source}?`;
+		messageController.confirmDelete(title, message).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(provider);

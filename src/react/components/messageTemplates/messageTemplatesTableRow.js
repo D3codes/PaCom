@@ -34,9 +34,9 @@ function MessageTemplatesTableRow({
 	}
 
 	function handleRemoveClick() {
-		const title = 'Please confirm template removal';
-		const message = 'blah blah. this is bad.';
-		messageController.showWarning(title, message).then(({ response }) => {
+		const title = 'Delete Message Template';
+		const message = `Are you sure you want to delete ${template.name}?`;
+		messageController.confirmDelete(title, message).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(template);
@@ -53,7 +53,7 @@ function MessageTemplatesTableRow({
 	}
 
 	return (
-		<TableRow hover key={template.name}>
+		<TableRow hover>
 			<TableCell className={classes.tableCell}>
 				<Typography variant="body2">
 					{template.get('name')}

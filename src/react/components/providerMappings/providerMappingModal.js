@@ -53,9 +53,9 @@ function ProviderMappingModal({
 	const handleSave = () => {
 		const existingProvider = !provider && providers?.find(prov => prov.source === source);
 		if (existingProvider) {
-			const title = 'Provider source already in use';
-			const message = 'Saving will overwrite the existing provider mapping. Do you want to continue?';
-			messageController.showWarning(title, message).then(({ response }) => {
+			const title = 'Provider Source Already in Use';
+			const message = 'Saving will overwrite the existing provider mapping. Do you want to save anyway?';
+			messageController.confirmSave(title, message).then(({ response }) => {
 				if (response === 0) {
 					const newProviderMapping = new Provider(source, target, phonetic);
 					onSave(newProviderMapping, provider);
