@@ -16,6 +16,7 @@ import validateTwilioEndpoint from '../../validators/validateTwilioEndpoint';
 import persistentStorage from '../../utilities/persistentStorage';
 import IconTextField from '../iconTextField';
 import twilioClient from '../../utilities/twilioClient';
+import folderSelector from '../../utilities/folderSelector';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -101,16 +102,50 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 
 	const handleDownloadMessages = async () => {
 		const logs = await twilioClient.getSMSLogs(selectedDate);
-		// eslint-disable-next-line no-console
-		console.log(logs);
-		// TODO: Save to file
+		const csvString = [
+			[
+				'to',
+				'body',
+				'date_sent',
+				'status',
+				'error_code',
+				'error_message'
+			],
+			...logs.map(log => [
+				log.to?.replaceAll(',', '') || '',
+				log.body?.replaceAll(',', '') || '',
+				log.date_sent?.replaceAll(',', '') || '',
+				log.status?.replaceAll(',', '') || '',
+				log.error_code?.replaceAll(',', '') || '',
+				log.error_message?.replaceAll(',', '') || ''
+			])
+		]
+			.map(e => e.join(','))
+			.join('\n');
+
+		folderSelector.save('', `TwilioSMSLogs-${selectedDate.toISOString().slice(0, 10)}.csv`, csvString);
 	};
 
 	const handleDownloadCalls = async () => {
 		const logs = await twilioClient.getCallLogs(selectedDate);
-		// eslint-disable-next-line no-console
-		console.log(logs);
-		// TODO: Save to file
+		const csvString = [
+			[
+				'to',
+				'start_time',
+				'duration',
+				'status'
+			],
+			...logs.map(log => [
+				log.to?.replaceAll(',', '') || '',
+				log.start_time?.replaceAll(',', '') || '',
+				log.duration?.replaceAll(',', '') || '',
+				log.status?.replaceAll(',', '') || ''
+			])
+		]
+			.map(e => e.join(','))
+			.join('\n');
+
+		folderSelector.save('', `TwilioPhoneLogs-${selectedDate.toISOString().slice(0, 10)}.csv`, csvString);
 	};
 
 	return (

@@ -4,7 +4,7 @@ const isDev = require('electron-is-dev');
 const path = require('path');
 
 const projectPackage = require('../../package.json');
-const open = require('./utilities/fileOpener');
+const { open, save } = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
 
@@ -172,6 +172,8 @@ ipc.handle('open-csv-dialog', () => {
 
 ipc.handle('open-file', (event, filePath) => open([], filePath));
 
+ipc.handle('save-file', (event, filePath, fileName, file) => save(filePath, fileName, file));
+
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
 
 ipc.handle('get-dynamic-values', (event, includeDefault = true) => persistentStorage.getDynamicValues(false, includeDefault));
@@ -197,6 +199,8 @@ ipc.handle('get-settings', (event, forceLocal = false) => persistentStorage.getS
 ipc.handle('set-settings', (event, settingsPath, value, forceLocal = false) => persistentStorage.setSettings(settingsPath, value, forceLocal));
 
 ipc.handle('open-folder-dialog', () => filePicker.pickFolder());
+
+ipc.handle('save-file-dialog', (event, fileName) => filePicker.saveFile(fileName));
 
 ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork());
 

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { pick } = require('./filePicker');
+const { pick, pickSave } = require('./filePicker');
 
 const open = async (filters, filePath) => {
 	if (!filePath) {
@@ -20,4 +20,15 @@ const open = async (filters, filePath) => {
 	}));
 };
 
-module.exports = open;
+const save = (filePath, fileName, file) => {
+	if (!filePath) {
+		pickSave(fileName).then(path => {
+			if (path) fs.writeFileSync(path, file);
+		});
+	} else {
+		fs.writeFileSync(filePath, file);
+	}
+};
+
+exports.open = open;
+exports.save = save;
