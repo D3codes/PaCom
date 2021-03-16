@@ -4,10 +4,10 @@ import {
 	IconButton, makeStyles, Menu, MenuItem, TableCell, TableRow, Typography
 } from '@material-ui/core';
 import {
-	DeleteForever, Edit, MoreVert, Warning
+	DeleteForever, Edit, MoreVert
 } from '@material-ui/icons';
 
-import Provider from '../../models/provider';
+import Template from '../../models/template';
 import messageController from '../../utilities/messageController';
 
 const useStyles = makeStyles(theme => ({
@@ -19,32 +19,27 @@ const useStyles = makeStyles(theme => ({
 	},
 	tableCell: {
 		padding: theme.spacing()
-	},
-	warningIcon: {
-		color: theme.palette.warning.main,
-		paddingRight: theme.spacing(),
-		verticalAlign: 'bottom'
 	}
 }));
 
-function ProviderMappingsTableRow({
-	hasWritePermission = false, onEdit, onRemove, provider
+function MessageTemplatesTableRow({
+	hasWritePermission = false, onEdit, onRemove, template
 }) {
 	const classes = useStyles();
 	const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState(false);
 
 	function handleEditClick() {
 		setMoreMenuAnchorEl(null);
-		onEdit(provider);
+		onEdit(template);
 	}
 
 	function handleRemoveClick() {
-		const title = 'Delete Provider Mapping';
-		const message = `Are you sure you want to delete the mapping for ${provider.source}?`;
+		const title = 'Delete Message Template';
+		const message = `Are you sure you want to delete ${template.name}?`;
 		messageController.confirmDelete(title, message).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
-				onRemove(provider);
+				onRemove(template);
 			}
 		});
 	}
@@ -58,17 +53,13 @@ function ProviderMappingsTableRow({
 	}
 
 	return (
-		<TableRow hover key={provider.source}>
+		<TableRow hover>
 			<TableCell className={classes.tableCell}>
 				<Typography variant="body2">
-					{!provider.get('target') && !provider.get('phonetic') && (
-						<Warning className={classes.warningIcon} />
-					)}
-					{provider.get('source')}
+					{template.get('name')}
 				</Typography>
 			</TableCell>
-			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('target', '-')}</Typography></TableCell>
-			<TableCell className={classes.tableCell}><Typography variant="body2">{provider.get('phonetic', '-')}</Typography></TableCell>
+			<TableCell className={classes.tableCell}><Typography variant="body2">{template.get('body', '-')}</Typography></TableCell>
 			<TableCell align="center" className={classes.tableCell}>
 				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
 					<MoreVert />
@@ -88,11 +79,11 @@ function ProviderMappingsTableRow({
 	);
 }
 
-ProviderMappingsTableRow.propTypes = {
+MessageTemplatesTableRow.propTypes = {
 	hasWritePermission: PropTypes.bool,
 	onEdit: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
-	provider: PropTypes.instanceOf(Provider).isRequired
+	template: PropTypes.instanceOf(Template).isRequired
 };
 
-export default ProviderMappingsTableRow;
+export default MessageTemplatesTableRow;

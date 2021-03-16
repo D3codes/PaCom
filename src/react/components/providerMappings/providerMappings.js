@@ -13,12 +13,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
-	noProviderMappingsContainer: {
-		display: 'flex',
-		alignItems: 'center',
-		flex: 1,
-		justifyContent: 'center'
-	},
 	providerMappingsContainer: {
 		height: '100%',
 		display: 'flex',
@@ -68,7 +62,14 @@ export default function ProviderMappings() {
 				providers={providers}
 			/>
 			<div className={classes.buttonContainer}>
-				<Button color="primary" endIcon={<Add />} onClick={handleAddClick} variant="contained">Add</Button>
+				<Button
+					color="primary"
+					endIcon={<Add />}
+					onClick={handleAddClick}
+					disabled={!hasWritePermission}
+					variant={hasWritePermission ? 'contained' : 'outlined'}>
+					Add
+				</Button>
 			</div>
 			<ProviderMappingModal
 				onCancel={handleCancel}

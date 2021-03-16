@@ -5,8 +5,8 @@ import {
 	makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography
 } from '@material-ui/core';
 
-import Provider from '../../models/provider';
-import ProviderMappingsTableRow from './providerMappingsTableRow';
+import Template from '../../models/template';
+import MessageTemplatesTableRow from './messageTemplatesTableRow';
 
 const useStyles = makeStyles(theme => ({
 	firstTableHeadCell: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 	lastTableHeadCell: {
 		borderTopRightRadius: 4
 	},
-	noProviderMappingsText: {
+	noMessageTemplatesText: {
 		borderBottom: 'none',
 		fontStyle: 'italic',
 		color: theme.palette.text.secondary
@@ -33,8 +33,8 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ProviderMappingsTable({
-	hasWritePermission = false, onEdit, onRemove, providers = null
+function MessageTemplatesTable({
+	hasWritePermission = false, onEdit, onRemove, templates = null
 }) {
 	const classes = useStyles();
 
@@ -42,26 +42,20 @@ function ProviderMappingsTable({
 		<div className={classes.providerTable}>
 			<Table padding="none" stickyHeader>
 				<colgroup>
-					<col style={{ width: '30%' }} />
-					<col style={{ width: '30%' }} />
-					<col style={{ width: '30%' }} />
+					<col style={{ width: '25%' }} />
+					<col style={{ width: '65%' }} />
 					<col style={{ width: '10%' }} />
 				</colgroup>
 				<TableHead>
 					<TableRow>
 						<TableCell className={clsx(classes.firstTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert From (Source)
+									Name
 							</Typography>
 						</TableCell>
 						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert To (SMS)
-							</Typography>
-						</TableCell>
-						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
-							<Typography color="inherit">
-									Convert To (Phonetic)
+									Body
 							</Typography>
 						</TableCell>
 						<TableCell align="center" className={clsx(classes.lastTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
@@ -72,23 +66,23 @@ function ProviderMappingsTable({
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{!providers?.length && (
+					{!templates?.length && (
 						<TableRow>
 							<TableCell
-								className={classes.noProviderMappingsText}
+								className={classes.noMessageTemplatesText}
 								align="center"
-								colSpan={4}>
-								No Provider Mappings
+								colSpan={3}>
+								No Message Templates Found
 							</TableCell>
 						</TableRow>
 					)}
-					{providers?.map(provider => (
-						<ProviderMappingsTableRow
+					{templates?.map(template => (
+						<MessageTemplatesTableRow
 							hasWritePermission={hasWritePermission}
-							key={provider.source}
+							key={template.name}
 							onEdit={onEdit}
 							onRemove={onRemove}
-							provider={provider}
+							template={template}
 						/>
 					))}
 				</TableBody>
@@ -97,11 +91,11 @@ function ProviderMappingsTable({
 	);
 }
 
-ProviderMappingsTable.propTypes = {
+MessageTemplatesTable.propTypes = {
 	hasWritePermission: PropTypes.bool,
 	onEdit: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
-	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider))
+	templates: PropTypes.arrayOf(PropTypes.instanceOf(Template))
 };
 
-export default ProviderMappingsTable;
+export default MessageTemplatesTable;
