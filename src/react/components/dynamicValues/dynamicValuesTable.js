@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function DynamicValuesTable({
-	hasWritePermission = false, onEdit, onRemove, providers, dynamicValues = null
+	hasWritePermission = false, onEdit, onRemove, providers = null, dynamicValues = null
 }) {
 	const classes = useStyles();
 

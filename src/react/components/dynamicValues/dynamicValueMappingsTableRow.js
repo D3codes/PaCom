@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function DynamicValueMappingsTableRow({
-	onEdit, providerSource, providerTarget, value
+	onEdit, providerSource, providerTarget, value = ''
 }) {
 	const classes = useStyles();
 

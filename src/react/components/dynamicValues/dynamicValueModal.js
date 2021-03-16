@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function DynamicValueModal({
-	onCancel, onSave, providers, open = false, dynamicValue = null, dynamicValues = null, defaultValues = []
+	onCancel, onSave, providers, open = false, dynamicValue = null, dynamicValues = null, defaultValues = null
 }) {
 	const classes = useStyles();
 
@@ -168,7 +168,7 @@ function DynamicValueModal({
 DynamicValueModal.propTypes = {
 	onCancel: PropTypes.func.isRequired,
 	onSave: PropTypes.func.isRequired,
-	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)),
+	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
 	open: PropTypes.bool,
 	dynamicValue: PropTypes.instanceOf(DynamicValue),
 	dynamicValues: PropTypes.arrayOf(PropTypes.instanceOf(DynamicValue)),
