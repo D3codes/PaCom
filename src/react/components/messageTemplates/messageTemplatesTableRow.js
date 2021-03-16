@@ -10,6 +10,10 @@ import {
 import Template from '../../models/template';
 import messageController from '../../utilities/messageController';
 
+import {
+	MessageTemplateConfirmDeleteTitle, MessageTemplateConfirmDeleteMessage
+} from '../../localization/en/alertDialog';
+
 const useStyles = makeStyles(theme => ({
 	moreMenuItem: {
 		color: theme.palette.text.secondary
@@ -34,9 +38,7 @@ function MessageTemplatesTableRow({
 	}
 
 	function handleRemoveClick() {
-		const title = 'Delete Message Template';
-		const message = `Are you sure you want to delete ${template.name}?`;
-		messageController.confirmDelete(title, message).then(({ response }) => {
+		messageController.confirmDelete(MessageTemplateConfirmDeleteTitle, `${MessageTemplateConfirmDeleteMessage}${template.name}?`).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(template);

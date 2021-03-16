@@ -10,6 +10,10 @@ import {
 import DynamicValue from '../../models/dynamicValue';
 import messageController from '../../utilities/messageController';
 
+import {
+	DynamicValueConfirmDeleteTitle, DynamicValueConfirmDeleteMessage
+} from '../../localization/en/alertDialog';
+
 const useStyles = makeStyles(theme => ({
 	moreMenuItem: {
 		color: theme.palette.text.secondary
@@ -39,9 +43,7 @@ function DynamicValuesTableRow({
 	}
 
 	function handleRemoveClick() {
-		const title = 'Delete Dynamic Value';
-		const message = `Are you sure you want to delete ${value.name}?`;
-		messageController.confirmDelete(title, message).then(({ response }) => {
+		messageController.confirmDelete(DynamicValueConfirmDeleteTitle, `${DynamicValueConfirmDeleteMessage}${value.name}?`).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(value);
