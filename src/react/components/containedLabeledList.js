@@ -34,7 +34,7 @@ function ContainedLabeledList({
 
 	return (
 		<div className={classes.containedLabeledListContainer}>
-			<Typography color="primary" variant="h5" display="inline">{label}</Typography>
+			<Typography variant="h5" display="inline">{label}</Typography>
 			<Card className={classes.card}>
 				{items?.length > 0 && (
 					<List className={classes.list}>

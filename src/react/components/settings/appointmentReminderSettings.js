@@ -26,9 +26,6 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		alignSelf: 'flex-end'
 	},
-	accordion: {
-		marginBottom: theme.spacing()
-	},
 	accordionDetails: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -37,6 +34,9 @@ const useStyles = makeStyles(theme => ({
 	accordionIcon: {
 		fontSize: '3rem',
 		textAlign: 'left'
+	},
+	accordionSummaryText: {
+		alignSelf: 'center'
 	}
 }));
 
@@ -102,80 +102,80 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 
 	return (
 		<div className={classes.root}>
-			<Accordion
-				expanded={openAccordion === ACCORDIONS.DEFAULT_REMINDERS}
-				onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DEFAULT_REMINDERS : null)}
-				className={classes.accordion}>
-				<AccordionSummary expandIcon={<ExpandMore />}>
-					<Schedule color="primary" className={classes.accordionIcon} />
-					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-					<Typography color="primary" variant="h4">Default Appointment Reminders</Typography>
-				</AccordionSummary>
-				<AccordionDetails className={classes.accordionDetails}>
-					<div className={classes.defaultCallReminderContainer}>
-						<Typography variant="h5" color="primary">Default Call Reminder Template</Typography>
-						<Typography>This will be the message template that is used when sending appointment reminders via phone call and no overrides are selected.</Typography>
-						<FormControl variant="outlined">
-							<Select
-								value={defaultPhoneReminder || ''}
-								disabled={!hasWritePermission}
-								onChange={event => { setDefaultPhoneReminder(event.target.value); }}
-								inputProps={{ 'aria-label': 'Without label' }}>
-								{messageTemplates && messageTemplates.map(template => (
-									<MenuItem value={template.name} key={JSON.stringify(template)}>
-										{template.name}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-					</div>
-					<Divider className={classes.adornmentDivider} />
-					<div>
-						<Typography variant="h5" color="primary">Default SMS Reminder Template</Typography>
-						<Typography>This will be the message template that is used when sending appointment reminders via SMS message and no overrides are selected.</Typography>
-						<FormControl variant="outlined">
-							<Select
-								value={defaultSmsReminder || ''}
-								disabled={!hasWritePermission}
-								onChange={event => { setDefaultSmsReminder(event.target.value); }}
-								inputProps={{ 'aria-label': 'Without label' }}>
-								{messageTemplates && messageTemplates.map(template => (
-									<MenuItem value={template.name} key={JSON.stringify(template)}>
-										{template.name}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-					</div>
-				</AccordionDetails>
-			</Accordion>
-			<Accordion
-				expanded={openAccordion === ACCORDIONS.DATE_VERIFICATION}
-				onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DATE_VERIFICATION : null)}
-				className={classes.accordion}>
-				<AccordionSummary expandIcon={<ExpandMore />}>
-					<Today color="primary" className={classes.accordionIcon} />
-					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-					<Typography color="primary" variant="h4">Date Verification</Typography>
-				</AccordionSummary>
-				<AccordionDetails className={classes.accordionDetails}>
-					<DateVerification
-						dateVerification={dateVerification}
-						onChange={setDateVerification}
-						hasWritePermission={hasWritePermission}
-					/>
-				</AccordionDetails>
-			</Accordion>
 			<div className={classes.accordionDetails}>
+				<Accordion
+					expanded={openAccordion === ACCORDIONS.DEFAULT_REMINDERS}
+					onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DEFAULT_REMINDERS : null)}>
+					<AccordionSummary expandIcon={<ExpandMore />}>
+						<Schedule color="primary" className={classes.accordionIcon} />
+						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+						<Typography className={classes.accordionSummaryText} variant="h4">Default Appointment Reminders</Typography>
+					</AccordionSummary>
+					<AccordionDetails className={classes.accordionDetails}>
+						<div className={classes.defaultCallReminderContainer}>
+							<Typography variant="h5" className={classes.accordionSummaryText}>Default Call Reminder Template</Typography>
+							<Typography>This will be the message template that is used when sending appointment reminders via phone call and no overrides are selected.</Typography>
+							<FormControl variant="outlined">
+								<Select
+									value={defaultPhoneReminder || ''}
+									disabled={!hasWritePermission}
+									onChange={event => { setDefaultPhoneReminder(event.target.value); }}
+									inputProps={{ 'aria-label': 'Without label' }}>
+									{messageTemplates && messageTemplates.map(template => (
+										<MenuItem value={template.name} key={JSON.stringify(template)}>
+											{template.name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</div>
+						<Divider className={classes.adornmentDivider} />
+						<div>
+							<Typography variant="h5" className={classes.accordionSummaryText}>Default SMS Reminder Template</Typography>
+							<Typography>
+								This will be the message template that is used when sending appointment reminders via SMS message and no overrides are selected.
+							</Typography>
+							<FormControl variant="outlined">
+								<Select
+									value={defaultSmsReminder || ''}
+									disabled={!hasWritePermission}
+									onChange={event => { setDefaultSmsReminder(event.target.value); }}
+									inputProps={{ 'aria-label': 'Without label' }}>
+									{messageTemplates && messageTemplates.map(template => (
+										<MenuItem value={template.name} key={JSON.stringify(template)}>
+											{template.name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</div>
+					</AccordionDetails>
+				</Accordion>
+				<Accordion
+					expanded={openAccordion === ACCORDIONS.DATE_VERIFICATION}
+					onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DATE_VERIFICATION : null)}>
+					<AccordionSummary expandIcon={<ExpandMore />}>
+						<Today color="primary" className={classes.accordionIcon} />
+						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+						<Typography className={classes.accordionSummaryText} variant="h4">Date Verification</Typography>
+					</AccordionSummary>
+					<AccordionDetails className={classes.accordionDetails}>
+						<DateVerification
+							dateVerification={dateVerification}
+							onChange={setDateVerification}
+							hasWritePermission={hasWritePermission}
+						/>
+					</AccordionDetails>
+				</Accordion>
 				<Accordion
 					expanded={openAccordion === ACCORDIONS.CONTACT_PREFERENCES}
 					onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.CONTACT_PREFERENCES : null)}>
 					<AccordionSummary expandIcon={<ExpandMore />}>
 						<SettingsPhone color="primary" className={classes.accordionIcon} />
 						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						<Typography color="primary" variant="h4">Contact Preferences</Typography>
+						<Typography className={classes.accordionSummaryText} variant="h4">Contact Preferences</Typography>
 					</AccordionSummary>
-					<AccordionDetails>
+					<AccordionDetails className={classes.accordionDetails}>
 						<ContactPreferences
 							sendToPreferredAndSms={sendToPreferredAndSms}
 							setSendToPreferredAndSms={setSendToPreferredAndSms}

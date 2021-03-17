@@ -157,14 +157,14 @@ function CustomMessage() {
 			{!showReportTable && (
 				<Fragment>
 					<div className={classes.sendTo}>
-						<Typography color="primary" variant="h5" display="inline">Send To Specific Number</Typography>
+						<Typography variant="h5" display="inline">Send To Specific Number</Typography>
 						<Switch
 							checked={sendToAppointmentList}
 							onChange={handleSwitch}
 							color="default"
 							data-testid="sendByToggle-id"
 						/>
-						<Typography color="primary" variant="h5" display="inline">Send To Appointment List</Typography>
+						<Typography variant="h5" display="inline">Send To Appointment List</Typography>
 					</div>
 					<div>
 						{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}

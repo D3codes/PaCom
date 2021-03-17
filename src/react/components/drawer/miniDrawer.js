@@ -12,6 +12,8 @@ import getVersion from '../../utilities/getVersion';
 import persistentStorage from '../../utilities/persistentStorage';
 import CategorySection from './categorySection';
 
+import PaComLogo from '../../../logo.png';
+
 export const DRAWER_WIDTH = 206;
 
 const PRIMARY_TABS = [
@@ -24,8 +26,8 @@ const PRIMARY_TABS = [
 	{
 		Icon: PermPhoneMsg,
 		id: 'sndCstmMsg',
-		label: 'Custom Message',
-		title: 'Custom Message'
+		label: 'Custom Messages',
+		title: 'Custom Messages'
 	}
 ];
 
@@ -94,7 +96,6 @@ const useStyles = makeStyles(theme => ({
 	toolbar: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'flex-end',
 		padding: theme.spacing(0, 1),
 		// necessary for content to be below app bar
 		...theme.mixins.toolbar
@@ -106,11 +107,15 @@ const useStyles = makeStyles(theme => ({
 		width: 'inherit'
 	},
 	version: {
-		color: theme.palette.primary.contrastText,
+		color: theme.palette.text.darkContrast,
 		cursor: 'default',
 		userSelect: 'none',
 		display: 'flex',
 		justifyContent: 'center'
+	},
+	name: {
+		color: theme.palette.text.darkContrast,
+		marginLeft: theme.spacing()
 	}
 }));
 
@@ -166,7 +171,10 @@ export default function MiniDrawer({
 			variant="permanent"
 			classes={{ paper: classes.drawerPaper }}
 			className={classes.drawer}>
-			<div className={classes.toolbar} />
+			<div className={classes.toolbar}>
+				<img height="32" src={PaComLogo} alt="PaCom Logo" />
+				<Typography className={classes.name} variant="h6">PaCom</Typography>
+			</div>
 			<CategorySection
 				items={PRIMARY_TABS}
 				onItemSelect={onTabSelect}
