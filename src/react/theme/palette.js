@@ -5,7 +5,8 @@ const palette = {
 		dark: '#006db3'
 	},
 	text: {
-		primary: '#18202c'
+		primary: '#18202c',
+		darkContrast: '#ffffff'
 	},
 	background: {
 		dark: '#18202c'

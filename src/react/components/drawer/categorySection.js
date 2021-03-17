@@ -7,7 +7,7 @@ import {
 const useStyles = makeStyles(theme => ({
 	title: {
 		paddingBottom: theme.spacing(),
-		color: theme.palette.primary.contrastText
+		color: theme.palette.text.darkContrast
 	},
 	listContent: {
 		color: 'inherit'
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 		'&:hover': {
 			backgroundColor: 'rgba(255, 255, 255, 0.04)'
 		},
-		color: theme.palette.primary.contrastText
+		color: theme.palette.text.darkContrast
 	},
 	selected: {}
 }));

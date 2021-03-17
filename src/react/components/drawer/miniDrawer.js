@@ -107,14 +107,14 @@ const useStyles = makeStyles(theme => ({
 		width: 'inherit'
 	},
 	version: {
-		color: theme.palette.primary.contrastText,
+		color: theme.palette.text.darkContrast,
 		cursor: 'default',
 		userSelect: 'none',
 		display: 'flex',
 		justifyContent: 'center'
 	},
 	name: {
-		color: theme.palette.primary.contrastText,
+		color: theme.palette.text.darkContrast,
 		marginLeft: theme.spacing()
 	}
 }));
