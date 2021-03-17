@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, makeStyles } from '@material-ui/core';
 import { Publish, Send } from '@material-ui/icons';
 
+import reportExporter from '../../utilities/reportExporter';
+
 const useStyles = makeStyles({
 	actionContainer: {
 		display: 'flex',
@@ -10,12 +12,16 @@ const useStyles = makeStyles({
 	}
 });
 
+const handleExport = () => {
+	reportExporter.exportReport('test');
+};
+
 function ReportActions({ sendDisabled = false }) {
 	const classes = useStyles();
 
 	return (
 		<div className={classes.actionContainer}>
-			<Button color="primary" startIcon={<Publish />} variant="contained">Export</Button>
+			<Button onClick={handleExport} color="primary" startIcon={<Publish />} variant="contained">Export</Button>
 			<Button
 				color="primary"
 				disabled={sendDisabled}
