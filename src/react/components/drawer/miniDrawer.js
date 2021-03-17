@@ -26,8 +26,8 @@ const PRIMARY_TABS = [
 	{
 		Icon: PermPhoneMsg,
 		id: 'sndCstmMsg',
-		label: 'Custom Message',
-		title: 'Custom Message'
+		label: 'Custom Messages',
+		title: 'Custom Messages'
 	}
 ];
 
