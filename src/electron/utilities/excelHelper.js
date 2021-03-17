@@ -1,7 +1,7 @@
 const ExcelJS = require('exceljs');
 const filePicker = require('./filePicker');
 
-const createWorkbook = async () => {
+const createWorkbook = async report => {
 	const workbook = new ExcelJS.Workbook();
 	workbook.creator = 'PaCom';
 	workbook.created = new Date();
@@ -19,14 +19,11 @@ const createWorkbook = async () => {
 		}
 	];
 
+	console.log(report);
+
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
-
-	workbook.addWorksheet('Dr. Brown', sheetProps);
-	workbook.addWorksheet('Dr. Samuelson', sheetProps);
-	workbook.addWorksheet('Dr. Sonnenschein', sheetProps);
-
-	workbook.eachSheet(worksheet => {
-		// eslint-disable-next-line no-param-reassign
+	report.forEach(providerAndDateGroup => {
+		const worksheet = workbook.addWorksheet(providerAndDateGroup.appointment.provider.target, sheetProps);
 		worksheet.columns = [
 			{ header: 'Status', key: 'status' },
 			{ header: 'Time', key: 'time' },
