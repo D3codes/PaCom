@@ -19,6 +19,12 @@ import fromPulse from '../../transformers/fromPulse';
 import Provider from '../../models/provider';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 
+import {
+	UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage,
+	DateVerificationWarningTitle, DateVerificationWarningMessage,
+	DateVerificationBlockTitle, DateVerificationBlockMessage
+} from '../../localization/en/alertDialog';
+
 const Ehrs = {
 	Pulse: 'Pulse'
 };
@@ -66,24 +72,21 @@ const useStyles = makeStyles(theme => ({
 
 async function validateProviderMappings(reminders) {
 	if (reminders.some(reminder => !reminder.getIn(['appointment', 'provider', 'target']))) {
-		const title = 'Unmapped Provider(s)';
-		const message = 'There are unmapped providers in the document that was just uploaded. '
-			+ 'Please visit the Provider Mappings tab and create a mapping for any unmapped providers. '
-			+ 'Reminders will not be sent out if there are any unmapped providers.';
-		return messageController.showInfo(title, message);
+		return messageController.showWarning(UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage);
 	}
 	return null;
 }
 
 async function validateAppointmentDates(reminders, dateVerificationSettings) {
 	if (dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.NoValidation) return true;
+
 	const isValid = reminders.some(reminder => valiDate(reminder.getIn(['appointment', 'date']), dateVerificationSettings));
-	if (!isValid) {
-		const message = dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.ShowWarning
-			? 'Before proceeding, ensure you want to send reminders with appointment dates that are outside the specified date range.'
-			: 'Reminders CANNOT be sent due to appointment dates that are outside the specified date range.';
-		messageController.showInfo('There are dates outside the allowed range', message);
+	if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.ShowWarning) {
+		messageController.showWarning(DateVerificationWarningTitle, DateVerificationWarningMessage);
+	} else if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.Block) {
+		messageController.showError(DateVerificationBlockTitle, DateVerificationBlockMessage);
 	}
+
 	return isValid;
 }
 

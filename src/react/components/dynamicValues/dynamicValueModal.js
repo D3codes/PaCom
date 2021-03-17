@@ -11,6 +11,11 @@ import DynamicValue from '../../models/dynamicValue';
 import messageController from '../../utilities/messageController';
 import MessageCompose from '../customMessage/messageCompose';
 
+import {
+	DynamicValueNameInUseTitle, DynamicValueNameInUseMessage,
+	DynamicValueNameReservedTitle, DynamicValueNameReservedMessage
+} from '../../localization/en/alertDialog';
+
 const useStyles = makeStyles(theme => ({
 	dialogContent: {
 		'& > * + *': {
@@ -81,13 +86,9 @@ function DynamicValueModal({
 		const existingValue = !dynamicValue && dynamicValues?.find(val => val.name === name);
 		const existingDefaultValue = defaultValues?.find(val => val.name === name);
 		if (existingDefaultValue) {
-			const title = 'Dynamic Value Name Already in Use';
-			const message = `${name} is reserved for report level dynamic values. Use a different name to continue.`;
-			messageController.showInfo(title, message);
+			messageController.showError(DynamicValueNameReservedTitle, `${name}${DynamicValueNameReservedMessage}`);
 		} else if (existingValue) {
-			const title = 'Dynamic Value Name Already in Use';
-			const message = 'Saving will overwrite the existing dynamic value. Do you want to save anyway?';
-			messageController.confirmSave(title, message).then(({ response }) => {
+			messageController.confirmSave(DynamicValueNameInUseTitle, DynamicValueNameInUseMessage).then(({ response }) => {
 				if (response === 0) {
 					const newDynamicValue = new DynamicValue(name, fromApptList, mappings);
 					onSave(newDynamicValue, dynamicValue);
