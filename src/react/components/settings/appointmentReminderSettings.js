@@ -175,7 +175,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 						<Typography className={classes.accordionSummaryText} variant="h4">Contact Preferences</Typography>
 					</AccordionSummary>
-					<AccordionDetails className={classes.AccordionDetails}>
+					<AccordionDetails className={classes.accordionDetails}>
 						<ContactPreferences
 							sendToPreferredAndSms={sendToPreferredAndSms}
 							setSendToPreferredAndSms={setSendToPreferredAndSms}
