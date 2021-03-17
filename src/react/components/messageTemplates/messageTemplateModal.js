@@ -9,6 +9,10 @@ import Template from '../../models/template';
 import messageController from '../../utilities/messageController';
 import MessageCompose from '../customMessage/messageCompose';
 
+import {
+	MessageTemplateNameInUseTitle, MessageTemplateNameInUseMessage
+} from '../../localization/en/alertDialog';
+
 const useStyles = makeStyles(theme => ({
 	dialogContent: {
 		'& > * + *': {
@@ -51,9 +55,7 @@ function MessageTemplateModal({
 	const handleSave = () => {
 		const existingTemplate = !template && templates?.find(temp => temp.name === name);
 		if (existingTemplate) {
-			const title = 'Template Name Already in Use';
-			const message = 'Saving will overwrite the existing message template. Do you want to save anyway?';
-			messageController.confirmSave(title, message).then(({ response }) => {
+			messageController.confirmSave(MessageTemplateNameInUseTitle, MessageTemplateNameInUseMessage).then(({ response }) => {
 				if (response === 0) {
 					const newMessageTemplate = new Template(name, body);
 					onSave(newMessageTemplate, template);

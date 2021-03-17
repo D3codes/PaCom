@@ -8,6 +8,11 @@ import { Save } from '@material-ui/icons';
 import Provider from '../../models/provider';
 import messageController from '../../utilities/messageController';
 
+import {
+	ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage,
+	UpdateDyanmicValuesReminderTitle, UpdateDynamicValuesReminderMessage
+} from '../../localization/en/alertDialog';
+
 const useStyles = makeStyles(theme => ({
 	dialogContent: {
 		'& > * + *': {
@@ -53,9 +58,7 @@ function ProviderMappingModal({
 	const handleSave = () => {
 		const existingProvider = !provider && providers?.find(prov => prov.source === source);
 		if (existingProvider) {
-			const title = 'Provider Source Already in Use';
-			const message = 'Saving will overwrite the existing provider mapping. Do you want to save anyway?';
-			messageController.confirmSave(title, message).then(({ response }) => {
+			messageController.confirmSave(ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage).then(({ response }) => {
 				if (response === 0) {
 					const newProviderMapping = new Provider(source, target, phonetic);
 					onSave(newProviderMapping, provider);
@@ -67,9 +70,7 @@ function ProviderMappingModal({
 			onSave(newProviderMapping, provider);
 			applyInitialState();
 
-			const title = 'Update Dynamic Values';
-			const message = 'Make sure to update any dynamic values to include a mapping for new providers.';
-			messageController.showInfo(title, message);
+			messageController.showInfo(UpdateDyanmicValuesReminderTitle, UpdateDynamicValuesReminderMessage);
 		}
 	};
 

@@ -10,6 +10,10 @@ import {
 import Provider from '../../models/provider';
 import messageController from '../../utilities/messageController';
 
+import {
+	ProviderMappingConfirmDeleteTitle, ProviderMappingConfirmDeleteMessage
+} from '../../localization/en/alertDialog';
+
 const useStyles = makeStyles(theme => ({
 	moreMenuItem: {
 		color: theme.palette.text.secondary
@@ -43,9 +47,7 @@ function ProviderMappingsTableRow({
 	}
 
 	function handleRemoveClick() {
-		const title = 'Delete Provider Mapping';
-		const message = `Are you sure you want to delete the mapping for ${provider.source}?`;
-		messageController.confirmDelete(title, message).then(({ response }) => {
+		messageController.confirmDelete(ProviderMappingConfirmDeleteTitle, `${ProviderMappingConfirmDeleteMessage}${provider.source}?`).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(provider);
