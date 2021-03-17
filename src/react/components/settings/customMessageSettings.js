@@ -37,7 +37,6 @@ const useStyles = makeStyles(theme => ({
 		textAlign: 'left'
 	},
 	accordionSummaryText: {
-		color: theme.palette.text.primary,
 		alignSelf: 'center'
 	}
 }));
