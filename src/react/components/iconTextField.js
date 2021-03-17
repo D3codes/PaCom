@@ -5,10 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
 	adornmentDivider: {
-		marginLeft: theme.spacing(),
-		marginRight: theme.spacing(),
-		marginTop: theme.spacing(2),
-		marginBottom: theme.spacing(2)
+		margin: theme.spacing(2, 1)
 	}
 }));
 
