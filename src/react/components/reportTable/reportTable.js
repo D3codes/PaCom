@@ -46,7 +46,7 @@ function ReportTable({ reminders = null, sendDisabled = false }) {
 	const remindersByProviderAndDate = reminders ? groupRemindersByProviderAndDate(reminders) : null;
 
 	const handleExport = () => {
-		reportExporter.exportReport(reminders ? groupRemindersByProviderAndDate(reminders) : null);
+		reportExporter.exportReport(remindersByProviderAndDate);
 	};
 
 	return (
