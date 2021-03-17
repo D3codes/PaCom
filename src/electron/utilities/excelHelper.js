@@ -19,11 +19,9 @@ const createWorkbook = async report => {
 		}
 	];
 
-	console.log(report);
-
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
-	report.forEach(providerAndDateGroup => {
-		const worksheet = workbook.addWorksheet(providerAndDateGroup.appointment.provider.target, sheetProps);
+	Object.entries(report).forEach(([providerAndDate, reminders]) => {
+		const worksheet = workbook.addWorksheet(reminders[0].appointment.provider.target || 'Unmapped Provider(s)', sheetProps);
 		worksheet.columns = [
 			{ header: 'Status', key: 'status' },
 			{ header: 'Time', key: 'time' },
@@ -36,6 +34,7 @@ const createWorkbook = async report => {
 			{ header: 'Cell', key: 'cell' },
 			{ header: 'Description', key: 'description' }
 		];
+		console.log(providerAndDate);
 	});
 
 	// TODO: Add time to file name
