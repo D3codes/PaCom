@@ -147,7 +147,7 @@ function AppointmentReminders() {
 		const droppedFilePath = files[0].path;
 		try {
 			const csvPromise = csvImporter.getCSV(droppedFilePath);
-			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data)).then(setReminders);
+			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(setReminders);
 			csvPromise.then(({ path }) => setFilePath(path));
 		} catch (InvalidFileTypeException) {
 			setFileDropped(false);
