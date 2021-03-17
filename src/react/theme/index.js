@@ -16,7 +16,7 @@ const theme = createMuiTheme({
 const overrides = {
 	MuiDrawer: {
 		paper: {
-			backgroundColor: '#18202c'
+			backgroundColor: theme.palette.background.dark
 		}
 	},
 	MuiButton: {

@@ -13,6 +13,9 @@ const useStyles = makeStyles(theme => ({
 		marginBottom: theme.spacing(),
 		width: '100%'
 	},
+	buttonText: {
+		color: theme.palette.text.primary
+	},
 	adornmentDivider: {
 		margin: theme.spacing()
 	},
@@ -49,8 +52,8 @@ function DescriptiveIconButton({
 				</Fragment>
 			)}>
 			<div className={classes.buttonContent}>
-				<Typography variant="h5">{title}</Typography>
-				<Typography>{description}</Typography>
+				<Typography className={classes.buttonText} variant="h5">{title}</Typography>
+				<Typography className={classes.buttonText}>{description}</Typography>
 			</div>
 		</Button>
 	);

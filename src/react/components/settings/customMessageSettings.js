@@ -27,9 +27,6 @@ const useStyles = makeStyles(theme => ({
 	adornmentDivider: {
 		margin: theme.spacing()
 	},
-	accordion: {
-		marginBottom: theme.spacing()
-	},
 	accordionDetails: {
 		display: 'flex',
 		flexDirection: 'column',
@@ -38,6 +35,10 @@ const useStyles = makeStyles(theme => ({
 	accordionIcon: {
 		fontSize: '3rem',
 		textAlign: 'left'
+	},
+	accordionSummaryText: {
+		color: theme.palette.text.primary,
+		alignSelf: 'center'
 	}
 }));
 
@@ -83,33 +84,32 @@ export default function CustomMessageSettings({ customMessages, reloadSettings, 
 
 	return (
 		<div className={classes.root}>
-			<Accordion
-				expanded={openAccordion === ACCORDIONS.DATE_VERIFICATION}
-				onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DATE_VERIFICATION : null)}
-				className={classes.accordion}>
-				<AccordionSummary expandIcon={<ExpandMore />}>
-					<Today color="primary" className={classes.accordionIcon} />
-					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-					<Typography color="primary" variant="h4">Date Verification</Typography>
-				</AccordionSummary>
-				<AccordionDetails className={classes.accordionDetails}>
-					<DateVerification
-						dateVerification={dateVerification}
-						onChange={setDateVerification}
-						hasWritePermission={hasWritePermission}
-					/>
-				</AccordionDetails>
-			</Accordion>
 			<div className={classes.accordionDetails}>
+				<Accordion
+					expanded={openAccordion === ACCORDIONS.DATE_VERIFICATION}
+					onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.DATE_VERIFICATION : null)}>
+					<AccordionSummary expandIcon={<ExpandMore />}>
+						<Today color="primary" className={classes.accordionIcon} />
+						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
+						<Typography className={classes.accordionSummaryText} variant="h4">Date Verification</Typography>
+					</AccordionSummary>
+					<AccordionDetails className={classes.accordionDetails}>
+						<DateVerification
+							dateVerification={dateVerification}
+							onChange={setDateVerification}
+							hasWritePermission={hasWritePermission}
+						/>
+					</AccordionDetails>
+				</Accordion>
 				<Accordion
 					expanded={openAccordion === ACCORDIONS.CONTACT_PREFERENCES}
 					onChange={(event, expanded) => setOpenAccordion(expanded ? ACCORDIONS.CONTACT_PREFERENCES : null)}>
 					<AccordionSummary expandIcon={<ExpandMore />}>
 						<SettingsPhone color="primary" className={classes.accordionIcon} />
 						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
-						<Typography color="primary" variant="h4">Contact Preferences</Typography>
+						<Typography className={classes.accordionSummaryText} variant="h4">Contact Preferences</Typography>
 					</AccordionSummary>
-					<AccordionDetails>
+					<AccordionDetails className={classes.accordionDetails}>
 						<ContactPreferences
 							sendToPreferredAndSms={sendToPreferredAndSms}
 							setSendToPreferredAndSms={setSendToPreferredAndSms}
