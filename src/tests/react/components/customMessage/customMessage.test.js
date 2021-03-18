@@ -36,19 +36,20 @@ describe('CustomMessage', () => {
 
 		const { getByText } = render(<CustomMessage />);
 
-		expect(getByText('Send To Specific Number')).toBeDefined();
+		expect(getByText('Send to Specific Number')).toBeDefined();
+		expect(getByText('Templates')).toBeDefined();
+		expect(getByText('Dynamic Values')).toBeDefined();
 	});
 
 	it('switches views when toggled', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
 
-		const { getByText, getByTestId } = render(<CustomMessage />);
+		const { getByText } = render(<CustomMessage />);
 
 		expect(getByText('Invalid Phone Number')).toBeDefined();
 
-		const sendByToggle = getByTestId('sendByToggle-id').querySelector('input');
-		fireEvent.click(sendByToggle);
+		fireEvent.click(getByText('Send to Appointment List'));
 
 		expect(getByText('Browse')).toBeDefined();
 	});
