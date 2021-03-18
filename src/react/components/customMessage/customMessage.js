@@ -38,10 +38,6 @@ const useStyles = makeStyles(theme => ({
 		alignSelf: 'center',
 		marginBottom: theme.spacing()
 	},
-	sendToButtonGroup: {
-		height: '100%',
-		width: '100%'
-	},
 	phoneNumberPadding: {
 		paddingBottom: 22
 	},
@@ -156,7 +152,7 @@ function CustomMessage() {
 			{!showReportTable && (
 				<Fragment>
 					<div className={classes.sendTo}>
-						<ButtonGroup disableElevation color="primary" className={classes.sendToButtonGroup}>
+						<ButtonGroup disableElevation color="primary">
 							<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Specific Number</Button>
 							<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointment List</Button>
 						</ButtonGroup>
