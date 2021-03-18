@@ -25,6 +25,10 @@ import MessageCompose from './messageCompose';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
+import {
+	SmsSentSuccessfully, ErrorSendingSms,
+	CallSentSuccessfully, ErrorSendingCall
+} from '../../localization/en/snackbarText';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -127,7 +131,7 @@ function CustomMessage() {
 	const onSendAsSms = () => {
 		twilio.sendSMS(phoneNumber, message).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
-			setSnackbarMessage(sentSuccessfully ? 'SMS message sent successfully' : 'Error sending the SMS message');
+			setSnackbarMessage(sentSuccessfully ? SmsSentSuccessfully : ErrorSendingSms);
 			setShowSnackbar(true);
 		});
 	};
@@ -135,7 +139,7 @@ function CustomMessage() {
 	const onSendAsCall = () => {
 		twilio.sendCall(phoneNumber, message).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
-			setSnackbarMessage(sentSuccessfully ? 'Phone call sent successfully' : 'Error sending the phone call');
+			setSnackbarMessage(sentSuccessfully ? CallSentSuccessfully : ErrorSendingCall);
 			setShowSnackbar(true);
 		});
 	};

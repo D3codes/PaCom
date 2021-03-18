@@ -11,6 +11,8 @@ import persistentStorage from '../../utilities/persistentStorage';
 import MiniDrawer from '../drawer/miniDrawer';
 import AlertSnackbar from '../alertSnackbar';
 
+import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from '../../localization/en/snackbarText';
+
 export default function Settings({ selectedTabId }) {
 	const [appointmentReminderSettings, setAppointmentReminderSettings] = useState(null);
 	const [customMessageSettings, setCustomMessageSettings] = useState(null);
@@ -77,8 +79,8 @@ export default function Settings({ selectedTabId }) {
 				<AlertSnackbar
 					open={!hasWritePermission}
 					severity={AlertSnackbar.Severities.Info}
-					title="Configuration set to Network - Read Only"
-					message="Settings cannot be changed"
+					title={ReadOnlyConfigurationTitle}
+					message={ReadOnlyConfigurationMessage}
 				/>
 			)}
 		</Fragment>

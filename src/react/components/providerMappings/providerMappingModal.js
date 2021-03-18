@@ -9,7 +9,7 @@ import Provider from '../../models/provider';
 
 import {
 	ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage
-} from '../../localization/en/alertDialog';
+} from '../../localization/en/dialogText';
 import messageController from '../../utilities/messageController';
 
 const useStyles = makeStyles(theme => ({

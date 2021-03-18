@@ -54,12 +54,6 @@ const ProviderMappingSourceInUseMessage = 'Saving will overwrite the existing pr
 exports.ProviderMappingSourceInUseTitle = ProviderMappingSourceInUseTitle;
 exports.ProviderMappingSourceInUseMessage = ProviderMappingSourceInUseMessage;
 
-// Update Dynamic Values Reminder
-const UpdateDyanmicValuesReminderTitle = 'Update Dynamic Values';
-const UpdateDynamicValuesReminderMessage = 'Update dynamic values to include a mapping for new providers.';
-exports.UpdateDyanmicValuesReminderTitle = UpdateDyanmicValuesReminderTitle;
-exports.UpdateDynamicValuesReminderMessage = UpdateDynamicValuesReminderMessage;
-
 // Provider Mapping Confirm Delete
 const ProviderMappingConfirmDeleteTitle = 'Delete Provider Mapping';
 const ProviderMappingConfirmDeleteMessage = 'Are you sure you want to delete the mapping for ';
