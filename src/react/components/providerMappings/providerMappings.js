@@ -7,6 +7,11 @@ import persistentStorage from '../../utilities/persistentStorage';
 import AlertSnackbar from '../alertSnackbar';
 import ProviderMappingModal from './providerMappingModal';
 
+import {
+	UpdateDyanmicValuesReminderTitle, UpdateDynamicValuesReminderMessage
+} from '../../localization/en/alertDialog';
+import messageController from '../../utilities/messageController';
+
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
 		marginTop: theme.spacing(2),
@@ -50,6 +55,7 @@ export default function ProviderMappings() {
 
 	const handleSave = (providerMapping, previousProviderMapping) => {
 		if (previousProviderMapping) persistentStorage.removeProviderMappingWithSource(previousProviderMapping.source);
+		else messageController.showInfo(UpdateDyanmicValuesReminderTitle, UpdateDynamicValuesReminderMessage);
 		persistentStorage.addProviderMapping(providerMapping).then(setProviders);
 		setIsModalOpen(false);
 		setEditingProvider(null);
