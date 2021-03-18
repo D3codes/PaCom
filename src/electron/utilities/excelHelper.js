@@ -1,7 +1,7 @@
 const ExcelJS = require('exceljs');
 const filePicker = require('./filePicker');
 
-const createWorkbook = async report => {
+const exportMessageReport = async report => {
 	const workbook = new ExcelJS.Workbook();
 	workbook.creator = 'PaCom';
 	workbook.created = new Date();
@@ -20,28 +20,52 @@ const createWorkbook = async report => {
 	];
 
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
-	Object.entries(report).forEach(([providerAndDate, reminders]) => {
+	Object.entries(report).forEach(([, reminders]) => {
 		const worksheet = workbook.addWorksheet(reminders[0].appointment.provider.target || 'Unmapped Provider(s)', sheetProps);
 		worksheet.columns = [
-			{ header: 'Status', key: 'status' },
-			{ header: 'Time', key: 'time' },
-			{ header: 'Duration', key: 'duration' },
-			{ header: 'Patient', key: 'patient' },
-			{ header: 'Account', key: 'account' },
-			{ header: 'DOB', key: 'dob' },
-			{ header: 'Notify By', key: 'notify' },
-			{ header: 'Home', key: 'home' },
-			{ header: 'Cell', key: 'cell' },
-			{ header: 'Description', key: 'description' }
+			{ header: 'Status', key: 'status', width: 10 },
+			{ header: 'Appt Date', key: 'apptDate', width: 15 },
+			{ header: 'Appt Time', key: 'apptTime', width: 11 },
+			{ header: 'Duration', key: 'duration', width: 7 },
+			{ header: 'Patient', key: 'patient', width: 18 },
+			{ header: 'Account', key: 'account', width: 8 },
+			{ header: 'DOB', key: 'dob', width: 8 },
+			{ header: 'Notify By', key: 'notify', width: 8 },
+			{ header: 'Home', key: 'home', width: 13 },
+			{ header: 'Cell', key: 'cell', width: 13 },
+			{ header: 'Info', key: 'info', width: 20 }
 		];
-		console.log(providerAndDate);
+
+		reminders.forEach(reminder => {
+			worksheet.addRow({
+				status: reminder.status,
+				apptDate: reminder.appointment.date,
+				apptTime: reminder.appointment.time,
+				duration: reminder.appointment.duration,
+				patient: reminder.patient.name,
+				account: reminder.patient.accountNumber,
+				dob: reminder.patient.dateOfBirth,
+				notify: reminder.patient.preferredContactMethod,
+				home: reminder.patient.contactMethods.find(contactMethod => contactMethod.type === 'Home')?.phoneNumber,
+				cell: reminder.patient.contactMethods.find(contactMethod => contactMethod.type === 'Cell')?.phoneNumber,
+				info: ''
+			});
+		});
 	});
 
-	// TODO: Add time to file name
-	const path = await filePicker.pickSave(`PaComMessageReport-${new Date().toISOString().slice(0, 10)}.xlsx`);
+	const path = await filePicker.pickSave(
+		`PaComMessageReport-${
+			new Date()
+				.toLocaleString()
+				.replaceAll(':', '')
+				.replaceAll('/', '')
+				.replaceAll(' ', '')
+				.replaceAll(',', '-')
+		}.xlsx`
+	);
 	if (path) workbook.xlsx.writeFile(path);
 };
 
 module.exports = {
-	createWorkbook
+	exportMessageReport
 };
