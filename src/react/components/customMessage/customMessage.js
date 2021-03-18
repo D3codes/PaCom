@@ -162,7 +162,9 @@ function CustomMessage() {
 						</ButtonGroup>
 					</div>
 					<div>
-						{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
+						{sendToAppointmentList && (
+							<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Appointment List" />
+						)}
 						{!sendToAppointmentList && (
 							<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
 								<IconTextField
