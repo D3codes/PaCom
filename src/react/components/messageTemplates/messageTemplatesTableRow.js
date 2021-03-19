@@ -12,7 +12,7 @@ import messageController from '../../utilities/messageController';
 
 import {
 	MessageTemplateConfirmDeleteTitle, MessageTemplateConfirmDeleteMessage
-} from '../../localization/en/alertDialog';
+} from '../../localization/en/dialogText';
 
 const useStyles = makeStyles(theme => ({
 	moreMenuItem: {

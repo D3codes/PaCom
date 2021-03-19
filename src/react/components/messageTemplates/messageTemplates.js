@@ -7,6 +7,8 @@ import persistentStorage from '../../utilities/persistentStorage';
 import AlertSnackbar from '../alertSnackbar';
 import MessageTemplateModal from './messageTemplateModal';
 
+import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from '../../localization/en/snackbarText';
+
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
 		marginTop: theme.spacing(2),
@@ -85,8 +87,8 @@ export default function MessageTemplates() {
 				<AlertSnackbar
 					open={!hasWritePermission}
 					severity={AlertSnackbar.Severities.Info}
-					title="Configuration set to Network - Read Only"
-					message="Settings cannot be changed"
+					title={ReadOnlyConfigurationTitle}
+					message={ReadOnlyConfigurationMessage}
 				/>
 			)}
 		</div>

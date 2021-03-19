@@ -23,7 +23,8 @@ import {
 	UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage,
 	DateVerificationWarningTitle, DateVerificationWarningMessage,
 	DateVerificationBlockTitle, DateVerificationBlockMessage
-} from '../../localization/en/alertDialog';
+} from '../../localization/en/dialogText';
+import { InvalidFileTypeMessage } from '../../localization/en/snackbarText';
 
 const Ehrs = {
 	Pulse: 'Pulse'
@@ -194,7 +195,7 @@ function AppointmentReminders() {
 			<AlertSnackbar
 				open={showAlertSnackbar}
 				severity={AlertSnackbar.Severities.Warning}
-				message="Invalid File Type - Expected CSV"
+				message={InvalidFileTypeMessage}
 				onClose={() => { setShowAlertSnackbar(false); }}
 			/>
 		</div>

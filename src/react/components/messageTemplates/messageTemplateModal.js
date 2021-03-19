@@ -11,7 +11,7 @@ import MessageCompose from '../customMessage/messageCompose';
 
 import {
 	MessageTemplateNameInUseTitle, MessageTemplateNameInUseMessage
-} from '../../localization/en/alertDialog';
+} from '../../localization/en/dialogText';
 
 const useStyles = makeStyles(theme => ({
 	dialogContent: {
