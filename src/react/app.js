@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-	AppBar, CssBaseline, makeStyles, Toolbar, Typography, ThemeProvider
+	AppBar, CssBaseline, makeStyles, Toolbar, Typography
 } from '@material-ui/core';
 
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
@@ -10,7 +10,6 @@ import MiniDrawer, { DRAWER_WIDTH } from './components/drawer/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
 import DynamicValues from './components/dynamicValues/dynamicValues';
 import Settings from './components/settings/settings';
-import paComTheme from './theme';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -30,12 +29,7 @@ const useStyles = makeStyles(theme => ({
 		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
 	},
 	toolbar: {
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-		padding: theme.spacing(0, 1),
-		// necessary for content to be below app bar
-		...theme.mixins.toolbar
+		minHeight: theme.mixins.toolbar.minHeight
 	}
 }));
 
@@ -51,29 +45,27 @@ export default function App() {
 	const title = getTitle(selectedTabId);
 
 	return (
-		<ThemeProvider theme={paComTheme}>
-			<div className={classes.content}>
-				<CssBaseline />
-				<MiniDrawer onTabSelect={setSelectedTabId} selectedTabId={selectedTabId} />
-				<AppBar
-					position="fixed"
-					className={classes.appBar}>
-					<Toolbar>
-						<Typography variant="h6" noWrap>
-							{title}
-						</Typography>
-					</Toolbar>
-				</AppBar>
-				<main className={classes.main}>
-					<div className={classes.toolbar} />
-					{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders />}
-					{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
-					{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
-					{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
-					{selectedTabId === MiniDrawer.TabIds.DYNAMIC_VALUES && <DynamicValues />}
-					<Settings selectedTabId={selectedTabId} />
-				</main>
-			</div>
-		</ThemeProvider>
+		<div className={classes.content}>
+			<CssBaseline />
+			<MiniDrawer onTabSelect={setSelectedTabId} selectedTabId={selectedTabId} />
+			<AppBar
+				position="fixed"
+				className={classes.appBar}>
+				<Toolbar>
+					<Typography variant="h6" noWrap>
+						{title}
+					</Typography>
+				</Toolbar>
+			</AppBar>
+			<main className={classes.main}>
+				<div className={classes.toolbar} />
+				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders />}
+				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
+				{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
+				{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
+				{selectedTabId === MiniDrawer.TabIds.DYNAMIC_VALUES && <DynamicValues />}
+				<Settings selectedTabId={selectedTabId} />
+			</main>
+		</div>
 	);
 }
