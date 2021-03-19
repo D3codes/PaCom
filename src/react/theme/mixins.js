@@ -1,6 +1,6 @@
 const mixins = {
 	toolbar: {
-		minHeight: 64
+		minHeight: 48
 	}
 };
 
