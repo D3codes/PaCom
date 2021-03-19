@@ -7,6 +7,11 @@ import persistentStorage from '../../utilities/persistentStorage';
 import AlertSnackbar from '../alertSnackbar';
 import ProviderMappingModal from './providerMappingModal';
 
+import {
+	UpdateDynamicValuesReminderMessage,
+	ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage
+} from '../../localization/en/snackbarText';
+
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
 		marginTop: theme.spacing(2),
@@ -26,6 +31,8 @@ export default function ProviderMappings() {
 	const [hasWritePermission, setHasWritePermission] = useState(null);
 	const [editingProvider, setEditingProvider] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [showSnackbar, setShowSnackbar] = useState(false);
+	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	useEffect(() => {
 		persistentStorage.getProviderMappings().then(setProviders);
@@ -50,6 +57,10 @@ export default function ProviderMappings() {
 
 	const handleSave = (providerMapping, previousProviderMapping) => {
 		if (previousProviderMapping) persistentStorage.removeProviderMappingWithSource(previousProviderMapping.source);
+		else {
+			setSnackbarMessage(UpdateDynamicValuesReminderMessage);
+			setShowSnackbar(true);
+		}
 		persistentStorage.addProviderMapping(providerMapping).then(setProviders);
 		setIsModalOpen(false);
 		setEditingProvider(null);
@@ -81,12 +92,19 @@ export default function ProviderMappings() {
 				provider={editingProvider}
 				providers={providers}
 			/>
+			<AlertSnackbar
+				severity={AlertSnackbar.Severities.Info}
+				message={snackbarMessage}
+				open={showSnackbar}
+				onClose={() => { setShowSnackbar(false); }}
+				autoHideDuration={5000}
+			/>
 			{hasWritePermission !== null && (
 				<AlertSnackbar
 					open={!hasWritePermission}
 					severity={AlertSnackbar.Severities.Info}
-					title="Configuration set to Network - Read Only"
-					message="Settings cannot be changed"
+					title={ReadOnlyConfigurationTitle}
+					message={ReadOnlyConfigurationMessage}
 				/>
 			)}
 		</div>

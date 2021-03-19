@@ -11,6 +11,8 @@ import folderSelector from '../../utilities/folderSelector';
 import AlertSnackBar from '../alertSnackbar';
 import DescriptiveIconButton from '../descriptiveIconButton';
 
+import { AllDataCopiedMessage, DuplicateDataNotCopiedMessage } from '../../localization/en/snackbarText';
+
 const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
@@ -57,9 +59,9 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 	const handleCopyToNetwork = () => {
 		persistentStorage.copyLocalToNetwork().then(allMappingsAndTemplatesCopied => {
 			if (allMappingsAndTemplatesCopied) {
-				setSnackbarMessage('All local data was copied to network');
+				setSnackbarMessage(AllDataCopiedMessage);
 			} else {
-				setSnackbarMessage('Duplicate data was not copied');
+				setSnackbarMessage(DuplicateDataNotCopiedMessage);
 			}
 			setShowSnackbar(true);
 		});
@@ -123,7 +125,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				</Button>
 			</div>
 			<AlertSnackBar
-				severity="info"
+				severity={AlertSnackBar.Severities.Info}
 				message={snackbarMessage}
 				open={showSnackbar}
 				onClose={() => { setShowSnackbar(false); }}

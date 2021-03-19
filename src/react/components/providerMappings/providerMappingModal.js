@@ -6,12 +6,11 @@ import {
 import { Save } from '@material-ui/icons';
 
 import Provider from '../../models/provider';
-import messageController from '../../utilities/messageController';
 
 import {
-	ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage,
-	UpdateDyanmicValuesReminderTitle, UpdateDynamicValuesReminderMessage
-} from '../../localization/en/alertDialog';
+	ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage
+} from '../../localization/en/dialogText';
+import messageController from '../../utilities/messageController';
 
 const useStyles = makeStyles(theme => ({
 	dialogContent: {
@@ -69,8 +68,6 @@ function ProviderMappingModal({
 			const newProviderMapping = new Provider(source, target, phonetic);
 			onSave(newProviderMapping, provider);
 			applyInitialState();
-
-			messageController.showInfo(UpdateDyanmicValuesReminderTitle, UpdateDynamicValuesReminderMessage);
 		}
 	};
 

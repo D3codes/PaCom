@@ -14,7 +14,7 @@ import MessageCompose from '../customMessage/messageCompose';
 import {
 	DynamicValueNameInUseTitle, DynamicValueNameInUseMessage,
 	DynamicValueNameReservedTitle, DynamicValueNameReservedMessage
-} from '../../localization/en/alertDialog';
+} from '../../localization/en/dialogText';
 
 const useStyles = makeStyles(theme => ({
 	dialogContent: {

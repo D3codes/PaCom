@@ -12,7 +12,7 @@ import messageController from '../../utilities/messageController';
 
 import {
 	DynamicValueConfirmDeleteTitle, DynamicValueConfirmDeleteMessage
-} from '../../localization/en/alertDialog';
+} from '../../localization/en/dialogText';
 
 const useStyles = makeStyles(theme => ({
 	moreMenuItem: {
