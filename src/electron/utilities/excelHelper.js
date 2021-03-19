@@ -20,20 +20,20 @@ const exportMessageReport = async report => {
 	];
 
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
-	Object.entries(report).forEach(([, reminders]) => {
+	Object.values(report).forEach(reminders => {
 		const worksheet = workbook.addWorksheet(reminders[0].appointment.provider.target || 'Unmapped Provider(s)', sheetProps);
 		worksheet.columns = [
 			{ header: 'Status', key: 'status', width: 10 },
-			{ header: 'Appt Date', key: 'apptDate', width: 15 },
+			{ header: 'Appt Date', key: 'apptDate', width: 16 },
 			{ header: 'Appt Time', key: 'apptTime', width: 11 },
 			{ header: 'Duration', key: 'duration', width: 7 },
-			{ header: 'Patient', key: 'patient', width: 18 },
-			{ header: 'Account', key: 'account', width: 8 },
+			{ header: 'Patient', key: 'patient', width: 20 },
+			{ header: 'Account', key: 'account', width: 9 },
 			{ header: 'DOB', key: 'dob', width: 8 },
 			{ header: 'Notify By', key: 'notify', width: 8 },
 			{ header: 'Home', key: 'home', width: 13 },
 			{ header: 'Cell', key: 'cell', width: 13 },
-			{ header: 'Info', key: 'info', width: 20 }
+			{ header: 'Info', key: 'info', width: 25 }
 		];
 
 		reminders.forEach(reminder => {
