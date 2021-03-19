@@ -21,7 +21,7 @@ const exportMessageReport = async report => {
 
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
 	Object.values(report).forEach(reminders => {
-		const worksheet = workbook.addWorksheet(reminders[0].appointment.provider.target || 'Unmapped Provider(s)', sheetProps);
+		const worksheet = workbook.addWorksheet(reminders[0]?.appointment?.provider?.target || 'Unmapped Provider(s)', sheetProps);
 		worksheet.columns = [
 			{ header: 'Status', key: 'status', width: 10 },
 			{ header: 'Appt Date', key: 'apptDate', width: 16 },
@@ -33,21 +33,21 @@ const exportMessageReport = async report => {
 			{ header: 'Notify By', key: 'notify', width: 8 },
 			{ header: 'Home', key: 'home', width: 13 },
 			{ header: 'Cell', key: 'cell', width: 13 },
-			{ header: 'Info', key: 'info', width: 25 }
+			{ header: 'Information', key: 'info', width: 25 }
 		];
 
 		reminders.forEach(reminder => {
 			worksheet.addRow({
-				status: reminder.status,
-				apptDate: reminder.appointment.date,
-				apptTime: reminder.appointment.time,
-				duration: reminder.appointment.duration,
-				patient: reminder.patient.name,
-				account: reminder.patient.accountNumber,
-				dob: reminder.patient.dateOfBirth,
-				notify: reminder.patient.preferredContactMethod,
-				home: reminder.patient.contactMethods.find(contactMethod => contactMethod.type === 'Home')?.phoneNumber,
-				cell: reminder.patient.contactMethods.find(contactMethod => contactMethod.type === 'Cell')?.phoneNumber,
+				status: reminder?.status,
+				apptDate: reminder?.appointment?.date,
+				apptTime: reminder?.appointment?.time,
+				duration: reminder?.appointment?.duration,
+				patient: reminder?.patient?.name,
+				account: reminder?.patient?.accountNumber,
+				dob: reminder?.patient?.dateOfBirth,
+				notify: reminder?.patient?.preferredContactMethod,
+				home: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Home')?.phoneNumber,
+				cell: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Cell')?.phoneNumber,
 				info: ''
 			});
 		});
