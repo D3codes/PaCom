@@ -5,9 +5,7 @@ import React, {
 	useEffect
 } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-	Typography, Switch, Button
-} from '@material-ui/core';
+import { Button, ButtonGroup } from '@material-ui/core';
 import {
 	Phone, Sms, ArrowForwardIos, ArrowBackIos
 } from '@material-ui/icons';
@@ -41,7 +39,8 @@ const useStyles = makeStyles(theme => ({
 		alignSelf: 'flex-end'
 	},
 	sendTo: {
-		alignSelf: 'center'
+		alignSelf: 'center',
+		marginBottom: theme.spacing()
 	},
 	phoneNumberPadding: {
 		paddingBottom: 22
@@ -105,10 +104,6 @@ function CustomMessage() {
 		});
 	}, []);
 
-	const handleSwitch = event => {
-		setSendToAppointmentList(event.target.checked);
-	};
-
 	const handleMessageChange = newMessage => {
 		setMessage(newMessage);
 	};
@@ -161,17 +156,15 @@ function CustomMessage() {
 			{!showReportTable && (
 				<Fragment>
 					<div className={classes.sendTo}>
-						<Typography variant="h5" display="inline">Send To Specific Number</Typography>
-						<Switch
-							checked={sendToAppointmentList}
-							onChange={handleSwitch}
-							color="default"
-							data-testid="sendByToggle-id"
-						/>
-						<Typography variant="h5" display="inline">Send To Appointment List</Typography>
+						<ButtonGroup disableElevation color="primary">
+							<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Specific Number</Button>
+							<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointment List</Button>
+						</ButtonGroup>
 					</div>
 					<div>
-						{sendToAppointmentList && <BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Import CSV" />}
+						{sendToAppointmentList && (
+							<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Appointment List" />
+						)}
 						{!sendToAppointmentList && (
 							<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
 								<IconTextField

@@ -114,7 +114,7 @@ const getSettings = (forceLocal = false) => {
 		settings = store.get(SETTINGS);
 		if (!settings) {
 			store.set(defaultSettings);
-			settings = defaultSettings;
+			settings = getSettings();
 		}
 	}
 	return settings;
