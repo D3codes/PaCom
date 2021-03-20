@@ -17,7 +17,7 @@ describe('ProviderMappingsTable', () => {
 		expect(getByText('Convert To (SMS)')).toBeDefined();
 		expect(getByText('Convert To (Phonetic)')).toBeDefined();
 		expect(getByText('Actions')).toBeDefined();
-		expect(getByText('No Provider Mappings')).toBeDefined();
+		expect(getByText('No Provider Mappings Configured')).toBeDefined();
 	});
 
 	it('renders providers', () => {
