@@ -72,7 +72,7 @@ function MessageTemplatesTable({
 								className={classes.noMessageTemplatesText}
 								align="center"
 								colSpan={3}>
-								No Message Templates Found
+								No Message Templates Configured
 							</TableCell>
 						</TableRow>
 					)}
