@@ -119,7 +119,7 @@ describe('DateValidator', () => {
 			endOfRange: 5
 		};
 
-		const isValid = validate(add(new Date(), { days: 9 }), preferences);
+		const isValid = validate(add(new Date(), { days: 8 }), preferences);
 
 		expect(isValid).toBeFalsy();
 	});
