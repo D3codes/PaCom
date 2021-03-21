@@ -78,7 +78,7 @@ function ProviderMappingsTable({
 								className={classes.noProviderMappingsText}
 								align="center"
 								colSpan={4}>
-								No Provider Mappings
+								No Provider Mappings Configured
 							</TableCell>
 						</TableRow>
 					)}

@@ -13,7 +13,7 @@ describe('ProviderMappings', () => {
 
 		const { getByText } = render(<ProviderMappings />);
 
-		expect(getByText('No Provider Mappings')).toBeDefined();
+		expect(getByText('No Provider Mappings Configured')).toBeDefined();
 		expect(getByText('Add')).toBeDefined();
 	});
 

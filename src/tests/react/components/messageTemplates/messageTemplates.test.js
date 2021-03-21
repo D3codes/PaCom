@@ -13,7 +13,7 @@ describe('MessageTemplates', () => {
 
 		const { getByText } = render(<MessageTemplates />);
 
-		expect(getByText('No Message Templates Found')).toBeDefined();
+		expect(getByText('No Message Templates Configured')).toBeDefined();
 		expect(getByText('Add')).toBeDefined();
 	});
 

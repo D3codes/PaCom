@@ -10,12 +10,12 @@ const useStyles = makeStyles({
 	}
 });
 
-function ReportActions({ sendDisabled = false }) {
+function ReportActions({ onExport, sendDisabled = false }) {
 	const classes = useStyles();
 
 	return (
 		<div className={classes.actionContainer}>
-			<Button color="primary" startIcon={<Publish />} variant="contained">Export</Button>
+			<Button onClick={onExport} color="primary" startIcon={<Publish />} variant="contained">Export</Button>
 			<Button
 				color="primary"
 				disabled={sendDisabled}
@@ -28,6 +28,7 @@ function ReportActions({ sendDisabled = false }) {
 }
 
 ReportActions.propTypes = {
+	onExport: PropTypes.func.isRequired,
 	sendDisabled: PropTypes.bool
 };
 
