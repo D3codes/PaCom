@@ -1,7 +1,24 @@
 import '@testing-library/jest-dom/extend-expect';
-import { add, startOfTomorrow } from 'date-fns';
+import { add } from 'date-fns';
 
 import validate from '../../../react/utilities/dateValidator';
+
+const localize = date => {
+	const tzoffset = date.getTimezoneOffset() * 60000;
+	return new Date(date - tzoffset);
+};
+
+const startOfTomorrow = () => {
+	const now = localize(new Date());
+	const year = now.getFullYear();
+	const month = now.getMonth();
+	const day = now.getDate();
+
+	const date = new Date(0);
+	date.setFullYear(year, month, day + 1);
+	date.setHours(0, 0, 0, 0);
+	return date;
+};
 
 describe('DateValidator', () => {
 	it('returns true when appointment date is exactly the expected number of days away', () => {
@@ -35,7 +52,7 @@ describe('DateValidator', () => {
 			endOfRange: null
 		};
 
-		const isValid = validate(add(new Date(), { days: 7 }), preferences);
+		const isValid = validate(localize(add(new Date(), { days: 7 })), preferences);
 
 		expect(isValid).toBeTruthy();
 	});
@@ -47,7 +64,7 @@ describe('DateValidator', () => {
 			endOfRange: null
 		};
 
-		const isValid = validate(add(new Date(), { days: 7 }), preferences);
+		const isValid = validate(localize(add(new Date(), { days: 7 })), preferences);
 
 		expect(isValid).toBeFalsy();
 	});
@@ -59,7 +76,7 @@ describe('DateValidator', () => {
 			endOfRange: 3
 		};
 
-		const isValid = validate(add(new Date(), { days: 2 }), preferences);
+		const isValid = validate(localize(add(new Date(), { days: 2 })), preferences);
 
 		expect(isValid).toBeTruthy();
 	});
@@ -71,7 +88,7 @@ describe('DateValidator', () => {
 			endOfRange: 9
 		};
 
-		const isValid = validate(new Date(), preferences);
+		const isValid = validate(localize(new Date()), preferences);
 
 		expect(isValid).toBeFalsy();
 	});
@@ -83,7 +100,7 @@ describe('DateValidator', () => {
 			endOfRange: 3
 		};
 
-		const isValid = validate(add(new Date(), { days: 7 }), preferences);
+		const isValid = validate(localize(add(new Date(), { days: 7 })), preferences);
 
 		expect(isValid).toBeFalsy();
 	});
@@ -95,7 +112,7 @@ describe('DateValidator', () => {
 			endOfRange: 5
 		};
 
-		const isValid = validate(add(new Date(), { days: 7 }), preferences);
+		const isValid = validate(localize(add(new Date(), { days: 7 })), preferences);
 
 		expect(isValid).toBeTruthy();
 	});
@@ -107,7 +124,7 @@ describe('DateValidator', () => {
 			endOfRange: 8
 		};
 
-		const isValid = validate(add(new Date(), { days: 7 }), preferences);
+		const isValid = validate(localize(add(new Date(), { days: 7 })), preferences);
 
 		expect(isValid).toBeFalsy();
 	});
@@ -116,10 +133,10 @@ describe('DateValidator', () => {
 		const preferences = {
 			useBusinessDays: true,
 			numberOfDays: 3,
-			endOfRange: 5
+			endOfRange: 4
 		};
 
-		const isValid = validate(add(new Date(), { days: 8 }), preferences);
+		const isValid = validate(localize(add(new Date(), { days: 8 })), preferences);
 
 		expect(isValid).toBeFalsy();
 	});

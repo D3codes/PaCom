@@ -7,6 +7,7 @@ const projectPackage = require('../../package.json');
 const { open, save } = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
+const excelHelper = require('./utilities/excelHelper');
 
 const {
 	dialog, app, BrowserWindow, Menu, shell, ipcMain: ipc
@@ -205,3 +206,5 @@ ipc.handle('save-file-dialog', (event, fileName) => filePicker.pickSave(fileName
 ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork());
 
 ipc.handle('show-alert', (event, title, message, type, buttons, defaultId, cancelId) => showAlert(title, message, type, buttons, defaultId, cancelId));
+
+ipc.handle('export-report', (event, report) => excelHelper.exportMessageReport(report));
