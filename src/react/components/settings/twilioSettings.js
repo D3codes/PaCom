@@ -101,7 +101,9 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 	};
 
 	const handleDownloadMessages = async () => {
-		const logs = await twilioClient.getSMSLogs(selectedDate);
+		const tzoffset = selectedDate.getTimezoneOffset() * 60000;
+		const localDate = new Date(selectedDate - tzoffset);
+		const logs = await twilioClient.getSMSLogs(localDate);
 		const csvString = [
 			[
 				'to',
@@ -123,11 +125,13 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 			.map(e => e.join(','))
 			.join('\n');
 
-		folderSelector.save('', `TwilioSMSLogs-${selectedDate.toISOString().slice(0, 10)}.csv`, csvString);
+		folderSelector.save('', `TwilioSMSLogs-${localDate.toISOString().slice(0, 10)}.csv`, csvString);
 	};
 
 	const handleDownloadCalls = async () => {
-		const logs = await twilioClient.getCallLogs(selectedDate);
+		const tzoffset = selectedDate.getTimezoneOffset() * 60000;
+		const localDate = new Date(selectedDate - tzoffset);
+		const logs = await twilioClient.getCallLogs(localDate);
 		const csvString = [
 			[
 				'to',
@@ -145,7 +149,7 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 			.map(e => e.join(','))
 			.join('\n');
 
-		folderSelector.save('', `TwilioPhoneLogs-${selectedDate.toISOString().slice(0, 10)}.csv`, csvString);
+		folderSelector.save('', `TwilioPhoneLogs-${localDate.toISOString().slice(0, 10)}.csv`, csvString);
 	};
 
 	return (
