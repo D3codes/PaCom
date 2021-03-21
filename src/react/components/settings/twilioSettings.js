@@ -104,7 +104,7 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 		const tzoffset = selectedDate.getTimezoneOffset() * 60000;
 		const localDate = new Date(selectedDate - tzoffset);
 		const logs = await twilioClient.getSMSLogs(localDate);
-		console.log(logs);
+
 		const csvString = [
 			[
 				'to',
