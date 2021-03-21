@@ -9,12 +9,12 @@ const localize = date => {
 };
 
 const startOfTomorrow = () => {
-	var now = localize(new Date());
-	var year = now.getFullYear();
-	var month = now.getMonth();
-	var day = now.getDate();
+	const now = localize(new Date());
+	const year = now.getFullYear();
+	const month = now.getMonth();
+	const day = now.getDate();
   
-	var date = new Date(0);
+	const date = new Date(0);
 	date.setFullYear(year, month, day + 1);
 	date.setHours(0, 0, 0, 0);
 	return date;
