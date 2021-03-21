@@ -7,6 +7,7 @@ import Reminder from '../../models/reminder';
 import ProviderDateTableRows from './providerDateTableRows';
 import ReportActions from './reportActions';
 import ReportTableHeader from './reportTableHeader';
+import reportExporter from '../../utilities/reportExporter';
 
 const groupRemindersByProviderAndDate = reminders => reminders.reduce((remindersByProviderAndDate, reminder) => {
 	const providerDateKey = `${reminder.getIn(['appointment', 'provider', 'target'], 'Unmapped Provider(s)')} - ${reminder.getIn(['appointment', 'date'])}`;
@@ -43,6 +44,11 @@ const useStyles = makeStyles(theme => ({
 function ReportTable({ reminders = null, sendDisabled = false }) {
 	const classes = useStyles();
 	const remindersByProviderAndDate = reminders ? groupRemindersByProviderAndDate(reminders) : null;
+
+	const handleExport = () => {
+		reportExporter.exportReport(remindersByProviderAndDate);
+	};
+
 	return (
 		<Fragment>
 			{!remindersByProviderAndDate && (
@@ -72,7 +78,7 @@ function ReportTable({ reminders = null, sendDisabled = false }) {
 					</Table>
 				</div>
 			)}
-			<ReportActions sendDisabled={sendDisabled} />
+			<ReportActions onExport={handleExport} sendDisabled={sendDisabled} />
 		</Fragment>
 	);
 }

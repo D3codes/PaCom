@@ -17,7 +17,7 @@ describe('MessageTemplatesTable', () => {
 		expect(getByText('Name')).toBeDefined();
 		expect(getByText('Body')).toBeDefined();
 		expect(getByText('Actions')).toBeDefined();
-		expect(getByText('No Message Templates Found')).toBeDefined();
+		expect(getByText('No Message Templates Configured')).toBeDefined();
 	});
 
 	it('renders providers', () => {
