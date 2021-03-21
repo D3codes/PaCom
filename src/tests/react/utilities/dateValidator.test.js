@@ -116,7 +116,7 @@ describe('DateValidator', () => {
 		const preferences = {
 			useBusinessDays: true,
 			numberOfDays: 3,
-			endOfRange: 5
+			endOfRange: 4
 		};
 
 		const isValid = validate(add(new Date(), { days: 8 }), preferences);
