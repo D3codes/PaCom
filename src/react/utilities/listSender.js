@@ -7,20 +7,36 @@ let defaultSmsReminder = '';
 let sendToPreferredContactMethodAndSms = false;
 let sendSmsToHomeIfNoCell = false;
 
-/*
- For Each Appointment {
-    swap dynamic values
-    select preferred contact number
-    group phone calls to the same number and send as one call
-    optional settings:
-        send to sms as well as preferred contact method
-        send sms to home phone if cell not available
- }
-*/
+let calls = [];
+const callBundler = (number, message, reminder) => {
+    let call = calls.find(c => c.number === number);
+    if (call) {
+        call.message = `${call.message} ${message}`;
+        call.reminders.push(reminder);
+    } else {
+        call = { number, message, reminders: [reminder] };
+    }
 
-const sendToList = async (reminders, message = '') => {
+    calls = calls.filter(c => c.number !== number);
+    calls.push(call);
+};
+
+const sendCalls = () => {
+    calls.forEach(call => {
+        twilio.sendCall(call.number, call.message);
+        call.reminders.forEach(reminder => {
+            reminder.setSentStatus();
+        });
+    });
+};
+
+const sendToList = async (reminders, onUpdate = null, message = '', skipSendingCalls = false) => {
+    let remindersProcessed = 0;
     reminders.forEach(reminder => {
         reminder.setSendingStatus();
+        if (onUpdate) {
+            onUpdate(reminders);
+        }
 
         const notifyBy = reminder.getIn(['patient', 'preferredContactMethod'], null);
         const messageToSend = message || notifyBy === 'Text' ? defaultSmsReminder : defaultPhoneReminder;
@@ -28,38 +44,52 @@ const sendToList = async (reminders, message = '') => {
         let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === 'Phone' ? 'Home' : 'Cell');
         if (!contactNumber && notifyBy === 'Text' && sendSmsToHomeIfNoCell) {
             contactNumber = reminder.get('patient').getPhoneNumberByType('Home');
+            reminder.setMessage('SMS sent to home phone');
         }
         if (!contactNumber) {
             throw Error('no number');
         }
 
         dynamicValueReplacer.replace(messageToSend, reminder).then(replacedMessage => {
-            if (notifyBy === 'Text') {
+            // eslint-disable-next-line no-plusplus
+            remindersProcessed++;
+            if (!replacedMessage) {
+                reminder.setFailedStatus();
+                reminder.setMessage('Unmapped dynamic values');
+            } else if (notifyBy === 'Text') {
                 twilio.sendSMS(contactNumber, replacedMessage);
+                reminder.setSentStatus();
             } else {
-                twilio.sendCall(contactNumber, replacedMessage);
+                callBundler(contactNumber, replacedMessage, reminder);
                 if (sendToPreferredContactMethodAndSms) {
                     const resendReminder = reminder;
                     resendReminder.patient.preferredContactMethod = 'Text';
-                    sendToList([resendReminder]);
+                    reminder.setMessage('Sent to SMS as well as preferred contact method');
+                    sendToList([resendReminder], null, '', true);
                 }
             }
-        });
 
-        reminder.setSentStatus();
+            if (remindersProcessed === reminders.length && !skipSendingCalls) {
+                sendCalls();
+            }
+
+            if (onUpdate) {
+                onUpdate(reminders);
+            }
+        });
     });
 };
 
-const sendCustomMessage = (reminders, message) => {
+const sendCustomMessage = (reminders, message, onUpdate) => {
     persistentStorage.getSettings().then(settings => {
         sendToPreferredContactMethodAndSms = settings.customMessages.contactPreferences.sendToPreferredAndSms;
         sendSmsToHomeIfNoCell = settings.customMessages.contactPreferences.textHomeIfCellNotAvailable;
 
-        sendToList(reminders, message);
+        sendToList(reminders, onUpdate, message);
     });
 };
 
-const sendAppointmentReminders = reminders => {
+const sendAppointmentReminders = (reminders, onUpdate) => {
     persistentStorage.getSettings().then(settings => {
         const defaultPhone = settings.appointmentReminders.defaultReminderTemplates.phone;
         const defaultSms = settings.appointmentReminders.defaultReminderTemplates.sms;
@@ -70,7 +100,7 @@ const sendAppointmentReminders = reminders => {
             defaultSmsReminder = templates.find(template => template.name === defaultSms).body;
             defaultPhoneReminder = templates.find(template => template.name === defaultPhone).body;
 
-            sendToList(reminders);
+            sendToList(reminders, onUpdate);
         });
     });
 };

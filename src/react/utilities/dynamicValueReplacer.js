@@ -13,7 +13,9 @@ const replace = async (message, reminder) => {
         if (dynamicValueSource.fromApptList) {
             replacedMessage = replacedMessage.replace(valueInMessage, reminder.getIn(dynamicValueSource.pathFromReminder, ''));
         } else {
-            replacedMessage = replacedMessage.replace(valueInMessage, dynamicValueSource.mappings.find(mapping => mapping.providerSource === reminder.getIn(['appointment', 'provider', 'source'], '')).value);
+            const replaceWith = dynamicValueSource.mappings.find(mapping => mapping.providerSource === reminder.getIn(['appointment', 'provider', 'source'], ''))?.value;
+            if (!replaceWith) replacedMessage = '';
+            replacedMessage = replacedMessage.replace(valueInMessage, replaceWith);
         }
     });
 
