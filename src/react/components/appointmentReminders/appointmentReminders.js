@@ -25,7 +25,8 @@ import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 import {
 	UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage,
 	DateVerificationWarningTitle, DateVerificationWarningMessage,
-	DateVerificationBlockTitle, DateVerificationBlockMessage
+	DateVerificationBlockTitle, DateVerificationBlockMessage,
+	DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage
 } from '../../localization/en/dialogText';
 import { InvalidFileTypeMessage } from '../../localization/en/snackbarText';
 
@@ -112,6 +113,7 @@ function AppointmentReminders() {
 	const [showAlertSnackbar, setShowAlertSnackbar] = useState(false);
 	const [providerMappings, setProviderMappings] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
+	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
 	const [isValid, setIsValid] = useState(null);
 	const [sendClicked, setSendClicked] = useState(false);
 	// eslint-disable-next-line no-unused-vars
@@ -121,7 +123,10 @@ function AppointmentReminders() {
 		persistentStorage.getProviderMappings()
 			.then(setProviderMappings)
 			.then(() => persistentStorage.getSettings())
-			.then(settings => setDateVerificationSettings(settings.appointmentReminders.dateVerification));
+			.then(settings => {
+				setDateVerificationSettings(settings.appointmentReminders.dateVerification);
+				setDefaultTemplatesDefined(Boolean(settings.appointmentReminders.defaultReminderTemplates.phone && !!settings.appointmentReminders.defaultReminderTemplates.sms));
+			});
 	}, []);
 
 	useEffect(() => {
@@ -138,6 +143,7 @@ function AppointmentReminders() {
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
 			setReminders(remindersList);
 			setSendClicked(false);
+			if (!defaultTemplatesDefined) messageController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 		});
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
@@ -160,6 +166,7 @@ function AppointmentReminders() {
 			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
 				setReminders(remindersList);
 				setSendClicked(false);
+				if (!defaultTemplatesDefined) messageController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 			});
 			csvPromise.then(({ path }) => setFilePath(path));
 		} catch (InvalidFileTypeException) {
@@ -183,7 +190,7 @@ function AppointmentReminders() {
 		listSender.sendAppointmentReminders(reminders, handleRemindersUpdate);
 	};
 
-	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked;
+	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>

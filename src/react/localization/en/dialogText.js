@@ -59,3 +59,9 @@ const ProviderMappingConfirmDeleteTitle = 'Delete Provider Mapping';
 const ProviderMappingConfirmDeleteMessage = 'Are you sure you want to delete the mapping for ';
 exports.ProviderMappingConfirmDeleteTitle = ProviderMappingConfirmDeleteTitle;
 exports.ProviderMappingConfirmDeleteMessage = ProviderMappingConfirmDeleteMessage;
+
+// Default Appointment Reminder Templates Not Defined
+const DefaultReminderTemplatesNotDefinedTitle = 'Default Appointment Reminder Templates Not Defined';
+const DefaultReminderTemplatesNotDefinedMessage = 'Contact an administrator to configure the default appointment reminder templates.';
+exports.DefaultReminderTemplatesNotDefinedTitle = DefaultReminderTemplatesNotDefinedTitle;
+exports.DefaultReminderTemplatesNotDefinedMessage = DefaultReminderTemplatesNotDefinedMessage;
