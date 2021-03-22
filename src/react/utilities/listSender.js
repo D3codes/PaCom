@@ -31,12 +31,17 @@ const sendCalls = () => {
 };
 
 const sendToList = async (reminders, onUpdate = null, message = '', skipSendingCalls = false) => {
-    let remindersProcessed = 0;
-    reminders.forEach(reminder => {
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < reminders.length; i++) {
+        const reminder = reminders[i];
         reminder.setSendingStatus();
         if (onUpdate) {
             onUpdate(reminders);
         }
+
+        // Tactical sleep
+		// eslint-disable-next-line no-await-in-loop
+		await new Promise(resolve => setTimeout(() => resolve(null), 250));
 
         const notifyBy = reminder.getIn(['patient', 'preferredContactMethod'], null);
         const messageToSend = message || notifyBy === 'Text' ? defaultSmsReminder : defaultPhoneReminder;
@@ -50,9 +55,8 @@ const sendToList = async (reminders, onUpdate = null, message = '', skipSendingC
             throw Error('no number');
         }
 
+        // eslint-disable-next-line no-loop-func
         dynamicValueReplacer.replace(messageToSend, reminder).then(replacedMessage => {
-            // eslint-disable-next-line no-plusplus
-            remindersProcessed++;
             if (!replacedMessage) {
                 reminder.setFailedStatus();
                 reminder.setMessage('Unmapped dynamic values');
@@ -69,7 +73,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', skipSendingC
                 }
             }
 
-            if (remindersProcessed === reminders.length && !skipSendingCalls) {
+            if (i === reminders.length - 1 && !skipSendingCalls) {
                 sendCalls();
             }
 
@@ -77,7 +81,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', skipSendingC
                 onUpdate(reminders);
             }
         });
-    });
+    }
 };
 
 const sendCustomMessage = (reminders, message, onUpdate) => {
