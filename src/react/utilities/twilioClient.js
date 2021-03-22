@@ -8,8 +8,6 @@ const TWILIO_GET_CALLS_ENDPOINT = '/Calls.json?PageSize=1000&StartTime=';
 
 const sendMessage = async (phoneNumber, message, sendAsSms) => {
 	console.log(phoneNumber, message, sendAsSms);
-
-	/*
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
 
 	const response = await fetch(sendAsSms ? twilioSettings.smsEndpoint : twilioSettings.callEndpoint, {
@@ -22,7 +20,6 @@ const sendMessage = async (phoneNumber, message, sendAsSms) => {
 	});
 
 	return response.ok;
-	*/
 };
 
 const sendSMS = (phoneNumber, message) => {

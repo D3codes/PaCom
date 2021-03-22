@@ -30,7 +30,7 @@ const sendCalls = () => {
     });
 };
 
-const sendToList = async (reminders, onUpdate = null, message = '', skipSendingCalls = false) => {
+const sendToList = async (reminders, onUpdate = null, message = '', forceText = false) => {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < reminders.length; i++) {
         const reminder = reminders[i];
@@ -43,7 +43,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', skipSendingC
 		// eslint-disable-next-line no-await-in-loop
 		await new Promise(resolve => setTimeout(() => resolve(null), 250));
 
-        const notifyBy = reminder.getIn(['patient', 'preferredContactMethod'], null);
+        const notifyBy = forceText ? 'Text' : reminder.getIn(['patient', 'preferredContactMethod'], null);
         const messageToSend = message || notifyBy === 'Text' ? defaultSmsReminder : defaultPhoneReminder;
 
         let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === 'Phone' ? 'Home' : 'Cell');
@@ -52,7 +52,10 @@ const sendToList = async (reminders, onUpdate = null, message = '', skipSendingC
             reminder.setMessage('SMS sent to home phone');
         }
         if (!contactNumber) {
-            throw Error('no number');
+            reminder.setFailedStatus();
+            reminder.setMessage('No phone number');
+            // eslint-disable-next-line no-continue
+            continue;
         }
 
         // eslint-disable-next-line no-loop-func
@@ -66,14 +69,12 @@ const sendToList = async (reminders, onUpdate = null, message = '', skipSendingC
             } else {
                 callBundler(contactNumber, replacedMessage, reminder);
                 if (sendToPreferredContactMethodAndSms) {
-                    const resendReminder = reminder;
-                    resendReminder.patient.preferredContactMethod = 'Text';
                     reminder.setMessage('Sent to SMS as well as preferred contact method');
-                    sendToList([resendReminder], null, '', true);
+                    sendToList([reminder], null, '', true);
                 }
             }
 
-            if (i === reminders.length - 1 && !skipSendingCalls) {
+            if (i === reminders.length - 1 && !forceText) {
                 sendCalls();
             }
 
