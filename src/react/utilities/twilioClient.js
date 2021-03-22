@@ -3,8 +3,8 @@ import persistentStorage from './persistentStorage';
 const { NullValueException } = require('../exceptions');
 
 const TWILIO_API_BASE_URL = 'https://api.twilio.com/2010-04-01/Accounts/';
-const TWILIO_GET_MESSAGES_ENDPOINT = '/Messages.json?DateSent=';
-const TWILIO_GET_CALLS_ENDPOINT = '/Calls.json?StartTime=';
+const TWILIO_GET_MESSAGES_ENDPOINT = '/Messages.json?PageSize=1000&DateSent=';
+const TWILIO_GET_CALLS_ENDPOINT = '/Calls.json?PageSize=1000&StartTime=';
 
 const sendMessage = async (phoneNumber, message, sendAsSms) => {
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
