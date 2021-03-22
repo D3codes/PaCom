@@ -13,6 +13,7 @@ import AlertSnackbar from '../alertSnackbar';
 import persistentStorage from '../../utilities/persistentStorage';
 import messageController from '../../utilities/messageController';
 import valiDate from '../../utilities/dateValidator';
+import listSender from '../../utilities/listSender';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -161,13 +162,17 @@ function AppointmentReminders() {
 		// handle reload of appointments here
 	};
 
+	const handleSend = () => {
+		listSender.sendAppointmentReminders(reminders);
+	};
+
 	const sendDisabled = dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid;
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
 			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Appointment List" />
 			{reminders
-				? <ReportTable reminders={reminders} sendDisabled={sendDisabled} />
+				? <ReportTable onSend={handleSend} reminders={reminders} sendDisabled={sendDisabled} />
 				: (
 					<FileDrop
 						onDrop={handleFileDrop}

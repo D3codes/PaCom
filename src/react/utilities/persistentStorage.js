@@ -3,7 +3,9 @@ import Template from '../models/template';
 import DynamicValue from '../models/dynamicValue';
 
 // Dynamic Values
-const transformDynamicValues = dynamicValues => dynamicValues.map(({ name, fromApptList, mappings }) => new DynamicValue(name, fromApptList, mappings));
+const transformDynamicValues = dynamicValues => dynamicValues.map(({
+	name, fromApptList, mappings, pathFromReminder
+}) => new DynamicValue(name, fromApptList, mappings, pathFromReminder));
 
 const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values', includeDefault).then(transformDynamicValues);
 
