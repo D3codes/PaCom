@@ -1,18 +1,25 @@
 import persistentStorage from './persistentStorage';
 
 const replace = async (message, reminder) => {
-    const dyanmicValues = await persistentStorage.getDynamicValues();
-    let newMessage = message;
+    const dynamicValues = await persistentStorage.getDynamicValues();
+    let replacedMessage = message;
 
-    dyanmicValues.forEach(async value => {
-        if (value.fromApptList) {
-            newMessage = newMessage.replace(`{{${value.name}}}`, reminder.getIn(value.pathFromReminder, ''));
+    const dynamicValuesInMessage = [...message.matchAll(/{{[^}]+}}/g)];
+
+    await dynamicValuesInMessage.forEach(async valueInMessage => {
+        const dynamicValueSource = dynamicValues.find(value => `{{${value.name}}}` === valueInMessage[0]);
+        if (!dynamicValueSource) throw Error('Unknown dynamic value found in message');
+
+        if (dynamicValueSource.fromApptList) {
+            replacedMessage = replacedMessage.replace(valueInMessage, reminder.getIn(dynamicValueSource.pathFromReminder, ''));
         } else {
-            newMessage = newMessage.replace(`{{${value.name}}}`, await replace(value.mappings.find(mapping => mapping.providerSource === reminder.getIn(['appointment', 'provider', 'source'], '')).value, reminder));
+            replacedMessage = replacedMessage.replace(valueInMessage, dynamicValueSource.mappings.find(mapping => mapping.providerSource === reminder.getIn(['appointment', 'provider', 'source'], '')).value);
         }
     });
 
-    return newMessage;
+    const allReplaced = [...replacedMessage.matchAll(/{{[^}]+}}/g)].length === 0;
+    if (allReplaced) return replacedMessage;
+    return replace(replacedMessage, reminder);
 };
 
 export default {
