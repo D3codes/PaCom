@@ -76,12 +76,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	tableCell: {
 		padding: theme.spacing(1, 0)
-	},
-	failReasonIcon: {
-		cursor: 'pointer',
-		fontSize: '0.875rem',
-		color: theme.palette.text.secondary,
-		marginLeft: theme.spacing(0.5)
 	}
 }));
 

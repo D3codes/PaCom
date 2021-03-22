@@ -54,8 +54,8 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
         }
 
         // Tactical sleep
-		// eslint-disable-next-line no-await-in-loop
-		await new Promise(resolve => setTimeout(() => resolve(null), 250));
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise(resolve => setTimeout(() => resolve(null), 250));
 
         const notifyBy = forceText ? 'Text' : reminder.getIn(['patient', 'preferredContactMethod'], null);
         const messageToSend = message || notifyBy === 'Text' ? defaultSmsReminder : defaultPhoneReminder;
