@@ -11,7 +11,9 @@ const replace = async (message, reminder) => {
         if (!dynamicValueSource) throw Error('Unknown dynamic value found in message');
 
         if (dynamicValueSource.fromApptList) {
-            replacedMessage = replacedMessage.replace(valueInMessage, reminder.getIn(dynamicValueSource.pathFromReminder, ''));
+            const replaceWith = reminder.getIn(dynamicValueSource.pathFromReminder, '');
+            if (!replaceWith) replacedMessage = '';
+            replacedMessage = replacedMessage.replace(valueInMessage, replaceWith);
         } else {
             const replaceWith = dynamicValueSource.mappings.find(mapping => mapping.providerSource === reminder.getIn(['appointment', 'provider', 'source'], ''))?.value;
             if (!replaceWith) replacedMessage = '';
