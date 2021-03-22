@@ -38,7 +38,6 @@ Reminder.Status = {
 	Pending: 'Pending',
 	Sending: 'Sending',
 	Sent: 'Sent',
-	Canceled: 'Canceled',
 	Failed: 'Failed'
 };
 

@@ -30,8 +30,11 @@ const callBundler = (number, message, reminder) => {
 };
 
 const sendCalls = (onUpdate, reminders) => {
+    // send all calls
     calls.forEach(call => {
         twilio.sendCall(call.number, call.message);
+
+        // loop through all reminders for number and update statuses
         call.reminders.forEach(reminder => {
             reminder.setSentStatus();
             if (onUpdate) {

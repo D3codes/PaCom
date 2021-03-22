@@ -113,6 +113,7 @@ function AppointmentReminders() {
 	const [providerMappings, setProviderMappings] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [isValid, setIsValid] = useState(null);
+	const [sendClicked, setSendClicked] = useState(false);
 	// eslint-disable-next-line no-unused-vars
 	const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -134,7 +135,10 @@ function AppointmentReminders() {
 
 	const handleBrowseClick = () => {
 		const csvPromise = csvImporter.getCSV();
-		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(setReminders);
+		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
+			setReminders(remindersList);
+			setSendClicked(false);
+		});
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
 
@@ -153,7 +157,10 @@ function AppointmentReminders() {
 		const droppedFilePath = files[0].path;
 		try {
 			const csvPromise = csvImporter.getCSV(droppedFilePath);
-			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(setReminders);
+			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
+				setReminders(remindersList);
+				setSendClicked(false);
+			});
 			csvPromise.then(({ path }) => setFilePath(path));
 		} catch (InvalidFileTypeException) {
 			setFileDropped(false);
@@ -172,10 +179,11 @@ function AppointmentReminders() {
 	};
 
 	const handleSend = () => {
+		setSendClicked(true);
 		listSender.sendAppointmentReminders(reminders, handleRemindersUpdate);
 	};
 
-	const sendDisabled = dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid;
+	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked;
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
