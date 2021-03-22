@@ -48,7 +48,7 @@ const exportMessageReport = async report => {
 				notify: reminder?.patient?.preferredContactMethod,
 				home: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Home')?.phoneNumber,
 				cell: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Cell')?.phoneNumber,
-				info: ''
+				info: reminder?.statusMessage
 			});
 		});
 	});
