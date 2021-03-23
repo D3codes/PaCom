@@ -9,7 +9,7 @@ import { Done, Error } from '@material-ui/icons';
 import ContactMethod from '../../models/conactMethod';
 import Reminder from '../../models/reminder';
 
-const NA = 'N/A';
+const NA = '-';
 
 const StatusIcons = classes => ({
 	[Reminder.Status.Sending]: <CircularProgress className={classes.statusIcon} color="inherit" size={18} />,

@@ -56,7 +56,7 @@ function ReportTableHeader() {
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit">
-						Date of Birth
+						D.O.B.
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
