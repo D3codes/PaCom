@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Drawer, makeStyles, Typography, Button, Backdrop, CircularProgress
+	Drawer, makeStyles, Typography, Button, Backdrop
 } from '@material-ui/core';
 import {
 	PermPhoneMsg, PersonPin, RateReview, Schedule, DynamicFeed
@@ -176,6 +176,7 @@ export default function MiniDrawer({
 			variant="permanent"
 			classes={{ paper: classes.drawerPaper }}
 			className={classes.drawer}>
+			<Backdrop open={disableNavigation} className={classes.backdrop} />
 			<div className={classes.toolbar}>
 				<img height="32" src={PaComLogo} alt="PaCom Logo" />
 				<Typography className={classes.name} variant="h6">PaCom</Typography>
@@ -220,9 +221,6 @@ export default function MiniDrawer({
 					</div>
 				)}
 			</div>
-			<Backdrop open={disableNavigation} className={classes.backdrop}>
-				<CircularProgress />
-			</Backdrop>
 			<AlertSnackbar
 				open={showSnackbar}
 				autoHideDuration={6000}
