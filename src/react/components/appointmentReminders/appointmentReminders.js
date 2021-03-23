@@ -5,6 +5,7 @@ import {
 import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
@@ -102,7 +103,7 @@ function addUnknownProviders(reminders) {
 	distinctSources.forEach(source => persistentStorage.addProviderMapping(new Provider(source)));
 }
 
-function AppointmentReminders() {
+function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) {
 	const classes = useStyles();
 	const [reminders, setReminders] = useState(null);
 	const [filePath, setFilePath] = useState('');
@@ -178,14 +179,15 @@ function AppointmentReminders() {
 
 	const handleSend = () => {
 		setSendClicked(true);
-		listSender.sendAppointmentReminders(reminders, setReminders);
+		onDisableNavigationChange(true);
+		listSender.sendAppointmentReminders(reminders, setReminders, () => { onDisableNavigationChange(false); });
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Appointment List" />
+			<BrowseFile disabled={disableNavigation} onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Appointment List" />
 			{reminders
 				? <ReportTable onSend={handleSend} reminders={reminders} sendDisabled={sendDisabled} />
 				: (
@@ -221,5 +223,10 @@ function AppointmentReminders() {
 		</div>
 	);
 }
+
+AppointmentReminders.propTypes = {
+	disableNavigation: PropTypes.bool.isRequired,
+	onDisableNavigationChange: PropTypes.func.isRequired
+};
 
 export default AppointmentReminders;

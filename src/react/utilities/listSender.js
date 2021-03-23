@@ -15,6 +15,7 @@ let sendToPreferredContactMethodAndSms = false;
 let sendSmsToHomeIfNoCell = false;
 let autoSave = false;
 let autoSavePath = '';
+let complete = null;
 
 let calls = [];
 const callBundler = (number, message, reminder) => {
@@ -125,6 +126,8 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
                     if (autoSave) {
                         reportExporter.exportReport(groupRemindersByProviderAndDate(reminders), autoSavePath);
                     }
+
+                    complete();
                 });
             }
 
@@ -135,7 +138,8 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
     }
 };
 
-const sendCustomMessage = (reminders, message, onUpdate) => {
+const sendCustomMessage = (reminders, message, onUpdate, onComplete) => {
+    complete = onComplete;
     persistentStorage.getSettings().then(settings => {
         // Get Contact Preferences
         sendToPreferredContactMethodAndSms = settings.customMessages.contactPreferences.sendToPreferredAndSms;
@@ -149,7 +153,8 @@ const sendCustomMessage = (reminders, message, onUpdate) => {
     });
 };
 
-const sendAppointmentReminders = (reminders, onUpdate) => {
+const sendAppointmentReminders = (reminders, onUpdate, onComplete) => {
+    complete = onComplete;
     persistentStorage.getSettings().then(settings => {
         // Get Names of Default Call and Message Templates from Settings
         const defaultPhone = settings.appointmentReminders.defaultReminderTemplates.phone;

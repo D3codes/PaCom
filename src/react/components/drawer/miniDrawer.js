@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Drawer, makeStyles, Typography, Button
+	Drawer, makeStyles, Typography, Button, Backdrop, CircularProgress
 } from '@material-ui/core';
 import {
 	PermPhoneMsg, PersonPin, RateReview, Schedule, DynamicFeed
@@ -116,11 +116,16 @@ const useStyles = makeStyles(theme => ({
 	name: {
 		color: theme.palette.text.darkContrast,
 		marginLeft: theme.spacing()
+	},
+	backdrop: {
+		position: 'absolute',
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff',
 	}
 }));
 
 export default function MiniDrawer({
-	onTabSelect, selectedTabId = PRIMARY_TABS[0].id
+	onTabSelect, disableNavigation, selectedTabId = PRIMARY_TABS[0].id
 }) {
 	const classes = useStyles();
 	const [version, setVersion] = useState(null);
@@ -215,6 +220,9 @@ export default function MiniDrawer({
 					</div>
 				)}
 			</div>
+			<Backdrop open={disableNavigation} className={classes.backdrop}>
+				<CircularProgress />
+			</Backdrop>
 			<AlertSnackbar
 				open={showSnackbar}
 				autoHideDuration={6000}
@@ -228,6 +236,7 @@ export default function MiniDrawer({
 
 MiniDrawer.propTypes = {
 	onTabSelect: PropTypes.func.isRequired,
+	disableNavigation: PropTypes.bool.isRequired,
 	selectedTabId: PropTypes.string
 };
 
