@@ -10,6 +10,10 @@ class Reminder extends Model {
 	}
 
 	setStatusMessage(message) {
+		this.statusMessage = message;
+	}
+
+	appendStatusMessage(message) {
 		this.statusMessage = this.statusMessage ? `${this.statusMessage}, ${message}` : message;
 	}
 

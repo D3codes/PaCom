@@ -43,18 +43,18 @@ const sendCalls = async (onUpdate, reminders) => {
         await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
         const call = calls[i];
-        const sentSuccessfully = twilio.sendCall(call.number, call.message);
-
-        // loop through all reminders for number and update statuses
-        call.reminders.forEach(reminder => {
-            if (sentSuccessfully) reminder.setSentStatus();
-            else {
-                reminder.setFailedStatus();
-                reminder.setStatusMessage(TwilioError);
-            }
-            if (onUpdate) {
-                onUpdate([...reminders]);
-            }
+        twilio.sendCall(call.number, call.message).then(sentSuccessfully => {
+            // loop through all reminders for number and update statuses
+            call.reminders.forEach(reminder => {
+                if (sentSuccessfully) reminder.setSentStatus();
+                else {
+                    reminder.setFailedStatus();
+                    reminder.setStatusMessage(TwilioError);
+                }
+                if (onUpdate) {
+                    onUpdate([...reminders]);
+                }
+            });
         });
     }
 };
@@ -89,7 +89,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
         let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === 'Phone' ? 'Home' : 'Cell');
         if (!contactNumber && notifyBy === 'Text' && sendSmsToHomeIfNoCell) {
             contactNumber = reminder.get('patient').getPhoneNumberByType('Home');
-            reminder.setStatusMessage(SmsSentToHome);
+            reminder.appendStatusMessage(SmsSentToHome);
         }
         if (!contactNumber) {
             reminder.setFailedStatus();
@@ -101,18 +101,19 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
         // eslint-disable-next-line no-loop-func
         dynamicValueReplacer.replace(messageToSend, reminder).then(async replacedMessage => {
             if (replacedMessage && notifyBy === 'Text') {
-                const sentSuccessfully = twilio.sendSMS(contactNumber, replacedMessage);
-                if (!forceText) {
-                    if (sentSuccessfully) reminder.setSentStatus();
-                    else {
-                        reminder.setFailedStatus();
-                        reminder.setStatusMessage(TwilioError);
+                twilio.sendSMS(contactNumber, replacedMessage).then(sentSuccessfully => {
+                    if (!forceText) {
+                        if (sentSuccessfully) reminder.setSentStatus();
+                        else {
+                            reminder.setFailedStatus();
+                            reminder.setStatusMessage(TwilioError);
+                        }
                     }
-                }
+                });
             } else if (replacedMessage) {
                 callBundler(contactNumber, replacedMessage, reminder);
                 if (sendToPreferredContactMethodAndSms) {
-                    reminder.setStatusMessage(PreferredAndSms);
+                    reminder.appendStatusMessage(PreferredAndSms);
                     await sendToList([reminder], null, message, true);
                 }
             }
