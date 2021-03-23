@@ -38,7 +38,7 @@ const sendCalls = (onUpdate, reminders) => {
         call.reminders.forEach(reminder => {
             reminder.setSentStatus();
             if (onUpdate) {
-                onUpdate(reminders);
+                onUpdate([...reminders]);
             }
         });
     });
@@ -50,7 +50,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
         const reminder = reminders[i];
         reminder.setSendingStatus();
         if (onUpdate) {
-            onUpdate(reminders);
+            onUpdate([...reminders]);
         }
 
         // Tactical sleep
@@ -91,7 +91,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
             }
 
             if (onUpdate) {
-                onUpdate(reminders);
+                onUpdate([...reminders]);
             }
         });
     }

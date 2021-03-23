@@ -1,6 +1,4 @@
-import React, {
-	useEffect, useState, Fragment, useReducer
-} from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import {
 	makeStyles, Typography, CircularProgress, Button
 } from '@material-ui/core';
@@ -116,8 +114,6 @@ function AppointmentReminders() {
 	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
 	const [isValid, setIsValid] = useState(null);
 	const [sendClicked, setSendClicked] = useState(false);
-	// eslint-disable-next-line no-unused-vars
-	const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
 	useEffect(() => {
 		persistentStorage.getProviderMappings()
@@ -180,14 +176,9 @@ function AppointmentReminders() {
 		// handle reload of appointments here
 	};
 
-	const handleRemindersUpdate = r => {
-		setReminders(r);
-		forceUpdate();
-	};
-
 	const handleSend = () => {
 		setSendClicked(true);
-		listSender.sendAppointmentReminders(reminders, handleRemindersUpdate);
+		listSender.sendAppointmentReminders(reminders, setReminders);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
