@@ -63,7 +63,6 @@ const exportMessageReport = async (report, path = null) => {
 	}.xlsx`;
 	if (!path) path = await filePicker.pickSave(fileName);
 	else path = `${path}\\${fileName}`;
-	console.log(path);
 	if (path) workbook.xlsx.writeFile(path);
 };
 

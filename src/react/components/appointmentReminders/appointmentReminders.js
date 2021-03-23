@@ -121,7 +121,7 @@ function AppointmentReminders() {
 			.then(() => persistentStorage.getSettings())
 			.then(settings => {
 				setDateVerificationSettings(settings.appointmentReminders.dateVerification);
-				setDefaultTemplatesDefined(Boolean(settings.appointmentReminders.defaultReminderTemplates.phone && !!settings.appointmentReminders.defaultReminderTemplates.sms));
+				setDefaultTemplatesDefined(Boolean(settings.appointmentReminders.defaultReminderTemplates.phone && settings.appointmentReminders.defaultReminderTemplates.sms));
 			});
 	}, []);
 
