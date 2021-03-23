@@ -1,6 +1,7 @@
 import twilio from './twilioClient';
 import dynamicValueReplacer from './dynamicValueReplacer';
 import persistentStorage from './persistentStorage';
+import reportExporter from './reportExporter';
 
 import {
     SmsSentToHome, MissingPhoneNumber, PreferredAndSms
@@ -10,6 +11,8 @@ let defaultPhoneReminder = '';
 let defaultSmsReminder = '';
 let sendToPreferredContactMethodAndSms = false;
 let sendSmsToHomeIfNoCell = false;
+let autoSave = false;
+let autoSavePath = '';
 
 let calls = [];
 const callBundler = (number, message, reminder) => {
@@ -29,9 +32,15 @@ const callBundler = (number, message, reminder) => {
     calls.push(call);
 };
 
-const sendCalls = (onUpdate, reminders) => {
+const sendCalls = async (onUpdate, reminders) => {
     // send all calls
-    calls.forEach(call => {
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < calls.length; i++) {
+        // Tactical sleep
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise(resolve => setTimeout(() => resolve(null), 250));
+
+        const call = calls[i];
         twilio.sendCall(call.number, call.message);
 
         // loop through all reminders for number and update statuses
@@ -41,8 +50,19 @@ const sendCalls = (onUpdate, reminders) => {
                 onUpdate([...reminders]);
             }
         });
-    });
+    }
 };
+
+const groupRemindersByProviderAndDate = reminders => reminders.reduce((remindersByProviderAndDate, reminder) => {
+	const providerDateKey = `${reminder.getIn(['appointment', 'provider', 'target'], 'Unmapped Provider(s)')} - ${reminder.getIn(['appointment', 'date'])}`;
+	const updatedRemindersByProviderAndDate = { ...remindersByProviderAndDate };
+	if (updatedRemindersByProviderAndDate[providerDateKey]) {
+		updatedRemindersByProviderAndDate[providerDateKey].push(reminder);
+	} else {
+		updatedRemindersByProviderAndDate[providerDateKey] = [reminder];
+	}
+	return updatedRemindersByProviderAndDate;
+}, {});
 
 const sendToList = async (reminders, onUpdate = null, message = '', forceText = false) => {
     // eslint-disable-next-line no-plusplus
@@ -87,7 +107,12 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 
             // If this is the last reminder, send bundled calls
             if (i === reminders.length - 1 && !forceText) {
-                sendCalls(onUpdate, reminders);
+                sendCalls(onUpdate, reminders).then(() => {
+                    // Export Message Report Automatically, if enabled
+                    if (autoSave) {
+                        reportExporter.exportReport(groupRemindersByProviderAndDate(reminders), autoSavePath);
+                    }
+                });
             }
 
             if (onUpdate) {
@@ -99,8 +124,13 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 
 const sendCustomMessage = (reminders, message, onUpdate) => {
     persistentStorage.getSettings().then(settings => {
+        // Get Contact Preferences
         sendToPreferredContactMethodAndSms = settings.customMessages.contactPreferences.sendToPreferredAndSms;
         sendSmsToHomeIfNoCell = settings.customMessages.contactPreferences.textHomeIfCellNotAvailable;
+
+        // Get AutoSave Settings
+        autoSave = settings.messageReports.autosaveReports;
+        autoSavePath = settings.messageReports.autosaveLocation;
 
         sendToList(reminders, onUpdate, message);
     });
@@ -112,9 +142,13 @@ const sendAppointmentReminders = (reminders, onUpdate) => {
         const defaultPhone = settings.appointmentReminders.defaultReminderTemplates.phone;
         const defaultSms = settings.appointmentReminders.defaultReminderTemplates.sms;
 
-        // Set Contact Preferences
+        // Get Contact Preferences
         sendToPreferredContactMethodAndSms = settings.appointmentReminders.contactPreferences.sendToPreferredAndSms;
         sendSmsToHomeIfNoCell = settings.appointmentReminders.contactPreferences.textHomeIfCellNotAvailable;
+
+        // Get AutoSave Settings
+        autoSave = settings.messageReports.autosaveReports;
+        autoSavePath = settings.messageReports.autosaveLocation;
 
         persistentStorage.getMessageTemplates().then(templates => {
             // Set Default Messages Templates

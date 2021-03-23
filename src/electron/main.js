@@ -207,4 +207,4 @@ ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork()
 
 ipc.handle('show-alert', (event, title, message, type, buttons, defaultId, cancelId) => showAlert(title, message, type, buttons, defaultId, cancelId));
 
-ipc.handle('export-report', (event, report) => excelHelper.exportMessageReport(report));
+ipc.handle('export-report', (event, report, path) => excelHelper.exportMessageReport(report, path));

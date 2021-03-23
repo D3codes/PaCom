@@ -1,7 +1,7 @@
 const ExcelJS = require('exceljs');
 const filePicker = require('./filePicker');
 
-const exportMessageReport = async report => {
+const exportMessageReport = async (report, path = null) => {
 	const workbook = new ExcelJS.Workbook();
 	workbook.creator = 'PaCom';
 	workbook.created = new Date();
@@ -53,16 +53,17 @@ const exportMessageReport = async report => {
 		});
 	});
 
-	const path = await filePicker.pickSave(
-		`PaComMessageReport-${
-			new Date()
-				.toLocaleString()
-				.replaceAll(':', '')
-				.replaceAll('/', '')
-				.replaceAll(' ', '')
-				.replaceAll(',', '-')
-		}.xlsx`
-	);
+	const fileName = `PaComMessageReport-${
+		new Date()
+			.toLocaleString()
+			.replaceAll(':', '')
+			.replaceAll('/', '')
+			.replaceAll(' ', '')
+			.replaceAll(',', '-')
+	}.xlsx`;
+	if (!path) path = await filePicker.pickSave(fileName);
+	else path = `${path}\\${fileName}`;
+	console.log(path);
 	if (path) workbook.xlsx.writeFile(path);
 };
 
