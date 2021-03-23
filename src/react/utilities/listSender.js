@@ -4,8 +4,10 @@ import persistentStorage from './persistentStorage';
 import reportExporter from './reportExporter';
 
 import {
-    SmsSentToHome, MissingPhoneNumber, PreferredAndSms
+    SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError
 } from '../localization/en/statusMessageText';
+
+const SLEEP_DURATION = 500;
 
 let defaultPhoneReminder = '';
 let defaultSmsReminder = '';
@@ -38,14 +40,18 @@ const sendCalls = async (onUpdate, reminders) => {
     for (let i = 0; i < calls.length; i++) {
         // Tactical sleep
         // eslint-disable-next-line no-await-in-loop
-        await new Promise(resolve => setTimeout(() => resolve(null), 250));
+        await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
         const call = calls[i];
-        twilio.sendCall(call.number, call.message);
+        const sentSuccessfully = twilio.sendCall(call.number, call.message);
 
         // loop through all reminders for number and update statuses
         call.reminders.forEach(reminder => {
-            reminder.setSentStatus();
+            if (sentSuccessfully) reminder.setSentStatus();
+            else {
+                reminder.setFailedStatus();
+                reminder.setStatusMessage(TwilioError);
+            }
             if (onUpdate) {
                 onUpdate([...reminders]);
             }
@@ -75,7 +81,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 
         // Tactical sleep
         // eslint-disable-next-line no-await-in-loop
-        await new Promise(resolve => setTimeout(() => resolve(null), 250));
+        await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
         const notifyBy = forceText ? 'Text' : reminder.getIn(['patient', 'preferredContactMethod'], null);
         const messageToSend = message || notifyBy === 'Text' ? defaultSmsReminder : defaultPhoneReminder;
@@ -95,8 +101,14 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
         // eslint-disable-next-line no-loop-func
         dynamicValueReplacer.replace(messageToSend, reminder).then(async replacedMessage => {
             if (replacedMessage && notifyBy === 'Text') {
-                twilio.sendSMS(contactNumber, replacedMessage);
-                if (!forceText) reminder.setSentStatus();
+                const sentSuccessfully = twilio.sendSMS(contactNumber, replacedMessage);
+                if (!forceText) {
+                    if (sentSuccessfully) reminder.setSentStatus();
+                    else {
+                        reminder.setFailedStatus();
+                        reminder.setStatusMessage(TwilioError);
+                    }
+                }
             } else if (replacedMessage) {
                 callBundler(contactNumber, replacedMessage, reminder);
                 if (sendToPreferredContactMethodAndSms) {

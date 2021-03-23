@@ -17,3 +17,7 @@ exports.UnmappedDynamicValue = UnmappedDynamicValue;
 // Nonexistent dynamic value
 const NonexistentDynamicValue = 'Nonexistent dynamic value: ';
 exports.NonexistentDynamicValue = NonexistentDynamicValue;
+
+//Twilio Error
+const TwilioError = 'Error communicating with Twilio';
+exports.TwilioError = TwilioError;
