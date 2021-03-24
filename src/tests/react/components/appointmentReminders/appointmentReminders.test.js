@@ -6,10 +6,30 @@ import persistentStorageMock from '../../../../react/utilities/persistentStorage
 
 jest.mock('../../../../react/utilities/persistentStorage');
 
+const testSettings = {
+	appointmentReminders: {
+		dateVerification: {
+			numberOfDays: 3,
+			endOfRange: null,
+			allowSendOutsideRange: 0,
+			useBusinessDays: true
+		},
+		contactPreferences: {
+			sendToPreferredAndSms: false,
+			textHomeIfCellNotAvailable: false
+		},
+		defaultReminderTemplates: {
+			phone: null,
+			sms: null
+		}
+	}
+}
+
 describe('AppointmentReminders', () => {
 	it('renders without crashing', () => {
 		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
-		const { container } = render(<AppointmentReminders />);
+		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+		const { container } = render(<AppointmentReminders disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 		expect(container.firstChild.className.includes('appointmentRemindersContainer')).toBe(true);
 	});
 });
