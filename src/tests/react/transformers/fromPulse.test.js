@@ -15,7 +15,8 @@ const expectedTransform = '[{"patient":{"accountNumber":"12345-67","name":"Freem
                         + '"provider":{"source":"APPOINTMENTS FOR PROVIDER: GLAMB - Garrett D Lambert, MD on"},"duration":"60"},"status":"Pending","statusMessage":""},{"patient":{'
                         + '"accountNumber":"12345-89","name":"Sasnett, Caullen R","contactMethods":[{"phoneNumber":"(913)683-8736","type":"Home"},'
                         + '{"phoneNumber":"(913)683-8736","type":"Cell"}],"preferredContactMethod":"Phone","dateOfBirth":"01/11/1995"},"appointment":{"date":"Friday 8/9/2019",'
-                        + '"time":"7:00 AM","provider":{"source":"APPOINTMENTS FOR PROVIDER: JLOB - Jacqueline Lob, LCSW on"},"duration":"60"},"status":"Pending","statusMessage":""}]';
+                        + '"time":"7:00 AM","provider":{"source":"APPOINTMENTS FOR PROVIDER: JLOB - Jacqueline Lob, LCSW on"},"duration":"60"},"status":"Pending",'
+						+ '"statusMessage":""}]';
 
 describe('fromPulse', () => {
 	it('correctly transforms data', () => {

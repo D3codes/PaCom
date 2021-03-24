@@ -23,7 +23,7 @@ const testSettings = {
 			sms: null
 		}
 	}
-}
+};
 
 describe('AppointmentReminders', () => {
 	it('renders without crashing', () => {

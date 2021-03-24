@@ -65,17 +65,17 @@ function ReportTable({ onSend, reminders = null, sendDisabled = false }) {
 			{remindersByProviderAndDate && (
 				<div className={classes.tableContainer}>
 					<Table padding="none" stickyHeader>
-					<colgroup>
-						<col style={{ width: '11%' }} />
-						<col style={{ width: '10%' }} />
-						<col style={{ width: '9%' }} />
-						<col style={{ width: '18%' }} />
-						<col style={{ width: '10%' }} />
-						<col style={{ width: '8%' }} />
-						<col style={{ width: '10%' }} />
-						<col style={{ width: '12%' }} />
-						<col style={{ width: '12%' }} />
-					</colgroup>
+						<colgroup>
+							<col style={{ width: '11%' }} />
+							<col style={{ width: '10%' }} />
+							<col style={{ width: '9%' }} />
+							<col style={{ width: '18%' }} />
+							<col style={{ width: '10%' }} />
+							<col style={{ width: '8%' }} />
+							<col style={{ width: '10%' }} />
+							<col style={{ width: '12%' }} />
+							<col style={{ width: '12%' }} />
+						</colgroup>
 						<ReportTableHeader />
 						<TableBody>
 							{Object.entries(remindersByProviderAndDate).map(([providerDateText, remindersForProviderDate]) => (

@@ -60,7 +60,9 @@ export default function App() {
 			</AppBar>
 			<main className={classes.main}>
 				<div className={classes.toolbar} />
-				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />}
+				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && (
+					<AppointmentReminders disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
+				)}
 				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
 				{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
 				{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}

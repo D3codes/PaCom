@@ -29,7 +29,7 @@ const testSettings = {
 	messageReports: {},
 	twilio: {},
 	sharedConfig: {}
-}
+};
 
 describe('App', () => {
 	it('renders without crashing', () => {

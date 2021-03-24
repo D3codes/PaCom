@@ -1,7 +1,8 @@
 const ExcelJS = require('exceljs');
 const filePicker = require('./filePicker');
 
-const exportMessageReport = async (report, path = null) => {
+const exportMessageReport = async (report, autoSavePath = null) => {
+	let path = autoSavePath;
 	const workbook = new ExcelJS.Workbook();
 	workbook.creator = 'PaCom';
 	workbook.created = new Date();
