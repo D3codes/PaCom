@@ -99,9 +99,8 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 			continue;
 		}
 
-		const pathToProviderMapping = notifyBy === 'Text' ? ['appointment', 'provider', 'target'] : ['appointment', 'provider', 'phonetic'];
 		// eslint-disable-next-line no-loop-func
-		dynamicValueReplacer.replace(messageToSend, reminder, pathToProviderMapping).then(async replacedMessage => {
+		dynamicValueReplacer.replace(messageToSend, reminder, notifyBy).then(async replacedMessage => {
 			if (replacedMessage && notifyBy === 'Text') {
 				twilio.sendSMS(contactNumber, replacedMessage).then(sentSuccessfully => {
 					if (!forceText) {

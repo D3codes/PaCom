@@ -2,11 +2,12 @@ import persistentStorage from './persistentStorage';
 
 import { UnmappedDynamicValue, NonexistentDynamicValue } from '../localization/en/statusMessageText';
 
-const replace = async (message, reminder, pathToProviderMapping) => {
+const replace = async (message, reminder, notifyBy) => {
 	const dynamicValues = await persistentStorage.getDynamicValues();
 	let replacedMessage = message;
 
 	const dynamicValuesInMessage = [...message.matchAll(/{{[^}]+}}/g)];
+	const pathToProviderMapping = notifyBy === 'Text' ? ['appointment', 'provider', 'target'] : ['appointment', 'provider', 'phonetic'];
 
 	await dynamicValuesInMessage.forEach(async valueInMessage => {
 		const dynamicValueSource = dynamicValues.find(value => `{{${value.name}}}` === valueInMessage[0]);

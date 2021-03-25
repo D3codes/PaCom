@@ -113,6 +113,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [providerMappings, setProviderMappings] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
+	const [validationRan, setValidationRan] = useState(false);
 	const [isValid, setIsValid] = useState(null);
 	const [sendClicked, setSendClicked] = useState(false);
 
@@ -127,11 +128,14 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	}, []);
 
 	useEffect(() => {
-		if (reminders && dateVerificationSettings) {
+		if (reminders && !validationRan && dateVerificationSettings) {
 			addUnknownProviders(reminders);
 			validateProviderMappings(reminders)
 				.then(() => validateAppointmentDates(reminders, dateVerificationSettings))
-				.then(setIsValid);
+				.then(valid => {
+					setIsValid(valid);
+					setValidationRan(true);
+				});
 		}
 	}, [reminders]);
 
@@ -139,6 +143,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 		const csvPromise = csvImporter.getCSV();
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
 			setReminders(remindersList);
+			setValidationRan(false);
 			setSendClicked(false);
 			if (!defaultTemplatesDefined) messageController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 		});
@@ -162,6 +167,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 			const csvPromise = csvImporter.getCSV(droppedFilePath);
 			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
 				setReminders(remindersList);
+				setValidationRan(false);
 				setSendClicked(false);
 				if (!defaultTemplatesDefined) messageController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 			});
