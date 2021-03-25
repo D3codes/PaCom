@@ -176,7 +176,7 @@ export default function MiniDrawer({
 			variant="permanent"
 			classes={{ paper: classes.drawerPaper }}
 			className={classes.drawer}>
-			<Backdrop open={disableNavigation} className={classes.backdrop} />
+			<Backdrop data-testid="backdrop" open={disableNavigation} className={classes.backdrop} />
 			<div className={classes.toolbar}>
 				<img height="32" src={PaComLogo} alt="PaCom Logo" />
 				<Typography className={classes.name} variant="h6">PaCom</Typography>
