@@ -2,7 +2,7 @@ import persistentStorage from './persistentStorage';
 
 import { UnmappedDynamicValue, NonexistentDynamicValue } from '../localization/en/statusMessageText';
 
-const replace = async (message, reminder) => {
+const replace = async (message, reminder, pathToProviderMapping) => {
 	const dynamicValues = await persistentStorage.getDynamicValues();
 	let replacedMessage = message;
 
@@ -15,7 +15,9 @@ const replace = async (message, reminder) => {
 			reminder.setStatusMessage(`${NonexistentDynamicValue}${valueInMessage[0]}`);
 			replacedMessage = '';
 		} else if (dynamicValueSource.fromApptList) {
-			const replaceWith = reminder.getIn(dynamicValueSource.pathFromReminder, '');
+			const replaceWith = dynamicValueSource.name === 'Provider'
+				? reminder.getIn(pathToProviderMapping, '')
+				: reminder.getIn(dynamicValueSource.pathFromReminder, '');
 			if (!replaceWith) {
 				replacedMessage = '';
 				reminder.setFailedStatus();
