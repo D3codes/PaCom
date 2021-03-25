@@ -115,6 +115,43 @@ describe('DynamicValueReplacer', () => {
 		expect(mockSetFailedStatus).toHaveBeenCalledTimes(0);
 	});
 
+	it('replaces nested dynamic values correctly', async () => {
+		const testCustomDynamicValues = [
+			{
+				name: 'Custom',
+				fromApptList: false,
+				mappings: [
+					{
+						providerSource: 'Dr. Test',
+						value: '{{Custom2}}'
+					}
+				]
+			},
+			{
+				name: 'Custom2',
+				fromApptList: true,
+				mappings: [],
+				pathFromReminder: ['1', '2', '3']
+			}
+		];
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(testCustomDynamicValues));
+		const mockSetStatusMessage = jest.fn();
+		const mockSetFailedStatus = jest.fn();
+		const mockGetIn = jest.fn(() => 'Dr. Test');
+		const fakeReminder = {
+			setStatusMessage: mockSetStatusMessage,
+			setFailedStatus: mockSetFailedStatus,
+			getIn: mockGetIn
+		};
+
+		const testMessage = 'The replacement text should be here: {{Custom}}';
+		const replacedMessage = await dynamicValueReplacer.replace(testMessage, fakeReminder);
+
+		expect(replacedMessage).toEqual('The replacement text should be here: Dr. Test');
+		expect(mockSetStatusMessage).toHaveBeenCalledTimes(0);
+		expect(mockSetFailedStatus).toHaveBeenCalledTimes(0);
+	});
+
 	it('sets a failed status on the reminder when it cannot get values', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
 		const mockSetStatusMessage = jest.fn();
@@ -146,6 +183,37 @@ describe('DynamicValueReplacer', () => {
 		};
 
 		const testMessage = 'The replacement text should be here: {{Unknown}}';
+		const replacedMessage = await dynamicValueReplacer.replace(testMessage, fakeReminder);
+
+		expect(replacedMessage).toEqual('');
+		expect(mockSetStatusMessage).toHaveBeenCalledTimes(1);
+		expect(mockSetFailedStatus).toHaveBeenCalledTimes(1);
+	});
+
+	it('sets a failed status on the reminder when it encounters an unknown nested dynamic value', async () => {
+		const testCustomDynamicValues = [
+			{
+				name: 'Custom',
+				fromApptList: false,
+				mappings: [
+					{
+						providerSource: 'Dr. Test',
+						value: '{{Unknown}}'
+					}
+				]
+			}
+		];
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(testCustomDynamicValues));
+		const mockSetStatusMessage = jest.fn();
+		const mockSetFailedStatus = jest.fn();
+		const mockGetIn = jest.fn(() => 'Dr. Test');
+		const fakeReminder = {
+			setStatusMessage: mockSetStatusMessage,
+			setFailedStatus: mockSetFailedStatus,
+			getIn: mockGetIn
+		};
+
+		const testMessage = 'The replacement text should be here: {{Custom}}';
 		const replacedMessage = await dynamicValueReplacer.replace(testMessage, fakeReminder);
 
 		expect(replacedMessage).toEqual('');
