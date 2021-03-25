@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
 function ReportTable({ onSend, reminders = null, sendDisabled = false }) {
 	const classes = useStyles();
 	const remindersByProviderAndDate = reminders ? groupRemindersByProviderAndDate(reminders) : null;
-	const completedReminders = reminders.filter(reminder => reminder.status !== 'Pending' && reminder.status !== 'Sending');
-	const progress = (completedReminders.length / reminders.length) * 100;
+	const completedReminders = reminders?.filter(reminder => reminder.status !== 'Pending' && reminder.status !== 'Sending');
+	const progress = (completedReminders?.length / reminders?.length) * 100;
 
 	const handleExport = () => {
 		reportExporter.exportReport(remindersByProviderAndDate);
