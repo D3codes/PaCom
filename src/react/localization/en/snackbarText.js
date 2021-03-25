@@ -41,5 +41,7 @@ const AllRemindersSentSuccessfully = 'Appointment Reminders Sent Successfully!';
 exports.AllRemindersSentSuccessfully = AllRemindersSentSuccessfully;
 
 // Error Sending Some Reminders
-const ErrorSendingSomeReminders = 'Error Sending Reminders - Check statuses for details';
-exports.ErrorSendingSomeReminders = ErrorSendingSomeReminders;
+const ErrorSendingSomeRemindersTitle = 'Error Sending Reminders';
+const ErrorSendingSomeRemindersMessage = 'Check statuses for details';
+exports.ErrorSendingSomeRemindersTitle = ErrorSendingSomeRemindersTitle;
+exports.ErrorSendingSomeRemindersMessage = ErrorSendingSomeRemindersMessage;
