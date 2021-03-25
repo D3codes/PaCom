@@ -27,7 +27,7 @@ import {
 	DateVerificationBlockTitle, DateVerificationBlockMessage,
 	DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage
 } from '../../localization/en/dialogText';
-import { InvalidFileTypeMessage } from '../../localization/en/snackbarText';
+import { InvalidFileTypeMessage, AllRemindersSentSuccessfully, ErrorSendingSomeReminders } from '../../localization/en/snackbarText';
 
 const Ehrs = {
 	Pulse: 'Pulse'
@@ -110,6 +110,8 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [draggingOver, setDraggingOver] = useState(false);
 	const [fileDropped, setFileDropped] = useState(false);
 	const [showAlertSnackbar, setShowAlertSnackbar] = useState(false);
+	const [snackbarSeverity, setSnackbarSeverity] = useState('');
+	const [snackbarMessage, setSnackbarMessage] = useState('');
 	const [providerMappings, setProviderMappings] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
@@ -174,6 +176,8 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 			csvPromise.then(({ path }) => setFilePath(path));
 		} catch (InvalidFileTypeException) {
 			setFileDropped(false);
+			setSnackbarSeverity(AlertSnackbar.Severities.Warning);
+			setSnackbarMessage(InvalidFileTypeMessage);
 			setShowAlertSnackbar(true);
 		}
 	};
@@ -183,10 +187,19 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 		// handle reload of appointments here
 	};
 
+	const onSendingComplete = () => {
+		onDisableNavigationChange(false);
+
+		const allSentSuccessfully = (reminders.filter(reminder => reminder.status === 'Failed')).length === 0;
+		setSnackbarSeverity(allSentSuccessfully ? AlertSnackbar.Severities.Success : AlertSnackbar.Severities.Error);
+		setSnackbarMessage(allSentSuccessfully ? AllRemindersSentSuccessfully : ErrorSendingSomeReminders);
+		setShowAlertSnackbar(true);
+	};
+
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, () => { onDisableNavigationChange(false); });
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
@@ -222,8 +235,8 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 				)}
 			<AlertSnackbar
 				open={showAlertSnackbar}
-				severity={AlertSnackbar.Severities.Warning}
-				message={InvalidFileTypeMessage}
+				severity={snackbarSeverity}
+				message={snackbarMessage}
 				onClose={() => { setShowAlertSnackbar(false); }}
 			/>
 		</div>
