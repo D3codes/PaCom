@@ -36,18 +36,18 @@ const reminders = [
 
 describe('ReportTable', () => {
 	it('renders no table when no reminders are passed in', () => {
-		const { container } = render(<ReportTable />);
+		const { container } = render(<ReportTable onSend={jest.fn()} />);
 		expect(container.firstChild.className.includes('noRemindersContainer')).toBe(true);
 	});
 
 	it('renders a table when reminders are passed in', () => {
-		const { container } = render(<ReportTable reminders={reminders} />);
+		const { container } = render(<ReportTable reminders={reminders} onSend={jest.fn()} />);
 		expect(container.firstChild.className.includes('tableContainer')).toBe(true);
 	});
 
 	it('renders export and send buttons regardless of reminders being passed in', () => {
-		const { getAllByText: getAllByTextNoTable } = render(<ReportTable />);
-		const { getAllByText: getAllByTextWithTable } = render(<ReportTable reminders={reminders} />);
+		const { getAllByText: getAllByTextNoTable } = render(<ReportTable onSend={jest.fn()} />);
+		const { getAllByText: getAllByTextWithTable } = render(<ReportTable reminders={reminders} onSend={jest.fn()} />);
 
 		expect(getAllByTextNoTable('Export')).toBeDefined();
 		expect(getAllByTextNoTable('Send')).toBeDefined();
