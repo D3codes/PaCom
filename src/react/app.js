@@ -14,7 +14,8 @@ import Settings from './components/settings/settings';
 const useStyles = makeStyles(theme => ({
 	content: {
 		display: 'flex',
-		height: '100%'
+		height: '100%',
+		overflow: 'hidden'
 	},
 	appBar: {
 		marginLeft: DRAWER_WIDTH,

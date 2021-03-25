@@ -2,9 +2,9 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-	CircularProgress, makeStyles, TableCell, TableRow, Typography, Tooltip
+	makeStyles, TableCell, TableRow, Typography, Tooltip
 } from '@material-ui/core';
-import { Done, Error } from '@material-ui/icons';
+import { Done, Error, Loop } from '@material-ui/icons';
 
 import ContactMethod from '../../models/conactMethod';
 import Reminder from '../../models/reminder';
@@ -12,7 +12,7 @@ import Reminder from '../../models/reminder';
 const NA = '-';
 
 const StatusIcons = classes => ({
-	[Reminder.Status.Sending]: <CircularProgress className={classes.statusIcon} color="inherit" size={18} />,
+	[Reminder.Status.Sending]: <Loop color="inherit" className={classes.statusIcon} />,
 	[Reminder.Status.Sent]: <Done color="inherit" className={classes.statusIcon} />,
 	[Reminder.Status.Failed]: <Error color="inherit" className={classes.statusIcon} />
 });
