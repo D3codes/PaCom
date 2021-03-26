@@ -39,11 +39,26 @@ const sendCalls = async (onUpdate, reminders) => {
 	// send all calls
 	// eslint-disable-next-line no-plusplus
 	for (let i = 0; i < calls.length; i++) {
+		const call = calls[i];
+
 		// Tactical sleep
 		// eslint-disable-next-line no-await-in-loop
 		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
-		const call = calls[i];
+		if (!call.number) {
+			call.reminders.forEach(reminder => {
+				reminder.setFailedStatus();
+				reminder.appendStatusMessage(MissingPhoneNumber);
+
+				if (onUpdate) {
+					onUpdate([...reminders]);
+				}
+			});
+
+			// eslint-disable-next-line no-continue
+			continue;
+		}
+
 		twilio.sendCall(call.number, call.message).then(sentSuccessfully => {
 			// loop through all reminders for number and update statuses
 			call.reminders.forEach(reminder => {
@@ -97,7 +112,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 			contactNumber = reminder.get('patient').getPhoneNumberByType('Home');
 			reminder.appendStatusMessage(SmsSentToHome);
 		}
-		if (!contactNumber) {
+		if (!contactNumber && (!sendToPreferredContactMethodAndSms || notifyBy === 'Text')) {
 			reminder.setFailedStatus();
 			reminder.setStatusMessage(MissingPhoneNumber);
 			// eslint-disable-next-line no-continue
