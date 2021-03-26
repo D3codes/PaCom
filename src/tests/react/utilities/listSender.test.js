@@ -10,23 +10,6 @@ jest.mock('../../../react/utilities/twilioClient');
 jest.mock('../../../react/utilities/dynamicValueReplacer');
 jest.mock('../../../react/utilities/reportExporter');
 
-// Mock Message Templates
-const testMessageTemplates = [
-	{
-		name: 'phoneTemplate',
-		body: 'phone template body'
-	},
-	{
-		name: 'smsTemplate',
-		body: 'sms template body'
-	}
-];
-persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
-
-// Mock Dynamic Value Replacer
-const replacedMessageMock = 'Replaced Message';
-dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
-
 describe('ListSender', () => {
 	it('sends no messages when no reminders passed', done => {
 		// Mock Twilio Client
@@ -53,6 +36,23 @@ describe('ListSender', () => {
 			}
 		};
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
 
 		// Mock Reminders
 		const remindersMock = [];
@@ -97,6 +97,23 @@ describe('ListSender', () => {
 			}
 		};
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
 
 		// Mock Reminders
 		const setSendingStatusMock = jest.fn();
@@ -166,6 +183,23 @@ describe('ListSender', () => {
 		};
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
 
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
+
 		// Mock Reminders
 		const setSendingStatusMock = jest.fn();
 		const setFailedStatusMock = jest.fn();
@@ -233,6 +267,23 @@ describe('ListSender', () => {
 			}
 		};
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
 
 		// Mock Reminders
 		const setSendingStatusMock = jest.fn();
@@ -302,6 +353,23 @@ describe('ListSender', () => {
 		};
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
 
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
+
 		// Mock Reminders
 		const setSendingStatusMock = jest.fn();
 		const setFailedStatusMock = jest.fn();
@@ -369,6 +437,23 @@ describe('ListSender', () => {
 			}
 		};
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
 
 		// Mock Report Exporter
 		const mockExport = jest.fn();
@@ -442,6 +527,23 @@ describe('ListSender', () => {
 			}
 		};
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
 
 		// Mock Report Exporter
 		const mockExport = jest.fn();
