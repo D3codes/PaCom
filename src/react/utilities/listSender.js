@@ -72,6 +72,11 @@ const groupRemindersByProviderAndDate = reminders => reminders.reduce((reminders
 }, {});
 
 const sendToList = async (reminders, onUpdate = null, message = '', forceText = false) => {
+	if (!reminders || reminders.length <= 0) {
+		complete();
+		return;
+	}
+
 	// eslint-disable-next-line no-plusplus
 	for (let i = 0; i < reminders.length; i++) {
 		const reminder = reminders[i];
