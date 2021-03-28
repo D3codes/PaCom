@@ -12,7 +12,7 @@ import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
 import AlertSnackbar from '../alertSnackbar';
 import persistentStorage from '../../utilities/persistentStorage';
-import messageController from '../../utilities/messageController';
+import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
 import listSender from '../../utilities/listSender';
@@ -122,7 +122,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 			setReminders(remindersList);
 			setValidationRan(false);
 			setSendClicked(false);
-			if (!defaultTemplatesDefined) messageController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
+			if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 		});
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
@@ -138,7 +138,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 				setReminders(remindersList);
 				setValidationRan(false);
 				setSendClicked(false);
-				if (!defaultTemplatesDefined) messageController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
+				if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 			});
 			csvPromise.then(({ path }) => setFilePath(path));
 		} catch (InvalidFileTypeException) {

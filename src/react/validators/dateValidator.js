@@ -1,6 +1,6 @@
 import { differenceInBusinessDays, differenceInDays } from 'date-fns';
 import AllowSendOutsideRange from '../models/allowSendOutsideRange';
-import messageController from '../utilities/messageController';
+import dialogController from '../utilities/dialogController';
 import {
 	DateVerificationWarningTitle, DateVerificationWarningMessage,
 	DateVerificationBlockTitle, DateVerificationBlockMessage
@@ -26,9 +26,9 @@ async function validateAppointmentDates(reminders, dateVerificationSettings) {
 
 	const isValid = reminders.some(reminder => validate(reminder.getIn(['appointment', 'date']), dateVerificationSettings));
 	if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.ShowWarning) {
-		messageController.showWarning(DateVerificationWarningTitle, DateVerificationWarningMessage);
+		dialogController.showWarning(DateVerificationWarningTitle, DateVerificationWarningMessage);
 	} else if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.Block) {
-		messageController.showError(DateVerificationBlockTitle, DateVerificationBlockMessage);
+		dialogController.showError(DateVerificationBlockTitle, DateVerificationBlockMessage);
 	}
 
 	return isValid;

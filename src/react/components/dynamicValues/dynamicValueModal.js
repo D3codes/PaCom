@@ -8,7 +8,7 @@ import { Save } from '@material-ui/icons';
 import DynamicValueMappingsTable from './dynamicValueMappingsTable';
 import Provider from '../../models/provider';
 import DynamicValue from '../../models/dynamicValue';
-import messageController from '../../utilities/messageController';
+import dialogController from '../../utilities/dialogController';
 import MessageCompose from '../customMessage/messageCompose';
 
 import {
@@ -86,9 +86,9 @@ function DynamicValueModal({
 		const existingValue = !dynamicValue && dynamicValues?.find(val => val.name === name);
 		const existingDefaultValue = defaultValues?.find(val => val.name === name);
 		if (existingDefaultValue) {
-			messageController.showError(DynamicValueNameReservedTitle, `${name}${DynamicValueNameReservedMessage}`);
+			dialogController.showError(DynamicValueNameReservedTitle, `${name}${DynamicValueNameReservedMessage}`);
 		} else if (existingValue) {
-			messageController.confirmSave(DynamicValueNameInUseTitle, DynamicValueNameInUseMessage).then(({ response }) => {
+			dialogController.confirmSave(DynamicValueNameInUseTitle, DynamicValueNameInUseMessage).then(({ response }) => {
 				if (response === 0) {
 					const newDynamicValue = new DynamicValue(name, fromApptList, mappings);
 					onSave(newDynamicValue, dynamicValue);

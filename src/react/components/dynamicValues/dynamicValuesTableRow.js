@@ -8,7 +8,7 @@ import {
 } from '@material-ui/icons';
 
 import DynamicValue from '../../models/dynamicValue';
-import messageController from '../../utilities/messageController';
+import dialogController from '../../utilities/dialogController';
 
 import {
 	DynamicValueConfirmDeleteTitle, DynamicValueConfirmDeleteMessage
@@ -43,7 +43,7 @@ function DynamicValuesTableRow({
 	}
 
 	function handleRemoveClick() {
-		messageController.confirmDelete(DynamicValueConfirmDeleteTitle, `${DynamicValueConfirmDeleteMessage}${value.name}?`).then(({ response }) => {
+		dialogController.confirmDelete(DynamicValueConfirmDeleteTitle, `${DynamicValueConfirmDeleteMessage}${value.name}?`).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(value);

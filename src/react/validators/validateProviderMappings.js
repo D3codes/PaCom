@@ -1,6 +1,6 @@
 import persistentStorage from '../utilities/persistentStorage';
 import Provider from '../models/provider';
-import messageController from '../utilities/messageController';
+import dialogController from '../utilities/dialogController';
 import {
 	ErrorInAppointmentListTitle, ErrorInAppointmentListMessage,
 	UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage
@@ -8,10 +8,10 @@ import {
 
 async function validateProviderMappings(reminders) {
 	if (reminders.some(reminder => reminder.status === 'Failed')) {
-		return messageController.showWarning(ErrorInAppointmentListTitle, ErrorInAppointmentListMessage);
+		return dialogController.showWarning(ErrorInAppointmentListTitle, ErrorInAppointmentListMessage);
 	}
 	if (reminders.some(reminder => !reminder.getIn(['appointment', 'provider', 'target']))) {
-		return messageController.showWarning(UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage);
+		return dialogController.showWarning(UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage);
 	}
 	return null;
 }
