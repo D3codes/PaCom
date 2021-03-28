@@ -130,7 +130,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 		if (reminders && !validationRan && dateVerificationSettings) {
 			if (hasWritePermission) addUnknownProviders(reminders);
 			validateProviderMappings(reminders)
-				.then(() => valiDate(reminders, dateVerificationSettings))
+				.then(() => valiDate.validateAppointmentDates(reminders, dateVerificationSettings))
 				.then(valid => {
 					setIsValid(valid);
 					setValidationRan(true);

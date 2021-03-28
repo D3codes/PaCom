@@ -21,7 +21,7 @@ function validate(dateString, preferences) {
 	return doesMeetExactDateQualifications || doesMeetDateRangeQualifications;
 }
 
-export default async function validateAppointmentDates(reminders, dateVerificationSettings) {
+async function validateAppointmentDates(reminders, dateVerificationSettings) {
 	if (dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.NoValidation) return true;
 
 	const isValid = reminders.some(reminder => validate(reminder.getIn(['appointment', 'date']), dateVerificationSettings));
@@ -33,3 +33,8 @@ export default async function validateAppointmentDates(reminders, dateVerificati
 
 	return isValid;
 }
+
+export default {
+	validate,
+	validateAppointmentDates
+};
