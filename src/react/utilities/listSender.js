@@ -9,7 +9,7 @@ import Patient from '../models/patient';
 import ContactMethod from '../models/conactMethod';
 
 import {
-	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError
+	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend
 } from '../localization/en/statusMessageText';
 
 const SLEEP_DURATION = 500;
@@ -102,7 +102,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
 		const notifyBy = forceText ? Patient.NotifyBy.Text : reminder.getIn(['patient', 'preferredContactMethod'], null);
-		const messageToSend = message || notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder;
+		const messageToSend = message || (notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder);
 
 		let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === Patient.NotifyBy.Phone ? ContactMethod.Types.Home : ContactMethod.Types.Cell);
 		if (!contactNumber && notifyBy === Patient.NotifyBy.Text && sendSmsToHomeIfNoCell) {
@@ -134,6 +134,9 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 					reminder.appendStatusMessage(PreferredAndSms);
 					await sendToList([reminder], null, message, true);
 				}
+			} else {
+				reminder.setFailedStatus();
+				reminder.appendStatusMessage(NoMessageToSend);
 			}
 
 			// If this is the last reminder, send bundled calls
