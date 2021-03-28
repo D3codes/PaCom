@@ -37,7 +37,7 @@ const DuplicateDataNotCopiedMessage = 'Duplicate data was not copied';
 exports.DuplicateDataNotCopiedMessage = DuplicateDataNotCopiedMessage;
 
 // All Reminders Sent Successfully
-const AllRemindersSentSuccessfully = 'Appointment Reminders Sent Successfully!';
+const AllRemindersSentSuccessfully = 'Appointment Reminders Sent Successfully';
 exports.AllRemindersSentSuccessfully = AllRemindersSentSuccessfully;
 
 // Error Sending Some Reminders

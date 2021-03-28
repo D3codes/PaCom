@@ -3,7 +3,7 @@
         "name": "Provider",
         "fromApptList": true,
         "mappings": [],
-        "pathFromReminder": ["appointment", "provider", "target"]
+        "pathFromReminder": []
     },
     {
         "name": "Patient Name",

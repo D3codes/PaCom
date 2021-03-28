@@ -116,8 +116,8 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 		}
 	}, [reminders]);
 
-	const handleBrowseClick = () => {
-		const csvPromise = csvImporter.getCSV();
+	const handleAppointmentListImport = (appointmentListPath = null) => {
+		const csvPromise = csvImporter.getCSV(appointmentListPath);
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
 			setReminders(remindersList);
 			setValidationRan(false);
@@ -133,14 +133,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 		setFileDropped(true);
 		const droppedFilePath = files[0].path;
 		try {
-			const csvPromise = csvImporter.getCSV(droppedFilePath);
-			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
-				setReminders(remindersList);
-				setValidationRan(false);
-				setSendClicked(false);
-				if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
-			});
-			csvPromise.then(({ path }) => setFilePath(path));
+			handleAppointmentListImport(droppedFilePath);
 		} catch (InvalidFileTypeException) {
 			setFileDropped(false);
 			setSnackbarSeverity(AlertSnackbar.Severities.Warning);
@@ -170,7 +163,13 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<BrowseFile disabled={disableNavigation} onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={setFilePath} label="Appointment List" />
+			<BrowseFile
+				disabled={disableNavigation}
+				onBrowseClick={() => { handleAppointmentListImport(); }}
+				filePath={filePath}
+				onFilePathChange={setFilePath}
+				label="Appointment List"
+			/>
 			{reminders
 				? <ReportTable onSend={handleSend} reminders={reminders} sendDisabled={sendDisabled} />
 				: (
@@ -190,7 +189,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 											className={classes.noRemindersText}
 											color={draggingOver ? 'primary' : 'textSecondary'}
 											variant="subtitle1">
-											<Button color="primary" onClick={handleBrowseClick}>Browse for a file</Button> or drag it here
+											<Button color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for a file</Button> or drag it here
 										</Typography>
 									</Fragment>
 								)}
