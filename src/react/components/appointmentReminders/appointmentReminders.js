@@ -127,6 +127,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [validationRan, setValidationRan] = useState(false);
 	const [isValid, setIsValid] = useState(null);
 	const [sendClicked, setSendClicked] = useState(false);
+	const [hasWritePermission, setHasWritePermission] = useState(false);
 
 	useEffect(() => {
 		persistentStorage.getProviderMappings()
@@ -135,12 +136,14 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 			.then(settings => {
 				setDateVerificationSettings(settings.appointmentReminders.dateVerification);
 				setDefaultTemplatesDefined(Boolean(settings.appointmentReminders.defaultReminderTemplates.phone && settings.appointmentReminders.defaultReminderTemplates.sms));
-			});
+			})
+			.then(() => persistentStorage.getSettings(true))
+			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); });
 	}, []);
 
 	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
-			addUnknownProviders(reminders);
+			if (hasWritePermission) addUnknownProviders(reminders);
 			validateProviderMappings(reminders)
 				.then(() => validateAppointmentDates(reminders, dateVerificationSettings))
 				.then(valid => {
