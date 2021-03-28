@@ -1,6 +1,12 @@
 import { differenceInBusinessDays, differenceInDays } from 'date-fns';
+import AllowSendOutsideRange from '../models/allowSendOutsideRange';
+import messageController from '../utilities/messageController';
+import {
+	DateVerificationWarningTitle, DateVerificationWarningMessage,
+	DateVerificationBlockTitle, DateVerificationBlockMessage
+} from '../localization/en/dialogText';
 
-export default function validate(dateString, preferences) {
+function validate(dateString, preferences) {
 	const { useBusinessDays, numberOfDays, endOfRange } = preferences;
 	const appointmentDate = new Date(dateString);
 	const today = new Date();
@@ -13,4 +19,17 @@ export default function validate(dateString, preferences) {
 	const doesMeetExactDateQualifications = !endOfRange && daysUntilAppointment === numberOfDays;
 	const doesMeetDateRangeQualifications = daysUntilAppointment <= endOfRange && daysUntilAppointment >= numberOfDays;
 	return doesMeetExactDateQualifications || doesMeetDateRangeQualifications;
+}
+
+export default async function validateAppointmentDates(reminders, dateVerificationSettings) {
+	if (dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.NoValidation) return true;
+
+	const isValid = reminders.some(reminder => validate(reminder.getIn(['appointment', 'date']), dateVerificationSettings));
+	if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.ShowWarning) {
+		messageController.showWarning(DateVerificationWarningTitle, DateVerificationWarningMessage);
+	} else if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.Block) {
+		messageController.showError(DateVerificationBlockTitle, DateVerificationBlockMessage);
+	}
+
+	return isValid;
 }

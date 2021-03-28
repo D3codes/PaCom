@@ -24,8 +24,6 @@ import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 import {
 	ErrorInAppointmentListTitle, ErrorInAppointmentListMessage,
 	UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage,
-	DateVerificationWarningTitle, DateVerificationWarningMessage,
-	DateVerificationBlockTitle, DateVerificationBlockMessage,
 	DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage
 } from '../../localization/en/dialogText';
 import {
@@ -87,19 +85,6 @@ async function validateProviderMappings(reminders) {
 	return null;
 }
 
-async function validateAppointmentDates(reminders, dateVerificationSettings) {
-	if (dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.NoValidation) return true;
-
-	const isValid = reminders.some(reminder => valiDate(reminder.getIn(['appointment', 'date']), dateVerificationSettings));
-	if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.ShowWarning) {
-		messageController.showWarning(DateVerificationWarningTitle, DateVerificationWarningMessage);
-	} else if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.Block) {
-		messageController.showError(DateVerificationBlockTitle, DateVerificationBlockMessage);
-	}
-
-	return isValid;
-}
-
 function addUnknownProviders(reminders) {
 	const unknownProviderSources = reminders
 		.map(reminder => reminder.getIn(['appointment', 'provider']))
@@ -145,7 +130,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 		if (reminders && !validationRan && dateVerificationSettings) {
 			if (hasWritePermission) addUnknownProviders(reminders);
 			validateProviderMappings(reminders)
-				.then(() => validateAppointmentDates(reminders, dateVerificationSettings))
+				.then(() => valiDate(reminders, dateVerificationSettings))
 				.then(valid => {
 					setIsValid(valid);
 					setValidationRan(true);
