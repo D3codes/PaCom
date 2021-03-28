@@ -4,6 +4,7 @@ import Patient from '../models/patient';
 import Provider from '../models/provider';
 import Reminder from '../models/reminder';
 import { NullValueException } from '../exceptions';
+import { ErrorInAppointmentList } from '../localization/en/statusMessageText';
 
 export default (rows, providerMappings) => {
 	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
@@ -14,7 +15,7 @@ export default (rows, providerMappings) => {
 
 		// This shift is removing the company from the row
 		rows[index - 1].shift();
-		const [
+		let [
 			paddedProvider = '',
 			appointmentDate = null
 		] = rows[index - 1];
@@ -35,12 +36,21 @@ export default (rows, providerMappings) => {
 
 		const patient = new Patient(accountNumber, name, contactMethods, preferredContactMethod, dateOfBirth);
 
+		const invalidProvider = !paddedProvider || (!Number.isNaN(paddedProvider) && !Number.isNaN(parseFloat(paddedProvider)));
+		if (invalidProvider) {
+			paddedProvider = '';
+			appointmentDate = ErrorInAppointmentList;
+		}
 		const existingProvider = providerMappings?.find(providerMapping => paddedProvider.includes(providerMapping.source));
 		const provider = new Provider(paddedProvider, existingProvider?.target, existingProvider?.phonetic);
 
 		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration);
 
 		const reminder = new Reminder(patient, appointment);
+		if (invalidProvider) {
+			reminder.setFailedStatus();
+			reminder.setStatusMessage(ErrorInAppointmentList);
+		}
 		reminders.push(reminder);
 	});
 	return reminders;

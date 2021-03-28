@@ -65,3 +65,9 @@ const DefaultReminderTemplatesNotDefinedTitle = 'Default Templates Not Set';
 const DefaultReminderTemplatesNotDefinedMessage = 'Contact an administrator to configure the default appointment reminder templates.';
 exports.DefaultReminderTemplatesNotDefinedTitle = DefaultReminderTemplatesNotDefinedTitle;
 exports.DefaultReminderTemplatesNotDefinedMessage = DefaultReminderTemplatesNotDefinedMessage;
+
+// Error in Appointment List
+const ErrorInAppointmentListTitle = 'Error in Appointment List';
+const ErrorInAppointmentListMessage = 'The appointment list was in an unexpected format. Ensure data is correct before continuing.';
+exports.ErrorInAppointmentListTitle = ErrorInAppointmentListTitle;
+exports.ErrorInAppointmentListMessage = ErrorInAppointmentListMessage;

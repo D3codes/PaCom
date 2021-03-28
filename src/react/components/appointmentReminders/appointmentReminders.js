@@ -22,6 +22,7 @@ import Provider from '../../models/provider';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 
 import {
+	ErrorInAppointmentListTitle, ErrorInAppointmentListMessage,
 	UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage,
 	DateVerificationWarningTitle, DateVerificationWarningMessage,
 	DateVerificationBlockTitle, DateVerificationBlockMessage,
@@ -77,6 +78,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 async function validateProviderMappings(reminders) {
+	if (reminders.some(reminder => reminder.status === 'Failed')) {
+		return messageController.showWarning(ErrorInAppointmentListTitle, ErrorInAppointmentListMessage);
+	}
 	if (reminders.some(reminder => !reminder.getIn(['appointment', 'provider', 'target']))) {
 		return messageController.showWarning(UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage);
 	}
@@ -102,7 +106,9 @@ function addUnknownProviders(reminders) {
 		.filter(provider => !provider.get('target'))
 		.map(({ source }) => source);
 	const distinctSources = new Set(unknownProviderSources);
-	distinctSources.forEach(source => persistentStorage.addProviderMapping(new Provider(source)));
+	distinctSources.forEach(source => {
+		if (source) persistentStorage.addProviderMapping(new Provider(source));
+	});
 }
 
 function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) {

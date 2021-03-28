@@ -95,6 +95,9 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 	// eslint-disable-next-line no-plusplus
 	for (let i = 0; i < reminders.length; i++) {
 		const reminder = reminders[i];
+		// eslint-disable-next-line no-continue
+		if (reminder.status === 'Failed') continue;
+
 		reminder.setSendingStatus();
 		if (onUpdate) {
 			onUpdate([...reminders]);

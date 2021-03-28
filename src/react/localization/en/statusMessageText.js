@@ -21,3 +21,7 @@ exports.NonexistentDynamicValue = NonexistentDynamicValue;
 // Twilio Error
 const TwilioError = 'Error communicating with Twilio';
 exports.TwilioError = TwilioError;
+
+// Error in appointment list
+const ErrorInAppointmentList = 'Error in Appointment List';
+exports.ErrorInAppointmentList = ErrorInAppointmentList;
