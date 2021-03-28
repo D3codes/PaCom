@@ -17,4 +17,10 @@ class Patient extends Model {
 	}
 }
 
+Patient.NotifyBy = {
+	Text: 'Text',
+	Cell: 'Cell',
+	Phone: 'Phone'
+};
+
 export default Patient;

@@ -119,9 +119,9 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const handleAppointmentListImport = (appointmentListPath = null) => {
 		const csvPromise = csvImporter.getCSV(appointmentListPath);
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
-			setReminders(remindersList);
 			setValidationRan(false);
 			setSendClicked(false);
+			setReminders(remindersList);
 			if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 		});
 		csvPromise.then(({ path }) => setFilePath(path));
@@ -146,7 +146,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const onSendingComplete = () => {
 		onDisableNavigationChange(false);
 
-		const allSentSuccessfully = (reminders.filter(reminder => reminder.status === 'Failed')).length === 0;
+		const allSentSuccessfully = reminders.filter(reminder => reminder.status === 'Failed').length === 0;
 		setSnackbarSeverity(allSentSuccessfully ? AlertSnackbar.Severities.Success : AlertSnackbar.Severities.Error);
 		setSnackbarTitle(allSentSuccessfully ? '' : ErrorSendingSomeRemindersTitle);
 		setSnackbarMessage(allSentSuccessfully ? AllRemindersSentSuccessfully : ErrorSendingSomeRemindersMessage);

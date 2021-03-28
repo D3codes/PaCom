@@ -9,7 +9,7 @@ const replace = async (message, reminder, notifyBy) => {
 	const dynamicValuesInMessage = [...message.matchAll(/{{[^}]+}}/g)];
 	const pathToProviderMapping = notifyBy === 'Text' ? ['appointment', 'provider', 'target'] : ['appointment', 'provider', 'phonetic'];
 
-	await dynamicValuesInMessage.forEach(async valueInMessage => {
+	dynamicValuesInMessage.forEach(valueInMessage => {
 		const dynamicValueSource = dynamicValues.find(value => `{{${value.name}}}` === valueInMessage[0]);
 		if (!dynamicValueSource) {
 			reminder.setFailedStatus();

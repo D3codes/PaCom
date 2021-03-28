@@ -35,7 +35,9 @@ function ReportTable({ onSend, reminders = null, sendDisabled = false }) {
 	const classes = useStyles();
 	const remindersByProviderAndDate = reminders ? groupReminders.byProviderAndDate(reminders) : null;
 	const completedReminders = reminders?.filter(reminder => reminder.status !== 'Pending' && reminder.status !== 'Sending');
-	const progress = (completedReminders?.length / reminders?.length) * 100;
+	const progress = completedReminders && reminders
+		? (completedReminders?.length / reminders?.length) * 100
+		: null;
 
 	const handleExport = () => {
 		reportExporter.exportReport(remindersByProviderAndDate);
@@ -81,7 +83,7 @@ function ReportTable({ onSend, reminders = null, sendDisabled = false }) {
 					</Table>
 				</div>
 			)}
-			<ReportActions onSend={onSend} onExport={handleExport} sendDisabled={sendDisabled} progress={progress} />
+			<ReportActions onSend={onSend} onExport={handleExport} sendDisabled={sendDisabled} progress={progress || 0} />
 		</Fragment>
 	);
 }

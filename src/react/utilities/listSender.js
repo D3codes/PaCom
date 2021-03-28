@@ -4,6 +4,10 @@ import persistentStorage from './persistentStorage';
 import reportExporter from './reportExporter';
 import groupReminders from './reminderGrouper';
 
+import Reminder from '../models/reminder';
+import Patient from '../models/patient';
+import ContactMethod from '../models/conactMethod';
+
 import {
 	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError
 } from '../localization/en/statusMessageText';
@@ -86,7 +90,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 	for (let i = 0; i < reminders.length; i++) {
 		const reminder = reminders[i];
 		// eslint-disable-next-line no-continue
-		if (reminder.status === 'Failed') continue;
+		if (reminder.status === Reminder.Status.Failed) continue;
 
 		reminder.setSendingStatus();
 		if (onUpdate) {
@@ -97,15 +101,15 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 		// eslint-disable-next-line no-await-in-loop
 		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
-		const notifyBy = forceText ? 'Text' : reminder.getIn(['patient', 'preferredContactMethod'], null);
-		const messageToSend = message || notifyBy === 'Text' ? defaultSmsReminder : defaultPhoneReminder;
+		const notifyBy = forceText ? Patient.NotifyBy.Text : reminder.getIn(['patient', 'preferredContactMethod'], null);
+		const messageToSend = message || notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder;
 
-		let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === 'Phone' ? 'Home' : 'Cell');
-		if (!contactNumber && notifyBy === 'Text' && sendSmsToHomeIfNoCell) {
-			contactNumber = reminder.get('patient').getPhoneNumberByType('Home');
+		let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === Patient.NotifyBy.Phone ? ContactMethod.Types.Home : ContactMethod.Types.Cell);
+		if (!contactNumber && notifyBy === Patient.NotifyBy.Text && sendSmsToHomeIfNoCell) {
+			contactNumber = reminder.get('patient').getPhoneNumberByType(ContactMethod.Types.Home);
 			reminder.appendStatusMessage(SmsSentToHome);
 		}
-		if (!contactNumber && (!sendToPreferredContactMethodAndSms || notifyBy === 'Text')) {
+		if (!contactNumber && (!sendToPreferredContactMethodAndSms || notifyBy === Patient.NotifyBy.Text)) {
 			reminder.setFailedStatus();
 			reminder.setStatusMessage(MissingPhoneNumber);
 			// eslint-disable-next-line no-continue
@@ -114,7 +118,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 
 		// eslint-disable-next-line no-loop-func
 		dynamicValueReplacer.replace(messageToSend, reminder, notifyBy).then(async replacedMessage => {
-			if (replacedMessage && notifyBy === 'Text') {
+			if (replacedMessage && notifyBy === Patient.NotifyBy.Text) {
 				twilio.sendSMS(contactNumber, replacedMessage).then(sentSuccessfully => {
 					if (!forceText) {
 						if (sentSuccessfully) reminder.setSentStatus();
