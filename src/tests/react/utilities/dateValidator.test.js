@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import { add } from 'date-fns';
 
-import validate from '../../../react/utilities/dateValidator';
+import validate from '../../../react/validators/dateValidator';
 
 const localize = date => {
 	const tzoffset = date.getTimezoneOffset() * 60000;

@@ -13,7 +13,7 @@ import csvImporter from '../../utilities/csvImporter';
 import AlertSnackbar from '../alertSnackbar';
 import persistentStorage from '../../utilities/persistentStorage';
 import messageController from '../../utilities/messageController';
-import valiDate from '../../utilities/dateValidator';
+import valiDate from '../../validators/dateValidator';
 import listSender from '../../utilities/listSender';
 
 // transformers
