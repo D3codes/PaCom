@@ -25,3 +25,7 @@ exports.TwilioError = TwilioError;
 // Error in appointment list
 const ErrorInAppointmentList = 'Error in Appointment List';
 exports.ErrorInAppointmentList = ErrorInAppointmentList;
+
+// No Message to Send
+const NoMessageToSend = 'No message to send';
+exports.NoMessageToSend = NoMessageToSend;

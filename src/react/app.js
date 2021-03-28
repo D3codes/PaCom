@@ -64,7 +64,9 @@ export default function App() {
 				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && (
 					<AppointmentReminders disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
 				)}
-				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
+				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && (
+					<CustomMessage disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
+				)}
 				{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
 				{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
 				{selectedTabId === MiniDrawer.TabIds.DYNAMIC_VALUES && <DynamicValues />}
