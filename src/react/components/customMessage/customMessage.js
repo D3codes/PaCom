@@ -160,6 +160,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const onSendAsSms = () => {
 		twilio.sendSMS(phoneNumber, message).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? SmsSentSuccessfully : ErrorSendingSms);
 			setShowSnackbar(true);
 		});
@@ -168,6 +169,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const onSendAsCall = () => {
 		twilio.sendCall(phoneNumber, message).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? CallSentSuccessfully : ErrorSendingCall);
 			setShowSnackbar(true);
 		});
