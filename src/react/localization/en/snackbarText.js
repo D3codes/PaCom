@@ -35,3 +35,13 @@ exports.AllDataCopiedMessage = AllDataCopiedMessage;
 // Duplicate Data Not Copied
 const DuplicateDataNotCopiedMessage = 'Duplicate data was not copied';
 exports.DuplicateDataNotCopiedMessage = DuplicateDataNotCopiedMessage;
+
+// All Reminders Sent Successfully
+const AllRemindersSentSuccessfully = 'Appointment Reminders Sent Successfully';
+exports.AllRemindersSentSuccessfully = AllRemindersSentSuccessfully;
+
+// Error Sending Some Reminders
+const ErrorSendingSomeRemindersTitle = 'Error Sending Reminders';
+const ErrorSendingSomeRemindersMessage = 'Check statuses for details';
+exports.ErrorSendingSomeRemindersTitle = ErrorSendingSomeRemindersTitle;
+exports.ErrorSendingSomeRemindersMessage = ErrorSendingSomeRemindersMessage;

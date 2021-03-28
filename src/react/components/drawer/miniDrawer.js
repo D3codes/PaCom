@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Drawer, makeStyles, Typography, Button
+	Drawer, makeStyles, Typography, Button, Backdrop
 } from '@material-ui/core';
 import {
 	PermPhoneMsg, PersonPin, RateReview, Schedule, DynamicFeed
@@ -116,11 +116,16 @@ const useStyles = makeStyles(theme => ({
 	name: {
 		color: theme.palette.text.darkContrast,
 		marginLeft: theme.spacing()
+	},
+	backdrop: {
+		position: 'absolute',
+		zIndex: theme.zIndex.drawer + 1,
+		color: '#fff'
 	}
 }));
 
 export default function MiniDrawer({
-	onTabSelect, selectedTabId = PRIMARY_TABS[0].id
+	onTabSelect, disableNavigation, selectedTabId = PRIMARY_TABS[0].id
 }) {
 	const classes = useStyles();
 	const [version, setVersion] = useState(null);
@@ -171,6 +176,7 @@ export default function MiniDrawer({
 			variant="permanent"
 			classes={{ paper: classes.drawerPaper }}
 			className={classes.drawer}>
+			<Backdrop data-testid="backdrop" open={disableNavigation} className={classes.backdrop} />
 			<div className={classes.toolbar}>
 				<img height="32" src={PaComLogo} alt="PaCom Logo" />
 				<Typography className={classes.name} variant="h6">PaCom</Typography>
@@ -228,6 +234,7 @@ export default function MiniDrawer({
 
 MiniDrawer.propTypes = {
 	onTabSelect: PropTypes.func.isRequired,
+	disableNavigation: PropTypes.bool.isRequired,
 	selectedTabId: PropTypes.string
 };
 

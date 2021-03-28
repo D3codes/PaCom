@@ -5,26 +5,26 @@ import {
 import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
 import AlertSnackbar from '../alertSnackbar';
 import persistentStorage from '../../utilities/persistentStorage';
-import messageController from '../../utilities/messageController';
-import valiDate from '../../utilities/dateValidator';
+import dialogController from '../../utilities/dialogController';
+import valiDate from '../../validators/dateValidator';
+import providerMappingValidator from '../../validators/validateProviderMappings';
+import listSender from '../../utilities/listSender';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
-import Provider from '../../models/provider';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 
+import { DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage } from '../../localization/en/dialogText';
 import {
-	UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage,
-	DateVerificationWarningTitle, DateVerificationWarningMessage,
-	DateVerificationBlockTitle, DateVerificationBlockMessage
-} from '../../localization/en/dialogText';
-import { InvalidFileTypeMessage } from '../../localization/en/snackbarText';
+	InvalidFileTypeMessage, AllRemindersSentSuccessfully, ErrorSendingSomeRemindersTitle, ErrorSendingSomeRemindersMessage
+} from '../../localization/en/snackbarText';
 
 const Ehrs = {
 	Pulse: 'Pulse'
@@ -71,108 +71,112 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-async function validateProviderMappings(reminders) {
-	if (reminders.some(reminder => !reminder.getIn(['appointment', 'provider', 'target']))) {
-		return messageController.showWarning(UnmappedProvidersWarningTitle, UnmappedProvidersWarningMessage);
-	}
-	return null;
-}
-
-async function validateAppointmentDates(reminders, dateVerificationSettings) {
-	if (dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.NoValidation) return true;
-
-	const isValid = reminders.some(reminder => valiDate(reminder.getIn(['appointment', 'date']), dateVerificationSettings));
-	if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.ShowWarning) {
-		messageController.showWarning(DateVerificationWarningTitle, DateVerificationWarningMessage);
-	} else if (!isValid && dateVerificationSettings.allowSendOutsideRange === AllowSendOutsideRange.Block) {
-		messageController.showError(DateVerificationBlockTitle, DateVerificationBlockMessage);
-	}
-
-	return isValid;
-}
-
-function addUnknownProviders(reminders) {
-	const unknownProviderSources = reminders
-		.map(reminder => reminder.getIn(['appointment', 'provider']))
-		.filter(provider => !provider.get('target'))
-		.map(({ source }) => source);
-	const distinctSources = new Set(unknownProviderSources);
-	distinctSources.forEach(source => persistentStorage.addProviderMapping(new Provider(source)));
-}
-
-function AppointmentReminders() {
+function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) {
 	const classes = useStyles();
 	const [reminders, setReminders] = useState(null);
 	const [filePath, setFilePath] = useState('');
 	const [draggingOver, setDraggingOver] = useState(false);
 	const [fileDropped, setFileDropped] = useState(false);
+
 	const [showAlertSnackbar, setShowAlertSnackbar] = useState(false);
+	const [snackbarTitle, setSnackbarTitle] = useState('');
+	const [snackbarSeverity, setSnackbarSeverity] = useState('');
+	const [snackbarMessage, setSnackbarMessage] = useState('');
+
 	const [providerMappings, setProviderMappings] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
+	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
+	const [hasWritePermission, setHasWritePermission] = useState(false);
+
+	const [validationRan, setValidationRan] = useState(false);
 	const [isValid, setIsValid] = useState(null);
+	const [sendClicked, setSendClicked] = useState(false);
 
 	useEffect(() => {
 		persistentStorage.getProviderMappings()
 			.then(setProviderMappings)
 			.then(() => persistentStorage.getSettings())
-			.then(settings => setDateVerificationSettings(settings.appointmentReminders.dateVerification));
+			.then(settings => {
+				setDateVerificationSettings(settings.appointmentReminders.dateVerification);
+				setDefaultTemplatesDefined(Boolean(settings.appointmentReminders.defaultReminderTemplates.phone && settings.appointmentReminders.defaultReminderTemplates.sms));
+			})
+			.then(() => persistentStorage.getSettings(true))
+			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); });
 	}, []);
 
 	useEffect(() => {
-		if (reminders && dateVerificationSettings) {
-			addUnknownProviders(reminders);
-			validateProviderMappings(reminders)
-				.then(() => validateAppointmentDates(reminders, dateVerificationSettings))
-				.then(setIsValid);
+		if (reminders && !validationRan && dateVerificationSettings) {
+			if (hasWritePermission) providerMappingValidator.addUnknownProviders(reminders);
+			providerMappingValidator.validateProviderMappings(reminders)
+				.then(() => valiDate.validateAppointmentDates(reminders, dateVerificationSettings))
+				.then(valid => {
+					setIsValid(valid);
+					setValidationRan(true);
+				});
 		}
 	}, [reminders]);
 
-	const handleBrowseClick = () => {
-		const csvPromise = csvImporter.getCSV();
-		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(setReminders);
+	const handleAppointmentListImport = (appointmentListPath = null) => {
+		const csvPromise = csvImporter.getCSV(appointmentListPath);
+		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
+			setValidationRan(false);
+			setSendClicked(false);
+			setReminders(remindersList);
+			if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
+		});
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
 
-	const handleDragOver = () => {
-		setDraggingOver(true);
-	};
-
-	const handleDragLeave = () => {
-		setDraggingOver(false);
-	};
-
 	const handleFileDrop = files => {
-		handleDragLeave();
+		setDraggingOver(false);
 		if (!files) return;
 		setFileDropped(true);
 		const droppedFilePath = files[0].path;
 		try {
-			const csvPromise = csvImporter.getCSV(droppedFilePath);
-			csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(setReminders);
-			csvPromise.then(({ path }) => setFilePath(path));
+			handleAppointmentListImport(droppedFilePath);
 		} catch (InvalidFileTypeException) {
 			setFileDropped(false);
+			setSnackbarSeverity(AlertSnackbar.Severities.Warning);
+			setSnackbarTitle('');
+			setSnackbarMessage(InvalidFileTypeMessage);
 			setShowAlertSnackbar(true);
 		}
 	};
 
-	const handleFilePathChange = path => {
-		setFilePath(path);
-		// handle reload of appointments here
+	const onSendingComplete = () => {
+		onDisableNavigationChange(false);
+
+		const allSentSuccessfully = reminders.filter(reminder => reminder.status === 'Failed').length === 0;
+		setSnackbarSeverity(allSentSuccessfully ? AlertSnackbar.Severities.Success : AlertSnackbar.Severities.Error);
+		setSnackbarTitle(allSentSuccessfully ? '' : ErrorSendingSomeRemindersTitle);
+		setSnackbarMessage(allSentSuccessfully ? AllRemindersSentSuccessfully : ErrorSendingSomeRemindersMessage);
+		setShowAlertSnackbar(true);
 	};
 
-	const sendDisabled = dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid;
+	const handleSend = () => {
+		setSendClicked(true);
+		onDisableNavigationChange(true);
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
+	};
+
+	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={handleFilePathChange} label="Appointment List" />
+			<BrowseFile
+				disabled={disableNavigation}
+				onBrowseClick={() => { handleAppointmentListImport(); }}
+				filePath={filePath}
+				onFilePathChange={setFilePath}
+				label="Appointment List"
+			/>
 			{reminders
-				? <ReportTable reminders={reminders} sendDisabled={sendDisabled} />
+				? <ReportTable onSend={handleSend} reminders={reminders} sendDisabled={sendDisabled} />
 				: (
 					<FileDrop
 						onDrop={handleFileDrop}
-						onDragOver={handleDragOver}
-						onDragLeave={handleDragLeave}
+						onDragOver={() => { setDraggingOver(true); }}
+						onDragLeave={() => { setDraggingOver(false); }}
 						className={clsx(classes.fileDrop, { [classes.fileDropOver]: draggingOver })}>
 						<div className={classes.fileDropContent}>
 							{fileDropped
@@ -185,7 +189,7 @@ function AppointmentReminders() {
 											className={classes.noRemindersText}
 											color={draggingOver ? 'primary' : 'textSecondary'}
 											variant="subtitle1">
-											<Button color="primary" onClick={handleBrowseClick}>Browse for a file</Button> or drag it here
+											<Button color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for a file</Button> or drag it here
 										</Typography>
 									</Fragment>
 								)}
@@ -194,12 +198,18 @@ function AppointmentReminders() {
 				)}
 			<AlertSnackbar
 				open={showAlertSnackbar}
-				severity={AlertSnackbar.Severities.Warning}
-				message={InvalidFileTypeMessage}
+				severity={snackbarSeverity}
+				title={snackbarTitle}
+				message={snackbarMessage}
 				onClose={() => { setShowAlertSnackbar(false); }}
 			/>
 		</div>
 	);
 }
+
+AppointmentReminders.propTypes = {
+	disableNavigation: PropTypes.bool.isRequired,
+	onDisableNavigationChange: PropTypes.func.isRequired
+};
 
 export default AppointmentReminders;

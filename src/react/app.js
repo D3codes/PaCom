@@ -14,7 +14,8 @@ import Settings from './components/settings/settings';
 const useStyles = makeStyles(theme => ({
 	content: {
 		display: 'flex',
-		height: '100%'
+		height: '100%',
+		overflow: 'hidden'
 	},
 	appBar: {
 		marginLeft: DRAWER_WIDTH,
@@ -41,13 +42,14 @@ function getTitle(tabId) {
 export default function App() {
 	const classes = useStyles();
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
+	const [disableNavigation, setDisableNavigation] = useState(false);
 
 	const title = getTitle(selectedTabId);
 
 	return (
 		<div className={classes.content}>
 			<CssBaseline />
-			<MiniDrawer onTabSelect={setSelectedTabId} selectedTabId={selectedTabId} />
+			<MiniDrawer onTabSelect={setSelectedTabId} disableNavigation={disableNavigation} selectedTabId={selectedTabId} />
 			<AppBar
 				position="fixed"
 				className={classes.appBar}>
@@ -59,7 +61,9 @@ export default function App() {
 			</AppBar>
 			<main className={classes.main}>
 				<div className={classes.toolbar} />
-				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && <AppointmentReminders />}
+				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && (
+					<AppointmentReminders disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
+				)}
 				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && <CustomMessage />}
 				{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
 				{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}

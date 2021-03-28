@@ -6,7 +6,7 @@ import {
 import { Save } from '@material-ui/icons';
 
 import Template from '../../models/template';
-import messageController from '../../utilities/messageController';
+import dialogController from '../../utilities/dialogController';
 import MessageCompose from '../customMessage/messageCompose';
 
 import {
@@ -55,7 +55,7 @@ function MessageTemplateModal({
 	const handleSave = () => {
 		const existingTemplate = !template && templates?.find(temp => temp.name === name);
 		if (existingTemplate) {
-			messageController.confirmSave(MessageTemplateNameInUseTitle, MessageTemplateNameInUseMessage).then(({ response }) => {
+			dialogController.confirmSave(MessageTemplateNameInUseTitle, MessageTemplateNameInUseMessage).then(({ response }) => {
 				if (response === 0) {
 					const newMessageTemplate = new Template(name, body);
 					onSave(newMessageTemplate, template);

@@ -1,7 +1,8 @@
 const ExcelJS = require('exceljs');
 const filePicker = require('./filePicker');
 
-const exportMessageReport = async report => {
+const exportMessageReport = async (report, autoSavePath = null) => {
+	let path = autoSavePath;
 	const workbook = new ExcelJS.Workbook();
 	workbook.creator = 'PaCom';
 	workbook.created = new Date();
@@ -48,21 +49,21 @@ const exportMessageReport = async report => {
 				notify: reminder?.patient?.preferredContactMethod,
 				home: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Home')?.phoneNumber,
 				cell: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Cell')?.phoneNumber,
-				info: ''
+				info: reminder?.statusMessage
 			});
 		});
 	});
 
-	const path = await filePicker.pickSave(
-		`PaComMessageReport-${
-			new Date()
-				.toLocaleString()
-				.replaceAll(':', '')
-				.replaceAll('/', '')
-				.replaceAll(' ', '')
-				.replaceAll(',', '-')
-		}.xlsx`
-	);
+	const fileName = `PaComMessageReport-${
+		new Date()
+			.toLocaleString()
+			.replaceAll(':', '')
+			.replaceAll('/', '')
+			.replaceAll(' ', '')
+			.replaceAll(',', '-')
+	}.xlsx`;
+	if (!path) path = await filePicker.pickSave(fileName);
+	else path = `${path}\\${fileName}`;
 	if (path) workbook.xlsx.writeFile(path);
 };
 

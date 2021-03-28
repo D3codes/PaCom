@@ -6,6 +6,15 @@ class Reminder extends Model {
 		this.patient = patient;
 		this.appointment = appointment;
 		this.status = Reminder.Status.Pending;
+		this.statusMessage = '';
+	}
+
+	setStatusMessage(message) {
+		this.statusMessage = message;
+	}
+
+	appendStatusMessage(message) {
+		this.statusMessage = this.statusMessage ? `${this.statusMessage}, ${message}` : message;
 	}
 
 	setPendingStatus() {
@@ -33,7 +42,6 @@ Reminder.Status = {
 	Pending: 'Pending',
 	Sending: 'Sending',
 	Sent: 'Sent',
-	Canceled: 'Canceled',
 	Failed: 'Failed'
 };
 

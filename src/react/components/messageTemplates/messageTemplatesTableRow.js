@@ -8,7 +8,7 @@ import {
 } from '@material-ui/icons';
 
 import Template from '../../models/template';
-import messageController from '../../utilities/messageController';
+import dialogController from '../../utilities/dialogController';
 
 import {
 	MessageTemplateConfirmDeleteTitle, MessageTemplateConfirmDeleteMessage
@@ -38,7 +38,7 @@ function MessageTemplatesTableRow({
 	}
 
 	function handleRemoveClick() {
-		messageController.confirmDelete(MessageTemplateConfirmDeleteTitle, `${MessageTemplateConfirmDeleteMessage}${template.name}?`).then(({ response }) => {
+		dialogController.confirmDelete(MessageTemplateConfirmDeleteTitle, `${MessageTemplateConfirmDeleteMessage}${template.name}?`).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(template);

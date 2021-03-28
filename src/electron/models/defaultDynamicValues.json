@@ -2,26 +2,31 @@
     {
         "name": "Provider",
         "fromApptList": true,
-        "mappings": []
+        "mappings": [],
+        "pathFromReminder": []
     },
     {
         "name": "Patient Name",
         "fromApptList": true,
-        "mappings": []
+        "mappings": [],
+        "pathFromReminder": ["patient", "name"]
     },
     {
         "name": "Appointment Date",
         "fromApptList": true,
-        "mappings": []
+        "mappings": [],
+        "pathFromReminder": ["appointment", "date"]
     },
     {
         "name": "Appointment Time",
         "fromApptList": true,
-        "mappings": []
+        "mappings": [],
+        "pathFromReminder": ["appointment", "time"]
     },
     {
         "name": "Appointment Duration",
         "fromApptList": true,
-        "mappings": []
+        "mappings": [],
+        "pathFromReminder": ["appointment", "duration"]
     }
 ]

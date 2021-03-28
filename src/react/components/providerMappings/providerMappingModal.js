@@ -10,7 +10,7 @@ import Provider from '../../models/provider';
 import {
 	ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage
 } from '../../localization/en/dialogText';
-import messageController from '../../utilities/messageController';
+import dialogController from '../../utilities/dialogController';
 
 const useStyles = makeStyles(theme => ({
 	dialogContent: {
@@ -57,7 +57,7 @@ function ProviderMappingModal({
 	const handleSave = () => {
 		const existingProvider = !provider && providers?.find(prov => prov.source === source);
 		if (existingProvider) {
-			messageController.confirmSave(ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage).then(({ response }) => {
+			dialogController.confirmSave(ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage).then(({ response }) => {
 				if (response === 0) {
 					const newProviderMapping = new Provider(source, target, phonetic);
 					onSave(newProviderMapping, provider);

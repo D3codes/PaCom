@@ -8,17 +8,7 @@ import ProviderDateTableRows from './providerDateTableRows';
 import ReportActions from './reportActions';
 import ReportTableHeader from './reportTableHeader';
 import reportExporter from '../../utilities/reportExporter';
-
-const groupRemindersByProviderAndDate = reminders => reminders.reduce((remindersByProviderAndDate, reminder) => {
-	const providerDateKey = `${reminder.getIn(['appointment', 'provider', 'target'], 'Unmapped Provider(s)')} - ${reminder.getIn(['appointment', 'date'])}`;
-	const updatedRemindersByProviderAndDate = { ...remindersByProviderAndDate };
-	if (updatedRemindersByProviderAndDate[providerDateKey]) {
-		updatedRemindersByProviderAndDate[providerDateKey].push(reminder);
-	} else {
-		updatedRemindersByProviderAndDate[providerDateKey] = [reminder];
-	}
-	return updatedRemindersByProviderAndDate;
-}, {});
+import groupReminders from '../../utilities/reminderGrouper';
 
 const useStyles = makeStyles(theme => ({
 	noRemindersContainer: {
@@ -41,9 +31,13 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ReportTable({ reminders = null, sendDisabled = false }) {
+function ReportTable({ onSend, reminders = null, sendDisabled = false }) {
 	const classes = useStyles();
-	const remindersByProviderAndDate = reminders ? groupRemindersByProviderAndDate(reminders) : null;
+	const remindersByProviderAndDate = reminders ? groupReminders.byProviderAndDate(reminders) : null;
+	const completedReminders = reminders?.filter(reminder => reminder.status !== 'Pending' && reminder.status !== 'Sending');
+	const progress = completedReminders && reminders
+		? (completedReminders.length / reminders.length) * 100
+		: null;
 
 	const handleExport = () => {
 		reportExporter.exportReport(remindersByProviderAndDate);
@@ -65,6 +59,17 @@ function ReportTable({ reminders = null, sendDisabled = false }) {
 			{remindersByProviderAndDate && (
 				<div className={classes.tableContainer}>
 					<Table padding="none" stickyHeader>
+						<colgroup>
+							<col style={{ width: '11%' }} />
+							<col style={{ width: '10%' }} />
+							<col style={{ width: '9%' }} />
+							<col style={{ width: '18%' }} />
+							<col style={{ width: '10%' }} />
+							<col style={{ width: '8%' }} />
+							<col style={{ width: '10%' }} />
+							<col style={{ width: '12%' }} />
+							<col style={{ width: '12%' }} />
+						</colgroup>
 						<ReportTableHeader />
 						<TableBody>
 							{Object.entries(remindersByProviderAndDate).map(([providerDateText, remindersForProviderDate]) => (
@@ -78,12 +83,13 @@ function ReportTable({ reminders = null, sendDisabled = false }) {
 					</Table>
 				</div>
 			)}
-			<ReportActions onExport={handleExport} sendDisabled={sendDisabled} />
+			<ReportActions onSend={onSend} onExport={handleExport} sendDisabled={sendDisabled} progress={progress || 0} />
 		</Fragment>
 	);
 }
 
 ReportTable.propTypes = {
+	onSend: PropTypes.func.isRequired,
 	reminders: PropTypes.arrayOf(PropTypes.instanceOf(Reminder)),
 	sendDisabled: PropTypes.bool
 };

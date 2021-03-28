@@ -57,7 +57,7 @@ describe('ProviderDateTableRows', () => {
 		expect(getByText('1234567')).toBeDefined();
 		expect(getByText('01/11/1995')).toBeDefined();
 		expect(getByText('Cell')).toBeDefined();
-		expect(getAllByText('N/A').length).toBe(1);
+		expect(getAllByText('-').length).toBe(1);
 		expect(getByText('+19136838736')).toBeDefined();
 	});
 });

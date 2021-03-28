@@ -1,4 +1,4 @@
-const exportReport = report => window.ipcRenderer.invoke('export-report', report);
+const exportReport = (report, path = null) => window.ipcRenderer.invoke('export-report', report, path);
 
 export default {
 	exportReport

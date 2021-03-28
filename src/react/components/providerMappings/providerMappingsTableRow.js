@@ -8,7 +8,7 @@ import {
 } from '@material-ui/icons';
 
 import Provider from '../../models/provider';
-import messageController from '../../utilities/messageController';
+import dialogController from '../../utilities/dialogController';
 
 import {
 	ProviderMappingConfirmDeleteTitle, ProviderMappingConfirmDeleteMessage
@@ -47,7 +47,7 @@ function ProviderMappingsTableRow({
 	}
 
 	function handleRemoveClick() {
-		messageController.confirmDelete(ProviderMappingConfirmDeleteTitle, `${ProviderMappingConfirmDeleteMessage}${provider.source}?`).then(({ response }) => {
+		dialogController.confirmDelete(ProviderMappingConfirmDeleteTitle, `${ProviderMappingConfirmDeleteMessage}${provider.source}?`).then(({ response }) => {
 			if (response === 0) {
 				setMoreMenuAnchorEl(null);
 				onRemove(provider);
