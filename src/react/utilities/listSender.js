@@ -2,6 +2,7 @@ import twilio from './twilioClient';
 import dynamicValueReplacer from './dynamicValueReplacer';
 import persistentStorage from './persistentStorage';
 import reportExporter from './reportExporter';
+import groupReminders from './reminderGrouper';
 
 import {
 	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError
@@ -75,17 +76,6 @@ const sendCalls = async (onUpdate, reminders) => {
 	}
 };
 
-const groupRemindersByProviderAndDate = reminders => reminders.reduce((remindersByProviderAndDate, reminder) => {
-	const providerDateKey = `${reminder.getIn(['appointment', 'provider', 'target'], 'Unmapped Provider(s)')} - ${reminder.getIn(['appointment', 'date'])}`;
-	const updatedRemindersByProviderAndDate = { ...remindersByProviderAndDate };
-	if (updatedRemindersByProviderAndDate[providerDateKey]) {
-		updatedRemindersByProviderAndDate[providerDateKey].push(reminder);
-	} else {
-		updatedRemindersByProviderAndDate[providerDateKey] = [reminder];
-	}
-	return updatedRemindersByProviderAndDate;
-}, {});
-
 const sendToList = async (reminders, onUpdate = null, message = '', forceText = false) => {
 	if (!reminders || reminders.length <= 0) {
 		complete();
@@ -147,7 +137,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 				sendCalls(onUpdate, reminders).then(() => {
 					// Export Message Report Automatically, if enabled
 					if (autoSave) {
-						reportExporter.exportReport(groupRemindersByProviderAndDate(reminders), autoSavePath);
+						reportExporter.exportReport(groupReminders.byProviderAndDate(reminders), autoSavePath);
 					}
 
 					complete();

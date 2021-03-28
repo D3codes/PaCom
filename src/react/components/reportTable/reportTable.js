@@ -8,17 +8,7 @@ import ProviderDateTableRows from './providerDateTableRows';
 import ReportActions from './reportActions';
 import ReportTableHeader from './reportTableHeader';
 import reportExporter from '../../utilities/reportExporter';
-
-const groupRemindersByProviderAndDate = reminders => reminders.reduce((remindersByProviderAndDate, reminder) => {
-	const providerDateKey = `${reminder.getIn(['appointment', 'provider', 'target'], 'Unmapped Provider(s)')} - ${reminder.getIn(['appointment', 'date'])}`;
-	const updatedRemindersByProviderAndDate = { ...remindersByProviderAndDate };
-	if (updatedRemindersByProviderAndDate[providerDateKey]) {
-		updatedRemindersByProviderAndDate[providerDateKey].push(reminder);
-	} else {
-		updatedRemindersByProviderAndDate[providerDateKey] = [reminder];
-	}
-	return updatedRemindersByProviderAndDate;
-}, {});
+import groupReminders from '../../utilities/reminderGrouper';
 
 const useStyles = makeStyles(theme => ({
 	noRemindersContainer: {
@@ -43,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 function ReportTable({ onSend, reminders = null, sendDisabled = false }) {
 	const classes = useStyles();
-	const remindersByProviderAndDate = reminders ? groupRemindersByProviderAndDate(reminders) : null;
+	const remindersByProviderAndDate = reminders ? groupReminders.byProviderAndDate(reminders) : null;
 	const completedReminders = reminders?.filter(reminder => reminder.status !== 'Pending' && reminder.status !== 'Sending');
 	const progress = (completedReminders?.length / reminders?.length) * 100;
 
