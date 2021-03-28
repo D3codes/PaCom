@@ -36,7 +36,7 @@ function ReportTable({ onSend, reminders = null, sendDisabled = false }) {
 	const remindersByProviderAndDate = reminders ? groupReminders.byProviderAndDate(reminders) : null;
 	const completedReminders = reminders?.filter(reminder => reminder.status !== 'Pending' && reminder.status !== 'Sending');
 	const progress = completedReminders && reminders
-		? (completedReminders?.length / reminders?.length) * 100
+		? (completedReminders.length / reminders.length) * 100
 		: null;
 
 	const handleExport = () => {
