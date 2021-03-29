@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
 	IconButton, makeStyles, TableCell, TableRow, Typography
 } from '@material-ui/core';
@@ -38,7 +39,7 @@ function DynamicValueMappingsTableRow({
 	return (
 		<TableRow hover>
 			<TableCell className={classes.tableCell}>
-				<Typography className={!value && classes.unmappedSource} variant="body2">
+				<Typography className={clsx({ [classes.unmappedSource]: !value })} variant="body2">
 					{!value && (
 						<Warning className={classes.warningIcon} />
 					)}

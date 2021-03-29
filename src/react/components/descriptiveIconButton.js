@@ -65,7 +65,7 @@ DescriptiveIconButton.propTypes = {
 	selected: PropTypes.bool.isRequired,
 	title: PropTypes.string,
 	description: PropTypes.string,
-	Icon: PropTypes.node.isRequired
+	Icon: PropTypes.elementType.isRequired
 };
 
 export default DescriptiveIconButton;

@@ -80,7 +80,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 
 	const [showAlertSnackbar, setShowAlertSnackbar] = useState(false);
 	const [snackbarTitle, setSnackbarTitle] = useState('');
-	const [snackbarSeverity, setSnackbarSeverity] = useState('');
+	const [snackbarSeverity, setSnackbarSeverity] = useState(AlertSnackbar.Severities.Info);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	const [providerMappings, setProviderMappings] = useState(null);

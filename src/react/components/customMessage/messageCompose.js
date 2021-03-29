@@ -63,7 +63,7 @@ function MessageCompose({
 					onClick={value => onAppend(`{{${value.name}}}`)}
 					label={defaultDynamicValues ? 'Report Dynamic Values' : 'Dynamic Values'}
 					items={dynamicValues}
-					disabled={disableDynamicValues && dynamicValues}
+					disabled={disableDynamicValues}
 				/>
 			</div>
 		</div>

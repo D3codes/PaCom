@@ -102,7 +102,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [hasWritePermission, setHasWritePermission] = useState(false);
 
-	const [snackbarSeverity, setSnackbarSeverity] = useState('');
+	const [snackbarSeverity, setSnackbarSeverity] = useState(AlertSnackBar.Severities.Info);
 	const [showSnackbar, setShowSnackbar] = useState(false);
 	const [snackbarTitle, setSnackbarTitle] = useState('');
 	const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -159,7 +159,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 
 	const onSendAsSms = () => {
 		twilio.sendSMS(phoneNumber, message).then(sentSuccessfully => {
-			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarSeverity(sentSuccessfully ? AlertSnackBar.Severities.Success : AlertSnackBar.Severities.Error);
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? SmsSentSuccessfully : ErrorSendingSms);
 			setShowSnackbar(true);
@@ -168,7 +168,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 
 	const onSendAsCall = () => {
 		twilio.sendCall(phoneNumber, message).then(sentSuccessfully => {
-			setSnackbarSeverity(sentSuccessfully ? 'success' : 'error');
+			setSnackbarSeverity(sentSuccessfully ? AlertSnackBar.Severities.Success : AlertSnackBar.Severities.Error);
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? CallSentSuccessfully : ErrorSendingCall);
 			setShowSnackbar(true);

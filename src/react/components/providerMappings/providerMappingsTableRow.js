@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
 	IconButton, makeStyles, Menu, MenuItem, TableCell, TableRow, Typography
 } from '@material-ui/core';
@@ -68,7 +69,7 @@ function ProviderMappingsTableRow({
 	return (
 		<TableRow hover key={provider.source}>
 			<TableCell className={classes.tableCell}>
-				<Typography variant="body2" className={isUnmappedProvider && classes.unmappedSource}>
+				<Typography variant="body2" className={clsx({ [classes.unmappedSource]: isUnmappedProvider })}>
 					{isUnmappedProvider && (
 						<Warning className={classes.warningIcon} />
 					)}

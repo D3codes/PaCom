@@ -117,7 +117,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 							<Typography>This will be the message template that is used when sending appointment reminders via phone call and no overrides are selected.</Typography>
 							<FormControl variant="outlined">
 								<Select
-									value={defaultPhoneReminder || ''}
+									value={messageTemplates && defaultPhoneReminder ? defaultPhoneReminder || '' : ''}
 									disabled={!hasWritePermission}
 									onChange={event => { setDefaultPhoneReminder(event.target.value); }}
 									inputProps={{ 'aria-label': 'Without label' }}>
@@ -137,7 +137,7 @@ export default function AppointmentRemindersSettings({ appointmentReminders, rel
 							</Typography>
 							<FormControl variant="outlined">
 								<Select
-									value={defaultSmsReminder || ''}
+									value={messageTemplates && defaultSmsReminder ? defaultSmsReminder || '' : ''}
 									disabled={!hasWritePermission}
 									onChange={event => { setDefaultSmsReminder(event.target.value); }}
 									inputProps={{ 'aria-label': 'Without label' }}>

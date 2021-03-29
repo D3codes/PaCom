@@ -63,7 +63,7 @@ function CategorySection({
 CategorySection.propTypes = {
 	inset: PropTypes.bool,
 	items: PropTypes.arrayOf(PropTypes.shape({
-		Icon: PropTypes.node,
+		Icon: PropTypes.elementType,
 		id: PropTypes.string,
 		label: PropTypes.string
 	})).isRequired,
