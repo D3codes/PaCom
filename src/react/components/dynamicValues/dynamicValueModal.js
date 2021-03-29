@@ -107,7 +107,7 @@ function DynamicValueModal({
 	return (
 		<Dialog fullWidth open={open} maxWidth="md" onExited={applyInitialState}>
 			{!editProvider && <DialogTitle>{dynamicValue ? 'Edit' : 'Add'} Dynamic Value</DialogTitle>}
-			{editProvider && <DialogTitle>Value for {providers.find(provider => provider.source === editProvider).target || editProvider}</DialogTitle>}
+			{editProvider && <DialogTitle>Value for {providers?.find(provider => provider.source === editProvider).target || editProvider}</DialogTitle>}
 			<DialogContent className={classes.dialogContent}>
 				{!editProvider && (
 					<Fragment>
