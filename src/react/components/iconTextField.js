@@ -47,7 +47,7 @@ IconTextField.propTypes = {
 	label: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
 	value: PropTypes.string,
-	Icon: PropTypes.node.isRequired,
+	Icon: PropTypes.elementType.isRequired,
 	startAdornment: PropTypes.string,
 	testId: PropTypes.string
 };
