@@ -5,7 +5,6 @@ import getVersionMock from '../../react/utilities/getVersion';
 import App from '../../react/app';
 import persistentStorageMock from '../../react/utilities/persistentStorage';
 import sendingStatusMock from '../../react/utilities/sendingStatus';
-import sendingStatus from '../../react/utilities/sendingStatus';
 
 jest.mock('../../react/utilities/getVersion');
 jest.mock('../../react/utilities/persistentStorage');
