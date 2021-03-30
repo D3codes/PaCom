@@ -13,6 +13,7 @@ const {
 	dialog, app, BrowserWindow, Menu, shell, ipcMain: ipc
 } = electron;
 let mainWindow;
+let sending = false;
 
 const isMac = process.platform === 'darwin';
 const menuTemplate = [
@@ -110,6 +111,18 @@ const menuTemplate = [
 const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
+// Alert Window
+const showAlert = (title, message, type, buttons, defaultId, cancelId) => dialog.showMessageBox({
+	browserWindow: mainWindow,
+	title,
+	type,
+	buttons,
+	message: title,
+	defaultId,
+	cancelId,
+	detail: message
+});
+
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 1200,
@@ -131,6 +144,22 @@ function createWindow() {
 			: `file://${path.join(__dirname, '../index.html')}`
 	);
 
+	mainWindow.on('close', async e => {
+		if (sending) {
+			e.preventDefault();
+			if ((await showAlert(
+				'Sending in Progress',
+				'Closing PaCom while sending will result in some messages not being sent and other potential data loss.',
+				'warning',
+				['Close Anyway', 'Cancel'],
+				1,
+				1
+			)).response === 0) {
+				mainWindow.destroy();
+			}
+		}
+	});
+
 	mainWindow.on('closed', () => {
 		mainWindow = null;
 	});
@@ -151,18 +180,6 @@ app.on('activate', () => {
 	if (mainWindow === null) {
 		createWindow();
 	}
-});
-
-// Alert Window
-const showAlert = (title, message, type, buttons, defaultId, cancelId) => dialog.showMessageBox({
-	browserWindow: mainWindow,
-	title,
-	type,
-	buttons,
-	message: title,
-	defaultId,
-	cancelId,
-	detail: message
 });
 
 // Listeners
@@ -208,3 +225,5 @@ ipc.handle('copy-local-to-network', () => persistentStorage.copyLocalToNetwork()
 ipc.handle('show-alert', (event, title, message, type, buttons, defaultId, cancelId) => showAlert(title, message, type, buttons, defaultId, cancelId));
 
 ipc.handle('export-report', (event, report, autoSavePath) => excelHelper.exportMessageReport(report, autoSavePath));
+
+ipc.handle('sending', (event, isSending) => { sending = isSending; });
