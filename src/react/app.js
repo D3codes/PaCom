@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	AppBar, CssBaseline, makeStyles, Toolbar, Typography
 } from '@material-ui/core';
@@ -10,6 +10,7 @@ import MiniDrawer, { DRAWER_WIDTH } from './components/drawer/miniDrawer';
 import ProviderMappings from './components/providerMappings/providerMappings';
 import DynamicValues from './components/dynamicValues/dynamicValues';
 import Settings from './components/settings/settings';
+import sendingStatus from './utilities/sendingStatus';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -43,6 +44,7 @@ export default function App() {
 	const classes = useStyles();
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
 	const [disableNavigation, setDisableNavigation] = useState(false);
+	useEffect(() => { sendingStatus.update(disableNavigation); }, [disableNavigation]);
 
 	const title = getTitle(selectedTabId);
 

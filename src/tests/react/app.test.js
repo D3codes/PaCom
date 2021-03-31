@@ -4,9 +4,11 @@ import { render } from '@testing-library/react';
 import getVersionMock from '../../react/utilities/getVersion';
 import App from '../../react/app';
 import persistentStorageMock from '../../react/utilities/persistentStorage';
+import sendingStatusMock from '../../react/utilities/sendingStatus';
 
 jest.mock('../../react/utilities/getVersion');
 jest.mock('../../react/utilities/persistentStorage');
+jest.mock('../../react/utilities/sendingStatus');
 
 const testSettings = {
 	appointmentReminders: {
@@ -38,6 +40,7 @@ describe('App', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve([]));
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
 		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
+		sendingStatusMock.update.mockImplementation(() => Promise.resolve([]));
 
 		const { getAllByText } = render(<App />);
 		expect(getAllByText('Appointment Reminders')).toHaveLength(2);
