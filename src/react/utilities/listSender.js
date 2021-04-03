@@ -23,6 +23,18 @@ let autoSavePath = '';
 let complete = null;
 
 let calls = [];
+
+const setDefaults = () => {
+	defaultPhoneReminder = '';
+	defaultSmsReminder = '';
+	sendToPreferredContactMethodAndSms = false;
+	sendSmsToHomeIfNoCell = false;
+	autoSave = false;
+	autoSavePath = '';
+	complete = null;
+	calls = [];
+};
+
 const callBundler = (number, message, reminder) => {
 	// Check for existing call to number
 	let call = calls.find(c => c.number === number);
@@ -159,6 +171,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 };
 
 const sendCustomMessage = (reminders, message, onUpdate, onComplete) => {
+	setDefaults();
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
 		// Get Contact Preferences
@@ -174,6 +187,7 @@ const sendCustomMessage = (reminders, message, onUpdate, onComplete) => {
 };
 
 const sendAppointmentReminders = (reminders, onUpdate, onComplete) => {
+	setDefaults();
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
 		// Get Names of Default Call and Message Templates from Settings
