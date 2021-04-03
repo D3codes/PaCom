@@ -22,6 +22,10 @@ const testSettings = {
 			phone: null,
 			sms: null
 		}
+	},
+	shareData: {
+		behavior: 0,
+		location: ''
 	}
 };
 
