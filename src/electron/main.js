@@ -111,6 +111,20 @@ const menuTemplate = [
 const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
+const selectionMenu = Menu.buildFromTemplate([
+	{ role: 'copy' },
+	{ type: 'separator' },
+	{ role: 'selectall' }
+]);
+
+const inputMenu = Menu.buildFromTemplate([
+	{ role: 'cut' },
+	{ role: 'copy' },
+	{ role: 'paste' },
+	{ type: 'separator' },
+	{ role: 'selectall' }
+]);
+
 // Alert Window
 const showAlert = (title, message, type, buttons, defaultId, cancelId) => dialog.showMessageBox({
 	browserWindow: mainWindow,
@@ -143,6 +157,15 @@ function createWindow() {
 			? 'http://localhost:3000'
 			: `file://${path.join(__dirname, '../index.html')}`
 	);
+
+	mainWindow.webContents.on('context-menu', (e, props) => {
+		const { selectionText, isEditable } = props;
+		if (isEditable) {
+			inputMenu.popup(mainWindow);
+		} else if (selectionText && selectionText.trim() !== '') {
+			selectionMenu.popup(mainWindow);
+		}
+	});
 
 	mainWindow.on('close', async e => {
 		if (sending) {
