@@ -11,7 +11,18 @@ const useStyles = makeStyles(theme => ({
 	button: {
 		marginTop: theme.spacing(),
 		marginBottom: theme.spacing(),
-		width: '100%'
+		width: '100%',
+		'&:disabled': {
+			borderColor: 'rgba(0,0,0,0)'
+		}
+	},
+	disabledSelectedButton: {
+		marginTop: theme.spacing(),
+		marginBottom: theme.spacing(),
+		width: '100%',
+		'&:disabled': {
+			border: '1px solid rgba(0,0,0,0.12)'
+		}
 	},
 	buttonText: {
 		color: theme.palette.text.primary
@@ -40,10 +51,10 @@ function DescriptiveIconButton({
 	return (
 		<Button
 			onClick={onClick}
-			className={classes.button}
+			classes={{ root: classes.buttonRoot, outlinedPrimary: selected ? '' : classes.invisibleOutline }}
+			className={disabled && selected ? classes.disabledSelectedButton : classes.button}
 			disabled={disabled}
 			color="primary"
-			classes={{ root: classes.buttonRoot, outlinedPrimary: selected ? '' : classes.invisibleOutline }}
 			variant="outlined"
 			startIcon={(
 				<Fragment>

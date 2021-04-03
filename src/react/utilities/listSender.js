@@ -9,7 +9,7 @@ import Patient from '../models/patient';
 import ContactMethod from '../models/conactMethod';
 
 import {
-	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend
+	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend, BundledCall
 } from '../localization/en/statusMessageText';
 
 const SLEEP_DURATION = 500;
@@ -23,6 +23,18 @@ let autoSavePath = '';
 let complete = null;
 
 let calls = [];
+
+const setDefaults = () => {
+	defaultPhoneReminder = '';
+	defaultSmsReminder = '';
+	sendToPreferredContactMethodAndSms = false;
+	sendSmsToHomeIfNoCell = false;
+	autoSave = false;
+	autoSavePath = '';
+	complete = null;
+	calls = [];
+};
+
 const callBundler = (number, message, reminder) => {
 	// Check for existing call to number
 	let call = calls.find(c => c.number === number);
@@ -67,8 +79,10 @@ const sendCalls = async (onUpdate, reminders) => {
 		twilio.sendCall(call.number, call.message).then(sentSuccessfully => {
 			// loop through all reminders for number and update statuses
 			call.reminders.forEach(reminder => {
-				if (sentSuccessfully) reminder.setSentStatus();
-				else {
+				if (sentSuccessfully) {
+					reminder.setSentStatus();
+					if (call.reminders.length > 1) reminder.appendStatusMessage(BundledCall);
+				} else {
 					reminder.setFailedStatus();
 					reminder.setStatusMessage(TwilioError);
 				}
@@ -159,6 +173,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 };
 
 const sendCustomMessage = (reminders, message, onUpdate, onComplete) => {
+	setDefaults();
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
 		// Get Contact Preferences
@@ -174,6 +189,7 @@ const sendCustomMessage = (reminders, message, onUpdate, onComplete) => {
 };
 
 const sendAppointmentReminders = (reminders, onUpdate, onComplete) => {
+	setDefaults();
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
 		// Get Names of Default Call and Message Templates from Settings

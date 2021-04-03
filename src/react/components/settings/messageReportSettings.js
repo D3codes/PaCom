@@ -68,6 +68,7 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 					title="OFF"
 					description="Do not AutoSave message reports after sending."
 					Icon={Close}
+					disabled={!hasWritePermission}
 				/>
 				<DescriptiveIconButton
 					onClick={() => { setAutoSave(true); }}
@@ -75,6 +76,7 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 					title="AUTOSAVE"
 					description="AutoSave message reports to the specified location after sending is complete."
 					Icon={SaveAlt}
+					disabled={!hasWritePermission}
 				/>
 			</div>
 			<div className={classes.actionButtonContainer}>
@@ -87,7 +89,7 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 					View Last Report
 				</Button>
 				<Button
-					disabled={!changesToSave || autoSaveOnAndLocationNotSet}
+					disabled={!hasWritePermission || !changesToSave || autoSaveOnAndLocationNotSet}
 					endIcon={<Save />}
 					color="primary"
 					variant={changesToSave && !autoSaveOnAndLocationNotSet ? 'contained' : 'outlined'}

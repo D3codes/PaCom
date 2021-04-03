@@ -314,7 +314,7 @@ describe('ListSender', () => {
 			try {
 				expect(sendCallMock).toBeCalledTimes(1);
 				expect(sendSMSMock).toBeCalledTimes(0);
-				expect(onUpdateMock).toBeCalledTimes(4);
+				expect(onUpdateMock).toBeCalledTimes(3);
 				expect(setSendingStatusMock).toBeCalledTimes(1);
 				expect(setFailedStatusMock).toBeCalledTimes(1);
 				expect(setSentStatusMock).toBeCalledTimes(0);
@@ -399,7 +399,7 @@ describe('ListSender', () => {
 			try {
 				expect(sendCallMock).toBeCalledTimes(1);
 				expect(sendSMSMock).toBeCalledTimes(1);
-				expect(onUpdateMock).toBeCalledTimes(5);
+				expect(onUpdateMock).toBeCalledTimes(3);
 				expect(setSendingStatusMock).toBeCalledTimes(2);
 				expect(setFailedStatusMock).toBeCalledTimes(0);
 				expect(setSentStatusMock).toBeCalledTimes(1);
@@ -488,7 +488,7 @@ describe('ListSender', () => {
 			try {
 				expect(sendCallMock).toBeCalledTimes(1);
 				expect(sendSMSMock).toBeCalledTimes(1);
-				expect(onUpdateMock).toBeCalledTimes(6);
+				expect(onUpdateMock).toBeCalledTimes(3);
 				expect(setSendingStatusMock).toBeCalledTimes(2);
 				expect(setFailedStatusMock).toBeCalledTimes(0);
 				expect(setSentStatusMock).toBeCalledTimes(1);
@@ -578,7 +578,7 @@ describe('ListSender', () => {
 			try {
 				expect(sendCallMock).toBeCalledTimes(1);
 				expect(sendSMSMock).toBeCalledTimes(1);
-				expect(onUpdateMock).toBeCalledTimes(7);
+				expect(onUpdateMock).toBeCalledTimes(3);
 				expect(setSendingStatusMock).toBeCalledTimes(2);
 				expect(setFailedStatusMock).toBeCalledTimes(0);
 				expect(setSentStatusMock).toBeCalledTimes(1);

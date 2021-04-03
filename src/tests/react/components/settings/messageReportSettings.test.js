@@ -68,7 +68,7 @@ describe('MessageReportSettings', () => {
 			lastReport: ''
 		};
 		const reloadSettingsMock = jest.fn();
-		const { getByText, getByTestId } = render(<MessageReportSettings messageReports={settings} reloadSettings={reloadSettingsMock} />);
+		const { getByText, getByTestId } = render(<MessageReportSettings messageReports={settings} reloadSettings={reloadSettingsMock} hasWritePermission />);
 
 		const browseField = getByTestId('browse-field').querySelector('input');
 		browseField.value = 'C:\\new\\test\\location';

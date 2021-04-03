@@ -30,7 +30,10 @@ const testSettings = {
 	customMessages: {},
 	messageReports: {},
 	twilio: {},
-	sharedConfig: {}
+	shareData: {
+		behavior: 0,
+		location: ''
+	}
 };
 
 describe('App', () => {
