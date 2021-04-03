@@ -9,7 +9,7 @@ import Patient from '../models/patient';
 import ContactMethod from '../models/conactMethod';
 
 import {
-	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend
+	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend, BundledCall
 } from '../localization/en/statusMessageText';
 
 const SLEEP_DURATION = 500;
@@ -79,8 +79,10 @@ const sendCalls = async (onUpdate, reminders) => {
 		twilio.sendCall(call.number, call.message).then(sentSuccessfully => {
 			// loop through all reminders for number and update statuses
 			call.reminders.forEach(reminder => {
-				if (sentSuccessfully) reminder.setSentStatus();
-				else {
+				if (sentSuccessfully) {
+					reminder.setSentStatus();
+					if (call.reminders.length > 1) reminder.appendStatusMessage(BundledCall);
+				} else {
 					reminder.setFailedStatus();
 					reminder.setStatusMessage(TwilioError);
 				}

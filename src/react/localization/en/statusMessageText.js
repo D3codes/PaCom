@@ -29,3 +29,7 @@ exports.ErrorInAppointmentList = ErrorInAppointmentList;
 // No Message to Send
 const NoMessageToSend = 'No message to send';
 exports.NoMessageToSend = NoMessageToSend;
+
+// Bundled Call
+const BundledCall = 'Multiple calls to this number were bundled together';
+exports.BundledCall = BundledCall;
