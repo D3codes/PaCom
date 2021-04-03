@@ -27,12 +27,32 @@ const testTemplates = [
 	}
 ];
 
+const testSettings = {
+	customMessages: {
+		dateVerification: {
+			numberOfDays: 3,
+			endOfRange: null,
+			allowSendOutsideRange: 0,
+			useBusinessDays: true
+		},
+		contactPreferences: {
+			sendToPreferredAndSms: false,
+			textHomeIfCellNotAvailable: false
+		}
+	},
+	shareData: {
+		behavior: 0,
+		location: ''
+	}
+};
+
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('CustomMessage', () => {
 	it('renders without crashing', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
+		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
 		const { getByText } = render(<CustomMessage />);
 
@@ -44,6 +64,7 @@ describe('CustomMessage', () => {
 	it('switches views when toggled', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
+		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
 		const { getByText } = render(<CustomMessage />);
 
@@ -57,6 +78,7 @@ describe('CustomMessage', () => {
 	it('keeps send buttons disabled when no message entered', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
+		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
 		const { getByText, getByTestId } = render(<CustomMessage />);
 
