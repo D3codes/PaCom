@@ -96,8 +96,11 @@ const overrides = {
 		paper: {
 			margin: 16
 		},
+		paperFullWidth: {
+			width: 'calc(100% - 32px)'
+		},
 		paperScrollPaper: {
-			maxHeight: 'calc(100%-32px)'
+			maxHeight: 'calc(100% - 32px)'
 		}
 	}
 };
