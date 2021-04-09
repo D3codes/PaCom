@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import getVersionMock from '../../../../react/utilities/getVersion';
 import MiniDrawer from '../../../../react/components/drawer/miniDrawer';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
@@ -9,7 +9,7 @@ jest.mock('../../../../react/utilities/getVersion');
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('MiniDrawer', () => {
-	it('renders basic mode without crashing', () => {
+	it('renders basic mode without crashing', async () => {
 		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			adminAccess: false,
@@ -28,14 +28,14 @@ describe('MiniDrawer', () => {
 			/>
 		);
 
-		expect(queryByText('Appointment Reminders')).toBeDefined();
-		expect(queryByText('Custom Messages')).toBeDefined();
+		expect(await screen.findByText('Appointment Reminders')).toBeDefined();
+		expect(await screen.findByText('Custom Messages')).toBeDefined();
 		expect(queryByText('Provider Mappings')).toBeNull();
 		expect(queryByText('Message Templates')).toBeNull();
 		expect(queryByText('Settings')).toBeNull();
 	});
 
-	it('renders admin mode without crashing', () => {
+	it('renders admin mode without crashing', async () => {
 		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			adminAccess: true,
@@ -46,7 +46,7 @@ describe('MiniDrawer', () => {
 			sharedConfig: {}
 		}));
 
-		const { queryByText } = render(
+		render(
 			<MiniDrawer
 				onTabSelect={jest.fn()}
 				selectedTabId="sndApptRmdrs"
@@ -54,11 +54,11 @@ describe('MiniDrawer', () => {
 			/>
 		);
 
-		expect(queryByText('Appointment Reminders')).toBeDefined();
-		expect(queryByText('Custom Messages')).toBeDefined();
-		expect(queryByText('Provider Mappings')).toBeDefined();
-		expect(queryByText('Message Templates')).toBeDefined();
-		expect(queryByText('Settings')).toBeDefined();
+		expect(await screen.findByText('Appointment Reminders')).toBeDefined();
+		expect(await screen.findAllByText('Custom Messages')).toHaveLength(2);
+		expect(await screen.findByText('Provider Mappings')).toBeDefined();
+		expect(await screen.findByText('Message Templates')).toBeDefined();
+		expect(await screen.findByText('Settings')).toBeDefined();
 	});
 
 	it('calls onTabSelect when a tab is selected', async () => {
@@ -81,13 +81,14 @@ describe('MiniDrawer', () => {
 			/>
 		);
 
-		const customMessagesTab = getByText('Custom Messages');
+		await screen.findByText('Provider Mappings');
+		const customMessagesTab = getByText('Provider Mappings');
 		fireEvent.click(customMessagesTab);
 
 		expect(tabSelectMock).toBeCalledTimes(1);
 	});
 
-	it('shows backdrop when navigation is disabled', () => {
+	it('shows backdrop when navigation is disabled', async () => {
 		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
 		const tabSelectMock = jest.fn();
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
@@ -107,6 +108,7 @@ describe('MiniDrawer', () => {
 			/>
 		);
 
+		await screen.findByText('Provider Mappings');
 		expect(getByTestId('backdrop')).toBeDefined();
 	});
 });

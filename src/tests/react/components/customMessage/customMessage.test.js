@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { Simulate } from 'react-dom/test-utils';
 import CustomMessage from '../../../../react/components/customMessage/customMessage';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
@@ -49,39 +49,40 @@ const testSettings = {
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('CustomMessage', () => {
-	it('renders without crashing', () => {
+	it('renders without crashing', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
 		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
-		const { getByText } = render(<CustomMessage />);
+		render(<CustomMessage disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 
-		expect(getByText('Send to Specific Number')).toBeDefined();
-		expect(getByText('Templates')).toBeDefined();
-		expect(getByText('Dynamic Values')).toBeDefined();
+		expect(await screen.findByText('Send to Specific Number')).toBeDefined();
+		expect(await screen.findByText('Templates')).toBeDefined();
+		expect(await screen.findByText('Dynamic Values')).toBeDefined();
 	});
 
-	it('switches views when toggled', () => {
+	it('switches views when toggled', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
 		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
-		const { getByText } = render(<CustomMessage />);
+		const { getByText } = render(<CustomMessage disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 
-		expect(getByText('Invalid Phone Number')).toBeDefined();
+		expect(await screen.findByText('Invalid Phone Number')).toBeDefined();
 
 		fireEvent.click(getByText('Send to Appointment List'));
 
-		expect(getByText('Browse')).toBeDefined();
+		expect(await screen.findByText('Browse')).toBeDefined();
 	});
 
-	it('keeps send buttons disabled when no message entered', () => {
+	it('keeps send buttons disabled when no message entered', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
 		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
-		const { getByText, getByTestId } = render(<CustomMessage />);
+		const { getByText, getByTestId } = render(<CustomMessage disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 
+		await screen.findByText('Send as SMS');
 		expect(getByText('Send as SMS').parentElement).toBeDisabled();
 		expect(getByText('Send as Call').parentElement).toBeDisabled();
 
