@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import AppointmentReminders from '../../../../react/components/appointmentReminders/appointmentReminders';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
@@ -30,21 +30,23 @@ const testSettings = {
 };
 
 describe('AppointmentReminders', () => {
-	it('renders without crashing', () => {
+	it('renders without crashing', async () => {
 		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
 
 		const { container } = render(<AppointmentReminders disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 
+		await screen.findByText('Browse');
 		expect(container.firstChild.className.includes('appointmentRemindersContainer')).toBe(true);
 	});
 
-	it('disables the browse button when navigation is disabled', () => {
+	it('disables the browse button when navigation is disabled', async () => {
 		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
 
 		const { getByText } = render(<AppointmentReminders disableNavigation onDisableNavigationChange={jest.fn()} />);
 
+		await screen.findByText('Browse');
 		expect(getByText('Browse').parentElement).toBeDisabled();
 	});
 });

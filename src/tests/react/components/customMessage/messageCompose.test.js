@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import MessageCompose from '../../../../react/components/customMessage/messageCompose';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
@@ -18,10 +18,10 @@ const testValues = [
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('MessageCompose', () => {
-	it('renders without crashing', () => {
+	it('renders without crashing', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 
-		const { getByText } = render(
+		render(
 			<MessageCompose
 				messageIsValid
 				onMessageChange={jest.fn()}
@@ -30,17 +30,17 @@ describe('MessageCompose', () => {
 			/>
 		);
 
-		expect(getByText('Test Message')).toBeDefined();
-		expect(getByText('Dynamic Values')).toBeDefined();
+		expect(await screen.findByText('Test Message')).toBeDefined();
+		expect(await screen.findByText('Dynamic Values')).toBeDefined();
 	});
 
-	it('shows helper text when passed', () => {
+	it('shows helper text when passed', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 
-		const { getByText } = render(
+		render(
 			<MessageCompose
 				messageIsValid
-				onMessageChage={jest.fn()}
+				onMessageChange={jest.fn()}
 				onAppend={jest.fn()}
 				message="Test Message"
 				disableDynamicValues
@@ -48,6 +48,6 @@ describe('MessageCompose', () => {
 			/>
 		);
 
-		expect(getByText('Test Helper Text')).toBeDefined();
+		expect(await screen.findByText('Test Helper Text')).toBeDefined();
 	});
 });

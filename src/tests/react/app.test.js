@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import getVersionMock from '../../react/utilities/getVersion';
 import App from '../../react/app';
 import persistentStorageMock from '../../react/utilities/persistentStorage';
@@ -37,7 +37,7 @@ const testSettings = {
 };
 
 describe('App', () => {
-	it('renders without crashing', () => {
+	it('renders without crashing', async () => {
 		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
 		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve([]));
@@ -45,7 +45,7 @@ describe('App', () => {
 		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
 		sendingStatusMock.update.mockImplementation(() => Promise.resolve([]));
 
-		const { getAllByText } = render(<App />);
-		expect(getAllByText('Appointment Reminders')).toHaveLength(2);
+		render(<App />);
+		expect(await screen.findAllByText('Appointment Reminders')).toHaveLength(2);
 	});
 });
