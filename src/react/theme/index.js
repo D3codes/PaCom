@@ -91,6 +91,17 @@ const overrides = {
 				fontSize: 20
 			}
 		}
+	},
+	MuiDialog: {
+		paper: {
+			margin: 16
+		},
+		paperFullWidth: {
+			width: 'calc(100% - 32px)'
+		},
+		paperScrollPaper: {
+			maxHeight: 'calc(100% - 32px)'
+		}
 	}
 };
 
