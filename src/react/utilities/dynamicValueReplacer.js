@@ -16,9 +16,10 @@ const replace = async (message, reminder, notifyBy) => {
 			reminder.setStatusMessage(`${NonexistentDynamicValue}${valueInMessage[0]}`);
 			replacedMessage = '';
 		} else if (dynamicValueSource.fromApptList) {
-			const replaceWith = dynamicValueSource.name === 'Provider'
+			let replaceWith = dynamicValueSource.name === 'Provider'
 				? reminder.getIn(pathToProviderMapping, '')
 				: reminder.getIn(dynamicValueSource.pathFromReminder, '');
+			if (dynamicValueSource.name === 'Patient Name') [, replaceWith] = replaceWith.split(', ');
 			if (!replaceWith) {
 				replacedMessage = '';
 				reminder.setFailedStatus();
