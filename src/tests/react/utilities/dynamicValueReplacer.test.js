@@ -34,6 +34,25 @@ describe('DynamicValueReplacer', () => {
 		expect(mockSetFailedStatus).toHaveBeenCalledTimes(0);
 	});
 
+	it('trims patient name correctly', async () => {
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
+		const mockSetStatusMessage = jest.fn();
+		const mockSetFailedStatus = jest.fn();
+		const mockGetIn = jest.fn(() => 'Freeman, David D');
+		const fakeReminder = {
+			setStatusMessage: mockSetStatusMessage,
+			setFailedStatus: mockSetFailedStatus,
+			getIn: mockGetIn
+		};
+
+		const testMessage = 'The replacement text should be here: {{Patient Name}}';
+		const replacedMessage = await dynamicValueReplacer.replace(testMessage, fakeReminder);
+
+		expect(replacedMessage).toEqual('The replacement text should be here: David D');
+		expect(mockSetStatusMessage).toHaveBeenCalledTimes(0);
+		expect(mockSetFailedStatus).toHaveBeenCalledTimes(0);
+	});
+
 	it('replaces multiple default dynamic values correctly', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
 		const mockSetStatusMessage = jest.fn();
@@ -45,7 +64,7 @@ describe('DynamicValueReplacer', () => {
 			getIn: mockGetIn
 		};
 
-		const testMessage = '{{Patient Name}} The replacement text should be here: {{Provider}}';
+		const testMessage = '{{Appointment Date}} The replacement text should be here: {{Provider}}';
 		const replacedMessage = await dynamicValueReplacer.replace(testMessage, fakeReminder);
 
 		expect(replacedMessage).toEqual('Replace With Me! The replacement text should be here: Replace With Me!');

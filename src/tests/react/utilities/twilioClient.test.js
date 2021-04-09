@@ -2,8 +2,10 @@ import { enableFetchMocks } from 'jest-fetch-mock';
 import twilioClient from '../../../react/utilities/twilioClient';
 import { NullValueException } from '../../../react/exceptions';
 import persistentStorageMock from '../../../react/utilities/persistentStorage';
+import getVersionMock from '../../../react/utilities/getVersion';
 
 jest.mock('../../../react/utilities/persistentStorage');
+jest.mock('../../../react/utilities/getVersion');
 enableFetchMocks();
 
 describe('twilioClient', () => {
@@ -13,6 +15,7 @@ describe('twilioClient', () => {
 
 	it('makes one request when sendSMS is called', async () => {
 		fetch.mockResponseOnce();
+		getVersionMock.mockImplementation(async () => '2.0.2');
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			appointmentReminders: {},
 			customMessages: {},
@@ -35,6 +38,7 @@ describe('twilioClient', () => {
 
 	it('makes one request when sendCall is called', async () => {
 		fetch.mockResponseOnce();
+		getVersionMock.mockImplementation(async () => '2.0.2');
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			appointmentReminders: {},
 			customMessages: {},

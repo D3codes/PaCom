@@ -1,6 +1,6 @@
 {
   "name": "PaCom",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Convalesce Healthcare Solutions <support@convalesce.health> (http://convalesce.health)",
   "description": "A Patient Communication Solution",
   "private": true,
@@ -25,7 +25,7 @@
     ],
     "publish": {
       "provider": "github",
-      "repo": "PaCom",
+      "repo": "PaCom-Releases",
       "owner": "d526f861"
     }
   },
@@ -42,7 +42,9 @@
     "cross-env": "^7.0.3",
     "date-fns": "^2.19.0",
     "electron-is-dev": "^2.0.0",
+    "electron-log": "^4.3.2",
     "electron-store": "^7.0.0",
+    "electron-updater": "^4.3.8",
     "exceljs": "^4.2.1",
     "papaparse": "^5.3.0",
     "prop-types": "^15.7.2",
@@ -59,6 +61,7 @@
     "eject": "react-scripts eject",
     "package-win": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
     "package-mac": "electron-builder build --mac -c.extraMetadata.main=build/electron/main.js --publish never",
+    "publish": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish always",
     "pretty": "node_modules/.bin/eslint ./src --fix",
     "eslint": "node_modules/.bin/eslint ./src"
   },

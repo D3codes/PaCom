@@ -2,6 +2,8 @@
 const electron = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
+const { autoUpdater } = require('electron-updater');
+const log = require('electron-log');
 
 const projectPackage = require('../../package.json');
 const { open, save } = require('./utilities/fileOpener');
@@ -202,6 +204,47 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
 	if (mainWindow === null) {
 		createWindow();
+	}
+});
+
+// Auto Updater
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
+autoUpdater.on('checking-for-update', () => {
+	log.info('Checking for update...');
+});
+autoUpdater.on('update-available', () => {
+	log.info('Update available.');
+});
+autoUpdater.on('update-not-available', () => {
+	log.info('Update not available.');
+});
+autoUpdater.on('error', err => {
+	log.info(`Error in auto-updater. ${err}`);
+});
+autoUpdater.on('download-progress', progressObj => {
+	let logMessage = `Download speed: ${progressObj.bytesPerSecond}`;
+	logMessage = `${logMessage} - Downloaded ${progressObj.percent}%`;
+	logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
+	log.info(logMessage);
+});
+
+app.on('ready', () => {
+	autoUpdater.checkForUpdatesAndNotify();
+});
+
+autoUpdater.on('update-downloaded', async () => {
+	if ((await showAlert(
+		'PaCom Update Available',
+		'A new version of PaCom has been downloaded. It is recommended to install this update immediately.',
+		'info',
+		['Update Now', 'Cancel'],
+		1,
+		1
+	)).response === 0) {
+		autoUpdater.quitAndInstall();
 	}
 });
 

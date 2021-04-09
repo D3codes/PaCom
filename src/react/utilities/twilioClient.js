@@ -1,4 +1,5 @@
 import persistentStorage from './persistentStorage';
+import getVersion from './getVersion';
 
 const { NullValueException } = require('../exceptions');
 
@@ -8,14 +9,15 @@ const TWILIO_GET_CALLS_ENDPOINT = '/Calls.json?PageSize=1000&StartTime=';
 
 const sendMessage = async (phoneNumber, message, sendAsSms) => {
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
-
+	const trimmedMessage = message.replace(/[\r\n]+/gm, ' ');
+	const version = await getVersion();
 	const response = await fetch(sendAsSms ? twilioSettings.smsEndpoint : twilioSettings.callEndpoint, {
 		method: 'POST',
 		headers: {
 			Authorization: `Basic ${btoa(`${twilioSettings.SID}:${twilioSettings.authToken}`)}`,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		},
-		body: `To=${phoneNumber}&From=+1${twilioSettings.phoneNumber}&Parameters={"message": "${message}"}`
+		body: `To=${phoneNumber}&From=+1${twilioSettings.phoneNumber}&Parameters={"message": "${trimmedMessage}", "paComVersion": "${version}"}`
 	});
 
 	return response.ok;
