@@ -64,7 +64,7 @@ function MessageTemplatesTableRow({
 			<TableCell className={classes.tableCell}><Typography variant="body2">{template.get('body', '-')}</Typography></TableCell>
 			<TableCell align="center" className={classes.tableCell}>
 				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
-					<MoreVert data-testid="moreButton" />
+					<MoreVert />
 				</IconButton>
 				<Menu anchorEl={moreMenuAnchorEl} open={Boolean(moreMenuAnchorEl)} onClose={handleMoreMenuClose}>
 					<MenuItem className={classes.moreMenuItem} onClick={handleEditClick}>
