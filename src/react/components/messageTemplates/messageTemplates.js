@@ -28,10 +28,16 @@ export default function MessageTemplates() {
 	const [hasWritePermission, setHasWritePermission] = useState(null);
 	const [editingTemplate, setEditingTemplate] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [defaultPhoneReminderTemplate, setDefaultPhoneReminderTemplate] = useState('');
+	const [defaultSmsReminderTemplate, setDefaultSmsReminderTemplate] = useState('');
 
 	useEffect(() => {
 		persistentStorage.getMessageTemplates().then(setTemplates);
 		persistentStorage.getSettings(true).then(settings => setHasWritePermission(settings.shareData.behavior !== 1));
+		persistentStorage.getSettings().then(settings => {
+			setDefaultPhoneReminderTemplate(settings.appointmentReminders.defaultReminderTemplates.phone);
+			setDefaultSmsReminderTemplate(settings.appointmentReminders.defaultReminderTemplates.sms);
+		});
 	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
@@ -65,6 +71,8 @@ export default function MessageTemplates() {
 				onRemove={handleRemove}
 				onSave={handleSave}
 				templates={templates}
+				defaultPhoneTemplate={defaultPhoneReminderTemplate}
+				defaultSmsTemplate={defaultSmsReminderTemplate}
 			/>
 			<div className={classes.buttonContainer}>
 				<Button

@@ -45,9 +45,3 @@ const ErrorSendingSomeRemindersTitle = 'Error Sending Reminders';
 const ErrorSendingSomeRemindersMessage = 'Check statuses for details';
 exports.ErrorSendingSomeRemindersTitle = ErrorSendingSomeRemindersTitle;
 exports.ErrorSendingSomeRemindersMessage = ErrorSendingSomeRemindersMessage;
-
-// Default Template Deleted
-const DefaultTemplateDeletedTitle = 'Default Reminder Template Deleted';
-const DefaultTemplateDeletedMessage = 'Select a new one in Appointment Reminder Settings';
-exports.DefaultTemplateDeletedTitle = DefaultTemplateDeletedTitle;
-exports.DefaultTemplateDeletedMessage = DefaultTemplateDeletedMessage;
