@@ -106,7 +106,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 					persistentStorage.getMessageTemplates().then(templates => {
 						const defaultSmsReminder = templates.find(template => template.name === defaultSms);
 						const defaultPhoneReminder = templates.find(template => template.name === defaultPhone);
-						setDefaultTemplatesDefined(defaultSmsReminder && defaultPhoneReminder);
+						setDefaultTemplatesDefined(Boolean(defaultSmsReminder && defaultPhoneReminder));
 					});
 				}
 			})
