@@ -12,7 +12,7 @@ const templates = [
 
 describe('MessageTemplatesTable', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<MessageTemplatesTable onEdit={() => {}} onRemove={() => {}} />);
+		const { getByText } = render(<MessageTemplatesTable onEdit={jest.fn()} onRemove={jest.fn()} />);
 
 		expect(getByText('Name')).toBeDefined();
 		expect(getByText('Body')).toBeDefined();
@@ -20,8 +20,8 @@ describe('MessageTemplatesTable', () => {
 		expect(getByText('No Message Templates Configured')).toBeDefined();
 	});
 
-	it('renders providers', () => {
-		const { getByText } = render(<MessageTemplatesTable onRemove={() => {}} onEdit={() => {}} templates={templates} />);
+	it('renders templates', () => {
+		const { getByText } = render(<MessageTemplatesTable onRemove={jest.fn()} onEdit={jest.fn()} templates={templates} />);
 
 		expect(getByText('a')).toBeDefined();
 		expect(getByText('b')).toBeDefined();

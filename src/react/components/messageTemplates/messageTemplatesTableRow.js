@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	IconButton, makeStyles, Menu, MenuItem, TableCell, TableRow, Typography
+	IconButton, makeStyles, Menu, MenuItem, TableCell, TableRow, Typography, Tooltip
 } from '@material-ui/core';
 import {
 	DeleteForever, Edit, MoreVert
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MessageTemplatesTableRow({
-	hasWritePermission = false, onEdit, onRemove, template
+	hasWritePermission = false, onEdit, onRemove, template, isDefaultReminder = false
 }) {
 	const classes = useStyles();
 	const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState(false);
@@ -71,10 +71,14 @@ function MessageTemplatesTableRow({
 						<Edit color="primary" />
 						<Typography className={classes.moreMenuText} color="primary">Edit</Typography>
 					</MenuItem>
-					<MenuItem className={classes.moreMenuItem} onClick={handleRemoveClick}>
-						<DeleteForever color="error" />
-						<Typography className={classes.moreMenuText} color="error">Remove</Typography>
-					</MenuItem>
+					<Tooltip title={isDefaultReminder ? 'Default Appointment Reminder Templates Cannot Be Deleted' : ''}>
+						<div>
+							<MenuItem className={classes.moreMenuItem} onClick={handleRemoveClick} disabled={isDefaultReminder}>
+								<DeleteForever color="error" />
+								<Typography className={classes.moreMenuText} color="error">Delete</Typography>
+							</MenuItem>
+						</div>
+					</Tooltip>
 				</Menu>
 			</TableCell>
 		</TableRow>
@@ -85,7 +89,8 @@ MessageTemplatesTableRow.propTypes = {
 	hasWritePermission: PropTypes.bool,
 	onEdit: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
-	template: PropTypes.instanceOf(Template).isRequired
+	template: PropTypes.instanceOf(Template).isRequired,
+	isDefaultReminder: PropTypes.bool
 };
 
 export default MessageTemplatesTableRow;

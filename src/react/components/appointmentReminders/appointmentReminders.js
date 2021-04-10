@@ -98,7 +98,17 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 			.then(() => persistentStorage.getSettings())
 			.then(settings => {
 				setDateVerificationSettings(settings.appointmentReminders.dateVerification);
-				setDefaultTemplatesDefined(Boolean(settings.appointmentReminders.defaultReminderTemplates.phone && settings.appointmentReminders.defaultReminderTemplates.sms));
+				const defaultPhone = settings.appointmentReminders.defaultReminderTemplates.phone;
+				const defaultSms = settings.appointmentReminders.defaultReminderTemplates.sms;
+				if (!(defaultPhone && defaultSms)) {
+					setDefaultTemplatesDefined(false);
+				} else {
+					persistentStorage.getMessageTemplates().then(templates => {
+						const defaultSmsReminder = templates.find(template => template.name === defaultSms);
+						const defaultPhoneReminder = templates.find(template => template.name === defaultPhone);
+						setDefaultTemplatesDefined(Boolean(defaultSmsReminder && defaultPhoneReminder));
+					});
+				}
 			})
 			.then(() => persistentStorage.getSettings(true))
 			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); });

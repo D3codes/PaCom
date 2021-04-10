@@ -80,7 +80,7 @@ function DynamicValuesTableRow({
 					</MenuItem>
 					<MenuItem className={classes.moreMenuItem} onClick={handleRemoveClick}>
 						<DeleteForever color="error" />
-						<Typography className={classes.moreMenuText} color="error">Remove</Typography>
+						<Typography className={classes.moreMenuText} color="error">Delete</Typography>
 					</MenuItem>
 				</Menu>
 			</TableCell>
