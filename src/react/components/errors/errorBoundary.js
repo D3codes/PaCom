@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FriendlyErrorPage from './friendlyErrorPage';
 import logger from '../../utilities/logger';
+import guidGenerator from '../../utilities/guidGenerator';
 
 export default class ErrorBoundary extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			errorInfo: '',
+			guid: '',
 			hasError: false
 		};
 	}
@@ -17,16 +19,17 @@ export default class ErrorBoundary extends Component {
 	}
 
 	componentDidCatch(error, errorInfo) {
-		logger.logError({ error, errorInfo });
-		this.setState({ errorInfo });
+		const guid = guidGenerator.uuidv4();
+		logger.logError({ guid, error, errorInfo });
+		this.setState({ errorInfo, guid });
 	}
 
 	render() {
-		const { hasError, errorInfo } = this.state;
+		const { hasError, errorInfo, guid } = this.state;
 		const { children } = this.props;
 
 		if (hasError) {
-			return <FriendlyErrorPage errorInfo={errorInfo} />;
+			return <FriendlyErrorPage errorInfo={errorInfo} guid={guid} />;
 		}
 
 		return children;
