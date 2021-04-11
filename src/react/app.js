@@ -11,6 +11,7 @@ import ProviderMappings from './components/providerMappings/providerMappings';
 import DynamicValues from './components/dynamicValues/dynamicValues';
 import Settings from './components/settings/settings';
 import sendingStatus from './utilities/sendingStatus';
+import ErrorBoundary from './components/errors/errorBoundary';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -49,31 +50,33 @@ export default function App() {
 	const title = getTitle(selectedTabId);
 
 	return (
-		<div className={classes.content}>
-			<CssBaseline />
-			<MiniDrawer onTabSelect={setSelectedTabId} disableNavigation={disableNavigation} selectedTabId={selectedTabId} />
-			<AppBar
-				position="fixed"
-				className={classes.appBar}>
-				<Toolbar>
-					<Typography variant="h6" noWrap>
-						{title}
-					</Typography>
-				</Toolbar>
-			</AppBar>
-			<main className={classes.main}>
-				<div className={classes.toolbar} />
-				{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && (
-					<AppointmentReminders disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
-				)}
-				{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && (
-					<CustomMessage disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
-				)}
-				{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
-				{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
-				{selectedTabId === MiniDrawer.TabIds.DYNAMIC_VALUES && <DynamicValues />}
-				<Settings selectedTabId={selectedTabId} />
-			</main>
-		</div>
+		<ErrorBoundary>
+			<div className={classes.content}>
+				<CssBaseline />
+				<MiniDrawer onTabSelect={setSelectedTabId} disableNavigation={disableNavigation} selectedTabId={selectedTabId} />
+				<AppBar
+					position="fixed"
+					className={classes.appBar}>
+					<Toolbar>
+						<Typography variant="h6" noWrap>
+							{title}
+						</Typography>
+					</Toolbar>
+				</AppBar>
+				<main className={classes.main}>
+					<div className={classes.toolbar} />
+					{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && (
+						<AppointmentReminders disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
+					)}
+					{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && (
+						<CustomMessage disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
+					)}
+					{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && <ProviderMappings />}
+					{selectedTabId === MiniDrawer.TabIds.MESSAGE_TEMPLATES && <MessageTemplates />}
+					{selectedTabId === MiniDrawer.TabIds.DYNAMIC_VALUES && <DynamicValues />}
+					<Settings selectedTabId={selectedTabId} />
+				</main>
+			</div>
+		</ErrorBoundary>
 	);
 }

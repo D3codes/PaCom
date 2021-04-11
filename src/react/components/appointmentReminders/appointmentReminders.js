@@ -6,6 +6,7 @@ import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import useAsyncError from '../../errors/asyncError';
 
 import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
@@ -92,6 +93,8 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [isValid, setIsValid] = useState(null);
 	const [sendClicked, setSendClicked] = useState(false);
 
+	const throwError = useAsyncError();
+
 	useEffect(() => {
 		persistentStorage.getProviderMappings()
 			.then(setProviderMappings)
@@ -133,7 +136,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 			setSendClicked(false);
 			setReminders(remindersList);
 			if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
-		});
+		}).catch(e => throwError(e));
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
 
@@ -166,7 +169,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete).catch(e => throwError(e));
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;

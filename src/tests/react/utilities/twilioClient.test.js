@@ -1,6 +1,6 @@
 import { enableFetchMocks } from 'jest-fetch-mock';
 import twilioClient from '../../../react/utilities/twilioClient';
-import { NullValueException } from '../../../react/exceptions';
+import { NullValueException } from '../../../react/errors/exceptions';
 import persistentStorageMock from '../../../react/utilities/persistentStorage';
 import getVersionMock from '../../../react/utilities/getVersion';
 

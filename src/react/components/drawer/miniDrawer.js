@@ -7,6 +7,7 @@ import {
 	PermPhoneMsg, PersonPin, RateReview, Schedule, DynamicFeed
 } from '@material-ui/icons';
 import AlertSnackbar from '../alertSnackbar';
+import useAsyncError from '../../errors/asyncError';
 
 import getVersion from '../../utilities/getVersion';
 import persistentStorage from '../../utilities/persistentStorage';
@@ -138,8 +139,10 @@ export default function MiniDrawer({
 	const CLICKS_REQUIRED_FOR_SNACKBAR = 5;
 	const CLOSE_SNACKBAR_OFFSET = CLICKS_REQUIRED_FOR_SNACKBAR + 3;
 
+	const throwError = useAsyncError();
+
 	useEffect(() => {
-		getVersion().then(setVersion);
+		getVersion().then(setVersion).catch(e => throwError(e));
 		persistentStorage.getSettings(true).then(settings => {
 			setAdminAccess(settings.adminAccess);
 		});
