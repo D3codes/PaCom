@@ -23,6 +23,7 @@ import AlertSnackBar from '../alertSnackbar';
 import MessageCompose from './messageCompose';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
+import useAsyncError from '../../errors/asyncError';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -116,6 +117,8 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 		(sendToAppointmentList ? reminders : phoneNumberIsValid && messageIsValid) && message
 	), [sendToAppointmentList, reminders, phoneNumberIsValid, messageIsValid, message]);
 
+	const throwError = useAsyncError();
+
 	useEffect(() => {
 		persistentStorage.getMessageTemplates()
 			.then(templates => { setMessageTemplates(templates); })
@@ -148,12 +151,12 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	};
 
 	const handleBrowseClick = () => {
-		const csvPromise = csvImporter.getCSV();
+		const csvPromise = csvImporter.getCSV().catch(e => throwError(e));
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
 			setValidationRan(false);
 			setSendClicked(false);
 			setReminders(remindersList);
-		});
+		}).catch(e => throwError(e));
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
 
@@ -163,7 +166,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? SmsSentSuccessfully : ErrorSendingSms);
 			setShowSnackbar(true);
-		});
+		}).catch(e => throwError(e));
 	};
 
 	const onSendAsCall = () => {
@@ -172,7 +175,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? CallSentSuccessfully : ErrorSendingCall);
 			setShowSnackbar(true);
-		});
+		}).catch(e => throwError(e));
 	};
 
 	const onSendingComplete = () => {
@@ -188,7 +191,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete);
+		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete).catch(e => throwError(e));
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked;

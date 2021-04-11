@@ -3,7 +3,7 @@ import ContactMethod from '../models/conactMethod';
 import Patient from '../models/patient';
 import Provider from '../models/provider';
 import Reminder from '../models/reminder';
-import { NullValueException } from '../exceptions';
+import { NullValueException } from '../errors/exceptions';
 import { ErrorInAppointmentList } from '../localization/en/statusMessageText';
 
 export default (rows, providerMappings) => {

@@ -1,7 +1,7 @@
 import persistentStorage from './persistentStorage';
 import getVersion from './getVersion';
 
-const { NullValueException } = require('../exceptions');
+const { NullValueException } = require('../errors/exceptions');
 
 const TWILIO_API_BASE_URL = 'https://api.twilio.com/2010-04-01/Accounts/';
 const TWILIO_GET_MESSAGES_ENDPOINT = '/Messages.json?PageSize=1000&DateSent=';

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import fromPulse from '../../../react/transformers/fromPulse';
-import { NullValueException } from '../../../react/exceptions';
+import { NullValueException } from '../../../react/errors/exceptions';
 
 const testData = [
 	['Kansas City Psychiatric Group', 'APPOINTMENTS FOR PROVIDER: GLAMB - Garrett D Lambert, MD on', 'Friday 8/9/2019', '', 'Time', 'Dur.', 'Patient', 'Patient Account', 'Policy'],
