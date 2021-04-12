@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles, LinearProgress } from '@material-ui/core';
-import { Publish, Send } from '@material-ui/icons';
+import { Publish, Send, AllInbox } from '@material-ui/icons';
 
 const DRAWER_WIDTH = 206;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	actionContainer: {
 		display: 'flex',
 		justifyContent: 'space-between'
@@ -16,6 +16,9 @@ const useStyles = makeStyles(() => ({
 		left: DRAWER_WIDTH,
 		right: 0,
 		height: '10px'
+	},
+	sendButton: {
+		marginLeft: theme.spacing()
 	}
 }));
 
@@ -28,14 +31,25 @@ function ReportActions({
 		<Fragment>
 			<div className={classes.actionContainer}>
 				<Button onClick={onExport} color="primary" startIcon={<Publish />} variant="contained">Export</Button>
-				<Button
-					onClick={onSend}
-					color="primary"
-					disabled={sendDisabled}
-					endIcon={<Send />}
-					variant={sendDisabled ? 'outlined' : 'contained'}>
-					Send
-				</Button>
+				<div className={classes.actionContainer}>
+					<Button
+						onClick={() => console.log('TODO: open send to modal')}
+						color="secondary"
+						disabled={sendDisabled}
+						endIcon={<AllInbox />}
+						variant={sendDisabled ? 'outlined' : 'contained'}>
+						Send To
+					</Button>
+					<Button
+						className={classes.sendButton}
+						onClick={onSend}
+						color="primary"
+						disabled={sendDisabled}
+						endIcon={<Send />}
+						variant={sendDisabled ? 'outlined' : 'contained'}>
+						Send
+					</Button>
+				</div>
 			</div>
 			{progress > 0 && progress < 100 && <LinearProgress className={classes.progressBar} variant="determinate" value={progress} />}
 		</Fragment>

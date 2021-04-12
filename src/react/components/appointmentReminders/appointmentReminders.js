@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import {
-	makeStyles, Typography, CircularProgress, Button
+	makeStyles, Typography, CircularProgress, Button, Slide
 } from '@material-ui/core';
 import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
@@ -8,7 +8,6 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import useAsyncError from '../../errors/asyncError';
 
-import BrowseFile from '../browseFile';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
 import AlertSnackbar from '../alertSnackbar';
@@ -50,7 +49,6 @@ const useStyles = makeStyles(theme => ({
 		flex: 1,
 		border: `1px solid ${theme.palette.divider}`,
 		borderRadius: 4,
-		margin: theme.spacing(2, 0),
 		transition: '200ms'
 	},
 	fileDropOver: {
@@ -61,7 +59,8 @@ const useStyles = makeStyles(theme => ({
 	dragAndDropIcon: {
 		alignSelf: 'center',
 		fontSize: '5rem',
-		color: theme.palette.text.secondary
+		color: theme.palette.text.secondary,
+		marginTop: theme.spacing(2)
 	},
 	dragAndDropIconOver: {
 		color: theme.palette.primary.main
@@ -69,6 +68,12 @@ const useStyles = makeStyles(theme => ({
 	fileDropContent: {
 		display: 'flex',
 		flexFlow: 'column'
+	},
+	reportTableContainer: {
+		zIndex: 1,
+		display: 'flex',
+		flexFlow: 'column',
+		height: '100%'
 	}
 }));
 
@@ -148,12 +153,12 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 		try {
 			handleAppointmentListImport(droppedFilePath);
 		} catch (InvalidFileTypeException) {
-			setFileDropped(false);
 			setSnackbarSeverity(AlertSnackbar.Severities.Warning);
 			setSnackbarTitle('');
 			setSnackbarMessage(InvalidFileTypeMessage);
 			setShowAlertSnackbar(true);
 		}
+		setFileDropped(false);
 	};
 
 	const onSendingComplete = () => {
@@ -169,46 +174,49 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete).catch(e => throwError(e));
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
 
 	return (
 		<div className={classes.appointmentRemindersContainer}>
-			<BrowseFile
-				disabled={disableNavigation}
-				onBrowseClick={() => { handleAppointmentListImport(); }}
-				filePath={filePath}
-				onFilePathChange={setFilePath}
-				label="Appointment List"
-			/>
-			{reminders
-				? <ReportTable onSend={handleSend} reminders={reminders} sendDisabled={sendDisabled} />
-				: (
-					<FileDrop
-						onDrop={handleFileDrop}
-						onDragOver={() => { setDraggingOver(true); }}
-						onDragLeave={() => { setDraggingOver(false); }}
-						className={clsx(classes.fileDrop, { [classes.fileDropOver]: draggingOver })}>
-						<div className={classes.fileDropContent}>
-							{fileDropped
-								? <CircularProgress />
-								: (
-									<Fragment>
-										<SystemUpdateAlt className={clsx(classes.dragAndDropIcon, { [classes.dragAndDropIconOver]: draggingOver })} />
-										<Typography
-											align="center"
-											className={classes.noRemindersText}
-											color={draggingOver ? 'primary' : 'textSecondary'}
-											variant="subtitle1">
-											<Button color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for a file</Button> or drag it here
-										</Typography>
-									</Fragment>
-								)}
-						</div>
-					</FileDrop>
-				)}
+			<Slide direction="left" in={!!reminders} mountOnEnter unmountOnExit>
+				<div className={classes.reportTableContainer}>
+					<ReportTable
+						onSend={handleSend}
+						reminders={reminders}
+						sendDisabled={sendDisabled}
+						onBack={() => setReminders(null)}
+						filePath={filePath}
+						disableNavigation={disableNavigation}
+					/>
+				</div>
+			</Slide>
+			{!reminders && (
+				<FileDrop
+					onDrop={handleFileDrop}
+					onDragOver={() => { setDraggingOver(true); }}
+					onDragLeave={() => { setDraggingOver(false); }}
+					className={clsx(classes.fileDrop, { [classes.fileDropOver]: draggingOver })}>
+					<div className={classes.fileDropContent}>
+						{fileDropped
+							? <CircularProgress />
+							: (
+								<Fragment>
+									<Button variant="contained" color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for Appointment List</Button>
+									<SystemUpdateAlt className={clsx(classes.dragAndDropIcon, { [classes.dragAndDropIconOver]: draggingOver })} />
+									<Typography
+										align="center"
+										color={draggingOver ? 'primary' : 'textSecondary'}
+										variant="subtitle1">
+									or drag it here
+									</Typography>
+								</Fragment>
+							)}
+					</div>
+				</FileDrop>
+			)}
 			<AlertSnackbar
 				open={showAlertSnackbar}
 				severity={snackbarSeverity}

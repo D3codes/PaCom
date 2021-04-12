@@ -191,7 +191,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete).catch(e => throwError(e));
+		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked;
