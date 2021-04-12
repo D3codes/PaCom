@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
 		flexGrow: 1,
 		padding: theme.spacing(3),
 		height: '100%',
-		backgroundColor: theme.palette.background.dark
+		backgroundColor: theme.palette.background.dark,
+		overflow: 'hidden'
 	},
 	toolbar: {
 		display: 'flex',
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function FriendlyErrorPage({ guid = null }) {
+function FriendlyErrorPage({ errorCode = null }) {
 	const classes = useStyles();
 
 	return (
@@ -58,17 +59,20 @@ function FriendlyErrorPage({ guid = null }) {
                         An Error has occurred
 					</Typography>
 				</div>
+				<Typography className={classes.text} paragraph>
+					The issue has been logged and our team has been notified automatically.
+				</Typography>
 				<Typography className={classes.text}>
                     If this keeps happening, contact PaCom support with the following error code:
 				</Typography>
-				<Typography variant="h6" color="error" paragraph>{guid}</Typography>
+				<Typography variant="h6" color="error" paragraph>{errorCode}</Typography>
 			</main>
 		</div>
 	);
 }
 
 FriendlyErrorPage.propTypes = {
-	guid: PropTypes.string
+	errorCode: PropTypes.string
 };
 
 export default FriendlyErrorPage;
