@@ -1,6 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const Sentry = require('@sentry/electron');
-
 const electron = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
@@ -8,6 +7,7 @@ const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
 const projectPackage = require('../../package.json');
+const appSettings = require('../appSettings.json');
 const { open, save } = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
@@ -19,7 +19,7 @@ const {
 let mainWindow;
 let sending = false;
 
-Sentry.init({ dsn: 'https://a040b8dcc2ae49bf8bbe2107c765846a@o569343.ingest.sentry.io/5714969' });
+Sentry.init({ dsn: appSettings.sentry.dsn });
 
 const isMac = process.platform === 'darwin';
 const menuTemplate = [

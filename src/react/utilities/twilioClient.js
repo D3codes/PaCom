@@ -1,11 +1,8 @@
 import persistentStorage from './persistentStorage';
 import getVersion from './getVersion';
+import appSettings from '../../appSettings.json';
 
 const { NullValueException } = require('../errors/exceptions');
-
-const TWILIO_API_BASE_URL = 'https://api.twilio.com/2010-04-01/Accounts/';
-const TWILIO_GET_MESSAGES_ENDPOINT = '/Messages.json?PageSize=1000&DateSent=';
-const TWILIO_GET_CALLS_ENDPOINT = '/Calls.json?PageSize=1000&StartTime=';
 
 const sendMessage = async (phoneNumber, message, sendAsSms) => {
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
@@ -38,7 +35,7 @@ const sendCall = (phoneNumber, message) => {
 const getLogs = async (endpoint, date) => {
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
 
-	const url = `${TWILIO_API_BASE_URL}${twilioSettings.SID}${endpoint}${date.toISOString().slice(0, 10).replace(/-/g, '/')}`;
+	const url = `${appSettings.twilio.apiBaseUrl}${twilioSettings.SID}${endpoint}${date.toISOString().slice(0, 10).replace(/-/g, '/')}`;
 
 	const response = await fetch(url, {
 		method: 'GET',
@@ -52,12 +49,12 @@ const getLogs = async (endpoint, date) => {
 };
 
 const getSMSLogs = async date => {
-	const data = await getLogs(TWILIO_GET_MESSAGES_ENDPOINT, date);
+	const data = await getLogs(appSettings.twilio.getMessagesEndpoint, date);
 	return data.messages;
 };
 
 const getCallLogs = async date => {
-	const data = await getLogs(TWILIO_GET_CALLS_ENDPOINT, date);
+	const data = await getLogs(appSettings.twilio.getCallsEndpoint, date);
 	return data.calls;
 };
 
