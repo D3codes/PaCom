@@ -47,19 +47,6 @@ describe('MessageReportSettings', () => {
 		expect(getByText('Save').parentElement).toBeEnabled();
 	});
 
-	it('does not enable the view last report button when no report is given', () => {
-		const { getByText } = render(<MessageReportSettings messageReports={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
-
-		expect(getByText('View Last Report').parentElement).toBeDisabled();
-	});
-
-	it('does enable the view last report button when a report is given', () => {
-		testSettings.lastReport = 'data';
-		const { getByText } = render(<MessageReportSettings messageReports={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
-
-		expect(getByText('View Last Report').parentElement).toBeEnabled();
-	});
-
 	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
 		persistentStorageMock.setMessageReportsAutosaveLocation.mockImplementation();
 		const settings = {
