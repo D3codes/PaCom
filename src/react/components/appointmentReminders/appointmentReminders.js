@@ -169,7 +169,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete).catch(e => throwError(e));
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
