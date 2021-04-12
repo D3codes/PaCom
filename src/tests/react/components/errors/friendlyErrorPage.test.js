@@ -11,9 +11,9 @@ describe('FriendlyErrorPage', () => {
 	});
 
 	it('displays error code', () => {
-		const testGuid = 'test-guid';
-		const { getByText } = render(<FriendlyErrorPage guid={testGuid} />);
+		const testErrorCode = 'test-error-code';
+		const { getByText } = render(<FriendlyErrorPage errorCode={testErrorCode} />);
 
-		expect(getByText(testGuid)).toBeDefined();
+		expect(getByText(testErrorCode)).toBeDefined();
 	});
 });
