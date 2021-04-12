@@ -8,7 +8,6 @@ export default class ErrorBoundary extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			errorInfo: '',
 			errorCode: '',
 			hasError: false
 		};
@@ -23,16 +22,16 @@ export default class ErrorBoundary extends Component {
 			scope.setExtras(errorInfo);
 			const errorCode = Sentry.captureException(error);
 			logger.logError({ errorCode, error, errorInfo });
-			this.setState({ errorInfo, errorCode });
+			this.setState({ errorCode });
 		});
 	}
 
 	render() {
-		const { hasError, errorInfo, errorCode } = this.state;
+		const { hasError, errorCode } = this.state;
 		const { children } = this.props;
 
 		if (hasError) {
-			return <FriendlyErrorPage errorInfo={errorInfo} errorCode={errorCode} />;
+			return <FriendlyErrorPage errorCode={errorCode} />;
 		}
 
 		return children;

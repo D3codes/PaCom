@@ -33,11 +33,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	toolbar: {
 		minHeight: theme.mixins.toolbar.minHeight
-	},
-	errorBoundary: {
-		overflow: 'hidden',
-		width: '100%',
-		height: '100%'
 	}
 }));
 
@@ -55,7 +50,7 @@ export default function App() {
 	const title = getTitle(selectedTabId);
 
 	return (
-		<ErrorBoundary className={classes.errorBoundary}>
+		<ErrorBoundary>
 			<div className={classes.content}>
 				<CssBaseline />
 				<MiniDrawer onTabSelect={setSelectedTabId} disableNavigation={disableNavigation} selectedTabId={selectedTabId} />
