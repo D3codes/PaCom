@@ -36,7 +36,7 @@ const getSettings = (forceLocal = false) => window.ipcRenderer.invoke('get-setti
 
 const setSettings = (path, value, forceLocal = false) => window.ipcRenderer.invoke('set-settings', path, value, forceLocal);
 
-const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess);
+const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess, true);
 
 // Appointment Reminder Settings
 
