@@ -16,7 +16,6 @@ import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
 import listSender from '../../utilities/listSender';
-// import { DRAWER_WIDTH } from '../drawer/miniDrawer';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
