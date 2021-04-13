@@ -16,6 +16,7 @@ import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
 import listSender from '../../utilities/listSender';
+// import { DRAWER_WIDTH } from '../drawer/miniDrawer';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -40,7 +41,8 @@ const useStyles = makeStyles(theme => ({
 	appointmentRemindersContainer: {
 		display: 'flex',
 		flexFlow: 'column',
-		height: '100%'
+		height: '100%',
+		position: 'relative'
 	},
 	fileDrop: {
 		display: 'flex',
@@ -73,7 +75,16 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 1,
 		display: 'flex',
 		flexFlow: 'column',
-		height: '100%'
+		height: '100%',
+		backgroundColor: '#fafafa'
+	},
+	fileDropContainer: {
+		zIndex: 0,
+		display: 'flex',
+		flexFlow: 'column',
+		position: 'absolute',
+		height: '100%',
+		width: '100%'
 	}
 }));
 
@@ -193,7 +204,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 					/>
 				</div>
 			</Slide>
-			{!reminders && (
+			<div className={classes.fileDropContainer}>
 				<FileDrop
 					onDrop={handleFileDrop}
 					onDragOver={() => { setDraggingOver(true); }}
@@ -216,7 +227,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 							)}
 					</div>
 				</FileDrop>
-			)}
+			</div>
 			<AlertSnackbar
 				open={showAlertSnackbar}
 				severity={snackbarSeverity}
