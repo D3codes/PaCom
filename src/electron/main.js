@@ -7,7 +7,7 @@ const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
 const projectPackage = require('../../package.json');
-const appSettings = require('../appSettings.json');
+const appSettings = require('./appSettings.json');
 const { open, save } = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
