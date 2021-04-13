@@ -9,6 +9,7 @@ import Patient from '../../../../react/models/patient';
 import Provider from '../../../../react/models/provider';
 import Reminder from '../../../../react/models/reminder';
 
+const testPath = 'test/path';
 const reminders = [
 	new Reminder(
 		new Patient(
@@ -36,22 +37,32 @@ const reminders = [
 
 describe('ReportTable', () => {
 	it('renders no table when no reminders are passed in', () => {
-		const { container } = render(<ReportTable onSend={jest.fn()} />);
-		expect(container.firstChild.className.includes('noRemindersContainer')).toBe(true);
+		const { container } = render(<ReportTable onSend={jest.fn()} filePath={testPath} onBack={jest.fn()} />);
+
+		expect(container.children[1].className.includes('noRemindersContainer')).toBe(true);
 	});
 
-	it('renders a table when reminders are passed in', () => {
-		const { container } = render(<ReportTable reminders={reminders} onSend={jest.fn()} />);
-		expect(container.firstChild.className.includes('tableContainer')).toBe(true);
+	it('renders a table and path when reminders are passed in', () => {
+		const { container, getByText } = render(<ReportTable reminders={reminders} onSend={jest.fn()} filePath={testPath} onBack={jest.fn()} />);
+
+		expect(container.children[1].className.includes('tableContainer')).toBe(true);
+		expect(getByText(testPath)).toBeDefined();
 	});
 
 	it('renders export and send buttons regardless of reminders being passed in', () => {
-		const { getAllByText: getAllByTextNoTable } = render(<ReportTable onSend={jest.fn()} />);
-		const { getAllByText: getAllByTextWithTable } = render(<ReportTable reminders={reminders} onSend={jest.fn()} />);
+		const { getAllByText: getAllByTextNoTable } = render(<ReportTable onSend={jest.fn()} filePath={testPath} onBack={jest.fn()} />);
+		const { getAllByText: getAllByTextWithTable } = render(<ReportTable reminders={reminders} onSend={jest.fn()} filePath={testPath} onBack={jest.fn()} />);
 
 		expect(getAllByTextNoTable('Export')).toBeDefined();
 		expect(getAllByTextNoTable('Send')).toBeDefined();
 		expect(getAllByTextWithTable('Export')).toBeDefined();
 		expect(getAllByTextWithTable('Send')).toBeDefined();
+	});
+
+	it('disables the back and export buttons when navigation is disabled', async () => {
+		const { getByText } = render(<ReportTable disableNavigation onSend={jest.fn()} filePath={testPath} onBack={jest.fn()} />);
+
+		expect(getByText('Back').parentElement).toBeDisabled();
+		expect(getByText('Export').parentElement).toBeDisabled();
 	});
 });

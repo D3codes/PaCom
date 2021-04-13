@@ -108,7 +108,7 @@ function ReportTable({
 					</Table>
 				</div>
 			)}
-			<ReportActions onSend={onSend} onExport={handleExport} sendDisabled={sendDisabled} progress={progress || 0} />
+			<ReportActions onSend={onSend} onExport={handleExport} sendDisabled={sendDisabled} progress={progress || 0} exportDisabled={disableNavigation} />
 		</Fragment>
 	);
 }

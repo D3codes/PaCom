@@ -221,7 +221,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 										align="center"
 										color={draggingOver ? 'primary' : 'textSecondary'}
 										variant="subtitle1">
-									or drag it here
+									or drag and drop here
 									</Typography>
 								</Fragment>
 							)}
