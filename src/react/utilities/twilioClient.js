@@ -1,6 +1,6 @@
 import persistentStorage from './persistentStorage';
 import getVersion from './getVersion';
-import appSettings from '../../appSettings.json';
+import appSettings from '../appSettings.json';
 
 const { NullValueException } = require('../errors/exceptions');
 
