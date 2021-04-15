@@ -23,14 +23,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ReportActions({
-	onSend, onExport, sendDisabled = false, progress = 0, exportDisabled = false
+	onSend, onExport, sendDisabled = false, progress = 0, isSending = false
 }) {
 	const classes = useStyles();
 
 	return (
 		<Fragment>
 			<div className={classes.actionContainer}>
-				<Button onClick={onExport} color="primary" startIcon={<Publish />} variant={exportDisabled ? 'outlined' : 'contained'} disabled={exportDisabled}>Export</Button>
+				<Button onClick={onExport} color="primary" startIcon={<Publish />} variant={isSending ? 'outlined' : 'contained'} disabled={isSending}>Export</Button>
 				<div className={classes.actionContainer}>
 					{/* TODO: Enable in 2.1
 					<Button
@@ -53,7 +53,7 @@ function ReportActions({
 					</Button>
 				</div>
 			</div>
-			{progress > 0 && progress < 100 && <LinearProgress className={classes.progressBar} variant="determinate" value={progress} />}
+			{isSending && progress > 0 && progress < 100 && <LinearProgress className={classes.progressBar} variant="determinate" value={progress} />}
 		</Fragment>
 	);
 }
@@ -63,7 +63,7 @@ ReportActions.propTypes = {
 	onExport: PropTypes.func.isRequired,
 	sendDisabled: PropTypes.bool,
 	progress: PropTypes.number,
-	exportDisabled: PropTypes.bool
+	isSending: PropTypes.bool
 };
 
 export default ReportActions;
