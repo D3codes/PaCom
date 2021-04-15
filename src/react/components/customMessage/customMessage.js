@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexFlow: 'column',
 		height: '100%',
-		backgroundColor: '#fafafa'
+		backgroundColor: theme.palette.background.default
 	},
 	slideOverContainer: {
 		zIndex: 0,
