@@ -34,6 +34,7 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 			{ header: 'Notify By', key: 'notify', width: 8 },
 			{ header: 'Home', key: 'home', width: 13 },
 			{ header: 'Cell', key: 'cell', width: 13 },
+			{ header: 'Procedure', key: 'procedure', width: 11 },
 			{ header: 'Information', key: 'info', width: 25 }
 		];
 
@@ -49,6 +50,7 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 				notify: reminder?.patient?.preferredContactMethod,
 				home: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Home')?.phoneNumber,
 				cell: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Cell')?.phoneNumber,
+				procedure: reminder?.appointment?.procedure?.source,
 				info: reminder?.statusMessage
 			});
 		});
