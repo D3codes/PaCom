@@ -4,6 +4,7 @@ const { pick, pickSave } = require('./filePicker');
 const open = async (filters, filePath) => {
 	if (!filePath) {
 		return new Promise((resolve, reject) => pick(filters, filePath).then(path => {
+			if (!path) return;
 			fs.readFile(path, (err, data) => {
 				if (err) {
 					reject(err);

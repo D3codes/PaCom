@@ -1,6 +1,6 @@
 {
   "name": "PaCom",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "author": "Convalesce Healthcare Solutions <support@convalesce.health> (http://convalesce.health)",
   "description": "A Patient Communication Solution",
   "private": true,
@@ -35,6 +35,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/pickers": "^3.2.10",
+    "@sentry/electron": "^2.4.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.1",

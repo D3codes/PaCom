@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import {
-	Save, Description, SaveAlt, Close
-} from '@material-ui/icons';
+import { Save, SaveAlt, Close } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import BrowseFile from '../browseFile';
 import persistentStorage from '../../utilities/persistentStorage';
@@ -23,7 +21,7 @@ const useStyles = makeStyles({
 	},
 	actionButtonContainer: {
 		display: 'flex',
-		justifyContent: 'space-between'
+		justifyContent: 'flex-end'
 	}
 });
 
@@ -39,10 +37,6 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 		if (autoSave !== messageReports.autosaveReports) persistentStorage.setMessageReportsAutosave(autoSave);
 		if (location !== messageReports.autosaveLocation) persistentStorage.setMessageReportsAutosaveLocation(location);
 		reloadSettings();
-	};
-
-	const handleViewLastReport = () => {
-		// TODO
 	};
 
 	const browseForFolder = () => {
@@ -80,14 +74,6 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 				/>
 			</div>
 			<div className={classes.actionButtonContainer}>
-				<Button
-					disabled={!messageReports.lastReport}
-					variant={!messageReports.lastReport ? 'outlined' : 'contained'}
-					color="primary"
-					onClick={handleViewLastReport}
-					startIcon={<Description />}>
-					View Last Report
-				</Button>
 				<Button
 					disabled={!hasWritePermission || !changesToSave || autoSaveOnAndLocationNotSet}
 					endIcon={<Save />}

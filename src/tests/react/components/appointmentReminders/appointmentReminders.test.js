@@ -36,17 +36,7 @@ describe('AppointmentReminders', () => {
 
 		const { container } = render(<AppointmentReminders disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 
-		await screen.findByText('Browse');
+		await screen.findByText('Browse for Appointment List');
 		expect(container.firstChild.className.includes('appointmentRemindersContainer')).toBe(true);
-	});
-
-	it('disables the browse button when navigation is disabled', async () => {
-		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
-		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
-
-		const { getByText } = render(<AppointmentReminders disableNavigation onDisableNavigationChange={jest.fn()} />);
-
-		await screen.findByText('Browse');
-		expect(getByText('Browse').parentElement).toBeDisabled();
 	});
 });

@@ -15,8 +15,8 @@ describe('MessageTemplatesTableRow', () => {
 		const { getByText } = render(
 			<MessageTemplatesTableRow
 				template={new Template('a', 'b')}
-				onEdit={() => {}}
-				onRemove={() => {}}
+				onEdit={jest.fn()}
+				onRemove={jest.fn()}
 			/>, {
 				container: document.body.appendChild(tableBody)
 			}

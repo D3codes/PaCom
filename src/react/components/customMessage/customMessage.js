@@ -6,9 +6,9 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button, ButtonGroup, Slide } from '@material-ui/core';
 import {
-	Phone, Sms, ArrowForwardIos, ArrowBackIos
+	Phone, Sms, ArrowForwardIos
 } from '@material-ui/icons';
 import clsx from 'clsx';
 import BrowseFile from '../browseFile';
@@ -23,6 +23,7 @@ import AlertSnackBar from '../alertSnackbar';
 import MessageCompose from './messageCompose';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
+import useAsyncError from '../../errors/asyncError';
 
 // transformers
 import fromPulse from '../../transformers/fromPulse';
@@ -39,7 +40,8 @@ const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
-		height: '100%'
+		height: '100%',
+		position: 'relative'
 	},
 	actionButtonContainer: {
 		display: 'flex',
@@ -72,8 +74,20 @@ const useStyles = makeStyles(theme => ({
 	farRightActionButton: {
 		marginLeft: theme.spacing()
 	},
-	backButton: {
-		width: '10%'
+	reportTableContainer: {
+		zIndex: 1,
+		display: 'flex',
+		flexFlow: 'column',
+		height: '100%',
+		backgroundColor: theme.palette.background.default
+	},
+	slideOverContainer: {
+		zIndex: 0,
+		display: 'flex',
+		flexFlow: 'column',
+		position: 'absolute',
+		height: '100%',
+		width: '100%'
 	}
 }));
 
@@ -116,6 +130,8 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 		(sendToAppointmentList ? reminders : phoneNumberIsValid && messageIsValid) && message
 	), [sendToAppointmentList, reminders, phoneNumberIsValid, messageIsValid, message]);
 
+	const throwError = useAsyncError();
+
 	useEffect(() => {
 		persistentStorage.getMessageTemplates()
 			.then(templates => { setMessageTemplates(templates); })
@@ -148,12 +164,12 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	};
 
 	const handleBrowseClick = () => {
-		const csvPromise = csvImporter.getCSV();
+		const csvPromise = csvImporter.getCSV().catch(e => throwError(e));
 		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
 			setValidationRan(false);
 			setSendClicked(false);
 			setReminders(remindersList);
-		});
+		}).catch(e => throwError(e));
 		csvPromise.then(({ path }) => setFilePath(path));
 	};
 
@@ -163,7 +179,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? SmsSentSuccessfully : ErrorSendingSms);
 			setShowSnackbar(true);
-		});
+		}).catch(e => throwError(e));
 	};
 
 	const onSendAsCall = () => {
@@ -172,7 +188,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? CallSentSuccessfully : ErrorSendingCall);
 			setShowSnackbar(true);
-		});
+		}).catch(e => throwError(e));
 	};
 
 	const onSendingComplete = () => {
@@ -195,97 +211,94 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 
 	return (
 		<div className={classes.root}>
-			{showReportTable && (
-				<Fragment>
-					<Button
-						onClick={() => setShowReportTable(false)}
-						className={classes.backButton}
-						color="primary"
-						startIcon={<ArrowBackIos />}
-						disabled={disableNavigation}>
-						Back
-					</Button>
-					<ReportTable reminders={reminders} onSend={handleSend} sendDisabled={sendDisabled} />
-				</Fragment>
-			)}
-			{!showReportTable && (
-				<Fragment>
-					<div className={classes.sendTo}>
-						<ButtonGroup disableElevation color="primary">
-							<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Specific Number</Button>
-							<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointment List</Button>
-						</ButtonGroup>
-					</div>
-					<div>
-						{sendToAppointmentList && (
-							<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={setFilePath} label="Appointment List" />
-						)}
-						{!sendToAppointmentList && (
-							<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
-								<IconTextField
-									testId="phoneNumber-field"
-									onChange={setPhoneNumber}
-									label="Phone Number"
-									focused
-									helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
-									error={!phoneNumberIsValid}
-									value={phoneNumber}
-									Icon={Phone}
-									startAdornment="+1"
-								/>
-							</div>
-						)}
-					</div>
-					<div className={classes.composeContainer}>
-						<div className={classes.listContainer}>
-							<ContainedLabeledList onClick={template => setMessage(template.body)} label="Templates" items={messageTemplates} />
-						</div>
-						<div className={classes.messageComposeContainer}>
-							<MessageCompose
-								messageIsValid={messageIsValid}
-								message={message}
-								onMessageChange={handleMessageChange}
-								onAppend={handleMessageAppend}
-								disableDynamicValues={!sendToAppointmentList}
-								helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
+			<Slide direction="left" in={showReportTable} mountOnEnter unmountOnExit>
+				<div className={classes.reportTableContainer}>
+					<ReportTable
+						reminders={reminders}
+						onSend={handleSend}
+						sendDisabled={sendDisabled}
+						disableNavigation={disableNavigation}
+						onBack={() => setShowReportTable(false)}
+						filePath={filePath}
+					/>
+				</div>
+			</Slide>
+			<div className={classes.slideOverContainer}>
+				<div className={classes.sendTo}>
+					<ButtonGroup disableElevation color="primary">
+						<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Specific Number</Button>
+						<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointment List</Button>
+					</ButtonGroup>
+				</div>
+				<div>
+					{sendToAppointmentList && (
+						<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={setFilePath} label="Appointment List" />
+					)}
+					{!sendToAppointmentList && (
+						<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
+							<IconTextField
+								testId="phoneNumber-field"
+								onChange={setPhoneNumber}
+								label="Phone Number"
+								focused
+								helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
+								error={!phoneNumberIsValid}
+								value={phoneNumber}
+								Icon={Phone}
+								startAdornment="+1"
 							/>
 						</div>
+					)}
+				</div>
+				<div className={classes.composeContainer}>
+					<div className={classes.listContainer}>
+						<ContainedLabeledList onClick={template => setMessage(template.body)} label="Templates" items={messageTemplates} />
 					</div>
-					<div className={classes.actionButtonContainer}>
-						{!sendToAppointmentList && (
-							<Fragment>
-								<Button
-									disabled={!enableSendButtons}
-									color="primary"
-									endIcon={<Sms />}
-									variant={enableSendButtons ? 'contained' : 'outlined'}
-									onClick={onSendAsSms}>
-									Send as SMS
-								</Button>
-								<Button
-									disabled={!enableSendButtons}
-									color="primary"
-									endIcon={<Phone />}
-									variant={enableSendButtons ? 'contained' : 'outlined'}
-									onClick={onSendAsCall}
-									className={classes.farRightActionButton}>
-									Send as Call
-								</Button>
-							</Fragment>
-						)}
-						{sendToAppointmentList && (
+					<div className={classes.messageComposeContainer}>
+						<MessageCompose
+							messageIsValid={messageIsValid}
+							message={message}
+							onMessageChange={handleMessageChange}
+							onAppend={handleMessageAppend}
+							disableDynamicValues={!sendToAppointmentList}
+							helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
+						/>
+					</div>
+				</div>
+				<div className={classes.actionButtonContainer}>
+					{!sendToAppointmentList && (
+						<Fragment>
 							<Button
 								disabled={!enableSendButtons}
 								color="primary"
-								endIcon={<ArrowForwardIos />}
+								endIcon={<Sms />}
 								variant={enableSendButtons ? 'contained' : 'outlined'}
-								onClick={() => setShowReportTable(true)}>
-								Continue
+								onClick={onSendAsSms}>
+								Send as SMS
 							</Button>
-						)}
-					</div>
-				</Fragment>
-			)}
+							<Button
+								disabled={!enableSendButtons}
+								color="primary"
+								endIcon={<Phone />}
+								variant={enableSendButtons ? 'contained' : 'outlined'}
+								onClick={onSendAsCall}
+								className={classes.farRightActionButton}>
+								Send as Call
+							</Button>
+						</Fragment>
+					)}
+					{sendToAppointmentList && (
+						<Button
+							disabled={!enableSendButtons}
+							color="primary"
+							endIcon={<ArrowForwardIos />}
+							variant={enableSendButtons ? 'contained' : 'outlined'}
+							onClick={() => setShowReportTable(true)}>
+							Continue
+						</Button>
+					)}
+				</div>
+			</div>
 			<AlertSnackBar
 				severity={snackbarSeverity}
 				message={snackbarMessage}

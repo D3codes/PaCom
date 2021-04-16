@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MessageTemplatesTable({
-	hasWritePermission = false, onEdit, onRemove, templates = null
+	hasWritePermission = false, onEdit, onRemove, templates = null, defaultPhoneTemplate = null, defaultSmsTemplate = null
 }) {
 	const classes = useStyles();
 
@@ -83,6 +83,7 @@ function MessageTemplatesTable({
 							onEdit={onEdit}
 							onRemove={onRemove}
 							template={template}
+							isDefaultReminder={template.get('name') === defaultPhoneTemplate || template.get('name') === defaultSmsTemplate}
 						/>
 					))}
 				</TableBody>
@@ -95,7 +96,9 @@ MessageTemplatesTable.propTypes = {
 	hasWritePermission: PropTypes.bool,
 	onEdit: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
-	templates: PropTypes.arrayOf(PropTypes.instanceOf(Template))
+	templates: PropTypes.arrayOf(PropTypes.instanceOf(Template)),
+	defaultPhoneTemplate: PropTypes.string,
+	defaultSmsTemplate: PropTypes.string
 };
 
 export default MessageTemplatesTable;

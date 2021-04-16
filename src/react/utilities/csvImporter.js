@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { InvalidFileTypeException } from '../exceptions';
+import { InvalidFileTypeException } from '../errors/exceptions';
 
 const parse = file => Papa.parse(file, {
 	complete: results => results

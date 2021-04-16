@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const Sentry = require('@sentry/electron');
 const electron = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
@@ -6,6 +7,7 @@ const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
 const projectPackage = require('../../package.json');
+const appSettings = require('./appSettings.json');
 const { open, save } = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
@@ -16,6 +18,8 @@ const {
 } = electron;
 let mainWindow;
 let sending = false;
+
+Sentry.init({ dsn: appSettings.sentry.dsn });
 
 const isMac = process.platform === 'darwin';
 const menuTemplate = [
@@ -207,28 +211,41 @@ app.on('activate', () => {
 	}
 });
 
+// Local Logging
+const LOGGING_SEVERITIES = {
+	Info: 0,
+	Warning: 1,
+	Error: 2
+};
+const LOGGING_METHODS = [
+	log.info,
+	log.warn,
+	log.error
+];
+const localLog = (severity, details) => { LOGGING_METHODS[severity](details); };
+
 // Auto Updater
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
-log.info('App starting...');
+localLog(LOGGING_SEVERITIES.Info, 'PaCom starting...');
 
 autoUpdater.on('checking-for-update', () => {
-	log.info('Checking for update...');
+	localLog(LOGGING_SEVERITIES.Info, 'Checking for update...');
 });
 autoUpdater.on('update-available', () => {
-	log.info('Update available.');
+	localLog(LOGGING_SEVERITIES.Info, 'Update available.');
 });
 autoUpdater.on('update-not-available', () => {
-	log.info('Update not available.');
+	localLog(LOGGING_SEVERITIES.Info, 'Update not available.');
 });
 autoUpdater.on('error', err => {
-	log.info(`Error in auto-updater. ${err}`);
+	localLog(LOGGING_SEVERITIES.Error, `Error in auto-updater. ${err}`);
 });
 autoUpdater.on('download-progress', progressObj => {
 	let logMessage = `Download speed: ${progressObj.bytesPerSecond}`;
 	logMessage = `${logMessage} - Downloaded ${progressObj.percent}%`;
 	logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
-	log.info(logMessage);
+	localLog(LOGGING_SEVERITIES.Info, logMessage);
 });
 
 app.on('ready', () => {
@@ -293,3 +310,5 @@ ipc.handle('show-alert', (event, title, message, type, buttons, defaultId, cance
 ipc.handle('export-report', (event, report, autoSavePath) => excelHelper.exportMessageReport(report, autoSavePath));
 
 ipc.handle('sending', (event, isSending) => { sending = isSending; });
+
+ipc.handle('log', (event, severity, details) => localLog(severity, details));
