@@ -3,6 +3,7 @@ import ContactMethod from '../models/conactMethod';
 import Patient from '../models/patient';
 import Provider from '../models/provider';
 import Reminder from '../models/reminder';
+import Procedure from '../models/procedure';
 import { NullValueException } from '../errors/exceptions';
 import { ErrorInAppointmentList } from '../localization/en/statusMessageText';
 
@@ -45,7 +46,7 @@ const defaultDynamicValues = [
 	}
 ];
 
-const transform = (rows, providerMappings) => {
+const transform = (rows, providerMappings = null, procedureMappings = null) => {
 	if (!rows) throw new NullValueException(`Null value provided to "KCPG" transformer: ${rows}`);
 
 	const reminders = [];
@@ -67,7 +68,7 @@ const transform = (rows, providerMappings) => {
 			preferredContactMethod = null,,
 			homePhone = null,
 			cellPhone = null,
-			procedure = null
+			paddedProcedure = null
 		] = row;
 
 		const contactMethods = [];
@@ -83,6 +84,9 @@ const transform = (rows, providerMappings) => {
 		}
 		const existingProvider = providerMappings?.find(providerMapping => paddedProvider.includes(providerMapping.source));
 		const provider = new Provider(paddedProvider, existingProvider?.target, existingProvider?.phonetic);
+
+		const existingProcedure = procedureMappings?.find(procedureMapping => paddedProcedure.includes(procedureMapping.source));
+		const procedure = new Procedure(paddedProcedure, existingProcedure?.target, existingProcedure?.phonetic, existingProcedure?.phoneReminder, existingProcedure?.smsReminder);
 
 		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration, procedure);
 
