@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import dynamicValueReplacer from '../../../react/utilities/dynamicValueReplacer';
 import persistentStorageMock from '../../../react/utilities/persistentStorage';
-import defaultDynamicValues from '../../../electron/models/defaultDynamicValues.json';
+import transformer from '../../../react/transformers/transformer';
 
 jest.mock('../../../react/utilities/persistentStorage');
 
@@ -16,7 +16,7 @@ describe('DynamicValueReplacer', () => {
 	});
 
 	it('replaces default dynamic values correctly', async () => {
-		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(transformer.defaultDynamicValues));
 		const mockSetStatusMessage = jest.fn();
 		const mockSetFailedStatus = jest.fn();
 		const mockGetIn = jest.fn(() => 'Replace With Me!');
@@ -35,7 +35,7 @@ describe('DynamicValueReplacer', () => {
 	});
 
 	it('trims patient name correctly', async () => {
-		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(transformer.defaultDynamicValues));
 		const mockSetStatusMessage = jest.fn();
 		const mockSetFailedStatus = jest.fn();
 		const mockGetIn = jest.fn(() => 'Freeman, David D');
@@ -54,7 +54,7 @@ describe('DynamicValueReplacer', () => {
 	});
 
 	it('replaces multiple default dynamic values correctly', async () => {
-		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(transformer.defaultDynamicValues));
 		const mockSetStatusMessage = jest.fn();
 		const mockSetFailedStatus = jest.fn();
 		const mockGetIn = jest.fn(() => 'Replace With Me!');
@@ -172,7 +172,7 @@ describe('DynamicValueReplacer', () => {
 	});
 
 	it('sets a failed status on the reminder when it cannot get values', async () => {
-		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(transformer.defaultDynamicValues));
 		const mockSetStatusMessage = jest.fn();
 		const mockSetFailedStatus = jest.fn();
 		const mockGetIn = jest.fn(() => null);
@@ -191,7 +191,7 @@ describe('DynamicValueReplacer', () => {
 	});
 
 	it('sets a failed status on the reminder when it encounters an unknown dynamic value', async () => {
-		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(defaultDynamicValues));
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(transformer.defaultDynamicValues));
 		const mockSetStatusMessage = jest.fn();
 		const mockSetFailedStatus = jest.fn();
 		const mockGetIn = jest.fn(() => 'Replace With Me!');

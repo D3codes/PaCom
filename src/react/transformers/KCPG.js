@@ -6,8 +6,47 @@ import Reminder from '../models/reminder';
 import { NullValueException } from '../errors/exceptions';
 import { ErrorInAppointmentList } from '../localization/en/statusMessageText';
 
-export default (rows, providerMappings) => {
-	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
+const defaultDynamicValues = [
+	{
+		name: 'Provider',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: []
+	},
+	{
+		name: 'Patient Name',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['patient', 'name']
+	},
+	{
+		name: 'Appointment Date',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['appointment', 'date']
+	},
+	{
+		name: 'Appointment Time',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['appointment', 'time']
+	},
+	{
+		name: 'Appointment Duration',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['appointment', 'duration']
+	},
+	{
+		name: 'Procedure',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: []
+	}
+];
+
+const transform = (rows, providerMappings) => {
+	if (!rows) throw new NullValueException(`Null value provided to "KCPG" transformer: ${rows}`);
 
 	const reminders = [];
 	rows.forEach((row, index) => {
@@ -27,7 +66,8 @@ export default (rows, providerMappings) => {
 			dateOfBirth = null,
 			preferredContactMethod = null,,
 			homePhone = null,
-			cellPhone = null
+			cellPhone = null,
+			procedure = null
 		] = row;
 
 		const contactMethods = [];
@@ -44,7 +84,7 @@ export default (rows, providerMappings) => {
 		const existingProvider = providerMappings?.find(providerMapping => paddedProvider.includes(providerMapping.source));
 		const provider = new Provider(paddedProvider, existingProvider?.target, existingProvider?.phonetic);
 
-		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration);
+		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration, procedure);
 
 		const reminder = new Reminder(patient, appointment);
 		if (invalidProvider) {
@@ -54,4 +94,9 @@ export default (rows, providerMappings) => {
 		reminders.push(reminder);
 	});
 	return reminders;
+};
+
+export default {
+	transform,
+	defaultDynamicValues
 };
