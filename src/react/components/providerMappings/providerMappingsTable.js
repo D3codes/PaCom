@@ -51,17 +51,17 @@ function ProviderMappingsTable({
 					<TableRow>
 						<TableCell className={clsx(classes.firstTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert From (Source)
+									Source
 							</Typography>
 						</TableCell>
 						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert To (SMS)
+									SMS Target
 							</Typography>
 						</TableCell>
 						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert To (Phonetic)
+									Phonetic Target
 							</Typography>
 						</TableCell>
 						<TableCell align="center" className={clsx(classes.lastTableHeadCell, classes.tableHeadCell, classes.tableCell)}>

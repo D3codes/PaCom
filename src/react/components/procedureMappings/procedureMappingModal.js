@@ -128,7 +128,7 @@ function ProcedureMappingModal({
 				/>
 				<Divider className={classes.adornmentDivider} />
 				<Typography variant="h5" className={classes.accordionSummaryText}>Reminder Template Overrides</Typography>
-				<Typography>Select message templates to override the default appointment reminders for this procedure.</Typography>
+				<Typography>Select message templates to send instead of the default appointment reminders for this procedure.</Typography>
 				<div className={classes.templateContainer}>
 					<div className={classes.templateSelector}>
 						<Typography variant="h6">SMS Reminder Template</Typography>
