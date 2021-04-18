@@ -14,7 +14,7 @@ describe('ProcedureMappingsTableRow', () => {
 	it('renders without crashing', () => {
 		const { getByText } = render(
 			<ProcedureMappingsTableRow
-				procedure={new Procedure('a', 'b', 'c', 'd', 'e')}
+				procedure={new Procedure('a', 'b', 'c', 'd')}
 				onEdit={() => {}}
 				onRemove={() => {}}
 			/>, {
@@ -24,5 +24,7 @@ describe('ProcedureMappingsTableRow', () => {
 		expect(getByText('a')).toBeDefined();
 		expect(getByText('b')).toBeDefined();
 		expect(getByText('c')).toBeDefined();
+		expect(getByText('d')).toBeDefined();
+		expect(getByText('Default')).toBeDefined();
 	});
 });

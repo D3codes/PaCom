@@ -7,7 +7,7 @@ import Procedure from '../../../../react/models/procedure';
 jest.mock('../../../../react/utilities/persistentStorage');
 
 const procedures = [
-	new Procedure('a', 'b', 'c', 'd', 'e')
+	new Procedure('a', 'b', 'c', 'd')
 ];
 
 describe('ProcedureMappingsTable', () => {
@@ -26,6 +26,6 @@ describe('ProcedureMappingsTable', () => {
 		expect(getByText('b')).toBeDefined();
 		expect(getByText('c')).toBeDefined();
 		expect(getByText('d')).toBeDefined();
-		expect(getByText('e')).toBeDefined();
+		expect(getByText('Default')).toBeDefined();
 	});
 });
