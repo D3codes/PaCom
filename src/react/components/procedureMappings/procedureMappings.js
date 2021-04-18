@@ -28,10 +28,12 @@ export default function ProcedureMappings() {
 	const [hasWritePermission, setHasWritePermission] = useState(null);
 	const [editingProcedure, setEditingProcedure] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [messageTemplates, setMessageTempaltes] = useState(null);
 
 	useEffect(() => {
 		persistentStorage.getProcedureMappings().then(setProcedures);
 		persistentStorage.getSettings(true).then(settings => setHasWritePermission(settings.shareData.behavior !== 1));
+		persistentStorage.getMessageTemplates().then(setMessageTempaltes);
 	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
@@ -80,6 +82,7 @@ export default function ProcedureMappings() {
 				onCancel={handleCancel}
 				onSave={handleSave}
 				open={isModalOpen}
+				messageTemplates={messageTemplates}
 				procedure={editingProcedure}
 				procedures={procedures}
 			/>

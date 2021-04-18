@@ -42,26 +42,38 @@ function ProcedureMappingsTable({
 		<div className={classes.procedureTable}>
 			<Table padding="none" stickyHeader>
 				<colgroup>
-					<col style={{ width: '30%' }} />
-					<col style={{ width: '30%' }} />
-					<col style={{ width: '30%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
 					<col style={{ width: '10%' }} />
 				</colgroup>
 				<TableHead>
 					<TableRow>
 						<TableCell className={clsx(classes.firstTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert From (Source)
+									Source
 							</Typography>
 						</TableCell>
 						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert To (SMS)
+									SMS Target
 							</Typography>
 						</TableCell>
 						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
-									Convert To (Phonetic)
+									Phonetic Target
+							</Typography>
+						</TableCell>
+						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
+							<Typography color="inherit">
+									SMS Reminder
+							</Typography>
+						</TableCell>
+						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
+							<Typography color="inherit">
+									Call Reminder
 							</Typography>
 						</TableCell>
 						<TableCell align="center" className={clsx(classes.lastTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
@@ -77,7 +89,7 @@ function ProcedureMappingsTable({
 							<TableCell
 								className={classes.noProcedureMappingsText}
 								align="center"
-								colSpan={4}>
+								colSpan={6}>
 								No Procedure Mappings Configured
 							</TableCell>
 						</TableRow>

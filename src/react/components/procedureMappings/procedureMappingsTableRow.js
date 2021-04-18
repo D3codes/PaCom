@@ -76,6 +76,8 @@ function ProcedureMappingsTableRow({
 			</TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{procedure.get('target', '-')}</Typography></TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{procedure.get('phonetic', '-')}</Typography></TableCell>
+			<TableCell className={classes.tableCell}><Typography variant="body2">{procedure.get('smsReminder', 'Default')}</Typography></TableCell>
+			<TableCell className={classes.tableCell}><Typography variant="body2">{procedure.get('phoneReminder', 'Default')}</Typography></TableCell>
 			<TableCell align="center" className={classes.tableCell}>
 				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
 					<MoreVert />
