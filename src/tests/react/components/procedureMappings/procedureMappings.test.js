@@ -11,6 +11,7 @@ jest.mock('../../../../react/utilities/persistentStorage');
 describe('ProcedureMappings', () => {
 	it('renders without crashing', async () => {
 		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve(null));
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve({ shareData: { behavior: 1 } }));
 
 		render(<ProcedureMappings />);
@@ -21,6 +22,7 @@ describe('ProcedureMappings', () => {
 
 	it('disables the add button when set to read only', async () => {
 		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve(null));
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve({ shareData: { behavior: 1 } }));
 
 		const { getByText } = render(<ProcedureMappings />);
@@ -31,6 +33,7 @@ describe('ProcedureMappings', () => {
 
 	it('displays a modal with title \'Add Procedure Mapping\' when the Add button is clicked', async () => {
 		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve(null));
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve({ shareData: { behavior: 0 } }));
 
 		const { getByText } = render(<ProcedureMappings />);

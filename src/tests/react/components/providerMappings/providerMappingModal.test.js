@@ -7,11 +7,11 @@ jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('ProviderMappingModal', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<ProviderMappingModal onCancel={() => {}} onSave={() => {}} open />);
+		const { getByText, getAllByText } = render(<ProviderMappingModal onCancel={() => {}} onSave={() => {}} open />);
 		expect(getByText('Add Provider Mapping')).toBeDefined();
-		expect(getByText('Source')).toBeDefined();
-		expect(getByText('SMS')).toBeDefined();
-		expect(getByText('Phonetic')).toBeDefined();
+		expect(getAllByText('Source')).toHaveLength(2);
+		expect(getAllByText('SMS Target')).toHaveLength(2);
+		expect(getAllByText('Phonetic Target')).toHaveLength(2);
 		expect(getByText('Cancel')).toBeDefined();
 		expect(getByText('Save')).toBeDefined();
 	});
