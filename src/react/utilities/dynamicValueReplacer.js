@@ -2,13 +2,33 @@ import persistentStorage from './persistentStorage';
 
 import { UnmappedDynamicValue, NonexistentDynamicValue } from '../localization/en/statusMessageText';
 
+const getReplaceWithValueForDefaults = (dynamicValueSource, reminder, notifyBy) => {
+	const pathToProviderMapping = notifyBy === 'Text' ? ['appointment', 'provider', 'target'] : ['appointment', 'provider', 'phonetic'];
+	const pathToProcedureMapping = notifyBy === 'Text' ? ['appointment', 'procedure', 'target'] : ['appointment', 'procedure', 'phonetic'];
+	let replaceWith;
+
+	switch (dynamicValueSource.name) {
+	case 'Provider':
+		return reminder.getIn(pathToProviderMapping, '');
+
+	case 'Procedure':
+		return reminder.getIn(pathToProcedureMapping, '');
+
+	case 'Patient Name':
+		replaceWith = reminder.getIn(dynamicValueSource.pathFromReminder, '');
+		[, replaceWith] = replaceWith.split(', ');
+		return replaceWith;
+
+	default:
+		return reminder.getIn(dynamicValueSource.pathFromReminder, '');
+	}
+};
+
 const replace = async (message, reminder, notifyBy) => {
 	const dynamicValues = await persistentStorage.getDynamicValues();
 	let replacedMessage = message;
 
 	const dynamicValuesInMessage = [...message.matchAll(/{{[^}]+}}/g)];
-	const pathToProviderMapping = notifyBy === 'Text' ? ['appointment', 'provider', 'target'] : ['appointment', 'provider', 'phonetic'];
-
 	dynamicValuesInMessage.forEach(valueInMessage => {
 		const dynamicValueSource = dynamicValues.find(value => `{{${value.name}}}` === valueInMessage[0]);
 		if (!dynamicValueSource) {
@@ -16,10 +36,7 @@ const replace = async (message, reminder, notifyBy) => {
 			reminder.setStatusMessage(`${NonexistentDynamicValue}${valueInMessage[0]}`);
 			replacedMessage = '';
 		} else if (dynamicValueSource.fromApptList) {
-			let replaceWith = dynamicValueSource.name === 'Provider'
-				? reminder.getIn(pathToProviderMapping, '')
-				: reminder.getIn(dynamicValueSource.pathFromReminder, '');
-			if (dynamicValueSource.name === 'Patient Name') [, replaceWith] = replaceWith.split(', ');
+			const replaceWith = getReplaceWithValueForDefaults(dynamicValueSource, reminder, notifyBy);
 			if (!replaceWith) {
 				replacedMessage = '';
 				reminder.setFailedStatus();

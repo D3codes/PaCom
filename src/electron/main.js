@@ -277,11 +277,11 @@ ipc.handle('save-file', (event, filePath, fileName, file) => save(filePath, file
 
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
 
-ipc.handle('get-dynamic-values', (event, includeDefault = true) => persistentStorage.getDynamicValues(false, includeDefault));
+ipc.handle('get-dynamic-values', () => persistentStorage.getDynamicValues(false));
 
-ipc.handle('add-dynamic-value', (event, value, includeDefault) => persistentStorage.addDynamicValue(value, includeDefault));
+ipc.handle('add-dynamic-value', (event, value) => persistentStorage.addDynamicValue(value));
 
-ipc.handle('remove-dynamic-value', (event, valueName, includeDefault) => persistentStorage.removeDynamicValueWithName(valueName, includeDefault));
+ipc.handle('remove-dynamic-value', (event, valueName) => persistentStorage.removeDynamicValueWithName(valueName));
 
 ipc.handle('get-provider-mappings', () => persistentStorage.getProviderMappings());
 

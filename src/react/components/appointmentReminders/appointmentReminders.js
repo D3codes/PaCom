@@ -16,25 +16,13 @@ import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
 import listSender from '../../utilities/listSender';
-
-// transformers
-import fromPulse from '../../transformers/fromPulse';
+import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 
 import { DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage } from '../../localization/en/dialogText';
 import {
 	InvalidFileTypeMessage, AllRemindersSentSuccessfully, ErrorSendingSomeRemindersTitle, ErrorSendingSomeRemindersMessage
 } from '../../localization/en/snackbarText';
-
-const Ehrs = {
-	Pulse: 'Pulse'
-};
-
-const transformersByEhr = {
-	Pulse: fromPulse
-};
-
-const selectedEhr = Ehrs.Pulse;
 
 const useStyles = makeStyles(theme => ({
 	appointmentRemindersContainer: {
@@ -100,6 +88,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	const [providerMappings, setProviderMappings] = useState(null);
+	const [procedureMappings] = useState(null); // TODO: setProcedureMappings
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
 	const [hasWritePermission, setHasWritePermission] = useState(false);
@@ -146,7 +135,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 
 	const handleAppointmentListImport = (appointmentListPath = null) => {
 		const csvPromise = csvImporter.getCSV(appointmentListPath);
-		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
+		csvPromise.then(({ result }) => transformer.transform(result.data, providerMappings, procedureMappings)).then(remindersList => {
 			setValidationRan(false);
 			setSendClicked(false);
 			setReminders(remindersList);
