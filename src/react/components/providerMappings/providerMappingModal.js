@@ -46,11 +46,11 @@ function ProviderMappingModal({
 		setPhonetic('');
 	};
 
-	const handleSourceChange = event => setSource(event.target.value);
+	const handleSourceChange = value => setSource(value);
 
-	const handleTargetChange = event => setTarget(event.target.value);
+	const handleTargetChange = value => setTarget(value);
 
-	const handlePhoneticChange = event => setPhonetic(event.target.value);
+	const handlePhoneticChange = value => setPhonetic(value);
 
 	const handleCancel = () => {
 		onCancel();
