@@ -22,7 +22,13 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
 	Object.values(report).forEach(reminders => {
-		const worksheet = workbook.addWorksheet(reminders[0]?.appointment?.provider?.target || 'Unmapped Provider(s)', sheetProps);
+		let appointmentDate = 'Unknown Date';
+		if (reminders[0]?.appointment?.date) {
+			const date = new Date(reminders[0].appointment.date);
+			appointmentDate = `(${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()})`;
+		}
+		const worksheetName = `${reminders[0]?.appointment?.provider?.target || 'Unmapped Provider(s)'} - ${appointmentDate}`;
+		const worksheet = workbook.addWorksheet(worksheetName, sheetProps);
 		worksheet.columns = [
 			{ header: 'Status', key: 'status', width: 10 },
 			{ header: 'Appt Date', key: 'apptDate', width: 16 },
