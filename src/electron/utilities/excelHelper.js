@@ -23,7 +23,7 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
 	Object.values(report).forEach(reminders => {
 		let appointmentDate = 'Unknown Date';
-		if (reminders[0].appointment?.date) {
+		if (reminders[0]?.appointment?.date) {
 			const date = new Date(reminders[0].appointment.date);
 			appointmentDate = `(${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()})`;
 		}
