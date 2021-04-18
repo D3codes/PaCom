@@ -14,13 +14,24 @@ const addDynamicValue = (value, includeDefault) => window.ipcRenderer.invoke('ad
 const removeDynamicValueWithName = (valueName, includeDefault) => window.ipcRenderer.invoke('remove-dynamic-value', valueName, includeDefault).then(transformDynamicValues);
 
 // Provider Mappings
-const transformMappings = providerMappings => providerMappings.map(({ source, target, phonetic }) => new Provider(source, target, phonetic));
+const transformProviderMappings = providerMappings => providerMappings.map(({ source, target, phonetic }) => new Provider(source, target, phonetic));
 
-const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings').then(transformMappings);
+const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings').then(transformProviderMappings);
 
-const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-mapping', mapping).then(transformMappings);
+const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-mapping', mapping).then(transformProviderMappings);
 
-const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource).then(transformMappings);
+const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource).then(transformProviderMappings);
+
+// Procedure Mappings
+const transformProcedureMappings = procedureMappings => procedureMappings.map(({
+	source, target, phonetic, phoneReminder, smsReminder
+}) => new Procedure(source, target, phonetic, phoneReminder, smsReminder));
+
+const getProcedureMappings = () => window.ipcRenderer.invoke('get-procedure-mappings').then(transformProcedureMappings);
+
+const addProcedureMapping = mapping => window.ipcRenderer.invoke('add-procedure-mapping', mapping).then(transformProcedureMappings);
+
+const removeProcedureMappingWithSource = procedureSource => window.ipcRenderer.invoke('remove-procedure-mapping', procedureSource).then(transformProcedureMappings);
 
 // Message Templates
 const transformTemplates = messageTemplates => messageTemplates.map(({ name, body }) => new Template(name, body));
