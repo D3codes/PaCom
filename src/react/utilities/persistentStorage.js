@@ -1,17 +1,23 @@
 import Provider from '../models/provider';
 import Template from '../models/template';
 import DynamicValue from '../models/dynamicValue';
+import transformer from '../transformers/transformer';
 
 // Dynamic Values
-const transformDynamicValues = dynamicValues => dynamicValues.map(({
-	name, fromApptList, mappings, pathFromReminder
-}) => new DynamicValue(name, fromApptList, mappings, pathFromReminder));
+const transformDynamicValues = (dynamicValues, includeDefault) => {
+	let values = dynamicValues;
+	if (includeDefault) values = values ? transformer.defaultDynamicValues.concat(values) : transformer.defaultDynamicValues;
+	return values.map(({
+		name, fromApptList, mappings, pathFromReminder
+	}) => new DynamicValue(name, fromApptList, mappings, pathFromReminder));
+};
 
-const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values', includeDefault).then(transformDynamicValues);
+const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values').then(values => transformDynamicValues(values, includeDefault));
 
-const addDynamicValue = (value, includeDefault) => window.ipcRenderer.invoke('add-dynamic-value', value, includeDefault).then(transformDynamicValues);
+const addDynamicValue = (value, includeDefault) => window.ipcRenderer.invoke('add-dynamic-value', value).then(values => transformDynamicValues(values, includeDefault));
 
-const removeDynamicValueWithName = (valueName, includeDefault) => window.ipcRenderer.invoke('remove-dynamic-value', valueName, includeDefault).then(transformDynamicValues);
+const removeDynamicValueWithName = (valueName, includeDefault) => window.ipcRenderer.invoke('remove-dynamic-value', valueName)
+	.then(values => transformDynamicValues(values, includeDefault));
 
 // Provider Mappings
 const transformMappings = providerMappings => providerMappings.map(({ source, target, phonetic }) => new Provider(source, target, phonetic));

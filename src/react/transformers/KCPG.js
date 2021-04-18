@@ -3,11 +3,51 @@ import ContactMethod from '../models/conactMethod';
 import Patient from '../models/patient';
 import Provider from '../models/provider';
 import Reminder from '../models/reminder';
+import Procedure from '../models/procedure';
 import { NullValueException } from '../errors/exceptions';
 import { ErrorInAppointmentList } from '../localization/en/statusMessageText';
 
-export default (rows, providerMappings) => {
-	if (!rows) throw new NullValueException(`Null value provided to "fromPulse" transformer: ${rows}`);
+const defaultDynamicValues = [
+	{
+		name: 'Provider',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: []
+	},
+	{
+		name: 'Patient Name',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['patient', 'name']
+	},
+	{
+		name: 'Appointment Date',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['appointment', 'date']
+	},
+	{
+		name: 'Appointment Time',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['appointment', 'time']
+	},
+	{
+		name: 'Appointment Duration',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: ['appointment', 'duration']
+	},
+	{
+		name: 'Procedure',
+		fromApptList: true,
+		mappings: [],
+		pathFromReminder: []
+	}
+];
+
+const transform = (rows, providerMappings = null, procedureMappings = null) => {
+	if (!rows) throw new NullValueException(`Null value provided to "KCPG" transformer: ${rows}`);
 
 	const reminders = [];
 	rows.forEach((row, index) => {
@@ -27,7 +67,8 @@ export default (rows, providerMappings) => {
 			dateOfBirth = null,
 			preferredContactMethod = null,,
 			homePhone = null,
-			cellPhone = null
+			cellPhone = null,
+			paddedProcedure = null
 		] = row;
 
 		const contactMethods = [];
@@ -44,7 +85,10 @@ export default (rows, providerMappings) => {
 		const existingProvider = providerMappings?.find(providerMapping => paddedProvider.includes(providerMapping.source));
 		const provider = new Provider(paddedProvider, existingProvider?.target, existingProvider?.phonetic);
 
-		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration);
+		const existingProcedure = procedureMappings?.find(procedureMapping => paddedProcedure.includes(procedureMapping.source));
+		const procedure = new Procedure(paddedProcedure, existingProcedure?.target, existingProcedure?.phonetic, existingProcedure?.phoneReminder, existingProcedure?.smsReminder);
+
+		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration, procedure);
 
 		const reminder = new Reminder(patient, appointment);
 		if (invalidProvider) {
@@ -54,4 +98,9 @@ export default (rows, providerMappings) => {
 		reminders.push(reminder);
 	});
 	return reminders;
+};
+
+export default {
+	transform,
+	defaultDynamicValues
 };
