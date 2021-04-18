@@ -62,7 +62,7 @@ function ProcedureMappingsTableRow({
 		setMoreMenuAnchorEl(null);
 	}
 
-	const isUnmappedProcedure = !procedure.get('target') && !procedure.get('phonetic');
+	const isUnmappedProcedure = !procedure.get('target') || !procedure.get('phonetic');
 
 	return (
 		<TableRow hover key={procedure.source}>

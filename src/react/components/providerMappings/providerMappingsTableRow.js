@@ -64,7 +64,7 @@ function ProviderMappingsTableRow({
 		setMoreMenuAnchorEl(null);
 	}
 
-	const isUnmappedProvider = !provider.get('target') && !provider.get('phonetic');
+	const isUnmappedProvider = !provider.get('target') || !provider.get('phonetic');
 
 	return (
 		<TableRow hover key={provider.source}>
