@@ -289,6 +289,12 @@ ipc.handle('add-provider-mapping', (event, mapping) => persistentStorage.addProv
 
 ipc.handle('remove-provider-mapping', (event, providerSource) => persistentStorage.removeProviderMappingWithSource(providerSource));
 
+ipc.handle('get-procedure-mappings', () => persistentStorage.getProcedureMappings());
+
+ipc.handle('add-procedure-mapping', (event, procedure) => persistentStorage.addProcedureMapping(procedure));
+
+ipc.handle('remove-procedure-mapping', (event, procedureSource) => persistentStorage.removeProcedureMappingWithSource(procedureSource));
+
 ipc.handle('get-message-templates', () => persistentStorage.getMessageTemplates());
 
 ipc.handle('add-message-template', (event, template) => persistentStorage.addMessageTemplate(template));
