@@ -96,7 +96,7 @@ const removeProcedureMappingWithSource = procedureSource => {
 
 const addProcedureMapping = procedure => {
 	setStorageLocation();
-	const procedures = removeProviderMappingWithSource(procedure.source);
+	const procedures = removeProcedureMappingWithSource(procedure.source);
 	procedures.unshift(procedure);
 	store.set(PROCEDURE_MAPPINGS, procedures);
 	return getProcedureMappings();
