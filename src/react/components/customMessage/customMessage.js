@@ -24,9 +24,7 @@ import MessageCompose from './messageCompose';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
 import useAsyncError from '../../errors/asyncError';
-
-// transformers
-import fromPulse from '../../transformers/fromPulse';
+import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 import {
 	SmsSentSuccessfully, ErrorSendingSms,
@@ -91,16 +89,6 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const Ehrs = {
-	Pulse: 'Pulse'
-};
-
-const transformersByEhr = {
-	[Ehrs.Pulse]: fromPulse
-};
-
-const selectedEhr = Ehrs.Pulse;
-
 function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const classes = useStyles();
 	const [sendToAppointmentList, setSendToAppointmentList] = useState(false);
@@ -112,6 +100,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const messageIsValid = useMemo(() => (sendToAppointmentList || !message.match(/{{.+}}/g)), [sendToAppointmentList, message]);
 
 	const [providerMappings, setProviderMappings] = useState(null);
+	const [procedureMappings] = useState(null); // TODO: setProcedureMappings
 	const [messageTemplates, setMessageTemplates] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [hasWritePermission, setHasWritePermission] = useState(false);
@@ -165,7 +154,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 
 	const handleBrowseClick = () => {
 		const csvPromise = csvImporter.getCSV().catch(e => throwError(e));
-		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
+		csvPromise.then(({ result }) => transformer.transform(result.data, providerMappings, procedureMappings)).then(remindersList => {
 			setValidationRan(false);
 			setSendClicked(false);
 			setReminders(remindersList);

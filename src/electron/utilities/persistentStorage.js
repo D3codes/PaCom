@@ -5,7 +5,6 @@ const isDev = require('electron-is-dev');
 const defaultSettings = isDev
 	? require('../models/devSettings.json')
 	: require('../models/defaultSettings.json');
-const defaultDynamicValues = require('../models/defaultDynamicValues.json');
 
 let store = new Store();
 
@@ -30,30 +29,29 @@ const setStorageLocation = () => {
 	}
 };
 
-const getDynamicValues = (forceLocal = false, includeDefault = true) => {
+const getDynamicValues = (forceLocal = false) => {
 	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
 	else setStorageLocation();
 	const values = store.get(DYNAMIC_VALUES);
-	if (!includeDefault) return values || [];
-	return values ? defaultDynamicValues.concat(values) : defaultDynamicValues;
+	return values || [];
 };
 
-const removeDynamicValueWithName = (valueName, includeDefault = true) => {
+const removeDynamicValueWithName = valueName => {
 	setStorageLocation();
 	let values = getDynamicValues(false, false);
 	if (!values) return [];
 	values = values.filter(value => value.name !== valueName);
 	store.set(DYNAMIC_VALUES, values);
-	return getDynamicValues(false, includeDefault);
+	return getDynamicValues(false);
 };
 
-const addDynamicValue = (value, includeDefault = true) => {
+const addDynamicValue = value => {
 	if (value.fromApptList) return getDynamicValues();
 	setStorageLocation();
 	const values = removeDynamicValueWithName(value.name, false);
 	values.push(value);
 	store.set(DYNAMIC_VALUES, values);
-	return getDynamicValues(false, includeDefault);
+	return getDynamicValues(false);
 };
 
 const getProviderMappings = (forceLocal = false) => {
