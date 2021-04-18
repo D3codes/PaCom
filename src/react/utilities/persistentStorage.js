@@ -1,4 +1,5 @@
 import Provider from '../models/provider';
+import Procedure from '../models/procedure';
 import Template from '../models/template';
 import DynamicValue from '../models/dynamicValue';
 import transformer from '../transformers/transformer';
@@ -115,6 +116,9 @@ export default {
 	getProviderMappings,
 	addProviderMapping,
 	removeProviderMappingWithSource,
+	getProcedureMappings,
+	addProcedureMapping,
+	removeProcedureMappingWithSource,
 	getMessageTemplates,
 	addMessageTemplate,
 	removeMessageTemplateWithName,
