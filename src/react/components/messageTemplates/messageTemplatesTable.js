@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 
 import Template from '../../models/template';
+import Procedure from '../../models/procedure';
 import MessageTemplatesTableRow from './messageTemplatesTableRow';
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MessageTemplatesTable({
-	hasWritePermission = false, onEdit, onRemove, templates = null, defaultPhoneTemplate = null, defaultSmsTemplate = null
+	hasWritePermission = false, onEdit, onRemove, templates = null, defaultPhoneTemplate = null, defaultSmsTemplate = null, procedureMappings = []
 }) {
 	const classes = useStyles();
 
@@ -83,7 +84,11 @@ function MessageTemplatesTable({
 							onEdit={onEdit}
 							onRemove={onRemove}
 							template={template}
-							isDefaultReminder={template.get('name') === defaultPhoneTemplate || template.get('name') === defaultSmsTemplate}
+							isReminder={
+								template.get('name') === defaultPhoneTemplate
+								|| template.get('name') === defaultSmsTemplate
+								|| procedureMappings.find(m => m.phoneReminder === template.get('name') || m.smsReminder === template.get('name'))
+							}
 						/>
 					))}
 				</TableBody>
@@ -98,7 +103,8 @@ MessageTemplatesTable.propTypes = {
 	onRemove: PropTypes.func.isRequired,
 	templates: PropTypes.arrayOf(PropTypes.instanceOf(Template)),
 	defaultPhoneTemplate: PropTypes.string,
-	defaultSmsTemplate: PropTypes.string
+	defaultSmsTemplate: PropTypes.string,
+	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure))
 };
 
 export default MessageTemplatesTable;

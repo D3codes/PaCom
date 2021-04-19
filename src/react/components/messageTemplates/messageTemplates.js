@@ -30,6 +30,7 @@ export default function MessageTemplates() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [defaultPhoneReminderTemplate, setDefaultPhoneReminderTemplate] = useState('');
 	const [defaultSmsReminderTemplate, setDefaultSmsReminderTemplate] = useState('');
+	const [procedureMappings, setProcedureMappings] = useState([]);
 
 	useEffect(() => {
 		persistentStorage.getMessageTemplates().then(setTemplates);
@@ -38,6 +39,7 @@ export default function MessageTemplates() {
 			setDefaultPhoneReminderTemplate(settings.appointmentReminders.defaultReminderTemplates.phone);
 			setDefaultSmsReminderTemplate(settings.appointmentReminders.defaultReminderTemplates.sms);
 		});
+		persistentStorage.getProcedureMappings().then(setProcedureMappings);
 	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
@@ -73,6 +75,7 @@ export default function MessageTemplates() {
 				templates={templates}
 				defaultPhoneTemplate={defaultPhoneReminderTemplate}
 				defaultSmsTemplate={defaultSmsReminderTemplate}
+				procedureMappings={procedureMappings}
 			/>
 			<div className={classes.buttonContainer}>
 				<Button
