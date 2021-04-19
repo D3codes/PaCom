@@ -23,6 +23,7 @@ import AlertSnackBar from '../alertSnackbar';
 import MessageCompose from './messageCompose';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
+import procedureMappingValidator from '../../validators/validateProcedureMappings';
 import useAsyncError from '../../errors/asyncError';
 import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
@@ -134,7 +135,10 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 
 	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
-			if (hasWritePermission) providerMappingValidator.addUnknownProviders(reminders);
+			if (hasWritePermission) {
+				providerMappingValidator.addUnknownProviders(reminders);
+				procedureMappingValidator.addUnknownProcedures(reminders);
+			}
 			providerMappingValidator.validateProviderMappings(reminders)
 				.then(() => valiDate.validateAppointmentDates(reminders, dateVerificationSettings))
 				.then(valid => {
