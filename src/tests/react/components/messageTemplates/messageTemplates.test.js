@@ -22,6 +22,7 @@ describe('MessageTemplates', () => {
 		};
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
 
 		render(<MessageTemplates />);
 
@@ -44,6 +45,7 @@ describe('MessageTemplates', () => {
 			new Template('Test Template Name 2', 'Test Template Body 2')
 		]));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
 
 		render(<MessageTemplates />);
 
@@ -65,6 +67,7 @@ describe('MessageTemplates', () => {
 		};
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
 
 		const { getByText } = render(<MessageTemplates />);
 
@@ -85,6 +88,7 @@ describe('MessageTemplates', () => {
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
 
 		const { getByText } = render(<MessageTemplates />);
 

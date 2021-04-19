@@ -9,10 +9,10 @@ jest.mock('../../../../react/utilities/persistentStorage');
 describe('MessageTemplateModal', () => {
 	it('renders without crashing', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(null));
-		const { getByText } = render(<MessageTemplateModal onCancel={() => {}} onSave={() => {}} open />);
+		const { getByText, getAllByText } = render(<MessageTemplateModal onCancel={() => {}} onSave={() => {}} open />);
 
 		expect(getByText('Add Message Template')).toBeDefined();
-		expect(getByText('Name')).toBeDefined();
+		expect(getAllByText('Template Name')).toHaveLength(2);
 		expect(getByText('Cancel')).toBeDefined();
 		expect(getByText('Save')).toBeDefined();
 	});

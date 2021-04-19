@@ -9,10 +9,10 @@ jest.mock('../../../../react/utilities/persistentStorage');
 describe('DynamicValueModal', () => {
 	it('renders without crashing', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(null));
-		const { getByText } = render(<DynamicValueModal onCancel={() => {}} onSave={() => {}} open />);
+		const { getByText, getAllByText } = render(<DynamicValueModal onCancel={() => {}} onSave={() => {}} open />);
 
 		expect(getByText('Add Dynamic Value')).toBeDefined();
-		expect(getByText('Name')).toBeDefined();
+		expect(getAllByText('Dynamic Value Name')).toHaveLength(2);
 		expect(getByText('Cancel')).toBeDefined();
 		expect(getByText('Save')).toBeDefined();
 	});
