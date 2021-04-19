@@ -1,9 +1,10 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TextField, TableContainer
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TableContainer
 } from '@material-ui/core';
-import { Save } from '@material-ui/icons';
+import { Save, Label } from '@material-ui/icons';
+import IconTextField from '../iconTextField';
 
 import DynamicValueMappingsTable from './dynamicValueMappingsTable';
 import Provider from '../../models/provider';
@@ -53,7 +54,7 @@ function DynamicValueModal({
 		setValue('');
 	};
 
-	const handleNameChange = event => setName(event.target.value);
+	const handleNameChange = nameValue => setName(nameValue);
 
 	const handleValueChange = body => setValue(body);
 
@@ -111,13 +112,12 @@ function DynamicValueModal({
 			<DialogContent className={classes.dialogContent}>
 				{!editProvider && (
 					<Fragment>
-						<TextField
+						<IconTextField
 							autoFocus
-							fullWidth
-							label="Name"
+							label="Dynamic Value Name"
 							onChange={handleNameChange}
-							placeholder="Dynamic Value Name..."
 							value={name}
+							Icon={Label}
 						/>
 						<TableContainer>
 							<DynamicValueMappingsTable
