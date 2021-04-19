@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TextField
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles
 } from '@material-ui/core';
-import { Save } from '@material-ui/icons';
+import {
+	Save, Input, Sms, Phone
+} from '@material-ui/icons';
 
 import Provider from '../../models/provider';
 
@@ -11,6 +13,7 @@ import {
 	ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage
 } from '../../localization/en/dialogText';
 import dialogController from '../../utilities/dialogController';
+import IconTextField from '../iconTextField';
 
 const useStyles = makeStyles(theme => ({
 	dialogContent: {
@@ -43,11 +46,11 @@ function ProviderMappingModal({
 		setPhonetic('');
 	};
 
-	const handleSourceChange = event => setSource(event.target.value);
+	const handleSourceChange = value => setSource(value);
 
-	const handleTargetChange = event => setTarget(event.target.value);
+	const handleTargetChange = value => setTarget(value);
 
-	const handlePhoneticChange = event => setPhonetic(event.target.value);
+	const handlePhoneticChange = value => setPhonetic(value);
 
 	const handleCancel = () => {
 		onCancel();
@@ -77,27 +80,25 @@ function ProviderMappingModal({
 		<Dialog fullWidth open={open}>
 			<DialogTitle>{provider ? 'Edit' : 'Add'} Provider Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
-				<TextField
+				<IconTextField
 					autoFocus
-					fullWidth
 					label="Source"
 					onChange={handleSourceChange}
-					placeholder="Source..."
 					value={source}
+					Icon={Input}
 				/>
-				<TextField
-					fullWidth
-					label="SMS"
+				<IconTextField
+					label="SMS Target"
 					onChange={handleTargetChange}
 					placeholder="SMS..."
 					value={target}
+					Icon={Sms}
 				/>
-				<TextField
-					fullWidth
-					label="Phonetic"
+				<IconTextField
+					label="Phonetic Target"
 					onChange={handlePhoneticChange}
-					placeholder="Phonetic..."
 					value={phonetic}
+					Icon={Phone}
 				/>
 			</DialogContent>
 			<DialogActions>

@@ -5,8 +5,8 @@ import {
 	makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography
 } from '@material-ui/core';
 
-import Provider from '../../models/provider';
-import ProviderMappingsTableRow from './providerMappingsTableRow';
+import Procedure from '../../models/procedure';
+import ProcedureMappingsTableRow from './procedureMappingsTableRow';
 
 const useStyles = makeStyles(theme => ({
 	firstTableHeadCell: {
@@ -15,12 +15,12 @@ const useStyles = makeStyles(theme => ({
 	lastTableHeadCell: {
 		borderTopRightRadius: 4
 	},
-	noProviderMappingsText: {
+	noProcedureMappingsText: {
 		borderBottom: 'none',
 		fontStyle: 'italic',
 		color: theme.palette.text.secondary
 	},
-	providerTable: {
+	procedureTable: {
 		flex: 1,
 		overflowY: 'auto'
 	},
@@ -33,18 +33,20 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ProviderMappingsTable({
-	hasWritePermission = false, onEdit, onRemove, providers = null
+function ProcedureMappingsTable({
+	hasWritePermission = false, onEdit, onRemove, procedures = null
 }) {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.providerTable}>
+		<div className={classes.procedureTable}>
 			<Table padding="none" stickyHeader>
 				<colgroup>
-					<col style={{ width: '30%' }} />
-					<col style={{ width: '30%' }} />
-					<col style={{ width: '30%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
+					<col style={{ width: '18%' }} />
 					<col style={{ width: '10%' }} />
 				</colgroup>
 				<TableHead>
@@ -64,6 +66,16 @@ function ProviderMappingsTable({
 									Phonetic Target
 							</Typography>
 						</TableCell>
+						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
+							<Typography color="inherit">
+									SMS Reminder
+							</Typography>
+						</TableCell>
+						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
+							<Typography color="inherit">
+									Call Reminder
+							</Typography>
+						</TableCell>
 						<TableCell align="center" className={clsx(classes.lastTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
 									Actions
@@ -72,23 +84,23 @@ function ProviderMappingsTable({
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{!providers?.length && (
+					{!procedures?.length && (
 						<TableRow>
 							<TableCell
-								className={classes.noProviderMappingsText}
+								className={classes.noProcedureMappingsText}
 								align="center"
-								colSpan={4}>
-								No Provider Mappings Configured
+								colSpan={6}>
+								No Procedure Mappings Configured
 							</TableCell>
 						</TableRow>
 					)}
-					{providers?.map(provider => (
-						<ProviderMappingsTableRow
+					{procedures?.map(procedure => (
+						<ProcedureMappingsTableRow
 							hasWritePermission={hasWritePermission}
-							key={provider.source}
+							key={procedure.source}
 							onEdit={onEdit}
 							onRemove={onRemove}
-							provider={provider}
+							procedure={procedure}
 						/>
 					))}
 				</TableBody>
@@ -97,11 +109,11 @@ function ProviderMappingsTable({
 	);
 }
 
-ProviderMappingsTable.propTypes = {
+ProcedureMappingsTable.propTypes = {
 	hasWritePermission: PropTypes.bool,
 	onEdit: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
-	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider))
+	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure))
 };
 
-export default ProviderMappingsTable;
+export default ProcedureMappingsTable;

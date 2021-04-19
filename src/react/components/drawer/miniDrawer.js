@@ -4,7 +4,7 @@ import {
 	Drawer, makeStyles, Typography, Button, Backdrop
 } from '@material-ui/core';
 import {
-	PermPhoneMsg, PersonPin, RateReview, Schedule, DynamicFeed
+	PermPhoneMsg, PersonPin, RateReview, Schedule, DynamicFeed, Healing
 } from '@material-ui/icons';
 import AlertSnackbar from '../alertSnackbar';
 import useAsyncError from '../../errors/asyncError';
@@ -38,6 +38,12 @@ const SECONDARY_TABS = [
 		id: 'prvdrMpngs',
 		label: 'Provider Mappings',
 		title: 'Provider Mappings'
+	},
+	{
+		Icon: Healing,
+		id: 'prcdrMpngs',
+		label: 'Procedure Mappings',
+		title: 'Procedure Mappings'
 	},
 	{
 		Icon: RateReview,
@@ -247,8 +253,9 @@ MiniDrawer.TabIds = {
 	SEND_APPOINTMENT_REMINDERS: PRIMARY_TABS[0].id,
 	SEND_CUSTOM_MESSAGE: PRIMARY_TABS[1].id,
 	PROVIDER_MAPPINGS: SECONDARY_TABS[0].id,
-	MESSAGE_TEMPLATES: SECONDARY_TABS[1].id,
-	DYNAMIC_VALUES: SECONDARY_TABS[2].id,
+	PROCEDURE_MAPPINGS: SECONDARY_TABS[1].id,
+	MESSAGE_TEMPLATES: SECONDARY_TABS[2].id,
+	DYNAMIC_VALUES: SECONDARY_TABS[3].id,
 	APPOINTMENT_REMINDERS_SETTINGS: SETTINGS_TABS[0].id,
 	CUSTOM_MESSAGE_SETTINGS: SETTINGS_TABS[1].id,
 	MESSAGE_REPORT_SETTINGS: SETTINGS_TABS[2].id,
