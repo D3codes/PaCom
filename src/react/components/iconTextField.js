@@ -10,16 +10,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function IconTextField({
-	onChange, error = false, helperText = '', disabled = false, label, value = '', Icon, startAdornment = null, testId = ''
+	onChange, error = false, helperText = '', disabled = false, label, value = '', Icon, startAdornment = null, testId = '', autoFocus = false
 }) {
 	const classes = useStyles();
 
 	return (
 		<TextField
 			disabled={disabled}
+			autoFocus={autoFocus}
 			error={error}
 			helperText={helperText}
-			focused={!disabled}
 			fullWidth
 			onChange={event => { onChange(event.target.value); }}
 			InputProps={{
@@ -49,7 +49,8 @@ IconTextField.propTypes = {
 	value: PropTypes.string,
 	Icon: PropTypes.elementType.isRequired,
 	startAdornment: PropTypes.string,
-	testId: PropTypes.string
+	testId: PropTypes.string,
+	autoFocus: PropTypes.bool
 };
 
 export default IconTextField;

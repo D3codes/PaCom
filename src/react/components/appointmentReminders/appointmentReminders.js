@@ -15,6 +15,7 @@ import persistentStorage from '../../utilities/persistentStorage';
 import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
+import procedureMappingValidator from '../../validators/validateProcedureMappings';
 import listSender from '../../utilities/listSender';
 import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
@@ -123,7 +124,10 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 
 	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
-			if (hasWritePermission) providerMappingValidator.addUnknownProviders(reminders);
+			if (hasWritePermission) {
+				providerMappingValidator.addUnknownProviders(reminders);
+				procedureMappingValidator.addUnknownProcedures(reminders);
+			}
 			providerMappingValidator.validateProviderMappings(reminders)
 				.then(() => valiDate.validateAppointmentDates(reminders, dateVerificationSettings))
 				.then(valid => {

@@ -71,3 +71,15 @@ const ErrorInAppointmentListTitle = 'Error in Appointment List';
 const ErrorInAppointmentListMessage = 'The appointment list was in an unexpected format. Ensure data is correct before continuing.';
 exports.ErrorInAppointmentListTitle = ErrorInAppointmentListTitle;
 exports.ErrorInAppointmentListMessage = ErrorInAppointmentListMessage;
+
+// Procedure Mapping Source In Use
+const ProcedureMappingSourceInUseTitle = 'Procedure Source Already in Use';
+const ProcedureMappingSourceInUseMessage = 'Saving will overwrite the existing procedure mapping. Do you want to save anyway?';
+exports.ProcedureMappingSourceInUseTitle = ProcedureMappingSourceInUseTitle;
+exports.ProcedureMappingSourceInUseMessage = ProcedureMappingSourceInUseMessage;
+
+// Procedure Mapping Confirm Delete
+const ProcedureMappingConfirmDeleteTitle = 'Delete Procedure Mapping';
+const ProcedureMappingConfirmDeleteMessage = 'Are you sure you want to delete the mapping for ';
+exports.ProcedureMappingConfirmDeleteTitle = ProcedureMappingConfirmDeleteTitle;
+exports.ProcedureMappingConfirmDeleteMessage = ProcedureMappingConfirmDeleteMessage;
