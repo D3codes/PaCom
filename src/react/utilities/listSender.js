@@ -96,14 +96,18 @@ const sendCalls = async (onUpdate, reminders) => {
 };
 
 const getMessageToSend = (reminder, message, notifyBy) => {
+	// sending a custom message
 	if (message) return message;
 
+	// procedure mapping phone reminder override
 	const phoneReminder = reminder.getIn(['appointment', 'procedure', 'phoneReminder'], null);
 	if (notifyBy !== Patient.NotifyBy.Text && phoneReminder && phoneReminder !== 'Default') return messageTemplates.find(t => t.name === phoneReminder)?.body || '';
 
+	// procedure mapping sms reminder override
 	const smsReminder = reminder.getIn(['appointment', 'procedure', 'smsReminder'], null);
 	if (notifyBy === Patient.NotifyBy.Text && smsReminder && smsReminder !== 'Default') return messageTemplates.find(t => t.name === smsReminder)?.body || '';
 
+	// default reminder
 	return notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder;
 };
 
