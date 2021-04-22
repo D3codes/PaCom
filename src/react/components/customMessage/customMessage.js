@@ -101,7 +101,7 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const messageIsValid = useMemo(() => (sendToAppointmentList || !message.match(/{{.+}}/g)), [sendToAppointmentList, message]);
 
 	const [providerMappings, setProviderMappings] = useState(null);
-	const [procedureMappings] = useState(null); // TODO: setProcedureMappings
+	const [procedureMappings, setProcedureMappings] = useState(null);
 	const [messageTemplates, setMessageTemplates] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [hasWritePermission, setHasWritePermission] = useState(false);
@@ -130,7 +130,9 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 			.then(() => persistentStorage.getSettings(true))
 			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); })
 			.then(() => persistentStorage.getProviderMappings())
-			.then(setProviderMappings);
+			.then(setProviderMappings)
+			.then(() => persistentStorage.getProcedureMappings())
+			.then(setProcedureMappings);
 	}, []);
 
 	useEffect(() => {

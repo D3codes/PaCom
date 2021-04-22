@@ -89,7 +89,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	const [providerMappings, setProviderMappings] = useState(null);
-	const [procedureMappings] = useState(null); // TODO: setProcedureMappings
+	const [procedureMappings, setProcedureMappings] = useState(null);
 	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
 	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
 	const [hasWritePermission, setHasWritePermission] = useState(false);
@@ -119,7 +119,9 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 				}
 			})
 			.then(() => persistentStorage.getSettings(true))
-			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); });
+			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); })
+			.then(() => persistentStorage.getProcedureMappings())
+			.then(setProcedureMappings);
 	}, []);
 
 	useEffect(() => {
