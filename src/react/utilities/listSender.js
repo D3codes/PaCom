@@ -95,10 +95,7 @@ const sendCalls = async (onUpdate, reminders) => {
 	}
 };
 
-const getMessageToSend = (reminder, message, notifyBy) => {
-	// sending a custom message
-	if (message) return message;
-
+const getReminderTemplate = (reminder, notifyBy) => {
 	// procedure mapping phone reminder override
 	const phoneReminder = reminder.getIn(['appointment', 'procedure', 'phoneReminder'], null);
 	if (notifyBy !== Patient.NotifyBy.Text && phoneReminder && phoneReminder !== 'Default') return messageTemplates.find(t => t.name === phoneReminder)?.body || '';
@@ -133,7 +130,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
 		const notifyBy = forceText ? Patient.NotifyBy.Text : reminder.getIn(['patient', 'preferredContactMethod'], null);
-		const messageToSend = getMessageToSend(reminder, message, notifyBy);
+		const messageToSend = message || getReminderTemplate(reminder, notifyBy);
 
 		let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === Patient.NotifyBy.Phone ? ContactMethod.Types.Home : ContactMethod.Types.Cell);
 		if (!contactNumber && notifyBy === Patient.NotifyBy.Text && sendSmsToHomeIfNoCell) {
