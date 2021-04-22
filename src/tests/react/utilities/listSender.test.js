@@ -107,6 +107,10 @@ describe('ListSender', () => {
 			{
 				name: 'smsTemplate',
 				body: 'sms template body'
+			},
+			{
+				name: 'Text',
+				body: 'Text Template'
 			}
 		];
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
@@ -192,6 +196,10 @@ describe('ListSender', () => {
 			{
 				name: 'smsTemplate',
 				body: 'sms template body'
+			},
+			{
+				name: 'Cell',
+				body: 'Cell Template'
 			}
 		];
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
@@ -277,6 +285,10 @@ describe('ListSender', () => {
 			{
 				name: 'smsTemplate',
 				body: 'sms template body'
+			},
+			{
+				name: 'Cell',
+				body: 'Cell Template'
 			}
 		];
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
@@ -362,6 +374,10 @@ describe('ListSender', () => {
 			{
 				name: 'smsTemplate',
 				body: 'sms template body'
+			},
+			{
+				name: 'Cell',
+				body: 'Cell Template'
 			}
 		];
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));

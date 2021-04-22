@@ -99,10 +99,10 @@ const getMessageToSend = (reminder, message, notifyBy) => {
 	if (message) return message;
 
 	const phoneReminder = reminder.getIn(['appointment', 'procedure', 'phoneReminder'], null);
-	if (notifyBy !== Patient.NotifyBy.Text && phoneReminder && phoneReminder !== 'Default') return messageTemplates.find(t => t.name === phoneReminder).body;
+	if (notifyBy !== Patient.NotifyBy.Text && phoneReminder && phoneReminder !== 'Default') return messageTemplates.find(t => t.name === phoneReminder)?.body || '';
 
 	const smsReminder = reminder.getIn(['appointment', 'procedure', 'smsReminder'], null);
-	if (notifyBy === Patient.NotifyBy.Text && smsReminder && smsReminder !== 'Default') return messageTemplates.find(t => t.name === smsReminder).body;
+	if (notifyBy === Patient.NotifyBy.Text && smsReminder && smsReminder !== 'Default') return messageTemplates.find(t => t.name === smsReminder)?.body || '';
 
 	return notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder;
 };
