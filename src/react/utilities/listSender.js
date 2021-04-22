@@ -21,7 +21,7 @@ let sendSmsToHomeIfNoCell = false;
 let autoSave = false;
 let autoSavePath = '';
 let complete = null;
-
+let messageTemplates = [];
 let calls = [];
 
 const setDefaults = () => {
@@ -33,6 +33,7 @@ const setDefaults = () => {
 	autoSavePath = '';
 	complete = null;
 	calls = [];
+	messageTemplates = [];
 };
 
 const callBundler = (number, message, reminder) => {
@@ -94,6 +95,19 @@ const sendCalls = async (onUpdate, reminders) => {
 	}
 };
 
+const getReminderTemplate = (reminder, notifyBy) => {
+	// procedure mapping phone reminder override
+	const phoneReminder = reminder.getIn(['appointment', 'procedure', 'phoneReminder'], null);
+	if (notifyBy !== Patient.NotifyBy.Text && phoneReminder && phoneReminder !== 'Default') return messageTemplates.find(t => t.name === phoneReminder)?.body || '';
+
+	// procedure mapping sms reminder override
+	const smsReminder = reminder.getIn(['appointment', 'procedure', 'smsReminder'], null);
+	if (notifyBy === Patient.NotifyBy.Text && smsReminder && smsReminder !== 'Default') return messageTemplates.find(t => t.name === smsReminder)?.body || '';
+
+	// default reminder
+	return notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder;
+};
+
 const sendToList = async (reminders, onUpdate = null, message = '', forceText = false) => {
 	if (!reminders || reminders.length <= 0) {
 		complete();
@@ -116,7 +130,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 
 		const notifyBy = forceText ? Patient.NotifyBy.Text : reminder.getIn(['patient', 'preferredContactMethod'], null);
-		const messageToSend = message || (notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder);
+		const messageToSend = message || getReminderTemplate(reminder, notifyBy);
 
 		let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === Patient.NotifyBy.Phone ? ContactMethod.Types.Home : ContactMethod.Types.Cell);
 		if (!contactNumber && notifyBy === Patient.NotifyBy.Text && sendSmsToHomeIfNoCell) {
@@ -208,6 +222,7 @@ const sendAppointmentReminders = (reminders, onUpdate, onComplete) => {
 			// Set Default Messages Templates
 			defaultSmsReminder = templates.find(template => template.name === defaultSms).body;
 			defaultPhoneReminder = templates.find(template => template.name === defaultPhone).body;
+			messageTemplates = templates;
 
 			sendToList(reminders, onUpdate);
 		});
