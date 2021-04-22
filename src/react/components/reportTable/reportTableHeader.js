@@ -46,17 +46,17 @@ function ReportTableHeader() {
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit">
+						Procedure
+					</Typography>
+				</TableCell>
+				<TableCell className={classes.tableCellHead}>
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Patient
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit">
 						Account
-					</Typography>
-				</TableCell>
-				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit">
-						D.O.B.
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
