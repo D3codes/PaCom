@@ -34,13 +34,13 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 			{ header: 'Appt Date', key: 'apptDate', width: 16 },
 			{ header: 'Appt Time', key: 'apptTime', width: 11 },
 			{ header: 'Duration', key: 'duration', width: 7 },
+			{ header: 'Procedure', key: 'procedure', width: 11 },
 			{ header: 'Patient', key: 'patient', width: 20 },
 			{ header: 'Account', key: 'account', width: 9 },
 			{ header: 'DOB', key: 'dob', width: 8 },
 			{ header: 'Notify By', key: 'notify', width: 8 },
 			{ header: 'Home', key: 'home', width: 13 },
 			{ header: 'Cell', key: 'cell', width: 13 },
-			{ header: 'Procedure', key: 'procedure', width: 11 },
 			{ header: 'Information', key: 'info', width: 25 }
 		];
 
@@ -50,13 +50,13 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 				apptDate: reminder?.appointment?.date,
 				apptTime: reminder?.appointment?.time,
 				duration: reminder?.appointment?.duration,
+				procedure: reminder?.appointment?.procedure?.source,
 				patient: reminder?.patient?.name,
 				account: reminder?.patient?.accountNumber,
 				dob: reminder?.patient?.dateOfBirth,
 				notify: reminder?.patient?.preferredContactMethod,
 				home: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Home')?.phoneNumber,
 				cell: reminder?.patient?.contactMethods?.find(contactMethod => contactMethod.type === 'Cell')?.phoneNumber,
-				procedure: reminder?.appointment?.procedure?.source,
 				info: reminder?.statusMessage
 			});
 		});
