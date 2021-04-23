@@ -26,34 +26,23 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing()
 	},
 	actionButtonContainer: {
-		display: 'flex',
 		alignSelf: 'flex-end'
 	},
 	tabContent: {
-		display: 'flex',
-		flexDirection: 'column',
-		flex: 1,
 		height: '100%'
 	},
 	tabContainer: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: `calc(100% - ${theme.spacing(3)}px)`
+	},
+	descriptionText: {
+		marginBottom: theme.spacing(3)
 	},
 	defaultCallReminderContainer: {
 		display: 'flex',
-		flex: 1,
-		justifyContent: 'space-between',
-		marginTop: theme.spacing(3)
+		justifyContent: 'space-between'
 	},
 	templateSelector: {
-		width: `calc(50% - ${theme.spacing(3)}px)`,
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center'
-	},
-	templateLabel: {
-		alignSelf: 'start'
+		width: `calc(50% - ${theme.spacing(3)}px)`
 	},
 	form: {
 		width: '100%'
@@ -67,6 +56,9 @@ const useStyles = makeStyles(theme => ({
 		zIndex: 1101,
 		boxShadow: '0px 4px 5px 0px rgba(0,0,0,0.14)',
 		color: 'white'
+	},
+	sendToContainer: {
+		height: '90%'
 	}
 }));
 
@@ -102,19 +94,14 @@ export default function AppointmentRemindersSettings({
 	};
 
 	useEffect(() => {
-		persistentStorage.getMessageTemplates()
-			.then(setMessageTemplates)
-			.then(() => persistentStorage.getProviderMappings());
+		persistentStorage.getMessageTemplates().then(setMessageTemplates);
 	}, []);
 
 	const mappingsMatch = (array1, array2) => {
 		if (array1.length !== array2.length) return false;
 
 		for (let i = 0; i < array1.length; i += 1) {
-			if (!array2.some(x => (x.source === array1[i].source) && (x.sendToReminder === array1[i].sendToReminder))) {
-				console.log(array1[i], array1, array2);
-				return false;
-			}
+			if (!array2.some(x => (x.source === array1[i].source) && (x.sendToReminder === array1[i].sendToReminder))) return false;
 		}
 
 		return true;
@@ -181,10 +168,12 @@ export default function AppointmentRemindersSettings({
 				</div>
 				{openTab === TABS.DEFAULT_REMINDERS && (
 					<div className={classes.tabContent}>
-						<Typography>Select the message templates that will be used while sending appointment reminders when no overrides are set.</Typography>
+						<Typography className={classes.descriptionText}>
+							Select the message templates that will be sent for appointment reminders when no overrides are set.
+						</Typography>
 						<div className={classes.defaultCallReminderContainer}>
 							<div className={classes.templateSelector}>
-								<Typography className={classes.templateLabel} variant="h6">Default Call Reminder Template</Typography>
+								<Typography variant="h6">Default Call Reminder Template</Typography>
 								<FormControl className={classes.form} variant="outlined">
 									<Select
 										value={messageTemplates && defaultPhoneReminder ? defaultPhoneReminder || '' : ''}
@@ -200,7 +189,7 @@ export default function AppointmentRemindersSettings({
 								</FormControl>
 							</div>
 							<div className={classes.templateSelector}>
-								<Typography className={classes.templateLabel} variant="h6">Default SMS Reminder Template</Typography>
+								<Typography variant="h6">Default SMS Reminder Template</Typography>
 								<FormControl className={classes.form} variant="outlined">
 									<Select
 										value={messageTemplates && defaultSmsReminder ? defaultSmsReminder || '' : ''}
@@ -220,14 +209,19 @@ export default function AppointmentRemindersSettings({
 				)}
 				{openTab === TABS.DEFAULT_SEND_TO && (
 					<div className={classes.tabContent}>
-						<DefaultSendTo
-							providerMappings={providerMappings}
-							procedureMappings={procedureMappings}
-							onProvidersChange={setProviderMappings}
-							onProceduresChange={setProcedureMappings}
-							hasWritePermission={hasWritePermission}
-							forAppointmentReminders
-						/>
+						<Typography className={classes.descriptionText}>
+							Select which Providers and Procedures should receive messages when sending appointment reminders.
+						</Typography>
+						<div className={classes.sendToContainer}>
+							<DefaultSendTo
+								providerMappings={providerMappings}
+								procedureMappings={procedureMappings}
+								onProvidersChange={setProviderMappings}
+								onProceduresChange={setProcedureMappings}
+								hasWritePermission={hasWritePermission}
+								forAppointmentReminders
+							/>
+						</div>
 					</div>
 				)}
 				{openTab === TABS.DATE_VERIFICATION && (

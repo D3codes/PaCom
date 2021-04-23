@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Typography, List, ListItem, ListItemText, Card, Checkbox
+	Typography, List, ListItem, ListItemText, Card, Checkbox, Tooltip
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Provider from '../../models/provider';
@@ -100,12 +100,14 @@ export default function DefaultSendTo({
 			<div className={classes.listContainer}>
 				<div className={classes.listLabelContainer}>
 					<Typography variant="h6">Providers</Typography>
-					<Checkbox
-						onChange={event => handleSelectAllProviders(event.target.checked)}
-						checked={allProviders}
-						color="primary"
-						disabled={!hasWritePermission}
-					/>
+					<Tooltip title={allProviders ? 'Deselect all Providers' : 'Select all Providers'}>
+						<Checkbox
+							onChange={event => handleSelectAllProviders(event.target.checked)}
+							checked={allProviders}
+							color="primary"
+							disabled={!hasWritePermission}
+						/>
+					</Tooltip>
 				</div>
 				<Card className={classes.card}>
 					<List className={classes.list}>
@@ -126,12 +128,14 @@ export default function DefaultSendTo({
 			<div className={classes.listContainer}>
 				<div className={classes.listLabelContainer}>
 					<Typography variant="h6">Procedures</Typography>
-					<Checkbox
-						onChange={event => handleSelectAllProcedures(event.target.checked)}
-						checked={allProcedures}
-						color="primary"
-						disabled={!hasWritePermission}
-					/>
+					<Tooltip title={allProcedures ? 'Deselect all Procedures' : 'Select all Procedures'}>
+						<Checkbox
+							onChange={event => handleSelectAllProcedures(event.target.checked)}
+							checked={allProcedures}
+							color="primary"
+							disabled={!hasWritePermission}
+						/>
+					</Tooltip>
 				</div>
 				<Card className={classes.card}>
 					<List className={classes.list}>
