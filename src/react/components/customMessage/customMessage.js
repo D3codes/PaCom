@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function CustomMessage({
-	messageTemplates, customMessageSettings, hasWritePermission, providerMappings, procedureMappings, disableNavigation, onDisableNavigationChange, reload
+	messageTemplates, customMessageSettings = null, hasWritePermission = false, providerMappings, procedureMappings, disableNavigation, onDisableNavigationChange, reload
 }) {
 	const classes = useStyles();
 	const [sendToAppointmentList, setSendToAppointmentList] = useState(false);
@@ -308,8 +308,8 @@ CustomMessage.propTypes = {
 				textHomeIfCellNotAvailable: PropTypes.bool
 			})
 		}
-	).isRequired,
-	hasWritePermission: PropTypes.bool.isRequired,
+	),
+	hasWritePermission: PropTypes.bool,
 	providerMappings: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
 	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	disableNavigation: PropTypes.bool.isRequired,

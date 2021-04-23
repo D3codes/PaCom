@@ -4,50 +4,26 @@ import {
 	render, fireEvent, waitFor, screen
 } from '@testing-library/react';
 import MessageTemplates from '../../../../react/components/messageTemplates/messageTemplates';
-import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 import Template from '../../../../react/models/template';
+import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('MessageTemplates', () => {
 	it('renders empty table without crashing', async () => {
-		const testSettings = {
-			shareData: { behavior: 1 },
-			appointmentReminders: {
-				defaultReminderTemplates: {
-					phone: null,
-					sms: null
-				}
-			}
-		};
-		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
-		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
-		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
-
-		render(<MessageTemplates />);
+		render(<MessageTemplates templates={[]} procedureMappings={[]} hasWritePermission reload={jest.fn()} />);
 
 		expect(await screen.findByText('No Message Templates Configured')).toBeDefined();
 		expect(await screen.findByText('Add')).toBeDefined();
 	});
 
 	it('renders templates without crashing', async () => {
-		const testSettings = {
-			shareData: { behavior: 1 },
-			appointmentReminders: {
-				defaultReminderTemplates: {
-					phone: null,
-					sms: null
-				}
-			}
-		};
-		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([
+		const templates = [
 			new Template('Test Template Name', 'Test Template Body'),
 			new Template('Test Template Name 2', 'Test Template Body 2')
-		]));
-		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
-		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
+		];
 
-		render(<MessageTemplates />);
+		render(<MessageTemplates templates={templates} procedureMappings={[]} hasWritePermission reload={jest.fn()} />);
 
 		expect(await screen.findByText('Test Template Name')).toBeDefined();
 		expect(await screen.findByText('Test Template Body')).toBeDefined();
@@ -56,41 +32,16 @@ describe('MessageTemplates', () => {
 	});
 
 	it('disables the add button when set to read only', async () => {
-		const testSettings = {
-			shareData: { behavior: 1 },
-			appointmentReminders: {
-				defaultReminderTemplates: {
-					phone: null,
-					sms: null
-				}
-			}
-		};
-		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
-		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
-		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
-
-		const { getByText } = render(<MessageTemplates />);
+		const { getByText } = render(<MessageTemplates templates={[]} procedureMappings={[]} reload={jest.fn()} />);
 
 		await screen.findByText('Add');
 		expect(getByText('Add').parentElement).toBeDisabled();
 	});
 
 	it('displays a modal with title \'Add Message Template\' when the Add button is clicked', async () => {
-		const testSettings = {
-			shareData: { behavior: 0 },
-			appointmentReminders: {
-				defaultReminderTemplates: {
-					phone: null,
-					sms: null
-				}
-			}
-		};
-		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(null));
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve(null));
-		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
-		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
 
-		const { getByText } = render(<MessageTemplates />);
+		const { getByText } = render(<MessageTemplates templates={[]} procedureMappings={[]} hasWritePermission reload={jest.fn()} />);
 
 		await waitFor(() => {
 			expect(getByText('Add').parentElement).toBeEnabled();

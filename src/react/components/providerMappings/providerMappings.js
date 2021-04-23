@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function ProviderMappings({ providers, hasWritePermission, reload }) {
+export default function ProviderMappings({ providers, hasWritePermission = false, reload }) {
 	const classes = useStyles();
 	const [editingProvider, setEditingProvider] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,6 +98,6 @@ export default function ProviderMappings({ providers, hasWritePermission, reload
 
 ProviderMappings.propTypes = {
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
-	hasWritePermission: PropTypes.bool.isRequired,
+	hasWritePermission: PropTypes.bool,
 	reload: PropTypes.func.isRequired
 };

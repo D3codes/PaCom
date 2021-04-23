@@ -64,10 +64,10 @@ export default function App() {
 	const [twilioSettings, setTwilioSettings] = useState(null);
 	const [sharedConfigurationSettings, setSharedConfigurationSettings] = useState(null);
 	const hasWritePermission = useMemo(() => (sharedConfigurationSettings && sharedConfigurationSettings.behavior !== 1), [sharedConfigurationSettings]);
-	const [providerMappings, setProviderMappings] = useState(null);
-	const [procedureMappings, setProcedureMappings] = useState(null);
-	const [messageTemplates, setMessageTemplates] = useState(null);
-	const [dynamicValues, setDynamicValues] = useState(null);
+	const [providerMappings, setProviderMappings] = useState([]);
+	const [procedureMappings, setProcedureMappings] = useState([]);
+	const [messageTemplates, setMessageTemplates] = useState([]);
+	const [dynamicValues, setDynamicValues] = useState([]);
 
 	const reloadSettings = () => {
 		persistentStorage.getSettings().then(settings => {
@@ -165,6 +165,7 @@ export default function App() {
 							appointmentReminders={appointmentReminderSettings}
 							providers={providerMappings}
 							procedures={procedureMappings}
+							messageTemplates={messageTemplates}
 							hasWritePermission={hasWritePermission}
 							reloadSettings={reloadSettings}
 						/>

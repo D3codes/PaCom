@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function DynamicValues({
-	dynamicValues, providers, hasWritePermission, reload
+	dynamicValues, providers, hasWritePermission = false, reload
 }) {
 	const classes = useStyles();
 	const [editingValue, setEditingValue] = useState(null);
@@ -89,6 +89,6 @@ export default function DynamicValues({
 DynamicValues.propTypes = {
 	dynamicValues: PropTypes.arrayOf(PropTypes.instanceOf(DynamicValue)).isRequired,
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
-	hasWritePermission: PropTypes.bool.isRequired,
+	hasWritePermission: PropTypes.bool,
 	reload: PropTypes.func.isRequired
 };

@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ProcedureMappings({
-	procedures, messageTemplates, hasWritePermission, reload
+	procedures, messageTemplates, hasWritePermission = false, reload
 }) {
 	const classes = useStyles();
 	const [editingProcedure, setEditingProcedure] = useState(null);
@@ -87,6 +87,6 @@ export default function ProcedureMappings({
 ProcedureMappings.propTypes = {
 	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	messageTemplates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
-	hasWritePermission: PropTypes.bool.isRequired,
+	hasWritePermission: PropTypes.bool,
 	reload: PropTypes.func.isRequired
 };

@@ -70,7 +70,7 @@ const TABS = {
 };
 
 export default function AppointmentRemindersSettings({
-	appointmentReminders, providers, procedures, reloadSettings, hasWritePermission
+	appointmentReminders, providers, procedures, messageTemplates, reloadSettings, hasWritePermission = false
 }) {
 	const classes = useStyles();
 	// Date Verification Values
@@ -85,17 +85,12 @@ export default function AppointmentRemindersSettings({
 	const [defaultSmsReminder, setDefaultSmsReminder] = useState(appointmentReminders.defaultReminderTemplates.sms);
 
 	const [openTab, setOpenTab] = useState(0);
-	const [messageTemplates, setMessageTemplates] = useState(null);
 	const [providerMappings, setProviderMappings] = useState(providers);
 	const [procedureMappings, setProcedureMappings] = useState(procedures);
 
 	const handleTabChange = (event, newValue) => {
 		setOpenTab(newValue);
 	};
-
-	useEffect(() => {
-		persistentStorage.getMessageTemplates().then(setMessageTemplates);
-	}, []);
 
 	const mappingsMatch = (mapping1, mapping2) => {
 		if (mapping1.length !== mapping2.length) return false;
@@ -281,5 +276,5 @@ AppointmentRemindersSettings.propTypes = {
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
 	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	reloadSettings: PropTypes.func.isRequired,
-	hasWritePermission: PropTypes.bool.isRequired
+	hasWritePermission: PropTypes.bool
 };

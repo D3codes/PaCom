@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function AppointmentReminders({
-	providerMappings, procedureMappings, appointmentReminderSettings, messageTemplates, hasWritePermission, disableNavigation, onDisableNavigationChange, reload
+	providerMappings, procedureMappings, appointmentReminderSettings = null, messageTemplates, hasWritePermission = false, disableNavigation, onDisableNavigationChange, reload
 }) {
 	const classes = useStyles();
 	const [reminders, setReminders] = useState(null);
@@ -237,9 +237,9 @@ AppointmentReminders.propTypes = {
 				sms: PropTypes.string
 			})
 		}
-	).isRequired,
+	),
 	messageTemplates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
-	hasWritePermission: PropTypes.bool.isRequired,
+	hasWritePermission: PropTypes.bool,
 	disableNavigation: PropTypes.bool.isRequired,
 	onDisableNavigationChange: PropTypes.func.isRequired,
 	reload: PropTypes.func.isRequired

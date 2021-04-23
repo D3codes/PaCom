@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function MessageTemplates({
-	templates, procedureMappings, defaultPhoneReminderTemplate = null, defaultSmsReminderTemplate = null, hasWritePermission, reload
+	templates, procedureMappings, defaultPhoneReminderTemplate = null, defaultSmsReminderTemplate = null, hasWritePermission = false, reload
 }) {
 	const classes = useStyles();
 	const [editingTemplate, setEditingTemplate] = useState(null);
@@ -91,6 +91,6 @@ MessageTemplates.propTypes = {
 	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	defaultPhoneReminderTemplate: PropTypes.string,
 	defaultSmsReminderTemplate: PropTypes.string,
-	hasWritePermission: PropTypes.bool.isRequired,
+	hasWritePermission: PropTypes.bool,
 	reload: PropTypes.func.isRequired
 };
