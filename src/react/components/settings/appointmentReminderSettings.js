@@ -84,24 +84,24 @@ export default function AppointmentRemindersSettings({
 	const [defaultPhoneReminder, setDefaultPhoneReminder] = useState(appointmentReminders.defaultReminderTemplates.phone);
 	const [defaultSmsReminder, setDefaultSmsReminder] = useState(appointmentReminders.defaultReminderTemplates.sms);
 
-	const [openTab, setopenTab] = useState(0);
+	const [openTab, setOpenTab] = useState(0);
 	const [messageTemplates, setMessageTemplates] = useState(null);
 	const [providerMappings, setProviderMappings] = useState(providers);
 	const [procedureMappings, setProcedureMappings] = useState(procedures);
 
 	const handleTabChange = (event, newValue) => {
-		setopenTab(newValue);
+		setOpenTab(newValue);
 	};
 
 	useEffect(() => {
 		persistentStorage.getMessageTemplates().then(setMessageTemplates);
 	}, []);
 
-	const mappingsMatch = (array1, array2) => {
-		if (array1.length !== array2.length) return false;
+	const mappingsMatch = (mapping1, mapping2) => {
+		if (mapping1.length !== mapping2.length) return false;
 
-		for (let i = 0; i < array1.length; i += 1) {
-			if (!array2.some(x => (x.source === array1[i].source) && (x.sendToReminder === array1[i].sendToReminder))) return false;
+		for (let i = 0; i < mapping1.length; i += 1) {
+			if (!mapping2.some(x => (x.source === mapping1[i].source) && (x.sendToReminder === mapping1[i].sendToReminder))) return false;
 		}
 
 		return true;
@@ -161,7 +161,7 @@ export default function AppointmentRemindersSettings({
 						value={openTab}
 						onChange={handleTabChange}>
 						<Tab label="Default Reminder Templates" />
-						<Tab label="Default Send To" />
+						<Tab label="Default Recipients" />
 						<Tab label="Date Verification" />
 						<Tab label="Contact Preferences" />
 					</Tabs>

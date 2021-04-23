@@ -35,6 +35,10 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		overflowY: 'auto',
 		height: '100%'
+	},
+	placeholderText: {
+		fontStyle: 'italic',
+		color: theme.palette.text.secondary
 	}
 }));
 
@@ -105,24 +109,27 @@ export default function DefaultSendTo({
 							onChange={event => handleSelectAllProviders(event.target.checked)}
 							checked={allProviders}
 							color="primary"
-							disabled={!hasWritePermission}
+							disabled={!hasWritePermission || (!providerMappings?.length)}
 						/>
 					</Tooltip>
 				</div>
 				<Card className={classes.card}>
-					<List className={classes.list}>
-						{providerMappings.map(provider => (
-							<ListItem key={`${provider.source}-${provider.sendToReminder}-${provider.sendToCustom}`} divider>
-								<ListItemText primary={provider.target || provider.source} />
-								<Checkbox
-									onChange={event => { handleProviderChange(provider.source, event.target.checked); }}
-									checked={forAppointmentReminders ? provider.sendToReminder : provider.sendToCustom}
-									color="primary"
-									disabled={!hasWritePermission}
-								/>
-							</ListItem>
-						))}
-					</List>
+					{providerMappings?.length > 0 && (
+						<List className={classes.list}>
+							{providerMappings.map(provider => (
+								<ListItem key={`${provider.source}-${provider.sendToReminder}-${provider.sendToCustom}`} divider>
+									<ListItemText primary={provider.target || provider.source} />
+									<Checkbox
+										onChange={event => { handleProviderChange(provider.source, event.target.checked); }}
+										checked={forAppointmentReminders ? provider.sendToReminder : provider.sendToCustom}
+										color="primary"
+										disabled={!hasWritePermission}
+									/>
+								</ListItem>
+							))}
+						</List>
+					)}
+					{!providerMappings?.length && <Typography className={classes.placeholderText}>No Providers Found</Typography>}
 				</Card>
 			</div>
 			<div className={classes.listContainer}>
@@ -133,24 +140,27 @@ export default function DefaultSendTo({
 							onChange={event => handleSelectAllProcedures(event.target.checked)}
 							checked={allProcedures}
 							color="primary"
-							disabled={!hasWritePermission}
+							disabled={!hasWritePermission || (!procedureMappings?.length)}
 						/>
 					</Tooltip>
 				</div>
 				<Card className={classes.card}>
-					<List className={classes.list}>
-						{procedureMappings.map(procedure => (
-							<ListItem key={`${procedure.source}-${procedure.sendToReminder}-${procedure.sendToCustom}`} divider>
-								<ListItemText primary={procedure.target || procedure.source} />
-								<Checkbox
-									onChange={event => { handleProcedureChange(procedure.source, event.target.checked); }}
-									checked={forAppointmentReminders ? procedure.sendToReminder : procedure.sendToCustom}
-									color="primary"
-									disabled={!hasWritePermission}
-								/>
-							</ListItem>
-						))}
-					</List>
+					{procedureMappings?.length > 0 && (
+						<List className={classes.list}>
+							{procedureMappings.map(procedure => (
+								<ListItem key={`${procedure.source}-${procedure.sendToReminder}-${procedure.sendToCustom}`} divider>
+									<ListItemText primary={procedure.target || procedure.source} />
+									<Checkbox
+										onChange={event => { handleProcedureChange(procedure.source, event.target.checked); }}
+										checked={forAppointmentReminders ? procedure.sendToReminder : procedure.sendToCustom}
+										color="primary"
+										disabled={!hasWritePermission}
+									/>
+								</ListItem>
+							))}
+						</List>
+					)}
+					{!procedureMappings?.length && <Typography className={classes.placeholderText}>No Procedures Found</Typography>}
 				</Card>
 			</div>
 		</div>

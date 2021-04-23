@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, makeStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-
+import PropTypes from 'prop-types';
+import Procedure from '../../models/procedure';
+import Template from '../../models/template';
 import ProcedureMappingsTable from './procedureMappingsTable';
 import persistentStorage from '../../utilities/persistentStorage';
-import AlertSnackbar from '../alertSnackbar';
 import ProcedureMappingModal from './procedureMappingModal';
-
-import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from '../../localization/en/snackbarText';
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
@@ -22,19 +21,12 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function ProcedureMappings() {
+export default function ProcedureMappings({
+	procedures, messageTemplates, hasWritePermission, reload
+}) {
 	const classes = useStyles();
-	const [procedures, setProcedures] = useState(null);
-	const [hasWritePermission, setHasWritePermission] = useState(null);
 	const [editingProcedure, setEditingProcedure] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [messageTemplates, setMessageTempaltes] = useState(null);
-
-	useEffect(() => {
-		persistentStorage.getProcedureMappings().then(setProcedures);
-		persistentStorage.getSettings(true).then(settings => setHasWritePermission(settings.shareData.behavior !== 1));
-		persistentStorage.getMessageTemplates().then(setMessageTempaltes);
-	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
 
@@ -49,14 +41,16 @@ export default function ProcedureMappings() {
 	};
 
 	const handleRemove = procedureMapping => {
-		persistentStorage.removeProcedureMappingWithSource(procedureMapping.source).then(setProcedures);
+		persistentStorage.removeProcedureMappingWithSource(procedureMapping.source);
+		reload();
 	};
 
 	const handleSave = (procedureMapping, previousProcedureMapping) => {
 		if (previousProcedureMapping) persistentStorage.removeProcedureMappingWithSource(previousProcedureMapping.source);
-		persistentStorage.addProcedureMapping(procedureMapping).then(setProcedures);
+		persistentStorage.addProcedureMapping(procedureMapping);
 		setIsModalOpen(false);
 		setEditingProcedure(null);
+		reload();
 	};
 
 	return (
@@ -86,14 +80,13 @@ export default function ProcedureMappings() {
 				procedure={editingProcedure}
 				procedures={procedures}
 			/>
-			{hasWritePermission !== null && (
-				<AlertSnackbar
-					open={!hasWritePermission}
-					severity={AlertSnackbar.Severities.Info}
-					title={ReadOnlyConfigurationTitle}
-					message={ReadOnlyConfigurationMessage}
-				/>
-			)}
 		</div>
 	);
 }
+
+ProcedureMappings.propTypes = {
+	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
+	messageTemplates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
+	hasWritePermission: PropTypes.bool.isRequired,
+	reload: PropTypes.func.isRequired
+};
