@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function DefaultSendTo({
+export default function SendTo({
 	providerMappings, procedureMappings, onProvidersChange, onProceduresChange, hasWritePermission, forAppointmentReminders = false
 }) {
 	const classes = useStyles();
@@ -120,6 +120,7 @@ export default function DefaultSendTo({
 								<ListItem key={`${provider.source}-${provider.sendToReminder}-${provider.sendToCustom}`} divider>
 									<ListItemText primary={provider.target || provider.source} />
 									<Checkbox
+										data-testid={`providerCheckbox-${provider.target || provider.source}`}
 										onChange={event => { handleProviderChange(provider.source, event.target.checked); }}
 										checked={forAppointmentReminders ? provider.sendToReminder : provider.sendToCustom}
 										color="primary"
@@ -151,6 +152,7 @@ export default function DefaultSendTo({
 								<ListItem key={`${procedure.source}-${procedure.sendToReminder}-${procedure.sendToCustom}`} divider>
 									<ListItemText primary={procedure.target || procedure.source} />
 									<Checkbox
+										data-testid={`procedureCheckbox-${procedure.target || procedure.source}`}
 										onChange={event => { handleProcedureChange(procedure.source, event.target.checked); }}
 										checked={forAppointmentReminders ? procedure.sendToReminder : procedure.sendToCustom}
 										color="primary"
@@ -167,7 +169,7 @@ export default function DefaultSendTo({
 	);
 }
 
-DefaultSendTo.propTypes = {
+SendTo.propTypes = {
 	providerMappings: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
 	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	onProvidersChange: PropTypes.func.isRequired,

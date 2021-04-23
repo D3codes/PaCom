@@ -1,6 +1,4 @@
-import React, {
-	useState, useMemo, useEffect
-} from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Save } from '@material-ui/icons';
 import {
@@ -10,8 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import persistentStorage from '../../utilities/persistentStorage';
 import ContactPreferences from './contactPreferences';
 import DateVerification from './dateVerification';
-import DefaultSendTo from './defaultSendTo';
+import SendTo from './sendTo';
 import Provider from '../../models/provider';
+import Template from '../../models/template';
 import Procedure from '../../models/procedure';
 import { DRAWER_WIDTH } from '../drawer/miniDrawer';
 
@@ -208,7 +207,7 @@ export default function AppointmentRemindersSettings({
 							Select which Providers and Procedures should receive messages when sending appointment reminders.
 						</Typography>
 						<div className={classes.sendToContainer}>
-							<DefaultSendTo
+							<SendTo
 								providerMappings={providerMappings}
 								procedureMappings={procedureMappings}
 								onProvidersChange={setProviderMappings}
@@ -273,6 +272,7 @@ AppointmentRemindersSettings.propTypes = {
 			})
 		}
 	).isRequired,
+	messageTemplates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
 	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	reloadSettings: PropTypes.func.isRequired,
