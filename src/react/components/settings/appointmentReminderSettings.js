@@ -275,10 +275,6 @@ AppointmentRemindersSettings.propTypes = {
 			defaultReminderTemplates: PropTypes.shape({
 				phone: PropTypes.string,
 				sms: PropTypes.string
-			}),
-			doNotSendTo: PropTypes.shape({
-				providers: PropTypes.arrayOf(PropTypes.string),
-				procedures: PropTypes.arrayOf(PropTypes.string)
 			})
 		}
 	).isRequired,

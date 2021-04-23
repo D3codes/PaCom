@@ -104,10 +104,28 @@ export default function App() {
 				<main className={classes.main}>
 					<div className={classes.toolbar} />
 					{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && (
-						<AppointmentReminders disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
+						<AppointmentReminders
+							providerMappings={providerMappings}
+							procedureMappings={procedureMappings}
+							appointmentReminderSettings={appointmentReminderSettings}
+							messageTemplates={messageTemplates}
+							hasWritePermission={hasWritePermission}
+							disableNavigation={disableNavigation}
+							onDisableNavigationChange={setDisableNavigation}
+							reload={reloadSettings}
+						/>
 					)}
 					{selectedTabId === MiniDrawer.TabIds.SEND_CUSTOM_MESSAGE && (
-						<CustomMessage disableNavigation={disableNavigation} onDisableNavigationChange={setDisableNavigation} />
+						<CustomMessage
+							messageTemplates={messageTemplates}
+							customMessageSettings={customMessageSettings}
+							hasWritePermission={hasWritePermission}
+							providerMappings={providerMappings}
+							procedureMappings={procedureMappings}
+							disableNavigation={disableNavigation}
+							onDisableNavigationChange={setDisableNavigation}
+							reload={reloadSettings}
+						/>
 					)}
 					{selectedTabId === MiniDrawer.TabIds.PROVIDER_MAPPINGS && (
 						<ProviderMappings

@@ -17,7 +17,9 @@ import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import IconTextField from '../iconTextField';
 import ContainedLabeledList from '../containedLabeledList';
 import ReportTable from '../reportTable/reportTable';
-import persistentStorage from '../../utilities/persistentStorage';
+import Template from '../../models/template';
+import Provider from '../../models/provider';
+import Procedure from '../../models/procedure';
 import twilio from '../../utilities/twilioClient';
 import AlertSnackBar from '../alertSnackbar';
 import MessageCompose from './messageCompose';
@@ -90,7 +92,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
+function CustomMessage({
+	messageTemplates, customMessageSettings, hasWritePermission, providerMappings, procedureMappings, disableNavigation, onDisableNavigationChange, reload
+}) {
 	const classes = useStyles();
 	const [sendToAppointmentList, setSendToAppointmentList] = useState(false);
 	const [reminders, setReminders] = useState(null);
@@ -99,12 +103,6 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 	const [message, setMessage] = useState('');
 	const phoneNumberIsValid = useMemo(() => validatePhoneNumber(phoneNumber), [phoneNumber]);
 	const messageIsValid = useMemo(() => (sendToAppointmentList || !message.match(/{{.+}}/g)), [sendToAppointmentList, message]);
-
-	const [providerMappings, setProviderMappings] = useState(null);
-	const [procedureMappings, setProcedureMappings] = useState(null);
-	const [messageTemplates, setMessageTemplates] = useState(null);
-	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
-	const [hasWritePermission, setHasWritePermission] = useState(false);
 
 	const [snackbarSeverity, setSnackbarSeverity] = useState(AlertSnackBar.Severities.Info);
 	const [showSnackbar, setShowSnackbar] = useState(false);
@@ -120,26 +118,15 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 		(sendToAppointmentList ? reminders : phoneNumberIsValid && messageIsValid) && message
 	), [sendToAppointmentList, reminders, phoneNumberIsValid, messageIsValid, message]);
 
+	const dateVerificationSettings = customMessageSettings?.dateVerification;
 	const throwError = useAsyncError();
-
-	useEffect(() => {
-		persistentStorage.getMessageTemplates()
-			.then(templates => { setMessageTemplates(templates); })
-			.then(() => persistentStorage.getSettings())
-			.then(settings => { setDateVerificationSettings(settings.customMessages.dateVerification); })
-			.then(() => persistentStorage.getSettings(true))
-			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); })
-			.then(() => persistentStorage.getProviderMappings())
-			.then(setProviderMappings)
-			.then(() => persistentStorage.getProcedureMappings())
-			.then(setProcedureMappings);
-	}, []);
 
 	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
 			if (hasWritePermission) {
 				providerMappingValidator.addUnknownProviders(reminders);
 				procedureMappingValidator.addUnknownProcedures(reminders);
+				reload();
 			}
 			providerMappingValidator.validateProviderMappings(reminders)
 				.then(() => valiDate.validateAppointmentDates(reminders, dateVerificationSettings))
@@ -307,8 +294,27 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 }
 
 CustomMessage.propTypes = {
+	messageTemplates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
+	customMessageSettings: PropTypes.shape(
+		{
+			dateVerification: PropTypes.shape({
+				numberOfDays: PropTypes.number,
+				endOfRange: PropTypes.number,
+				allowSendOutsideRange: PropTypes.number,
+				useBusinessDays: PropTypes.bool
+			}),
+			contactPreferences: PropTypes.shape({
+				sendToPreferredAndSms: PropTypes.bool,
+				textHomeIfCellNotAvailable: PropTypes.bool
+			})
+		}
+	).isRequired,
+	hasWritePermission: PropTypes.bool.isRequired,
+	providerMappings: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
+	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	disableNavigation: PropTypes.bool.isRequired,
-	onDisableNavigationChange: PropTypes.func.isRequired
+	onDisableNavigationChange: PropTypes.func.isRequired,
+	reload: PropTypes.func.isRequired
 };
 
 export default CustomMessage;
