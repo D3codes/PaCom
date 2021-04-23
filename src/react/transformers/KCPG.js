@@ -83,10 +83,24 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 			appointmentDate = ErrorInAppointmentList;
 		}
 		const existingProvider = providerMappings?.find(providerMapping => paddedProvider.includes(providerMapping.source));
-		const provider = new Provider(paddedProvider, existingProvider?.target, existingProvider?.phonetic);
+		const provider = new Provider(
+			paddedProvider,
+			existingProvider?.target,
+			existingProvider?.phonetic,
+			existingProvider?.sendToReminder ?? true,
+			existingProvider?.sendToCustom ?? true
+		);
 
 		const existingProcedure = procedureMappings?.find(procedureMapping => paddedProcedure.includes(procedureMapping.source));
-		const procedure = new Procedure(paddedProcedure, existingProcedure?.target, existingProcedure?.phonetic, existingProcedure?.phoneReminder, existingProcedure?.smsReminder);
+		const procedure = new Procedure(
+			paddedProcedure,
+			existingProcedure?.target,
+			existingProcedure?.phonetic,
+			existingProcedure?.phoneReminder,
+			existingProcedure?.smsReminder,
+			existingProcedure?.sendToReminder ?? true,
+			existingProcedure?.sendToCustom ?? true
+		);
 
 		const appointment = new Appointment(appointmentDate, appointmentTime, provider, appointmentDuration, procedure);
 

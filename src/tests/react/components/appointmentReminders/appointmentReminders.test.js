@@ -36,7 +36,7 @@ describe('AppointmentReminders', () => {
 
 		const { container } = render(<AppointmentReminders disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 
-		await screen.findByText('Browse for Appointment List');
+		await screen.findByText('Browse for Appointments');
 		expect(container.firstChild.className.includes('appointmentRemindersContainer')).toBe(true);
 	});
 });

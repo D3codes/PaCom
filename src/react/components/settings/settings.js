@@ -20,6 +20,8 @@ export default function Settings({ selectedTabId }) {
 	const [twilioSettings, setTwilioSettings] = useState(null);
 	const [sharedConfigurationSettings, setSharedConfigurationSettings] = useState(null);
 	const hasWritePermission = useMemo(() => (sharedConfigurationSettings && sharedConfigurationSettings.behavior !== 1), [sharedConfigurationSettings]);
+	const [providerMappings, setProviderMappings] = useState(null);
+	const [procedureMappings, setProcedureMappings] = useState(null);
 
 	const reloadSettings = () => {
 		persistentStorage.getSettings().then(settings => {
@@ -29,6 +31,8 @@ export default function Settings({ selectedTabId }) {
 			setTwilioSettings(settings.twilio);
 		});
 		persistentStorage.getSettings(true).then(settings => { setSharedConfigurationSettings(settings.shareData); });
+		persistentStorage.getProviderMappings().then(setProviderMappings);
+		persistentStorage.getProcedureMappings().then(setProcedureMappings);
 	};
 
 	useEffect(() => {
@@ -40,6 +44,8 @@ export default function Settings({ selectedTabId }) {
 			{selectedTabId === MiniDrawer.TabIds.APPOINTMENT_REMINDERS_SETTINGS && (
 				<AppointmentReminderSettings
 					appointmentReminders={appointmentReminderSettings}
+					providers={providerMappings}
+					procedures={procedureMappings}
 					hasWritePermission={hasWritePermission}
 					reloadSettings={reloadSettings}
 				/>

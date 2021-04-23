@@ -56,7 +56,7 @@ describe('CustomMessage', () => {
 
 		render(<CustomMessage disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
 
-		expect(await screen.findByText('Send to Specific Number')).toBeDefined();
+		expect(await screen.findByText('Send to Number')).toBeDefined();
 		expect(await screen.findByText('Templates')).toBeDefined();
 		expect(await screen.findByText('Dynamic Values')).toBeDefined();
 	});
@@ -70,7 +70,7 @@ describe('CustomMessage', () => {
 
 		expect(await screen.findByText('Invalid Phone Number')).toBeDefined();
 
-		fireEvent.click(getByText('Send to Appointment List'));
+		fireEvent.click(getByText('Send to Appointments'));
 
 		expect(await screen.findByText('Browse')).toBeDefined();
 	});

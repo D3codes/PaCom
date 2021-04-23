@@ -221,8 +221,8 @@ function CustomMessage({ disableNavigation, onDisableNavigationChange }) {
 			<div className={classes.slideOverContainer}>
 				<div className={classes.sendTo}>
 					<ButtonGroup disableElevation color="primary">
-						<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Specific Number</Button>
-						<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointment List</Button>
+						<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Number</Button>
+						<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointments</Button>
 					</ButtonGroup>
 				</div>
 				<div>

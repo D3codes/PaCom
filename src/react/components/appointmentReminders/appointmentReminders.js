@@ -209,7 +209,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 							? <CircularProgress />
 							: (
 								<Fragment>
-									<Button variant="contained" color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for Appointment List</Button>
+									<Button variant="contained" color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for Appointments</Button>
 									<SystemUpdateAlt className={clsx(classes.dragAndDropIcon, { [classes.dragAndDropIconOver]: draggingOver })} />
 									<Typography
 										align="center"
