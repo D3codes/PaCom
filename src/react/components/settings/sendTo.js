@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Typography, List, ListItem, ListItemText, Card, Checkbox, Tooltip
+	Typography, List, ListItem, ListItemText, Card, Checkbox, Button
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Provider from '../../models/provider';
@@ -10,15 +10,13 @@ import Procedure from '../../models/procedure';
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
-		flex: 1,
 		justifyContent: 'space-between',
 		height: '100%'
 	},
 	listLabelContainer: {
 		display: 'flex',
-		flex: 1,
 		justifyContent: 'space-between',
-		paddingRight: '29px'
+		paddingRight: theme.spacing()
 	},
 	listContainer: {
 		height: '90%',
@@ -26,10 +24,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	card: {
 		overflowY: 'hidden',
-		height: '100%',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center'
+		height: '100%'
 	},
 	list: {
 		width: '100%',
@@ -51,26 +46,26 @@ export default function SendTo({
 		!procedureMappings.some(procedure => (forAppointmentReminders ? !procedure.sendToReminder : !procedure.sendToCustom))
 	), [procedureMappings]);
 
-	const handleSelectAllProviders = isChecked => {
+	const handleSelectAllProviders = () => {
 		const updatedProviders = providerMappings.map(p => new Provider(
 			p.source,
 			p.target,
 			p.phonetic,
-			forAppointmentReminders ? isChecked : p.sendToReminder,
-			!forAppointmentReminders ? isChecked : p.sendToCustom
+			forAppointmentReminders ? !allProviders : p.sendToReminder,
+			!forAppointmentReminders ? !allProviders : p.sendToCustom
 		));
 		onProvidersChange(updatedProviders);
 	};
 
-	const handleSelectAllProcedures = isChecked => {
+	const handleSelectAllProcedures = () => {
 		const updatedProcedures = procedureMappings.map(p => new Procedure(
 			p.source,
 			p.target,
 			p.phonetic,
 			p.phoneReminder,
 			p.smsReminder,
-			forAppointmentReminders ? isChecked : p.sendToReminder,
-			!forAppointmentReminders ? isChecked : p.sendToCustom
+			forAppointmentReminders ? !allProcedures : p.sendToReminder,
+			!forAppointmentReminders ? !allProcedures : p.sendToCustom
 		));
 		onProceduresChange(updatedProcedures);
 	};
@@ -104,14 +99,7 @@ export default function SendTo({
 			<div className={classes.listContainer}>
 				<div className={classes.listLabelContainer}>
 					<Typography variant="h6">Providers</Typography>
-					<Tooltip title={allProviders ? 'Deselect all Providers' : 'Select all Providers'}>
-						<Checkbox
-							onChange={event => handleSelectAllProviders(event.target.checked)}
-							checked={allProviders}
-							color="primary"
-							disabled={!hasWritePermission || (!providerMappings?.length)}
-						/>
-					</Tooltip>
+					<Button color="primary" onClick={handleSelectAllProviders}>{`${allProviders ? 'Deselect' : 'Select'} All`}</Button>
 				</div>
 				<Card className={classes.card}>
 					{providerMappings?.length > 0 && (
@@ -136,14 +124,7 @@ export default function SendTo({
 			<div className={classes.listContainer}>
 				<div className={classes.listLabelContainer}>
 					<Typography variant="h6">Procedures</Typography>
-					<Tooltip title={allProcedures ? 'Deselect all Procedures' : 'Select all Procedures'}>
-						<Checkbox
-							onChange={event => handleSelectAllProcedures(event.target.checked)}
-							checked={allProcedures}
-							color="primary"
-							disabled={!hasWritePermission || (!procedureMappings?.length)}
-						/>
-					</Tooltip>
+					<Button color="primary" onClick={handleSelectAllProcedures}>{`${allProcedures ? 'Deselect' : 'Select'} All`}</Button>
 				</div>
 				<Card className={classes.card}>
 					{procedureMappings?.length > 0 && (
