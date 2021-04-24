@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Save } from '@material-ui/icons';
 import {
@@ -160,75 +160,73 @@ export default function AppointmentRemindersSettings({
 						<Tab label="Contact Preferences" />
 					</Tabs>
 				</div>
-				{openTab === TABS.DEFAULT_REMINDERS && (
-					<div className={classes.tabContent}>
-						<Typography className={classes.descriptionText}>
+				<div className={classes.tabContent}>
+					{openTab === TABS.DEFAULT_REMINDERS && (
+						<Fragment>
+							<Typography className={classes.descriptionText}>
 							Select the message templates that will be sent for appointment reminders when no overrides are set.
-						</Typography>
-						<div className={classes.defaultCallReminderContainer}>
-							<div className={classes.templateSelector}>
-								<Typography variant="h6">Default Call Reminder Template</Typography>
-								<FormControl className={classes.form} variant="outlined">
-									<Select
-										value={messageTemplates && defaultPhoneReminder ? defaultPhoneReminder || '' : ''}
-										disabled={!hasWritePermission}
-										onChange={event => { setDefaultPhoneReminder(event.target.value); }}
-										inputProps={{ 'aria-label': 'Without label' }}>
-										{messageTemplates && messageTemplates.map(template => (
-											<MenuItem value={template.name} key={JSON.stringify(template)}>
-												{template.name}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
+							</Typography>
+							<div className={classes.defaultCallReminderContainer}>
+								<div className={classes.templateSelector}>
+									<Typography variant="h6">Default Call Reminder Template</Typography>
+									<FormControl className={classes.form} variant="outlined">
+										<Select
+											value={messageTemplates && defaultPhoneReminder ? defaultPhoneReminder || '' : ''}
+											disabled={!hasWritePermission}
+											onChange={event => { setDefaultPhoneReminder(event.target.value); }}
+											inputProps={{ 'aria-label': 'Without label' }}>
+											{messageTemplates && messageTemplates.map(template => (
+												<MenuItem value={template.name} key={JSON.stringify(template)}>
+													{template.name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								</div>
+								<div className={classes.templateSelector}>
+									<Typography variant="h6">Default SMS Reminder Template</Typography>
+									<FormControl className={classes.form} variant="outlined">
+										<Select
+											value={messageTemplates && defaultSmsReminder ? defaultSmsReminder || '' : ''}
+											disabled={!hasWritePermission}
+											onChange={event => { setDefaultSmsReminder(event.target.value); }}
+											inputProps={{ 'aria-label': 'Without label' }}>
+											{messageTemplates && messageTemplates.map(template => (
+												<MenuItem value={template.name} key={JSON.stringify(template)}>
+													{template.name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								</div>
 							</div>
-							<div className={classes.templateSelector}>
-								<Typography variant="h6">Default SMS Reminder Template</Typography>
-								<FormControl className={classes.form} variant="outlined">
-									<Select
-										value={messageTemplates && defaultSmsReminder ? defaultSmsReminder || '' : ''}
-										disabled={!hasWritePermission}
-										onChange={event => { setDefaultSmsReminder(event.target.value); }}
-										inputProps={{ 'aria-label': 'Without label' }}>
-										{messageTemplates && messageTemplates.map(template => (
-											<MenuItem value={template.name} key={JSON.stringify(template)}>
-												{template.name}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-							</div>
-						</div>
-					</div>
-				)}
-				{openTab === TABS.DEFAULT_SEND_TO && (
-					<div className={classes.tabContent}>
-						<Typography className={classes.descriptionText}>
+						</Fragment>
+					)}
+					{openTab === TABS.DEFAULT_SEND_TO && (
+						<Fragment>
+							<Typography className={classes.descriptionText}>
 							Select which Providers and Procedures should receive messages when sending appointment reminders.
-						</Typography>
-						<div className={classes.sendToContainer}>
-							<SendTo
-								providerMappings={providerMappings}
-								procedureMappings={procedureMappings}
-								onProvidersChange={setProviderMappings}
-								onProceduresChange={setProcedureMappings}
-								hasWritePermission={hasWritePermission}
-								forAppointmentReminders
-							/>
-						</div>
-					</div>
-				)}
-				{openTab === TABS.DATE_VERIFICATION && (
-					<div className={classes.tabContent}>
+							</Typography>
+							<div className={classes.sendToContainer}>
+								<SendTo
+									providerMappings={providerMappings}
+									procedureMappings={procedureMappings}
+									onProvidersChange={setProviderMappings}
+									onProceduresChange={setProcedureMappings}
+									hasWritePermission={hasWritePermission}
+									forAppointmentReminders
+								/>
+							</div>
+						</Fragment>
+					)}
+					{openTab === TABS.DATE_VERIFICATION && (
 						<DateVerification
 							dateVerification={dateVerification}
 							onChange={setDateVerification}
 							hasWritePermission={hasWritePermission}
 						/>
-					</div>
-				)}
-				{openTab === TABS.CONTACT_PREFERENCES && (
-					<div className={classes.tabContent}>
+					)}
+					{openTab === TABS.CONTACT_PREFERENCES && (
 						<ContactPreferences
 							sendToPreferredAndSms={sendToPreferredAndSms}
 							setSendToPreferredAndSms={setSendToPreferredAndSms}
@@ -236,8 +234,8 @@ export default function AppointmentRemindersSettings({
 							setTextHomeIfCellNotAvailable={setTextHomeIfCellNotAvailable}
 							hasWritePermission={hasWritePermission}
 						/>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
