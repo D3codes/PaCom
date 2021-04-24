@@ -102,7 +102,12 @@ export default function SendTo({
 			<div className={classes.listContainer}>
 				<div className={classes.listLabelContainer}>
 					<Typography variant="h6">Providers</Typography>
-					<Button color="primary" onClick={handleSelectAllProviders}>{`${allProviders ? 'Deselect' : 'Select'} All`}</Button>
+					<Button
+						color="primary"
+						disabled={!hasWritePermission || !providerMappings?.length}
+						onClick={handleSelectAllProviders}>
+						{`${allProviders ? 'Deselect' : 'Select'} All`}
+					</Button>
 				</div>
 				<Card className={classes.card}>
 					{providerMappings?.length > 0 && (
@@ -127,7 +132,12 @@ export default function SendTo({
 			<div className={classes.listContainer}>
 				<div className={classes.listLabelContainer}>
 					<Typography variant="h6">Procedures</Typography>
-					<Button color="primary" onClick={handleSelectAllProcedures}>{`${allProcedures ? 'Deselect' : 'Select'} All`}</Button>
+					<Button
+						color="primary"
+						disabled={!hasWritePermission || !procedureMappings?.length}
+						onClick={handleSelectAllProcedures}>
+						{`${allProcedures ? 'Deselect' : 'Select'} All`}
+					</Button>
 				</div>
 				<Card className={classes.card}>
 					{procedureMappings?.length > 0 && (
