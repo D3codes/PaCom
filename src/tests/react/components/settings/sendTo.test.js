@@ -91,7 +91,7 @@ describe('SendTo', () => {
 			/>
 		);
 
-		expect(getByText('No Providers Found'));
-		expect(getByText('No Procedures Found'));
+		expect(getByText('No Provider Mappings Configured'));
+		expect(getByText('No Procedure Mappings Configured'));
 	});
 });

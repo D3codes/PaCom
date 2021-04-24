@@ -24,7 +24,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	card: {
 		overflowY: 'hidden',
-		height: '100%'
+		height: '100%',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	list: {
 		width: '100%',
@@ -118,7 +121,7 @@ export default function SendTo({
 							))}
 						</List>
 					)}
-					{!providerMappings?.length && <Typography className={classes.placeholderText}>No Providers Found</Typography>}
+					{!providerMappings?.length && <Typography className={classes.placeholderText}>No Provider Mappings Configured</Typography>}
 				</Card>
 			</div>
 			<div className={classes.listContainer}>
@@ -143,7 +146,7 @@ export default function SendTo({
 							))}
 						</List>
 					)}
-					{!procedureMappings?.length && <Typography className={classes.placeholderText}>No Procedures Found</Typography>}
+					{!procedureMappings?.length && <Typography className={classes.placeholderText}>No Procedure Mappings Configured</Typography>}
 				</Card>
 			</div>
 		</div>
