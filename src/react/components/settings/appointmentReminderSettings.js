@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 		height: '100%'
 	},
 	tabContainer: {
-		height: `calc(100% - ${theme.spacing(5)}px)`
+		height: `calc(100% - ${theme.spacing(3)}px)`
 	},
 	descriptionText: {
 		marginBottom: theme.spacing(3)
