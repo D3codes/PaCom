@@ -30,7 +30,7 @@ describe('CustomMessageSettings', () => {
 				hasWritePermission
 			/>
 		);
-		expect(getByText("Select which Providers and Procedures should receive custom messages by default.")).toBeDefined();
+		expect(getByText('Select which Providers and Procedures should receive custom messages by default.')).toBeDefined();
 	});
 
 	it('has the save button disabled until there are changes to save', () => {
