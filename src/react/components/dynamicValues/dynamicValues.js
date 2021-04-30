@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, makeStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-
+import PropTypes from 'prop-types';
+import Provider from '../../models/provider';
+import DynamicValue from '../../models/dynamicValue';
 import DynamicValuesTable from './dynamicValuesTable';
 import persistentStorage from '../../utilities/persistentStorage';
-import AlertSnackbar from '../alertSnackbar';
 import DynamicValueModal from './dynamicValueModal';
-
-import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from '../../localization/en/snackbarText';
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
@@ -22,23 +21,12 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function DynamicValues() {
+export default function DynamicValues({
+	dynamicValues, providers, hasWritePermission = false, reload
+}) {
 	const classes = useStyles();
-	const [dynamicValues, setDynamicValues] = useState(null);
-	const [providers, setProviders] = useState(null);
-	const [hasWritePermission, setHasWritePermission] = useState(null);
 	const [editingValue, setEditingValue] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [defaultValues, setDefaultValues] = useState([]);
-
-	useEffect(() => {
-		persistentStorage.getDynamicValues(false).then(setDynamicValues);
-		persistentStorage.getSettings(true).then(settings => setHasWritePermission(settings.shareData.behavior !== 1));
-		persistentStorage.getProviderMappings().then(setProviders);
-		persistentStorage.getDynamicValues().then(values => {
-			setDefaultValues(values.filter(val => val.fromApptList));
-		});
-	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
 
@@ -53,14 +41,16 @@ export default function DynamicValues() {
 	};
 
 	const handleRemove = dynamicValue => {
-		persistentStorage.removeDynamicValueWithName(dynamicValue.name, false).then(setDynamicValues);
+		persistentStorage.removeDynamicValueWithName(dynamicValue.name, false);
+		reload();
 	};
 
 	const handleSave = (dynamicValue, previousDynamicValue) => {
 		if (previousDynamicValue) persistentStorage.removeDynamicValueWithName(previousDynamicValue.name, false);
-		persistentStorage.addDynamicValue(dynamicValue, false).then(setDynamicValues);
+		persistentStorage.addDynamicValue(dynamicValue, false);
 		setIsModalOpen(false);
 		setEditingValue(null);
+		reload();
 	};
 
 	return (
@@ -70,7 +60,7 @@ export default function DynamicValues() {
 				onEdit={handleEdit}
 				onRemove={handleRemove}
 				onSave={handleSave}
-				dynamicValues={dynamicValues}
+				dynamicValues={dynamicValues?.filter(val => !val.fromApptList) || []}
 				providers={providers}
 			/>
 			<div className={classes.buttonContainer}>
@@ -89,17 +79,16 @@ export default function DynamicValues() {
 				providers={providers}
 				open={isModalOpen}
 				dynamicValue={editingValue}
-				dynamicValues={dynamicValues}
-				defaultValues={defaultValues}
+				dynamicValues={dynamicValues?.filter(val => !val.fromApptList) || []}
+				defaultValues={dynamicValues?.filter(val => val.fromApptList) || []}
 			/>
-			{hasWritePermission !== null && (
-				<AlertSnackbar
-					open={!hasWritePermission}
-					severity={AlertSnackbar.Severities.Info}
-					title={ReadOnlyConfigurationTitle}
-					message={ReadOnlyConfigurationMessage}
-				/>
-			)}
 		</div>
 	);
 }
+
+DynamicValues.propTypes = {
+	dynamicValues: PropTypes.arrayOf(PropTypes.instanceOf(DynamicValue)).isRequired,
+	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
+	hasWritePermission: PropTypes.bool,
+	reload: PropTypes.func.isRequired
+};

@@ -31,12 +31,16 @@ function ProviderMappingModal({
 	const [source, setSource] = useState('');
 	const [target, setTarget] = useState('');
 	const [phonetic, setPhonetic] = useState('');
+	const [sendToReminder, setSendToReminder] = useState(true);
+	const [sendToCustom, setSendToCustom] = useState(true);
 
 	useEffect(() => {
 		if (open && provider) {
 			setSource(provider.source);
 			setTarget(provider.target);
 			setPhonetic(provider.phonetic);
+			setSendToReminder(provider.sendToReminder);
+			setSendToCustom(provider.setSendToCustom);
 		}
 	}, [open, provider]);
 
@@ -62,13 +66,13 @@ function ProviderMappingModal({
 		if (existingProvider) {
 			dialogController.confirmSave(ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage).then(({ response }) => {
 				if (response === 0) {
-					const newProviderMapping = new Provider(source, target, phonetic);
+					const newProviderMapping = new Provider(source, target, phonetic, sendToReminder, sendToCustom);
 					onSave(newProviderMapping, provider);
 					applyInitialState();
 				}
 			});
 		} else {
-			const newProviderMapping = new Provider(source, target, phonetic);
+			const newProviderMapping = new Provider(source, target, phonetic, sendToReminder, sendToCustom);
 			onSave(newProviderMapping, provider);
 			applyInitialState();
 		}

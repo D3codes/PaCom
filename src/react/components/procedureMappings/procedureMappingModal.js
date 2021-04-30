@@ -53,6 +53,8 @@ function ProcedureMappingModal({
 	const [phonetic, setPhonetic] = useState('');
 	const [smsReminder, setSmsReminder] = useState('Default');
 	const [phoneReminder, setPhoneReminder] = useState('Default');
+	const [sendToReminder, setSendToReminder] = useState(true);
+	const [sendToCustom, setSendToCustom] = useState(true);
 
 	useEffect(() => {
 		if (open && procedure) {
@@ -61,6 +63,8 @@ function ProcedureMappingModal({
 			setPhonetic(procedure.phonetic);
 			setPhoneReminder(procedure.phoneReminder);
 			setSmsReminder(procedure.smsReminder);
+			setSendToReminder(procedure.sendToReminder);
+			setSendToCustom(procedure.sendToCustom);
 		}
 	}, [open, procedure]);
 
@@ -88,13 +92,13 @@ function ProcedureMappingModal({
 		if (existingProcedure) {
 			dialogController.confirmSave(ProcedureMappingSourceInUseTitle, ProcedureMappingSourceInUseMessage).then(({ response }) => {
 				if (response === 0) {
-					const newProcedureMapping = new Procedure(source, target, phonetic, phoneReminder, smsReminder);
+					const newProcedureMapping = new Procedure(source, target, phonetic, phoneReminder, smsReminder, sendToReminder, sendToCustom);
 					onSave(newProcedureMapping, procedure);
 					applyInitialState();
 				}
 			});
 		} else {
-			const newProcedureMapping = new Procedure(source, target, phonetic, phoneReminder, smsReminder);
+			const newProcedureMapping = new Procedure(source, target, phonetic, phoneReminder, smsReminder, sendToReminder, sendToCustom);
 			onSave(newProcedureMapping, procedure);
 			applyInitialState();
 		}

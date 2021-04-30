@@ -1,4 +1,6 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, {
+	useMemo, useEffect, useState, Fragment
+} from 'react';
 import {
 	makeStyles, Typography, CircularProgress, Button, Slide
 } from '@material-ui/core';
@@ -7,11 +9,12 @@ import { FileDrop } from 'react-file-drop';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import useAsyncError from '../../errors/asyncError';
-
+import Provider from '../../models/provider';
+import Procedure from '../../models/procedure';
+import Template from '../../models/template';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
 import AlertSnackbar from '../alertSnackbar';
-import persistentStorage from '../../utilities/persistentStorage';
 import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
@@ -76,7 +79,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) {
+function AppointmentReminders({
+	providerMappings, procedureMappings, appointmentReminderSettings = null, messageTemplates, hasWritePermission = false, disableNavigation, onDisableNavigationChange, reload
+}) {
 	const classes = useStyles();
 	const [reminders, setReminders] = useState(null);
 	const [filePath, setFilePath] = useState('');
@@ -88,11 +93,13 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [snackbarSeverity, setSnackbarSeverity] = useState(AlertSnackbar.Severities.Info);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 
-	const [providerMappings, setProviderMappings] = useState(null);
-	const [procedureMappings, setProcedureMappings] = useState(null);
-	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
-	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
-	const [hasWritePermission, setHasWritePermission] = useState(false);
+	const dateVerificationSettings = appointmentReminderSettings?.dateVerification;
+	const defaultTemplatesDefined = useMemo(() => (
+		appointmentReminderSettings?.defaultReminderTemplates?.phone
+		&& appointmentReminderSettings?.defaultReminderTemplates?.sms
+		&& messageTemplates?.find(template => template.name === appointmentReminderSettings?.defaultReminderTemplates?.phone)
+		&& messageTemplates?.find(template => template.name === appointmentReminderSettings?.defaultReminderTemplates?.sms)
+	), [appointmentReminderSettings, messageTemplates]);
 
 	const [validationRan, setValidationRan] = useState(false);
 	const [isValid, setIsValid] = useState(null);
@@ -101,34 +108,11 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const throwError = useAsyncError();
 
 	useEffect(() => {
-		persistentStorage.getProviderMappings()
-			.then(setProviderMappings)
-			.then(() => persistentStorage.getSettings())
-			.then(settings => {
-				setDateVerificationSettings(settings.appointmentReminders.dateVerification);
-				const defaultPhone = settings.appointmentReminders.defaultReminderTemplates.phone;
-				const defaultSms = settings.appointmentReminders.defaultReminderTemplates.sms;
-				if (!(defaultPhone && defaultSms)) {
-					setDefaultTemplatesDefined(false);
-				} else {
-					persistentStorage.getMessageTemplates().then(templates => {
-						const defaultSmsReminder = templates.find(template => template.name === defaultSms);
-						const defaultPhoneReminder = templates.find(template => template.name === defaultPhone);
-						setDefaultTemplatesDefined(Boolean(defaultSmsReminder && defaultPhoneReminder));
-					});
-				}
-			})
-			.then(() => persistentStorage.getSettings(true))
-			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); })
-			.then(() => persistentStorage.getProcedureMappings())
-			.then(setProcedureMappings);
-	}, []);
-
-	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
 			if (hasWritePermission) {
 				providerMappingValidator.addUnknownProviders(reminders);
 				procedureMappingValidator.addUnknownProcedures(reminders);
+				reload();
 			}
 			providerMappingValidator.validateProviderMappings(reminders)
 				.then(() => valiDate.validateAppointmentDates(reminders, dateVerificationSettings))
@@ -209,7 +193,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 							? <CircularProgress />
 							: (
 								<Fragment>
-									<Button variant="contained" color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for Appointment List</Button>
+									<Button variant="contained" color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for Appointments</Button>
 									<SystemUpdateAlt className={clsx(classes.dragAndDropIcon, { [classes.dragAndDropIconOver]: draggingOver })} />
 									<Typography
 										align="center"
@@ -234,8 +218,31 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 }
 
 AppointmentReminders.propTypes = {
+	providerMappings: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
+	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
+	appointmentReminderSettings: PropTypes.shape(
+		{
+			dateVerification: PropTypes.shape({
+				numberOfDays: PropTypes.number,
+				endOfRange: PropTypes.number,
+				allowSendOutsideRange: PropTypes.number,
+				useBusinessDays: PropTypes.bool
+			}),
+			contactPreferences: PropTypes.shape({
+				sendToPreferredAndSms: PropTypes.bool,
+				textHomeIfCellNotAvailable: PropTypes.bool
+			}),
+			defaultReminderTemplates: PropTypes.shape({
+				phone: PropTypes.string,
+				sms: PropTypes.string
+			})
+		}
+	),
+	messageTemplates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
+	hasWritePermission: PropTypes.bool,
 	disableNavigation: PropTypes.bool.isRequired,
-	onDisableNavigationChange: PropTypes.func.isRequired
+	onDisableNavigationChange: PropTypes.func.isRequired,
+	reload: PropTypes.func.isRequired
 };
 
 export default AppointmentReminders;

@@ -21,7 +21,9 @@ const removeDynamicValueWithName = (valueName, includeDefault) => window.ipcRend
 	.then(values => transformDynamicValues(values, includeDefault));
 
 // Provider Mappings
-const transformProviderMappings = providerMappings => providerMappings.map(({ source, target, phonetic }) => new Provider(source, target, phonetic));
+const transformProviderMappings = providerMappings => providerMappings.map(({
+	source, target, phonetic, sendToReminder, sendToCustom
+}) => new Provider(source, target, phonetic, sendToReminder, sendToCustom));
 
 const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings').then(transformProviderMappings);
 
@@ -31,8 +33,8 @@ const removeProviderMappingWithSource = providerSource => window.ipcRenderer.inv
 
 // Procedure Mappings
 const transformProcedureMappings = procedureMappings => procedureMappings.map(({
-	source, target, phonetic, phoneReminder, smsReminder
-}) => new Procedure(source, target, phonetic, phoneReminder, smsReminder));
+	source, target, phonetic, phoneReminder, smsReminder, sendToReminder, sendToCustom
+}) => new Procedure(source, target, phonetic, phoneReminder, smsReminder, sendToReminder, sendToCustom));
 
 const getProcedureMappings = () => window.ipcRenderer.invoke('get-procedure-mappings').then(transformProcedureMappings);
 

@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, makeStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-
+import PropTypes from 'prop-types';
+import Provider from '../../models/provider';
 import ProviderMappingsTable from './providerMappingsTable';
 import persistentStorage from '../../utilities/persistentStorage';
 import AlertSnackbar from '../alertSnackbar';
 import ProviderMappingModal from './providerMappingModal';
 
-import {
-	UpdateDynamicValuesReminderMessage,
-	ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage
-} from '../../localization/en/snackbarText';
+import { UpdateDynamicValuesReminderMessage } from '../../localization/en/snackbarText';
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
@@ -25,19 +23,12 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function ProviderMappings() {
+export default function ProviderMappings({ providers, hasWritePermission = false, reload }) {
 	const classes = useStyles();
-	const [providers, setProviders] = useState(null);
-	const [hasWritePermission, setHasWritePermission] = useState(null);
 	const [editingProvider, setEditingProvider] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [showSnackbar, setShowSnackbar] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
-
-	useEffect(() => {
-		persistentStorage.getProviderMappings().then(setProviders);
-		persistentStorage.getSettings(true).then(settings => setHasWritePermission(settings.shareData.behavior !== 1));
-	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
 
@@ -52,7 +43,8 @@ export default function ProviderMappings() {
 	};
 
 	const handleRemove = providerMapping => {
-		persistentStorage.removeProviderMappingWithSource(providerMapping.source).then(setProviders);
+		persistentStorage.removeProviderMappingWithSource(providerMapping.source);
+		reload();
 	};
 
 	const handleSave = (providerMapping, previousProviderMapping) => {
@@ -61,9 +53,10 @@ export default function ProviderMappings() {
 			setSnackbarMessage(UpdateDynamicValuesReminderMessage);
 			setShowSnackbar(true);
 		}
-		persistentStorage.addProviderMapping(providerMapping).then(setProviders);
+		persistentStorage.addProviderMapping(providerMapping);
 		setIsModalOpen(false);
 		setEditingProvider(null);
+		reload();
 	};
 
 	return (
@@ -99,14 +92,12 @@ export default function ProviderMappings() {
 				onClose={() => { setShowSnackbar(false); }}
 				autoHideDuration={5000}
 			/>
-			{hasWritePermission !== null && (
-				<AlertSnackbar
-					open={!hasWritePermission}
-					severity={AlertSnackbar.Severities.Info}
-					title={ReadOnlyConfigurationTitle}
-					message={ReadOnlyConfigurationMessage}
-				/>
-			)}
 		</div>
 	);
 }
+
+ProviderMappings.propTypes = {
+	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
+	hasWritePermission: PropTypes.bool,
+	reload: PropTypes.func.isRequired
+};

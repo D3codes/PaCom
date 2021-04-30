@@ -42,7 +42,8 @@ describe('App', () => {
 		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve([]));
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
-		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve(null));
+		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve([]));
 		sendingStatusMock.update.mockImplementation(() => Promise.resolve([]));
 
 		render(<App />);
