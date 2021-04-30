@@ -21,14 +21,32 @@ jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('CustomMessageSettings', () => {
 	it('renders without crashing', () => {
-		const { getByText } = render(<CustomMessageSettings customMessages={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
-		expect(getByText("Send messages via SMS as well as patient's preferred contact method")).toBeDefined();
+		const { getByText } = render(
+			<CustomMessageSettings
+				customMessages={testSettings}
+				reloadSettings={jest.fn()}
+				providers={[]}
+				procedures={[]}
+				hasWritePermission
+			/>
+		);
+		expect(getByText("Select which Providers and Procedures should receive custom messages by default.")).toBeDefined();
 	});
 
 	it('has the save button disabled until there are changes to save', () => {
-		const { getByText, getByTestId } = render(<CustomMessageSettings customMessages={testSettings} reloadSettings={jest.fn()} hasWritePermission />);
+		const { getByText, getByTestId } = render(
+			<CustomMessageSettings
+				customMessages={testSettings}
+				reloadSettings={jest.fn()}
+				providers={[]}
+				procedures={[]}
+				hasWritePermission
+			/>
+		);
 
 		expect(getByText('Save').parentElement).toBeDisabled();
+
+		fireEvent.click(getByText('Contact Preferences'));
 
 		const preferredAndSmsCheckbox = getByTestId('preferredAndSms-id').querySelector('input');
 		fireEvent.click(preferredAndSmsCheckbox);
@@ -39,7 +57,17 @@ describe('CustomMessageSettings', () => {
 	it('sends updated values to persistent storage and calls reloadSettings on save', () => {
 		persistentStorageMock.setAllowSendOutsideRange.mockImplementation();
 		const reloadSettingsMock = jest.fn();
-		const { getByTestId, getByText } = render(<CustomMessageSettings customMessages={testSettings} reloadSettings={reloadSettingsMock} hasWritePermission />);
+		const { getByTestId, getByText } = render(
+			<CustomMessageSettings
+				customMessages={testSettings}
+				reloadSettings={reloadSettingsMock}
+				providers={[]}
+				procedures={[]}
+				hasWritePermission
+			/>
+		);
+
+		fireEvent.click(getByText('Contact Preferences'));
 
 		const preferredAndSmsCheckbox = getByTestId('preferredAndSms-id').querySelector('input');
 		fireEvent.click(preferredAndSmsCheckbox);
