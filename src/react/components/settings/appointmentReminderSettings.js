@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import persistentStorage from '../../utilities/persistentStorage';
 import ContactPreferences from './contactPreferences';
 import DateVerification from './dateVerification';
-import SendTo from './sendTo';
+import SendTo from '../common/sendTo';
 import Provider from '../../models/provider';
 import Template from '../../models/template';
 import Procedure from '../../models/procedure';
@@ -205,7 +205,7 @@ export default function AppointmentRemindersSettings({
 					{openTab === TABS.DEFAULT_SEND_TO && (
 						<Fragment>
 							<Typography className={classes.descriptionText}>
-							Select which Providers and Procedures should receive messages when sending appointment reminders.
+							Select which Providers and Procedures should receive appointment reminders by default.
 							</Typography>
 							<div className={classes.sendToContainer}>
 								<SendTo
