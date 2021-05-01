@@ -99,7 +99,7 @@ function SendToModal({
 						onClick={handleSave}
 						color="primary"
 						variant={isSaveDisabled ? 'outlined' : 'contained'}>
-					Save
+						Save
 					</Button>
 				</div>
 			</DialogActions>

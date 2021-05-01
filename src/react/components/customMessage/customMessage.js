@@ -29,6 +29,7 @@ import procedureMappingValidator from '../../validators/validateProcedureMapping
 import useAsyncError from '../../errors/asyncError';
 import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
+import SendToModal from '../common/sendToModal';
 import {
 	SmsSentSuccessfully, ErrorSendingSms,
 	CallSentSuccessfully, ErrorSendingCall,
@@ -113,6 +114,10 @@ function CustomMessage({
 	const [isValid, setIsValid] = useState(null);
 	const [sendClicked, setSendClicked] = useState(false);
 
+	const [showSendToModal, setShowSendToModal] = useState(false);
+	const [procedures, setProcedures] = useState(null);
+	const [providers, setProviders] = useState(null);
+
 	const [showReportTable, setShowReportTable] = useState(false);
 	const enableSendButtons = useMemo(() => (
 		(sendToAppointmentList ? reminders : phoneNumberIsValid && messageIsValid) && message
@@ -189,6 +194,12 @@ function CustomMessage({
 		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete);
 	};
 
+	const handleSendToClose = (newProcedures, newProviders) => {
+		if (newProcedures) setProcedures(newProcedures);
+		if (newProviders) setProviders(newProviders);
+		setShowSendToModal(false);
+	};
+
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked;
 
 	return (
@@ -202,6 +213,7 @@ function CustomMessage({
 						disableNavigation={disableNavigation}
 						onBack={() => setShowReportTable(false)}
 						filePath={filePath}
+						onSendToClick={() => { setShowSendToModal(true); }}
 					/>
 				</div>
 			</Slide>
@@ -281,6 +293,15 @@ function CustomMessage({
 					)}
 				</div>
 			</div>
+			{ showSendToModal && (
+				<SendToModal
+					onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
+					procedures={procedures}
+					providers={providers}
+					defaultProcedures={procedureMappings}
+					defaultProviders={providerMappings}
+				/>
+			)}
 			<AlertSnackBar
 				severity={snackbarSeverity}
 				message={snackbarMessage}
