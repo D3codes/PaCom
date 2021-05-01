@@ -175,6 +175,8 @@ export default function App() {
 							customMessages={customMessageSettings}
 							hasWritePermission={hasWritePermission}
 							reloadSettings={reloadSettings}
+							providers={providerMappings}
+							procedures={procedureMappings}
 						/>
 					)}
 					{selectedTabId === MiniDrawer.TabIds.MESSAGE_REPORT_SETTINGS && (

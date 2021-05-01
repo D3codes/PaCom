@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import SendTo from '../../../../react/components/settings/sendTo';
+import SendTo from '../../../../react/components/common/sendTo';
 import Provider from '../../../../react/models/provider';
 import Procedure from '../../../../react/models/procedure';
 
