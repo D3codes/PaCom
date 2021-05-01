@@ -22,6 +22,7 @@ import procedureMappingValidator from '../../validators/validateProcedureMapping
 import listSender from '../../utilities/listSender';
 import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
+import SendToModal from '../common/sendToModal';
 
 import { DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage } from '../../localization/en/dialogText';
 import {
@@ -92,6 +93,10 @@ function AppointmentReminders({
 	const [snackbarTitle, setSnackbarTitle] = useState('');
 	const [snackbarSeverity, setSnackbarSeverity] = useState(AlertSnackbar.Severities.Info);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
+
+	const [showSendToModal, setShowSendToModal] = useState(false);
+	const [procedures, setProcedures] = useState(procedureMappings);
+	const [providers, setProviders] = useState(providerMappings);
 
 	const dateVerificationSettings = appointmentReminderSettings?.dateVerification;
 	const defaultTemplatesDefined = useMemo(() => (
@@ -166,6 +171,12 @@ function AppointmentReminders({
 		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
 	};
 
+	const handleSendToSave = (newProcedures, newProviders) => {
+		if (newProcedures) setProcedures(newProcedures);
+		if (newProviders) setProviders(newProviders);
+		setShowSendToModal(false);
+	};
+
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
 
 	return (
@@ -179,6 +190,7 @@ function AppointmentReminders({
 						onBack={() => setReminders(null)}
 						filePath={filePath}
 						disableNavigation={disableNavigation}
+						onSendToClick={() => { setShowSendToModal(true); }}
 					/>
 				</div>
 			</Slide>
@@ -206,6 +218,13 @@ function AppointmentReminders({
 					</div>
 				</FileDrop>
 			</div>
+			<SendToModal
+				onSave={(newProcedures, newProviders) => { handleSendToSave(newProcedures, newProviders); }}
+				open={showSendToModal}
+				procedures={procedures}
+				providers={providers}
+				forAppointmentReminders
+			/>
 			<AlertSnackbar
 				open={showAlertSnackbar}
 				severity={snackbarSeverity}

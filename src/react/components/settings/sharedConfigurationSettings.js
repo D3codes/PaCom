@@ -113,7 +113,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 					color="primary"
 					onClick={handleCopyToNetwork}
 					startIcon={<FileCopy />}>
-					Copy local to network
+					Copy Local to Network
 				</Button>
 				<Button
 					disabled={!changesToSave || !locationIsSpecifiedIfNetworkOptionSelected}
