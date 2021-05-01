@@ -30,16 +30,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SendToModal({
-	onSave, open = false, procedures, providers, forAppointmentReminders = false
+	onClose, procedures, providers, defaultProcedures, defaultProviders, forAppointmentReminders = false
 }) {
 	const classes = useStyles();
 
-	const [procedureMappings, setProcedureMappings] = useState(procedures);
-	const [providerMappings, setProviderMappings] = useState(providers);
+	const [procedureMappings, setProcedureMappings] = useState(procedures || defaultProcedures);
+	const [providerMappings, setProviderMappings] = useState(providers || defaultProviders);
 
-	const applyInitialState = () => {
-		setProcedureMappings(procedures);
-		setProviderMappings(providers);
+	const applyDefaultState = () => {
+		setProcedureMappings(defaultProcedures);
+		setProviderMappings(defaultProviders);
 	};
 
 	const mappingsMatch = (mapping1, mapping2) => {
@@ -54,19 +54,18 @@ function SendToModal({
 	};
 
 	const handleCancel = () => {
-		applyInitialState();
-		onSave();
+		onClose();
 	};
 
 	const handleSave = () => {
-		console.log('save');
-		onSave(procedureMappings, providerMappings);
+		onClose(procedureMappings, providerMappings);
 	};
 
-	const isSaveDisabled = (mappingsMatch(providerMappings, providers) && mappingsMatch(procedureMappings, procedures));
+	const isSaveDisabled = (mappingsMatch(providerMappings, (providers || defaultProviders)) && mappingsMatch(procedureMappings, (procedures || defaultProcedures)));
+	const isRestoreDefaultDisabled = (mappingsMatch(providerMappings, defaultProviders) && mappingsMatch(procedureMappings, defaultProcedures));
 
 	return (
-		<Dialog fullWidth open={open} maxWidth="md">
+		<Dialog fullWidth open maxWidth="md">
 			<DialogTitle>Send To</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<Typography className={classes.descriptionText}>
@@ -85,11 +84,11 @@ function SendToModal({
 			</DialogContent>
 			<DialogActions className={classes.dialogActions}>
 				<Button
-					onClick={applyInitialState}
+					onClick={applyDefaultState}
 					color="primary"
 					startIcon={<Undo />}
-					variant={isSaveDisabled ? 'outlined' : 'contained'}
-					disabled={isSaveDisabled}>
+					variant={isRestoreDefaultDisabled ? 'outlined' : 'contained'}
+					disabled={isRestoreDefaultDisabled}>
 					Restore Defaults
 				</Button>
 				<div>
@@ -109,10 +108,11 @@ function SendToModal({
 }
 
 SendToModal.propTypes = {
-	onSave: PropTypes.func.isRequired,
-	open: PropTypes.bool,
+	onClose: PropTypes.func.isRequired,
 	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
+	defaultProcedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
+	defaultProviders: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
 	forAppointmentReminders: PropTypes.bool
 };
 

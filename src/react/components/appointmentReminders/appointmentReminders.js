@@ -95,8 +95,8 @@ function AppointmentReminders({
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	const [showSendToModal, setShowSendToModal] = useState(false);
-	const [procedures, setProcedures] = useState(procedureMappings);
-	const [providers, setProviders] = useState(providerMappings);
+	const [procedures, setProcedures] = useState(null);
+	const [providers, setProviders] = useState(null);
 
 	const dateVerificationSettings = appointmentReminderSettings?.dateVerification;
 	const defaultTemplatesDefined = useMemo(() => (
@@ -171,7 +171,7 @@ function AppointmentReminders({
 		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
 	};
 
-	const handleSendToSave = (newProcedures, newProviders) => {
+	const handleSendToClose = (newProcedures, newProviders) => {
 		if (newProcedures) setProcedures(newProcedures);
 		if (newProviders) setProviders(newProviders);
 		setShowSendToModal(false);
@@ -218,13 +218,16 @@ function AppointmentReminders({
 					</div>
 				</FileDrop>
 			</div>
-			<SendToModal
-				onSave={(newProcedures, newProviders) => { handleSendToSave(newProcedures, newProviders); }}
-				open={showSendToModal}
-				procedures={procedures}
-				providers={providers}
-				forAppointmentReminders
-			/>
+			{ showSendToModal && (
+				<SendToModal
+					onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
+					procedures={procedures}
+					providers={providers}
+					defaultProcedures={procedureMappings}
+					defaultProviders={providerMappings}
+					forAppointmentReminders
+				/>
+			)}
 			<AlertSnackbar
 				open={showAlertSnackbar}
 				severity={snackbarSeverity}
