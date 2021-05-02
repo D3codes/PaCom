@@ -87,7 +87,7 @@ function MessageTemplatesTable({
 							isReminder={
 								template.get('name') === defaultPhoneTemplate
 								|| template.get('name') === defaultSmsTemplate
-								|| procedureMappings.find(m => m.phoneReminder === template.get('name') || m.smsReminder === template.get('name'))
+								|| !!(procedureMappings.find(m => m.phoneReminder === template.get('name') || m.smsReminder === template.get('name')))
 							}
 						/>
 					))}
