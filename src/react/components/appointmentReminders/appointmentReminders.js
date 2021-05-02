@@ -168,13 +168,19 @@ function AppointmentReminders({
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings);
 	};
 
 	const handleSendToClose = (newProcedures, newProviders) => {
 		if (newProcedures) setProcedures(newProcedures);
 		if (newProviders) setProviders(newProviders);
 		setShowSendToModal(false);
+	};
+
+	const handleBack = () => {
+		setProcedures(procedureMappings);
+		setProviders(providerMappings);
+		setReminders(null);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
@@ -187,7 +193,7 @@ function AppointmentReminders({
 						onSend={handleSend}
 						reminders={reminders}
 						sendDisabled={sendDisabled}
-						onBack={() => setReminders(null)}
+						onBack={() => handleBack()}
 						filePath={filePath}
 						disableNavigation={disableNavigation}
 						onSendToClick={() => { setShowSendToModal(true); }}

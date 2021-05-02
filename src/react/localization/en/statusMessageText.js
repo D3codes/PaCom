@@ -33,3 +33,11 @@ exports.NoMessageToSend = NoMessageToSend;
 // Bundled Call
 const BundledCall = 'Multiple calls to this number were bundled together';
 exports.BundledCall = BundledCall;
+
+// Provider Skipped
+const ProviderSkipped = 'Provider skipped';
+exports.ProviderSkipped = ProviderSkipped;
+
+// Procedure Skipped
+const ProcedureSkipped = 'Procedure skipped';
+exports.ProcedureSkipped = ProcedureSkipped;
