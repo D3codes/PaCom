@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SendToModal({
-	onClose, procedures, providers, defaultProcedures, defaultProviders, forAppointmentReminders = false
+	onClose, procedures = null, providers = null, defaultProcedures, defaultProviders, forAppointmentReminders = false
 }) {
 	const classes = useStyles();
 
@@ -109,8 +109,8 @@ function SendToModal({
 
 SendToModal.propTypes = {
 	onClose: PropTypes.func.isRequired,
-	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
-	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
+	procedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)),
+	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)),
 	defaultProcedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	defaultProviders: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
 	forAppointmentReminders: PropTypes.bool
