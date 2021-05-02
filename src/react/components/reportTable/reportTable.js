@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ReportTable({
-	onSend, disableNavigation = false, reminders = null, sendDisabled = false, onBack, filePath
+	onSend, disableNavigation = false, reminders = null, sendDisabled = false, onBack, filePath, onSendToClick
 }) {
 	const classes = useStyles();
 	const remindersByProviderAndDate = reminders ? groupReminders.byProviderAndDate(reminders) : null;
@@ -108,7 +108,14 @@ function ReportTable({
 					</Table>
 				</div>
 			)}
-			<ReportActions onSend={onSend} onExport={handleExport} sendDisabled={sendDisabled} progress={progress || 0} isSending={disableNavigation} />
+			<ReportActions
+				onSend={onSend}
+				onExport={handleExport}
+				sendDisabled={sendDisabled}
+				progress={progress || 0}
+				isSending={disableNavigation}
+				onSendToClick={onSendToClick}
+			/>
 		</Fragment>
 	);
 }
@@ -119,7 +126,8 @@ ReportTable.propTypes = {
 	sendDisabled: PropTypes.bool,
 	disableNavigation: PropTypes.bool,
 	onBack: PropTypes.func.isRequired,
-	filePath: PropTypes.string.isRequired
+	filePath: PropTypes.string.isRequired,
+	onSendToClick: PropTypes.func.isRequired
 };
 
 export default ReportTable;

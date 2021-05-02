@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, makeStyles, LinearProgress } from '@material-ui/core';
-import { Publish, Send } from '@material-ui/icons';
+import { Publish, Send, AllInbox } from '@material-ui/icons';
 
 const DRAWER_WIDTH = 206;
 
@@ -19,11 +19,18 @@ const useStyles = makeStyles(theme => ({
 	},
 	sendButton: {
 		marginLeft: theme.spacing()
+	},
+	sendToButton: {
+		backgroundColor: theme.palette.primary.dark,
+		color: theme.palette.text.darkContrast,
+		'&:hover': {
+			backgroundColor: '#004C7D'
+		}
 	}
 }));
 
 function ReportActions({
-	onSend, onExport, sendDisabled = false, progress = 0, isSending = false
+	onSend, onExport, sendDisabled = false, progress = 0, isSending = false, onSendToClick
 }) {
 	const classes = useStyles();
 
@@ -32,16 +39,14 @@ function ReportActions({
 			<div className={classes.actionContainer}>
 				<Button onClick={onExport} color="primary" startIcon={<Publish />} variant={isSending ? 'outlined' : 'contained'} disabled={isSending}>Export</Button>
 				<div className={classes.actionContainer}>
-					{/* TODO: Enable in 2.1
 					<Button
-						onClick={() => console.log('TODO: open send to modal')}
-						color="secondary"
+						onClick={onSendToClick}
+						className={classes.sendToButton}
 						disabled={sendDisabled}
 						endIcon={<AllInbox />}
 						variant={sendDisabled ? 'outlined' : 'contained'}>
 						Send To
 					</Button>
-					*/}
 					<Button
 						className={classes.sendButton}
 						onClick={onSend}
@@ -63,7 +68,8 @@ ReportActions.propTypes = {
 	onExport: PropTypes.func.isRequired,
 	sendDisabled: PropTypes.bool,
 	progress: PropTypes.number,
-	isSending: PropTypes.bool
+	isSending: PropTypes.bool,
+	onSendToClick: PropTypes.func.isRequired
 };
 
 export default ReportActions;

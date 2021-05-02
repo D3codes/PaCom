@@ -40,7 +40,7 @@ function ProviderMappingModal({
 			setTarget(provider.target);
 			setPhonetic(provider.phonetic);
 			setSendToReminder(provider.sendToReminder);
-			setSendToCustom(provider.setSendToCustom);
+			setSendToCustom(provider.sendToCustom);
 		}
 	}, [open, provider]);
 
