@@ -9,7 +9,7 @@ import Patient from '../models/patient';
 import ContactMethod from '../models/conactMethod';
 
 import {
-	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend, BundledCall
+	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend, BundledCall, ProviderSkipped, ProcedureSkipped
 } from '../localization/en/statusMessageText';
 
 const SLEEP_DURATION = 500;
@@ -108,7 +108,18 @@ const getReminderTemplate = (reminder, notifyBy) => {
 	return notifyBy === Patient.NotifyBy.Text ? defaultSmsReminder : defaultPhoneReminder;
 };
 
-const sendToList = async (reminders, onUpdate = null, message = '', forceText = false) => {
+const handleLastReminder = (onUpdate, reminders) => {
+	sendCalls(onUpdate, reminders).then(() => {
+		// Export Message Report Automatically, if enabled
+		if (autoSave) {
+			reportExporter.exportReport(groupReminders.byProviderAndDate(reminders), autoSavePath);
+		}
+
+		complete();
+	});
+};
+
+const sendToList = async (reminders, onUpdate = null, proceduresToSkip, providersToSkip, message = '', forceText = false) => {
 	if (!reminders || reminders.length <= 0) {
 		complete();
 		return;
@@ -117,8 +128,46 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 	// eslint-disable-next-line no-plusplus
 	for (let i = 0; i < reminders.length; i++) {
 		const reminder = reminders[i];
-		// eslint-disable-next-line no-continue
-		if (reminder.status === Reminder.Status.Failed) continue;
+
+		if (onUpdate) {
+			onUpdate([...reminders]);
+		}
+
+		if (reminder.status === Reminder.Status.Failed) {
+			// If this is the last reminder, send bundled calls
+			if (i === reminders.length - 1 && !forceText) {
+				handleLastReminder(onUpdate, reminders);
+			}
+
+			// eslint-disable-next-line no-continue
+			continue;
+		}
+
+		if (proceduresToSkip.includes(reminder.getIn(['appointment', 'procedure', 'source'], null))) {
+			reminder.setSkippedStatus();
+			reminder.setStatusMessage(ProcedureSkipped);
+
+			// If this is the last reminder, send bundled calls
+			if (i === reminders.length - 1 && !forceText) {
+				handleLastReminder(onUpdate, reminders);
+			}
+
+			// eslint-disable-next-line no-continue
+			continue;
+		}
+
+		if (providersToSkip.includes(reminder.getIn(['appointment', 'provider', 'source'], null))) {
+			reminder.setSkippedStatus();
+			reminder.setStatusMessage(ProviderSkipped);
+
+			// If this is the last reminder, send bundled calls
+			if (i === reminders.length - 1 && !forceText) {
+				handleLastReminder(onUpdate, reminders);
+			}
+
+			// eslint-disable-next-line no-continue
+			continue;
+		}
 
 		reminder.setSendingStatus();
 		if (onUpdate) {
@@ -160,7 +209,7 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 				callBundler(contactNumber, replacedMessage, reminder);
 				if (sendToPreferredContactMethodAndSms) {
 					reminder.appendStatusMessage(PreferredAndSms);
-					await sendToList([reminder], null, message, true);
+					await sendToList([reminder], null, proceduresToSkip, providersToSkip, message, true);
 				}
 			} else {
 				reminder.setFailedStatus();
@@ -169,24 +218,13 @@ const sendToList = async (reminders, onUpdate = null, message = '', forceText = 
 
 			// If this is the last reminder, send bundled calls
 			if (i === reminders.length - 1 && !forceText) {
-				sendCalls(onUpdate, reminders).then(() => {
-					// Export Message Report Automatically, if enabled
-					if (autoSave) {
-						reportExporter.exportReport(groupReminders.byProviderAndDate(reminders), autoSavePath);
-					}
-
-					complete();
-				});
-			}
-
-			if (onUpdate) {
-				onUpdate([...reminders]);
+				handleLastReminder(onUpdate, reminders);
 			}
 		});
 	}
 };
 
-const sendCustomMessage = (reminders, message, onUpdate, onComplete) => {
+const sendCustomMessage = (reminders, message, onUpdate, onComplete, procedureMappings, providerMappings) => {
 	setDefaults();
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
@@ -198,11 +236,13 @@ const sendCustomMessage = (reminders, message, onUpdate, onComplete) => {
 		autoSave = settings.messageReports.autosaveReports;
 		autoSavePath = settings.messageReports.autosaveLocation;
 
-		sendToList(reminders, onUpdate, message);
+		const proceduresToSkip = procedureMappings.filter(x => !x.sendToCustom).map(x => x.source);
+		const providersToSkip = providerMappings.filter(x => !x.sendToCustom).map(x => x.source);
+		sendToList(reminders, onUpdate, proceduresToSkip, providersToSkip, message);
 	});
 };
 
-const sendAppointmentReminders = (reminders, onUpdate, onComplete) => {
+const sendAppointmentReminders = (reminders, onUpdate, onComplete, procedureMappings, providerMappings) => {
 	setDefaults();
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
@@ -224,7 +264,9 @@ const sendAppointmentReminders = (reminders, onUpdate, onComplete) => {
 			defaultPhoneReminder = templates.find(template => template.name === defaultPhone).body;
 			messageTemplates = templates;
 
-			sendToList(reminders, onUpdate);
+			const proceduresToSkip = procedureMappings.filter(x => !x.sendToReminder).map(x => x.source);
+			const providersToSkip = providerMappings.filter(x => !x.sendToReminder).map(x => x.source);
+			sendToList(reminders, onUpdate, proceduresToSkip, providersToSkip);
 		});
 	});
 };

@@ -191,13 +191,19 @@ function CustomMessage({
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete);
+		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings);
 	};
 
 	const handleSendToClose = (newProcedures, newProviders) => {
 		if (newProcedures) setProcedures(newProcedures);
 		if (newProviders) setProviders(newProviders);
 		setShowSendToModal(false);
+	};
+
+	const handleBack = () => {
+		setProcedures(procedureMappings);
+		setProviders(providerMappings);
+		setShowReportTable(false);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked;
@@ -211,7 +217,7 @@ function CustomMessage({
 						onSend={handleSend}
 						sendDisabled={sendDisabled}
 						disableNavigation={disableNavigation}
-						onBack={() => setShowReportTable(false)}
+						onBack={() => handleBack()}
 						filePath={filePath}
 						onSendToClick={() => { setShowSendToModal(true); }}
 					/>
