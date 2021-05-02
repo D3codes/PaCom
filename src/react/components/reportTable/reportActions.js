@@ -19,6 +19,13 @@ const useStyles = makeStyles(theme => ({
 	},
 	sendButton: {
 		marginLeft: theme.spacing()
+	},
+	sendToButton: {
+		backgroundColor: theme.palette.primary.dark,
+		color: theme.palette.text.darkContrast,
+		'&:hover': {
+			backgroundColor: '#004C7D'
+		}
 	}
 }));
 
@@ -34,7 +41,7 @@ function ReportActions({
 				<div className={classes.actionContainer}>
 					<Button
 						onClick={onSendToClick}
-						color="secondary"
+						className={classes.sendToButton}
 						disabled={sendDisabled}
 						endIcon={<AllInbox />}
 						variant={sendDisabled ? 'outlined' : 'contained'}>
