@@ -193,8 +193,8 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 			continue;
 		}
 
-		// eslint-disable-next-line no-loop-func
-		dynamicValueReplacer.replace(messageToSend, reminder, notifyBy).then(async replacedMessage => {
+		// eslint-disable-next-line no-await-in-loop, no-loop-func
+		await dynamicValueReplacer.replace(messageToSend, reminder, notifyBy).then(async replacedMessage => {
 			if (replacedMessage && notifyBy === Patient.NotifyBy.Text) {
 				twilio.sendSMS(contactNumber, replacedMessage).then(sentSuccessfully => {
 					if (!forceText) {
