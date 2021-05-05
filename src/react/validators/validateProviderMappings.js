@@ -23,7 +23,7 @@ function addUnknownProviders(reminders) {
 		.map(({ source }) => source);
 	const distinctSources = new Set(unknownProviderSources);
 	distinctSources.forEach(source => {
-		if (source) persistentStorage.addProviderMapping(new Provider(source));
+		if (source) persistentStorage.addProviderMapping(new Provider(source, undefined, undefined, true, true));
 	});
 }
 

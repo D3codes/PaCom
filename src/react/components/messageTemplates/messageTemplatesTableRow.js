@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function MessageTemplatesTableRow({
-	hasWritePermission = false, onEdit, onRemove, template, isDefaultReminder = false
+	hasWritePermission = false, onEdit, onRemove, template, isReminder = false
 }) {
 	const classes = useStyles();
 	const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState(false);
@@ -71,9 +71,9 @@ function MessageTemplatesTableRow({
 						<Edit color="primary" />
 						<Typography className={classes.moreMenuText} color="primary">Edit</Typography>
 					</MenuItem>
-					<Tooltip title={isDefaultReminder ? 'Default Appointment Reminder Templates Cannot Be Deleted' : ''}>
+					<Tooltip title={isReminder ? 'Appointment Reminder Templates Cannot Be Deleted' : ''}>
 						<div>
-							<MenuItem className={classes.moreMenuItem} onClick={handleRemoveClick} disabled={isDefaultReminder}>
+							<MenuItem className={classes.moreMenuItem} onClick={handleRemoveClick} disabled={isReminder}>
 								<DeleteForever color="error" />
 								<Typography className={classes.moreMenuText} color="error">Delete</Typography>
 							</MenuItem>
@@ -90,7 +90,7 @@ MessageTemplatesTableRow.propTypes = {
 	onEdit: PropTypes.func.isRequired,
 	onRemove: PropTypes.func.isRequired,
 	template: PropTypes.instanceOf(Template).isRequired,
-	isDefaultReminder: PropTypes.bool
+	isReminder: PropTypes.bool
 };
 
 export default MessageTemplatesTableRow;

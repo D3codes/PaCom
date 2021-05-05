@@ -22,12 +22,19 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 
 	const sheetProps = { properties: { tabColor: { argb: '009BE5' } } };
 	Object.values(report).forEach(reminders => {
-		const worksheet = workbook.addWorksheet(reminders[0]?.appointment?.provider?.target || 'Unmapped Provider(s)', sheetProps);
+		let appointmentDate = 'Unknown Date';
+		if (reminders[0]?.appointment?.date) {
+			const date = new Date(reminders[0].appointment.date);
+			appointmentDate = `(${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()})`;
+		}
+		const worksheetName = `${reminders[0]?.appointment?.provider?.target || 'Unmapped Provider(s)'} - ${appointmentDate}`;
+		const worksheet = workbook.addWorksheet(worksheetName, sheetProps);
 		worksheet.columns = [
 			{ header: 'Status', key: 'status', width: 10 },
 			{ header: 'Appt Date', key: 'apptDate', width: 16 },
 			{ header: 'Appt Time', key: 'apptTime', width: 11 },
 			{ header: 'Duration', key: 'duration', width: 7 },
+			{ header: 'Procedure', key: 'procedure', width: 11 },
 			{ header: 'Patient', key: 'patient', width: 20 },
 			{ header: 'Account', key: 'account', width: 9 },
 			{ header: 'DOB', key: 'dob', width: 8 },
@@ -43,6 +50,7 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 				apptDate: reminder?.appointment?.date,
 				apptTime: reminder?.appointment?.time,
 				duration: reminder?.appointment?.duration,
+				procedure: reminder?.appointment?.procedure?.source,
 				patient: reminder?.patient?.name,
 				account: reminder?.patient?.accountNumber,
 				dob: reminder?.patient?.dateOfBirth,

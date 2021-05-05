@@ -5,12 +5,12 @@ const isDev = require('electron-is-dev');
 const defaultSettings = isDev
 	? require('../models/devSettings.json')
 	: require('../models/defaultSettings.json');
-const defaultDynamicValues = require('../models/defaultDynamicValues.json');
 
 let store = new Store();
 
 const DYNAMIC_VALUES = 'dynamicValues';
 const PROVIDER_MAPPINGS = 'providerMappings';
+const PROCEDURE_MAPPINGS = 'procedureMappings';
 const MESSAGE_TEMPLATES = 'messageTemplates';
 const SETTINGS = 'settings';
 
@@ -29,30 +29,29 @@ const setStorageLocation = () => {
 	}
 };
 
-const getDynamicValues = (forceLocal = false, includeDefault = true) => {
+const getDynamicValues = (forceLocal = false) => {
 	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
 	else setStorageLocation();
 	const values = store.get(DYNAMIC_VALUES);
-	if (!includeDefault) return values || [];
-	return values ? defaultDynamicValues.concat(values) : defaultDynamicValues;
+	return values || [];
 };
 
-const removeDynamicValueWithName = (valueName, includeDefault = true) => {
+const removeDynamicValueWithName = valueName => {
 	setStorageLocation();
 	let values = getDynamicValues(false, false);
 	if (!values) return [];
 	values = values.filter(value => value.name !== valueName);
 	store.set(DYNAMIC_VALUES, values);
-	return getDynamicValues(false, includeDefault);
+	return getDynamicValues(false);
 };
 
-const addDynamicValue = (value, includeDefault = true) => {
+const addDynamicValue = value => {
 	if (value.fromApptList) return getDynamicValues();
 	setStorageLocation();
 	const values = removeDynamicValueWithName(value.name, false);
 	values.push(value);
 	store.set(DYNAMIC_VALUES, values);
-	return getDynamicValues(false, includeDefault);
+	return getDynamicValues(false);
 };
 
 const getProviderMappings = (forceLocal = false) => {
@@ -77,6 +76,30 @@ const addProviderMapping = provider => {
 	providers.unshift(provider);
 	store.set(PROVIDER_MAPPINGS, providers);
 	return getProviderMappings();
+};
+
+const getProcedureMappings = (forceLocal = false) => {
+	if (forceLocal) store = new Store({ cwd: app.getPath('userData') });
+	else setStorageLocation();
+	const procedures = store.get(PROCEDURE_MAPPINGS);
+	return procedures || [];
+};
+
+const removeProcedureMappingWithSource = procedureSource => {
+	setStorageLocation();
+	let procedures = getProcedureMappings();
+	if (!procedures) return [];
+	procedures = procedures.filter(procedure => procedure.source !== procedureSource);
+	store.set(PROCEDURE_MAPPINGS, procedures);
+	return getProcedureMappings();
+};
+
+const addProcedureMapping = procedure => {
+	setStorageLocation();
+	const procedures = removeProcedureMappingWithSource(procedure.source);
+	procedures.unshift(procedure);
+	store.set(PROCEDURE_MAPPINGS, procedures);
+	return getProcedureMappings();
 };
 
 const getMessageTemplates = (forceLocal = false) => {
@@ -128,20 +151,31 @@ const setSettings = (path, value, forceLocal = false) => {
 };
 
 const copyLocalToNetwork = () => {
-	const localMappings = getProviderMappings(true);
+	const localProviderMappings = getProviderMappings(true);
+	const localProcedureMappings = getProcedureMappings(true);
 	const localTemplates = getMessageTemplates(true);
 	const localDynamicValues = getDynamicValues(true, false);
-	const networkMappings = getProviderMappings();
+	const networkProviderMappings = getProviderMappings();
+	const networkProcedureMappings = getProcedureMappings();
 	const networkTemplates = getMessageTemplates();
 	const networkDynamicValues = getDynamicValues(false, false);
 	let allDataCopied = true;
 
-	localMappings.forEach(mapping => {
-		const existingMapping = networkMappings.filter(provider => provider.source === mapping.source).length > 0;
+	localProviderMappings.forEach(mapping => {
+		const existingMapping = networkProviderMappings.filter(provider => provider.source === mapping.source).length > 0;
 		if (existingMapping) {
 			allDataCopied = false;
 		} else {
 			addProviderMapping(mapping);
+		}
+	});
+
+	localProcedureMappings.forEach(mapping => {
+		const existingMapping = networkProcedureMappings.filter(procedure => procedure.source === mapping.source).length > 0;
+		if (existingMapping) {
+			allDataCopied = false;
+		} else {
+			addProcedureMapping(mapping);
 		}
 	});
 
@@ -173,6 +207,9 @@ module.exports = {
 	getProviderMappings,
 	addProviderMapping,
 	removeProviderMappingWithSource,
+	getProcedureMappings,
+	removeProcedureMappingWithSource,
+	addProcedureMapping,
 	getMessageTemplates,
 	addMessageTemplate,
 	removeMessageTemplateWithName,

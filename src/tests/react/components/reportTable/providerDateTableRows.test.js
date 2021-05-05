@@ -7,6 +7,7 @@ import Appointment from '../../../../react/models/appointment';
 import ContactMethod from '../../../../react/models/conactMethod';
 import Patient from '../../../../react/models/patient';
 import Provider from '../../../../react/models/provider';
+import Procedure from '../../../../react/models/procedure';
 import Reminder from '../../../../react/models/reminder';
 
 const reminders = [
@@ -29,7 +30,8 @@ const reminders = [
 				'David Freeman',
 				'David Freeman'
 			),
-			'90'
+			'90',
+			new Procedure('TELEMED')
 		)
 	)
 ];
@@ -55,7 +57,7 @@ describe('ProviderDateTableRows', () => {
 		expect(getByText('90')).toBeDefined();
 		expect(getByText('Caullen R Sasnett')).toBeDefined();
 		expect(getByText('1234567')).toBeDefined();
-		expect(getByText('01/11/1995')).toBeDefined();
+		expect(getByText('TELEMED')).toBeDefined();
 		expect(getByText('Cell')).toBeDefined();
 		expect(getAllByText('-').length).toBe(1);
 		expect(getByText('+19136838736')).toBeDefined();

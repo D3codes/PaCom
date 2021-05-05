@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TextField
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles
 } from '@material-ui/core';
-import { Save } from '@material-ui/icons';
+import { Save, Label } from '@material-ui/icons';
+import IconTextField from '../iconTextField';
 
 import Template from '../../models/template';
 import dialogController from '../../utilities/dialogController';
@@ -41,7 +42,7 @@ function MessageTemplateModal({
 		setBody('');
 	};
 
-	const handleNameChange = event => setName(event.target.value);
+	const handleNameChange = value => setName(value);
 
 	const handleBodyChange = value => setBody(value);
 
@@ -69,19 +70,20 @@ function MessageTemplateModal({
 		}
 	};
 
-	const isSaveDisabled = !(name && body);
+	const isSaveDisabled = !(name && body) || name.toLocaleLowerCase() === 'default';
 
 	return (
 		<Dialog fullWidth open={open} maxWidth="md">
 			<DialogTitle>{template ? 'Edit' : 'Add'} Message Template</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
-				<TextField
+				<IconTextField
 					autoFocus
-					fullWidth
-					label="Name"
+					label="Template Name"
 					onChange={handleNameChange}
-					placeholder="Template Name..."
 					value={name}
+					Icon={Label}
+					error={name.toLocaleLowerCase() === 'default'}
+					helperText={name.toLocaleLowerCase() === 'default' ? 'Cannot Use Reserved Template Name' : ''}
 				/>
 				<MessageCompose
 					messageIsValid

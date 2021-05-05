@@ -88,21 +88,21 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					selected={selectedOption === BEHAVIOR.local}
 					title="LOCAL"
-					description="Read and Write all message templates, provider mappings, dynamic values, and settings locally."
+					description="Read and Write all templates, mappings, dynamic values, and settings locally."
 					Icon={DesktopWindows}
 				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadOnly); }}
 					selected={selectedOption === BEHAVIOR.networkReadOnly}
 					title="NETWORK - READ ONLY"
-					description="Read all message templates, provider mappings, dynamic values, and settings from a network location."
+					description="Read all templates, mappings, dynamic values, and settings from a network location."
 					Icon={Storage}
 				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
 					selected={selectedOption === BEHAVIOR.networkReadAndWrite}
 					title="NETWORK - READ AND WRITE"
-					description="Read and Write all message templates, provider mappings, dynamic values, and settings from a network location."
+					description="Read and Write all templates, mappings, dynamic values, and settings from a network location."
 					Icon={Storage}
 				/>
 			</div>
@@ -113,7 +113,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 					color="primary"
 					onClick={handleCopyToNetwork}
 					startIcon={<FileCopy />}>
-					Copy local to network
+					Copy Local to Network
 				</Button>
 				<Button
 					disabled={!changesToSave || !locationIsSpecifiedIfNetworkOptionSelected}

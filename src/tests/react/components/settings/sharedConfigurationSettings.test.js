@@ -47,7 +47,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network').parentElement).toBeDisabled();
+		expect(getByText('Copy Local to Network').parentElement).toBeDisabled();
 	});
 
 	it('disables the copy local to network button if behavior is set to network - ready only', () => {
@@ -57,7 +57,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network').parentElement).toBeDisabled();
+		expect(getByText('Copy Local to Network').parentElement).toBeDisabled();
 	});
 
 	it('disables the copy local to network button if no location is defined', () => {
@@ -67,7 +67,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network').parentElement).toBeDisabled();
+		expect(getByText('Copy Local to Network').parentElement).toBeDisabled();
 	});
 
 	it('enables the copy local to network button if behavior is set to network - ready and write and a location is defined', () => {
@@ -77,7 +77,7 @@ describe('SharedConfigurationSettings', () => {
 		};
 		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
 
-		expect(getByText('Copy local to network').parentElement).toBeEnabled();
+		expect(getByText('Copy Local to Network').parentElement).toBeEnabled();
 	});
 
 	it('has the save button disabled until there are changes to save', () => {

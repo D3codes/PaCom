@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, makeStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-
+import PropTypes from 'prop-types';
+import Procedure from '../../models/procedure';
+import Template from '../../models/template';
 import MessageTemplatesTable from './messageTemplatesTable';
 import persistentStorage from '../../utilities/persistentStorage';
-import AlertSnackbar from '../alertSnackbar';
 import MessageTemplateModal from './messageTemplateModal';
-
-import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from '../../localization/en/snackbarText';
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
@@ -22,23 +21,12 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function MessageTemplates() {
+export default function MessageTemplates({
+	templates, procedureMappings, defaultPhoneReminderTemplate = null, defaultSmsReminderTemplate = null, hasWritePermission = false, reload
+}) {
 	const classes = useStyles();
-	const [templates, setTemplates] = useState(null);
-	const [hasWritePermission, setHasWritePermission] = useState(null);
 	const [editingTemplate, setEditingTemplate] = useState(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [defaultPhoneReminderTemplate, setDefaultPhoneReminderTemplate] = useState('');
-	const [defaultSmsReminderTemplate, setDefaultSmsReminderTemplate] = useState('');
-
-	useEffect(() => {
-		persistentStorage.getMessageTemplates().then(setTemplates);
-		persistentStorage.getSettings(true).then(settings => setHasWritePermission(settings.shareData.behavior !== 1));
-		persistentStorage.getSettings().then(settings => {
-			setDefaultPhoneReminderTemplate(settings.appointmentReminders.defaultReminderTemplates.phone);
-			setDefaultSmsReminderTemplate(settings.appointmentReminders.defaultReminderTemplates.sms);
-		});
-	}, []);
 
 	const handleAddClick = () => setIsModalOpen(true);
 
@@ -53,14 +41,16 @@ export default function MessageTemplates() {
 	};
 
 	const handleRemove = messageTemplate => {
-		persistentStorage.removeMessageTemplateWithName(messageTemplate.name).then(setTemplates);
+		persistentStorage.removeMessageTemplateWithName(messageTemplate.name);
+		reload();
 	};
 
 	const handleSave = (messageTemplate, previousMessageTemplate) => {
 		if (previousMessageTemplate) persistentStorage.removeMessageTemplateWithName(previousMessageTemplate.name);
-		persistentStorage.addMessageTemplate(messageTemplate).then(setTemplates);
+		persistentStorage.addMessageTemplate(messageTemplate);
 		setIsModalOpen(false);
 		setEditingTemplate(null);
+		reload();
 	};
 
 	return (
@@ -73,6 +63,7 @@ export default function MessageTemplates() {
 				templates={templates}
 				defaultPhoneTemplate={defaultPhoneReminderTemplate}
 				defaultSmsTemplate={defaultSmsReminderTemplate}
+				procedureMappings={procedureMappings}
 			/>
 			<div className={classes.buttonContainer}>
 				<Button
@@ -91,14 +82,15 @@ export default function MessageTemplates() {
 				template={editingTemplate}
 				templates={templates}
 			/>
-			{hasWritePermission !== null && (
-				<AlertSnackbar
-					open={!hasWritePermission}
-					severity={AlertSnackbar.Severities.Info}
-					title={ReadOnlyConfigurationTitle}
-					message={ReadOnlyConfigurationMessage}
-				/>
-			)}
 		</div>
 	);
 }
+
+MessageTemplates.propTypes = {
+	templates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
+	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
+	defaultPhoneReminderTemplate: PropTypes.string,
+	defaultSmsReminderTemplate: PropTypes.string,
+	hasWritePermission: PropTypes.bool,
+	reload: PropTypes.func.isRequired
+};

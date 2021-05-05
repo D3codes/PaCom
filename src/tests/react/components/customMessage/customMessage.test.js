@@ -4,6 +4,7 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import { Simulate } from 'react-dom/test-utils';
 import CustomMessage from '../../../../react/components/customMessage/customMessage';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
+import Template from '../../../../react/models/template';
 
 const testValues = [
 	{
@@ -17,32 +18,20 @@ const testValues = [
 ];
 
 const testTemplates = [
-	{
-		name: 'Template1',
-		value: 'This is template 1.'
-	},
-	{
-		name: 'Template2',
-		value: 'This is templat 2.'
-	}
+	new Template('Template1', 'This is template 1.'),
+	new Template('Template2', 'This is templat 2.')
 ];
 
 const testSettings = {
-	customMessages: {
-		dateVerification: {
-			numberOfDays: 3,
-			endOfRange: null,
-			allowSendOutsideRange: 0,
-			useBusinessDays: true
-		},
-		contactPreferences: {
-			sendToPreferredAndSms: false,
-			textHomeIfCellNotAvailable: false
-		}
+	dateVerification: {
+		numberOfDays: 3,
+		endOfRange: null,
+		allowSendOutsideRange: 0,
+		useBusinessDays: true
 	},
-	shareData: {
-		behavior: 0,
-		location: ''
+	contactPreferences: {
+		sendToPreferredAndSms: false,
+		textHomeIfCellNotAvailable: false
 	}
 };
 
@@ -51,36 +40,63 @@ jest.mock('../../../../react/utilities/persistentStorage');
 describe('CustomMessage', () => {
 	it('renders without crashing', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
-		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
-		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
-		render(<CustomMessage disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
+		render(
+			<CustomMessage
+				messageTemplates={testTemplates}
+				customMessageSettings={testSettings}
+				hasWritePermission
+				providerMappings={[]}
+				procedureMappings={[]}
+				reload={jest.fn()}
+				disableNavigation={false}
+				onDisableNavigationChange={jest.fn()}
+			/>
+		);
 
-		expect(await screen.findByText('Send to Specific Number')).toBeDefined();
+		expect(await screen.findByText('Send to Number')).toBeDefined();
 		expect(await screen.findByText('Templates')).toBeDefined();
 		expect(await screen.findByText('Dynamic Values')).toBeDefined();
 	});
 
 	it('switches views when toggled', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
-		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
-		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
-		const { getByText } = render(<CustomMessage disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
+		const { getByText } = render(
+			<CustomMessage
+				messageTemplates={testTemplates}
+				customMessageSettings={testSettings}
+				hasWritePermission
+				providerMappings={[]}
+				procedureMappings={[]}
+				reload={jest.fn()}
+				disableNavigation={false}
+				onDisableNavigationChange={jest.fn()}
+			/>
+		);
 
 		expect(await screen.findByText('Invalid Phone Number')).toBeDefined();
 
-		fireEvent.click(getByText('Send to Appointment List'));
+		fireEvent.click(getByText('Send to Appointments'));
 
 		expect(await screen.findByText('Browse')).toBeDefined();
 	});
 
 	it('keeps send buttons disabled when no message entered', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
-		persistentStorageMock.getMessageTemplates.mockImplementation(async () => (testTemplates));
-		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 
-		const { getByText, getByTestId } = render(<CustomMessage disableNavigation={false} onDisableNavigationChange={jest.fn()} />);
+		const { getByText, getByTestId } = render(
+			<CustomMessage
+				messageTemplates={testTemplates}
+				customMessageSettings={testSettings}
+				hasWritePermission
+				providerMappings={[]}
+				procedureMappings={[]}
+				reload={jest.fn()}
+				disableNavigation={false}
+				onDisableNavigationChange={jest.fn()}
+			/>
+		);
 
 		await screen.findByText('Send as SMS');
 		expect(getByText('Send as SMS').parentElement).toBeDisabled();

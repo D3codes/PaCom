@@ -36,13 +36,18 @@ class Reminder extends Model {
 	setFailedStatus() {
 		this.status = Reminder.Status.Failed;
 	}
+
+	setSkippedStatus() {
+		this.status = Reminder.Status.Skipped;
+	}
 }
 
 Reminder.Status = {
 	Pending: 'Pending',
 	Sending: 'Sending',
 	Sent: 'Sent',
-	Failed: 'Failed'
+	Failed: 'Failed',
+	Skipped: 'Skipped'
 };
 
 export default Reminder;

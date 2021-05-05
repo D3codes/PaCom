@@ -1,4 +1,6 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, {
+	useMemo, useEffect, useState, Fragment
+} from 'react';
 import {
 	makeStyles, Typography, CircularProgress, Button, Slide
 } from '@material-ui/core';
@@ -7,34 +9,25 @@ import { FileDrop } from 'react-file-drop';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import useAsyncError from '../../errors/asyncError';
-
+import Provider from '../../models/provider';
+import Procedure from '../../models/procedure';
+import Template from '../../models/template';
 import ReportTable from '../reportTable/reportTable';
 import csvImporter from '../../utilities/csvImporter';
 import AlertSnackbar from '../alertSnackbar';
-import persistentStorage from '../../utilities/persistentStorage';
 import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
 import providerMappingValidator from '../../validators/validateProviderMappings';
+import procedureMappingValidator from '../../validators/validateProcedureMappings';
 import listSender from '../../utilities/listSender';
-
-// transformers
-import fromPulse from '../../transformers/fromPulse';
+import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
+import SendToModal from '../common/sendToModal';
 
 import { DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage } from '../../localization/en/dialogText';
 import {
 	InvalidFileTypeMessage, AllRemindersSentSuccessfully, ErrorSendingSomeRemindersTitle, ErrorSendingSomeRemindersMessage
 } from '../../localization/en/snackbarText';
-
-const Ehrs = {
-	Pulse: 'Pulse'
-};
-
-const transformersByEhr = {
-	Pulse: fromPulse
-};
-
-const selectedEhr = Ehrs.Pulse;
 
 const useStyles = makeStyles(theme => ({
 	appointmentRemindersContainer: {
@@ -87,7 +80,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) {
+function AppointmentReminders({
+	providerMappings, procedureMappings, appointmentReminderSettings = null, messageTemplates, hasWritePermission = false, disableNavigation, onDisableNavigationChange, reload
+}) {
 	const classes = useStyles();
 	const [reminders, setReminders] = useState(null);
 	const [filePath, setFilePath] = useState('');
@@ -99,10 +94,17 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const [snackbarSeverity, setSnackbarSeverity] = useState(AlertSnackbar.Severities.Info);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 
-	const [providerMappings, setProviderMappings] = useState(null);
-	const [dateVerificationSettings, setDateVerificationSettings] = useState(null);
-	const [defaultTemplatesDefined, setDefaultTemplatesDefined] = useState(false);
-	const [hasWritePermission, setHasWritePermission] = useState(false);
+	const [showSendToModal, setShowSendToModal] = useState(false);
+	const [procedures, setProcedures] = useState(null);
+	const [providers, setProviders] = useState(null);
+
+	const dateVerificationSettings = appointmentReminderSettings?.dateVerification;
+	const defaultTemplatesDefined = useMemo(() => (
+		appointmentReminderSettings?.defaultReminderTemplates?.phone
+		&& appointmentReminderSettings?.defaultReminderTemplates?.sms
+		&& messageTemplates?.find(template => template.name === appointmentReminderSettings?.defaultReminderTemplates?.phone)
+		&& messageTemplates?.find(template => template.name === appointmentReminderSettings?.defaultReminderTemplates?.sms)
+	), [appointmentReminderSettings, messageTemplates]);
 
 	const [validationRan, setValidationRan] = useState(false);
 	const [isValid, setIsValid] = useState(null);
@@ -111,30 +113,12 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const throwError = useAsyncError();
 
 	useEffect(() => {
-		persistentStorage.getProviderMappings()
-			.then(setProviderMappings)
-			.then(() => persistentStorage.getSettings())
-			.then(settings => {
-				setDateVerificationSettings(settings.appointmentReminders.dateVerification);
-				const defaultPhone = settings.appointmentReminders.defaultReminderTemplates.phone;
-				const defaultSms = settings.appointmentReminders.defaultReminderTemplates.sms;
-				if (!(defaultPhone && defaultSms)) {
-					setDefaultTemplatesDefined(false);
-				} else {
-					persistentStorage.getMessageTemplates().then(templates => {
-						const defaultSmsReminder = templates.find(template => template.name === defaultSms);
-						const defaultPhoneReminder = templates.find(template => template.name === defaultPhone);
-						setDefaultTemplatesDefined(Boolean(defaultSmsReminder && defaultPhoneReminder));
-					});
-				}
-			})
-			.then(() => persistentStorage.getSettings(true))
-			.then(settings => { setHasWritePermission(settings.shareData.behavior !== 1); });
-	}, []);
-
-	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
-			if (hasWritePermission) providerMappingValidator.addUnknownProviders(reminders);
+			if (hasWritePermission) {
+				providerMappingValidator.addUnknownProviders(reminders);
+				procedureMappingValidator.addUnknownProcedures(reminders);
+				reload();
+			}
 			providerMappingValidator.validateProviderMappings(reminders)
 				.then(() => valiDate.validateAppointmentDates(reminders, dateVerificationSettings))
 				.then(valid => {
@@ -146,7 +130,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 
 	const handleAppointmentListImport = (appointmentListPath = null) => {
 		const csvPromise = csvImporter.getCSV(appointmentListPath);
-		csvPromise.then(({ result }) => transformersByEhr[selectedEhr](result.data, providerMappings)).then(remindersList => {
+		csvPromise.then(({ result }) => transformer.transform(result.data, providerMappings, procedureMappings)).then(remindersList => {
 			setValidationRan(false);
 			setSendClicked(false);
 			setReminders(remindersList);
@@ -184,7 +168,19 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete);
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings);
+	};
+
+	const handleSendToClose = (newProcedures, newProviders) => {
+		if (newProcedures) setProcedures(newProcedures);
+		if (newProviders) setProviders(newProviders);
+		setShowSendToModal(false);
+	};
+
+	const handleBack = () => {
+		setProcedures(procedureMappings);
+		setProviders(providerMappings);
+		setReminders(null);
 	};
 
 	const sendDisabled = (dateVerificationSettings?.allowSendOutsideRange === AllowSendOutsideRange.Block && !isValid) || sendClicked || !defaultTemplatesDefined;
@@ -197,9 +193,10 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 						onSend={handleSend}
 						reminders={reminders}
 						sendDisabled={sendDisabled}
-						onBack={() => setReminders(null)}
+						onBack={() => handleBack()}
 						filePath={filePath}
 						disableNavigation={disableNavigation}
+						onSendToClick={() => { setShowSendToModal(true); }}
 					/>
 				</div>
 			</Slide>
@@ -214,7 +211,7 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 							? <CircularProgress />
 							: (
 								<Fragment>
-									<Button variant="contained" color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for Appointment List</Button>
+									<Button variant="contained" color="primary" onClick={() => { handleAppointmentListImport(); }}>Browse for Appointments</Button>
 									<SystemUpdateAlt className={clsx(classes.dragAndDropIcon, { [classes.dragAndDropIconOver]: draggingOver })} />
 									<Typography
 										align="center"
@@ -227,6 +224,16 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 					</div>
 				</FileDrop>
 			</div>
+			{ showSendToModal && (
+				<SendToModal
+					onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
+					procedures={procedures}
+					providers={providers}
+					defaultProcedures={procedureMappings}
+					defaultProviders={providerMappings}
+					forAppointmentReminders
+				/>
+			)}
 			<AlertSnackbar
 				open={showAlertSnackbar}
 				severity={snackbarSeverity}
@@ -239,8 +246,31 @@ function AppointmentReminders({ disableNavigation, onDisableNavigationChange }) 
 }
 
 AppointmentReminders.propTypes = {
+	providerMappings: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
+	procedureMappings: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
+	appointmentReminderSettings: PropTypes.shape(
+		{
+			dateVerification: PropTypes.shape({
+				numberOfDays: PropTypes.number,
+				endOfRange: PropTypes.number,
+				allowSendOutsideRange: PropTypes.number,
+				useBusinessDays: PropTypes.bool
+			}),
+			contactPreferences: PropTypes.shape({
+				sendToPreferredAndSms: PropTypes.bool,
+				textHomeIfCellNotAvailable: PropTypes.bool
+			}),
+			defaultReminderTemplates: PropTypes.shape({
+				phone: PropTypes.string,
+				sms: PropTypes.string
+			})
+		}
+	),
+	messageTemplates: PropTypes.arrayOf(PropTypes.instanceOf(Template)).isRequired,
+	hasWritePermission: PropTypes.bool,
 	disableNavigation: PropTypes.bool.isRequired,
-	onDisableNavigationChange: PropTypes.func.isRequired
+	onDisableNavigationChange: PropTypes.func.isRequired,
+	reload: PropTypes.func.isRequired
 };
 
 export default AppointmentReminders;

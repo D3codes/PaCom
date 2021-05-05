@@ -4,7 +4,9 @@ import clsx from 'clsx';
 import {
 	makeStyles, TableCell, TableRow, Typography, Tooltip
 } from '@material-ui/core';
-import { Done, Error, Loop } from '@material-ui/icons';
+import {
+	Done, Error, Loop, Redo
+} from '@material-ui/icons';
 
 import ContactMethod from '../../models/conactMethod';
 import Reminder from '../../models/reminder';
@@ -14,7 +16,8 @@ const NA = '-';
 const StatusIcons = classes => ({
 	[Reminder.Status.Sending]: <Loop color="inherit" className={classes.statusIcon} />,
 	[Reminder.Status.Sent]: <Done color="inherit" className={classes.statusIcon} />,
-	[Reminder.Status.Failed]: <Error color="inherit" className={classes.statusIcon} />
+	[Reminder.Status.Failed]: <Error color="inherit" className={classes.statusIcon} />,
+	[Reminder.Status.Skipped]: <Redo color="inherit" className={classes.statusIcon} />
 });
 
 const getStatusCellClassName = (classes, status) => {
@@ -111,17 +114,17 @@ function ProviderDateTableRows({ providerDateText, reminders }) {
 						</TableCell>
 						<TableCell className={classes.tableCell}>
 							<Typography variant="body2">
+								{reminder.getIn(['appointment', 'procedure', 'source'], NA)}
+							</Typography>
+						</TableCell>
+						<TableCell className={classes.tableCell}>
+							<Typography variant="body2">
 								{reminder.getIn(['patient', 'name'], NA)}
 							</Typography>
 						</TableCell>
 						<TableCell className={classes.tableCell}>
 							<Typography variant="body2">
 								{reminder.getIn(['patient', 'accountNumber'], NA)}
-							</Typography>
-						</TableCell>
-						<TableCell className={classes.tableCell}>
-							<Typography variant="body2">
-								{reminder.getIn(['patient', 'dateOfBirth'], NA)}
 							</Typography>
 						</TableCell>
 						<TableCell className={classes.tableCell}>

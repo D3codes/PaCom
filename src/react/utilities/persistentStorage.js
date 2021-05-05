@@ -1,26 +1,46 @@
 import Provider from '../models/provider';
+import Procedure from '../models/procedure';
 import Template from '../models/template';
 import DynamicValue from '../models/dynamicValue';
+import transformer from '../transformers/transformer';
 
 // Dynamic Values
-const transformDynamicValues = dynamicValues => dynamicValues.map(({
-	name, fromApptList, mappings, pathFromReminder
-}) => new DynamicValue(name, fromApptList, mappings, pathFromReminder));
+const transformDynamicValues = (dynamicValues, includeDefault) => {
+	let values = dynamicValues;
+	if (includeDefault) values = values ? transformer.defaultDynamicValues.concat(values) : transformer.defaultDynamicValues;
+	return values.map(({
+		name, fromApptList, mappings, pathFromReminder
+	}) => new DynamicValue(name, fromApptList, mappings, pathFromReminder));
+};
 
-const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values', includeDefault).then(transformDynamicValues);
+const getDynamicValues = (includeDefault = true) => window.ipcRenderer.invoke('get-dynamic-values').then(values => transformDynamicValues(values, includeDefault));
 
-const addDynamicValue = (value, includeDefault) => window.ipcRenderer.invoke('add-dynamic-value', value, includeDefault).then(transformDynamicValues);
+const addDynamicValue = (value, includeDefault) => window.ipcRenderer.invoke('add-dynamic-value', value).then(values => transformDynamicValues(values, includeDefault));
 
-const removeDynamicValueWithName = (valueName, includeDefault) => window.ipcRenderer.invoke('remove-dynamic-value', valueName, includeDefault).then(transformDynamicValues);
+const removeDynamicValueWithName = (valueName, includeDefault) => window.ipcRenderer.invoke('remove-dynamic-value', valueName)
+	.then(values => transformDynamicValues(values, includeDefault));
 
 // Provider Mappings
-const transformMappings = providerMappings => providerMappings.map(({ source, target, phonetic }) => new Provider(source, target, phonetic));
+const transformProviderMappings = providerMappings => providerMappings.map(({
+	source, target, phonetic, sendToReminder, sendToCustom
+}) => new Provider(source, target, phonetic, sendToReminder, sendToCustom));
 
-const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings').then(transformMappings);
+const getProviderMappings = () => window.ipcRenderer.invoke('get-provider-mappings').then(transformProviderMappings);
 
-const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-mapping', mapping).then(transformMappings);
+const addProviderMapping = mapping => window.ipcRenderer.invoke('add-provider-mapping', mapping).then(transformProviderMappings);
 
-const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource).then(transformMappings);
+const removeProviderMappingWithSource = providerSource => window.ipcRenderer.invoke('remove-provider-mapping', providerSource).then(transformProviderMappings);
+
+// Procedure Mappings
+const transformProcedureMappings = procedureMappings => procedureMappings.map(({
+	source, target, phonetic, phoneReminder, smsReminder, sendToReminder, sendToCustom
+}) => new Procedure(source, target, phonetic, phoneReminder, smsReminder, sendToReminder, sendToCustom));
+
+const getProcedureMappings = () => window.ipcRenderer.invoke('get-procedure-mappings').then(transformProcedureMappings);
+
+const addProcedureMapping = mapping => window.ipcRenderer.invoke('add-procedure-mapping', mapping).then(transformProcedureMappings);
+
+const removeProcedureMappingWithSource = procedureSource => window.ipcRenderer.invoke('remove-procedure-mapping', procedureSource).then(transformProcedureMappings);
 
 // Message Templates
 const transformTemplates = messageTemplates => messageTemplates.map(({ name, body }) => new Template(name, body));
@@ -98,6 +118,9 @@ export default {
 	getProviderMappings,
 	addProviderMapping,
 	removeProviderMappingWithSource,
+	getProcedureMappings,
+	addProcedureMapping,
+	removeProcedureMappingWithSource,
 	getMessageTemplates,
 	addMessageTemplate,
 	removeMessageTemplateWithName,

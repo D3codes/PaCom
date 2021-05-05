@@ -13,9 +13,9 @@ const providers = [
 describe('ProviderMappingsTable', () => {
 	it('renders without crashing', () => {
 		const { getByText } = render(<ProviderMappingsTable onEdit={() => {}} onRemove={() => {}} />);
-		expect(getByText('Convert From (Source)')).toBeDefined();
-		expect(getByText('Convert To (SMS)')).toBeDefined();
-		expect(getByText('Convert To (Phonetic)')).toBeDefined();
+		expect(getByText('Source')).toBeDefined();
+		expect(getByText('SMS Target')).toBeDefined();
+		expect(getByText('Phonetic Target')).toBeDefined();
 		expect(getByText('Actions')).toBeDefined();
 		expect(getByText('No Provider Mappings Configured')).toBeDefined();
 	});
