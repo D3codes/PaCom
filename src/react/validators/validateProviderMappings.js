@@ -19,7 +19,7 @@ async function validateProviderMappings(reminders) {
 function addUnknownProviders(reminders) {
 	const unknownProviderSources = reminders
 		.map(reminder => reminder.getIn(['appointment', 'provider']))
-		.filter(provider => !provider.get('target'))
+		.filter(provider => (!provider.get('target') && provider.get('sendToReminder') && provider.get('sendToCustom')))
 		.map(({ source }) => source);
 	const distinctSources = new Set(unknownProviderSources);
 	distinctSources.forEach(source => {
