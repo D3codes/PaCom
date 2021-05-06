@@ -110,6 +110,7 @@ function ProcedureMappingModal({
 		<Dialog fullWidth open={open}>
 			<DialogTitle>{procedure ? 'Edit' : 'Add'} Procedure Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
+				<Typography>Source must be configured exactly as it appears in the appointment list.</Typography>
 				<IconTextField
 					autoFocus
 					fullWidth

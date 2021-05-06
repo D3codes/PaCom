@@ -143,7 +143,7 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 			continue;
 		}
 
-		if (proceduresToSkip.some(x => reminder.getIn(['appointment', 'procedure', 'source'], null).includes(x))) {
+		if (proceduresToSkip.includes(reminder.getIn(['appointment', 'procedure', 'source'], null))) {
 			reminder.setSkippedStatus();
 			reminder.setStatusMessage(ProcedureSkipped);
 
