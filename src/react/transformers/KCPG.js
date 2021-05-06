@@ -91,7 +91,7 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 			existingProvider?.sendToCustom ?? true
 		);
 
-		const existingProcedure = procedureMappings?.find(procedureMapping => paddedProcedure.includes(procedureMapping.source));
+		const existingProcedure = procedureMappings?.find(procedureMapping => paddedProcedure === procedureMapping.source);
 		const procedure = new Procedure(
 			paddedProcedure,
 			existingProcedure?.target,
