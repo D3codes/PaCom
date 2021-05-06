@@ -872,11 +872,11 @@ describe('ListSender', () => {
 			try {
 				expect(sendCallMock).toBeCalledTimes(0);
 				expect(sendSMSMock).toBeCalledTimes(1);
-				expect(onUpdateMock).toBeCalledTimes(1);
-				expect(setSendingStatusMock).toBeCalledTimes(0);
+				expect(onUpdateMock).toBeCalledTimes(2);
+				expect(setSendingStatusMock).toBeCalledTimes(1);
 				expect(setFailedStatusMock).toBeCalledTimes(0);
-				expect(setSentStatusMock).toBeCalledTimes(0);
-				expect(setSkippedStatusMock).toBeCalledTimes(1);
+				expect(setSentStatusMock).toBeCalledTimes(1);
+				expect(setSkippedStatusMock).toBeCalledTimes(0);
 				done();
 			} catch (error) {
 				done(error);
