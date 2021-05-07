@@ -110,6 +110,7 @@ function ProcedureMappingModal({
 		<Dialog fullWidth open={open}>
 			<DialogTitle>{procedure ? 'Edit' : 'Add'} Procedure Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
+				<Typography>Source must be configured exactly as it appears in the appointment list.</Typography>
 				<IconTextField
 					autoFocus
 					fullWidth
@@ -117,6 +118,7 @@ function ProcedureMappingModal({
 					onChange={handleSourceChange}
 					value={source}
 					Icon={Input}
+					testId="source-field"
 				/>
 				<IconTextField
 					fullWidth
@@ -124,6 +126,7 @@ function ProcedureMappingModal({
 					onChange={handleTargetChange}
 					value={target}
 					Icon={Sms}
+					testId="sms-target-field"
 				/>
 				<IconTextField
 					fullWidth
@@ -131,6 +134,7 @@ function ProcedureMappingModal({
 					onChange={handlePhoneticChange}
 					value={phonetic}
 					Icon={Phone}
+					testId="phonetic-target-field"
 				/>
 				<Divider className={classes.adornmentDivider} />
 				<Typography variant="h5" className={classes.accordionSummaryText}>Reminder Template Overrides</Typography>
