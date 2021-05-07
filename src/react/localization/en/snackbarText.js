@@ -1,5 +1,5 @@
 // Update Dynamic Values Reminder
-const UpdateDynamicValuesReminderMessage = 'Update dynamic values to include a mapping for new providers.';
+const UpdateDynamicValuesReminderMessage = 'Update dynamic values to include mappings for new providers.';
 exports.UpdateDynamicValuesReminderMessage = UpdateDynamicValuesReminderMessage;
 
 // Invalid File Type
