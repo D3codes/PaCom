@@ -31,6 +31,28 @@ describe('ProviderMappingModal', () => {
 		expect(getByText('Save')).toBeDefined();
 	});
 
+	it('calls onCancel and does not save when cancel is clicked', () => {
+		const onCancelMock = jest.fn();
+		const onSaveMock = jest.fn();
+		const { getByText, getByTestId } = render(<ProviderMappingModal onCancel={onCancelMock} onSave={onSaveMock} open />);
+
+		const sourceField = getByTestId('source-field').querySelector('input');
+		sourceField.value = 'Test Source';
+		Simulate.change(sourceField);
+
+		const smsField = getByTestId('sms-target-field').querySelector('input');
+		smsField.value = 'Test SMS Target';
+		Simulate.change(smsField);
+
+		const phoneticField = getByTestId('phonetic-target-field').querySelector('input');
+		phoneticField.value = 'Test Phonetic Field';
+		Simulate.change(phoneticField);
+
+		fireEvent.click(getByText('Cancel'));
+		expect(onSaveMock).toBeCalledTimes(0);
+		expect(onCancelMock).toBeCalledTimes(1);
+	});
+
 	it('has save button disabled until all fields are filled in', () => {
 		const { getByText, getByTestId } = render(<ProviderMappingModal onCancel={jest.fn()} onSave={jest.fn()} open />);
 
