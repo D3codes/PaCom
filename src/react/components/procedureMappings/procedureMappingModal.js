@@ -118,6 +118,7 @@ function ProcedureMappingModal({
 					onChange={handleSourceChange}
 					value={source}
 					Icon={Input}
+					testId="source-field"
 				/>
 				<IconTextField
 					fullWidth
@@ -125,6 +126,7 @@ function ProcedureMappingModal({
 					onChange={handleTargetChange}
 					value={target}
 					Icon={Sms}
+					testId="sms-target-field"
 				/>
 				<IconTextField
 					fullWidth
@@ -132,6 +134,7 @@ function ProcedureMappingModal({
 					onChange={handlePhoneticChange}
 					value={phonetic}
 					Icon={Phone}
+					testId="phonetic-target-field"
 				/>
 				<Divider className={classes.adornmentDivider} />
 				<Typography variant="h5" className={classes.accordionSummaryText}>Reminder Template Overrides</Typography>
