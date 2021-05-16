@@ -9,7 +9,7 @@ import {
 import AlertSnackbar from '../alertSnackbar';
 import useAsyncError from '../../errors/asyncError';
 
-import getVersion from '../../utilities/getVersion';
+import envInfo from '../../utilities/envInfo';
 import persistentStorage from '../../utilities/persistentStorage';
 import CategorySection from './categorySection';
 
@@ -148,7 +148,7 @@ export default function MiniDrawer({
 	const throwError = useAsyncError();
 
 	useEffect(() => {
-		getVersion().then(setVersion).catch(e => throwError(e));
+		envInfo.getVersion().then(setVersion).catch(e => throwError(e));
 		persistentStorage.getSettings(true).then(settings => {
 			setAdminAccess(settings.adminAccess);
 		});

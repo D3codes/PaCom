@@ -1,16 +1,16 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import getVersionMock from '../../../../react/utilities/getVersion';
+import getEnvInfoMock from '../../../../react/utilities/envInfo';
 import MiniDrawer from '../../../../react/components/drawer/miniDrawer';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
-jest.mock('../../../../react/utilities/getVersion');
+jest.mock('../../../../react/utilities/envInfo');
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('MiniDrawer', () => {
 	it('renders basic mode without crashing', async () => {
-		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			adminAccess: false,
 			appointmentReminders: {},
@@ -36,7 +36,7 @@ describe('MiniDrawer', () => {
 	});
 
 	it('renders admin mode without crashing', async () => {
-		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			adminAccess: true,
 			appointmentReminders: {},
@@ -62,7 +62,7 @@ describe('MiniDrawer', () => {
 	});
 
 	it('calls onTabSelect when a tab is selected', async () => {
-		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
 		const tabSelectMock = jest.fn();
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			adminAccess: true,
@@ -89,7 +89,7 @@ describe('MiniDrawer', () => {
 	});
 
 	it('shows backdrop when navigation is disabled', async () => {
-		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
 		const tabSelectMock = jest.fn();
 		persistentStorageMock.getSettings.mockImplementation(async () => ({
 			adminAccess: true,
