@@ -16,8 +16,6 @@ import { DRAWER_WIDTH } from '../drawer/miniDrawer';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
 		marginTop: `${theme.mixins.toolbar.minHeight}px`
 	},
@@ -25,7 +23,8 @@ const useStyles = makeStyles(theme => ({
 		margin: theme.spacing()
 	},
 	actionButtonContainer: {
-		alignSelf: 'flex-end'
+		display: 'flex',
+		justifyContent: 'flex-end'
 	},
 	tabContent: {
 		height: '100%'

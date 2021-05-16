@@ -12,14 +12,17 @@ import { UpdateDynamicValuesReminderMessage } from '../../localization/en/snackb
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
-		marginTop: theme.spacing(2),
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
 	providerMappingsContainer: {
-		height: '100%',
+		height: '100%'
+	},
+	content: {
+		height: `calc(100% - ${theme.spacing(3)}px)`,
 		display: 'flex',
-		flexFlow: 'column'
+		flexDirection: 'column',
+		paddingBottom: theme.spacing(2)
 	}
 }));
 
@@ -61,13 +64,15 @@ export default function ProviderMappings({ providers, hasWritePermission = false
 
 	return (
 		<div className={classes.providerMappingsContainer}>
-			<ProviderMappingsTable
-				hasWritePermission={hasWritePermission}
-				onEdit={handleEdit}
-				onRemove={handleRemove}
-				onSave={handleSave}
-				providers={providers}
-			/>
+			<div className={classes.content}>
+				<ProviderMappingsTable
+					hasWritePermission={hasWritePermission}
+					onEdit={handleEdit}
+					onRemove={handleRemove}
+					onSave={handleSave}
+					providers={providers}
+				/>
+			</div>
 			<div className={classes.buttonContainer}>
 				<Button
 					color="primary"

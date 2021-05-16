@@ -20,15 +20,13 @@ import folderSelector from '../../utilities/folderSelector';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: '100%'
 	},
 	form: {
 		'& .MuiTextField-root': {
 			margin: theme.spacing(1)
 		},
-		flex: 1
+		height: `calc(100% - ${theme.spacing(3)}px)`
 	},
 	content: {
 		display: 'block',
