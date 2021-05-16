@@ -81,7 +81,7 @@ describe('ProcedureMappingModal', () => {
 	});
 
 	it('presents overwrite dialog if source matches existing procedure source', () => {
-		dialogControllerMock.confirmSave.mockImplementation(() => Promise.resolve({ response: 0 }));
+		dialogControllerMock.confirmSave.mockImplementation(() => Promise.resolve({ response: 1 }));
 		const testProcedure = new Procedure('Test Source', 'Test Target', 'Test Phonetic', 'Default', 'Default', true, true);
 		const onSaveMock = jest.fn();
 		const { getByText, getByTestId } = render(<ProcedureMappingModal onCancel={jest.fn()} onSave={onSaveMock} procedures={[testProcedure]} open />);
