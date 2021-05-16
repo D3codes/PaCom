@@ -36,6 +36,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	backButton: {
 		marginRight: theme.spacing(3)
+	},
+	content: {
+		height: `calc(100% - ${theme.spacing(3)}px)`,
+		display: 'flex',
+		flexDirection: 'column'
 	}
 }));
 
@@ -55,59 +60,61 @@ function ReportTable({
 
 	return (
 		<Fragment>
-			<div className={classes.topBar}>
-				<Button
-					onClick={() => onBack()}
-					className={classes.backButton}
-					color="primary"
-					startIcon={<ArrowBackIos />}
-					disabled={disableNavigation}>
+			<div className={classes.content}>
+				<div className={classes.topBar}>
+					<Button
+						onClick={() => onBack()}
+						className={classes.backButton}
+						color="primary"
+						startIcon={<ArrowBackIos />}
+						disabled={disableNavigation}>
 					Back
-				</Button>
-				<Typography
-					color="textSecondary"
-					variant="subtitle1">
-					{filePath}
-				</Typography>
-			</div>
-			{!remindersByProviderAndDate && (
-				<div className={classes.noRemindersContainer}>
+					</Button>
 					<Typography
-						align="center"
-						className={classes.noRemindersText}
 						color="textSecondary"
 						variant="subtitle1">
-						Please import appointments to view message report
+						{filePath}
 					</Typography>
 				</div>
-			)}
-			{remindersByProviderAndDate && (
-				<div className={classes.tableContainer}>
-					<Table padding="none" stickyHeader>
-						<colgroup>
-							<col style={{ width: '11%' }} />
-							<col style={{ width: '9%' }} />
-							<col style={{ width: '8%' }} />
-							<col style={{ width: '11%' }} />
-							<col style={{ width: '17%' }} />
-							<col style={{ width: '10%' }} />
-							<col style={{ width: '10%' }} />
-							<col style={{ width: '12%' }} />
-							<col style={{ width: '12%' }} />
-						</colgroup>
-						<ReportTableHeader />
-						<TableBody>
-							{Object.entries(remindersByProviderAndDate).map(([providerDateText, remindersForProviderDate]) => (
-								<ProviderDateTableRows
-									key={providerDateText}
-									providerDateText={providerDateText}
-									reminders={remindersForProviderDate}
-								/>
-							))}
-						</TableBody>
-					</Table>
-				</div>
-			)}
+				{!remindersByProviderAndDate && (
+					<div className={classes.noRemindersContainer}>
+						<Typography
+							align="center"
+							className={classes.noRemindersText}
+							color="textSecondary"
+							variant="subtitle1">
+						Please import appointments to view message report
+						</Typography>
+					</div>
+				)}
+				{remindersByProviderAndDate && (
+					<div className={classes.tableContainer}>
+						<Table padding="none" stickyHeader>
+							<colgroup>
+								<col style={{ width: '11%' }} />
+								<col style={{ width: '9%' }} />
+								<col style={{ width: '8%' }} />
+								<col style={{ width: '11%' }} />
+								<col style={{ width: '17%' }} />
+								<col style={{ width: '10%' }} />
+								<col style={{ width: '10%' }} />
+								<col style={{ width: '12%' }} />
+								<col style={{ width: '12%' }} />
+							</colgroup>
+							<ReportTableHeader />
+							<TableBody>
+								{Object.entries(remindersByProviderAndDate).map(([providerDateText, remindersForProviderDate]) => (
+									<ProviderDateTableRows
+										key={providerDateText}
+										providerDateText={providerDateText}
+										reminders={remindersForProviderDate}
+									/>
+								))}
+							</TableBody>
+						</Table>
+					</div>
+				)}
+			</div>
 			<ReportActions
 				onSend={onSend}
 				onExport={handleExport}

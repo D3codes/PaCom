@@ -13,16 +13,14 @@ import DescriptiveIconButton from '../descriptiveIconButton';
 
 import { AllDataCopiedMessage, DuplicateDataNotCopiedMessage } from '../../localization/en/snackbarText';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: '100%'
 	},
 	content: {
-		flex: 1,
 		display: 'flex',
-		flexDirection: 'column'
+		flexDirection: 'column',
+		height: `calc(100% - ${theme.spacing(3)}px)`
 	},
 	actionButtonContainer: {
 		display: 'flex',
@@ -73,17 +71,17 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 
 	return (
 		<div className={classes.root}>
-			<BrowseFile
-				onBrowseClick={browseForFolder}
-				label="Shared Configuration Location"
-				filePath={location}
-				error={!locationIsSpecifiedIfNetworkOptionSelected}
-				helperText={!locationIsSpecifiedIfNetworkOptionSelected ? 'A location must be selected for the shared configuration' : ''}
-				disabled={selectedOption === BEHAVIOR.local}
-				required={selectedOption !== BEHAVIOR.local}
-				onFilePathChange={setLocation}
-			/>
 			<div className={classes.content}>
+				<BrowseFile
+					onBrowseClick={browseForFolder}
+					label="Shared Configuration Location"
+					filePath={location}
+					error={!locationIsSpecifiedIfNetworkOptionSelected}
+					helperText={!locationIsSpecifiedIfNetworkOptionSelected ? 'A location must be selected for the shared configuration' : ''}
+					disabled={selectedOption === BEHAVIOR.local}
+					required={selectedOption !== BEHAVIOR.local}
+					onFilePathChange={setLocation}
+				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.local); }}
 					selected={selectedOption === BEHAVIOR.local}

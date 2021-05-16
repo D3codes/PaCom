@@ -5,7 +5,7 @@ import ReportActions from '../../../../react/components/reportTable/reportAction
 
 describe('ReportActions', () => {
 	it('renders export/send buttons without crashing', () => {
-		const { container, getByText } = render(<ReportActions onSend={jest.fn()} onExport={jest.fn()} />);
+		const { container, getByText } = render(<ReportActions onSend={jest.fn()} onExport={jest.fn()} onSendToClick={jest.fn()} />);
 
 		expect(container.firstChild.className.includes('actionContainer')).toBe(true);
 		expect(getByText('Export')).toBeDefined();
@@ -16,7 +16,7 @@ describe('ReportActions', () => {
 		const onSendMock = jest.fn();
 		const onExportMock = jest.fn();
 
-		const { getByText } = render(<ReportActions onSend={onSendMock} onExport={onExportMock} />);
+		const { getByText } = render(<ReportActions onSend={onSendMock} onExport={onExportMock} onSendToClick={jest.fn()} />);
 
 		fireEvent.click(getByText('Export'));
 		expect(onExportMock).toBeCalledTimes(1);

@@ -10,14 +10,17 @@ import DynamicValueModal from './dynamicValueModal';
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
-		marginTop: theme.spacing(2),
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
 	dynamicValuesContainer: {
-		height: '100%',
+		height: '100%'
+	},
+	content: {
+		height: `calc(100% - ${theme.spacing(3)}px)`,
 		display: 'flex',
-		flexFlow: 'column'
+		flexDirection: 'column',
+		paddingBottom: theme.spacing(2)
 	}
 }));
 
@@ -55,14 +58,16 @@ export default function DynamicValues({
 
 	return (
 		<div className={classes.dynamicValuesContainer}>
-			<DynamicValuesTable
-				hasWritePermission={hasWritePermission}
-				onEdit={handleEdit}
-				onRemove={handleRemove}
-				onSave={handleSave}
-				dynamicValues={dynamicValues?.filter(val => !val.fromApptList) || []}
-				providers={providers}
-			/>
+			<div className={classes.content}>
+				<DynamicValuesTable
+					hasWritePermission={hasWritePermission}
+					onEdit={handleEdit}
+					onRemove={handleRemove}
+					onSave={handleSave}
+					dynamicValues={dynamicValues?.filter(val => !val.fromApptList) || []}
+					providers={providers}
+				/>
+			</div>
 			<div className={classes.buttonContainer}>
 				<Button
 					color="primary"

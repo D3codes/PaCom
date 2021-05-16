@@ -8,22 +8,20 @@ import persistentStorage from '../../utilities/persistentStorage';
 import folderSelector from '../../utilities/folderSelector';
 import DescriptiveIconButton from '../descriptiveIconButton';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: '100%'
 	},
 	content: {
-		flex: 1,
 		display: 'flex',
-		flexDirection: 'column'
+		flexDirection: 'column',
+		height: `calc(100% - ${theme.spacing(3)}px)`
 	},
 	actionButtonContainer: {
 		display: 'flex',
 		justifyContent: 'flex-end'
 	}
-});
+}));
 
 export default function MessageReportSettings({ messageReports, hasWritePermission, reloadSettings }) {
 	const classes = useStyles();
@@ -45,17 +43,17 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 
 	return (
 		<div className={classes.root}>
-			<BrowseFile
-				onBrowseClick={browseForFolder}
-				label="Message Report AutoSave Location"
-				filePath={location}
-				error={autoSaveOnAndLocationNotSet}
-				helperText={autoSaveOnAndLocationNotSet ? 'A location must be selected for the message reports' : ''}
-				disabled={!hasWritePermission || !autoSave}
-				required={autoSave}
-				onFilePathChange={setLocation}
-			/>
 			<div className={classes.content}>
+				<BrowseFile
+					onBrowseClick={browseForFolder}
+					label="Message Report AutoSave Location"
+					filePath={location}
+					error={autoSaveOnAndLocationNotSet}
+					helperText={autoSaveOnAndLocationNotSet ? 'A location must be selected for the message reports' : ''}
+					disabled={!hasWritePermission || !autoSave}
+					required={autoSave}
+					onFilePathChange={setLocation}
+				/>
 				<DescriptiveIconButton
 					onClick={() => { setAutoSave(false); }}
 					selected={!autoSave}
