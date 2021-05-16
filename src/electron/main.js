@@ -19,7 +19,9 @@ const {
 let mainWindow;
 let sending = false;
 
-Sentry.init({ dsn: appSettings.sentry.dsn });
+if (!isDev) {
+	Sentry.init({ dsn: appSettings.sentry.dsn });
+}
 
 const isMac = process.platform === 'darwin';
 const menuTemplate = [
@@ -276,6 +278,8 @@ ipc.handle('open-file', (event, filePath) => open([], filePath));
 ipc.handle('save-file', (event, filePath, fileName, file) => save(filePath, fileName, file));
 
 ipc.handle('request-version', () => (projectPackage ? projectPackage.version : null));
+
+ipc.handle('is-dev', () => isDev);
 
 ipc.handle('get-dynamic-values', () => persistentStorage.getDynamicValues(false));
 

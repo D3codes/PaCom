@@ -19,6 +19,7 @@ import sendingStatus from './utilities/sendingStatus';
 import ErrorBoundary from './components/errors/errorBoundary';
 import persistentStorage from './utilities/persistentStorage';
 import AlertSnackbar from './components/alertSnackbar';
+import getEnvInfo from './utilities/getEnvInfo';
 
 import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from './localization/en/snackbarText';
 
@@ -41,6 +42,10 @@ const useStyles = makeStyles(theme => ({
 		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`
 	},
 	toolbar: {
+		display: 'flex',
+		justifyContent: 'space-between'
+	},
+	toolbarSpacer: {
 		minHeight: theme.mixins.toolbar.minHeight
 	}
 }));
@@ -68,6 +73,7 @@ export default function App() {
 	const [procedureMappings, setProcedureMappings] = useState([]);
 	const [messageTemplates, setMessageTemplates] = useState([]);
 	const [dynamicValues, setDynamicValues] = useState([]);
+	const [isDev, setIsDev] = useState(false);
 
 	const reloadSettings = () => {
 		persistentStorage.getSettings().then(settings => {
@@ -84,6 +90,7 @@ export default function App() {
 	};
 
 	useEffect(() => {
+		getEnvInfo.getIsDev().then(setIsDev);
 		reloadSettings();
 	}, []);
 
@@ -95,14 +102,19 @@ export default function App() {
 				<AppBar
 					position="fixed"
 					className={classes.appBar}>
-					<Toolbar>
+					<Toolbar className={classes.toolbar}>
 						<Typography variant="h6" noWrap>
 							{title}
 						</Typography>
+						{isDev && (
+							<Typography align="right" color="error" noWrap>
+								DEV MODE
+							</Typography>
+						)}
 					</Toolbar>
 				</AppBar>
 				<main className={classes.main}>
-					<div className={classes.toolbar} />
+					<div className={classes.toolbarSpacer} />
 					{selectedTabId === MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS && (
 						<AppointmentReminders
 							providerMappings={providerMappings}

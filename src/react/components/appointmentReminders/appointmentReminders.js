@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import React, {
 	useMemo, useEffect, useState, Fragment
 } from 'react';
@@ -127,6 +128,7 @@ function AppointmentReminders({
 	}, [reminders]);
 
 	const handleAppointmentListImport = (appointmentListPath = null) => {
+		throw new Error();
 		const csvPromise = csvImporter.getCSV(appointmentListPath);
 		csvPromise.then(({ result }) => transformer.transform(result.data, providerMappings, procedureMappings)).then(remindersList => {
 			setValidationRan(false);
