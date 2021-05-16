@@ -65,8 +65,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	reportTableContainer: {
 		zIndex: 1,
-		display: 'flex',
-		flexFlow: 'column',
 		height: '100%',
 		backgroundColor: theme.palette.background.default
 	},

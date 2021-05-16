@@ -8,7 +8,8 @@ const DRAWER_WIDTH = 206;
 const useStyles = makeStyles(theme => ({
 	actionContainer: {
 		display: 'flex',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		backgroundColor: theme.palette.background.default
 	},
 	progressBar: {
 		position: 'fixed',

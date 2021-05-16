@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	actionButtonContainer: {
 		display: 'flex',
-		alignSelf: 'flex-end'
+		justifyContent: 'flex-end'
 	},
 	sendTo: {
 		alignSelf: 'center',
@@ -78,18 +78,19 @@ const useStyles = makeStyles(theme => ({
 	},
 	reportTableContainer: {
 		zIndex: 1,
-		display: 'flex',
-		flexFlow: 'column',
 		height: '100%',
 		backgroundColor: theme.palette.background.default
 	},
 	slideOverContainer: {
 		zIndex: 0,
-		display: 'flex',
-		flexFlow: 'column',
 		position: 'absolute',
 		height: '100%',
 		width: '100%'
+	},
+	content: {
+		display: 'flex',
+		flexFlow: 'column',
+		height: `calc(100% - ${theme.spacing(3)}px)`
 	}
 }));
 
@@ -224,45 +225,47 @@ function CustomMessage({
 				</div>
 			</Slide>
 			<div className={classes.slideOverContainer}>
-				<div className={classes.sendTo}>
-					<ButtonGroup disableElevation color="primary">
-						<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Number</Button>
-						<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointments</Button>
-					</ButtonGroup>
-				</div>
-				<div>
-					{sendToAppointmentList && (
-						<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={setFilePath} label="Appointment List" />
-					)}
-					{!sendToAppointmentList && (
-						<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
-							<IconTextField
-								testId="phoneNumber-field"
-								onChange={setPhoneNumber}
-								label="Phone Number"
-								focused
-								helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
-								error={!phoneNumberIsValid}
-								value={phoneNumber}
-								Icon={Phone}
-								startAdornment="+1"
+				<div className={classes.content}>
+					<div className={classes.sendTo}>
+						<ButtonGroup disableElevation color="primary">
+							<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Number</Button>
+							<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointments</Button>
+						</ButtonGroup>
+					</div>
+					<div>
+						{sendToAppointmentList && (
+							<BrowseFile onBrowseClick={handleBrowseClick} filePath={filePath} onFilePathChange={setFilePath} label="Appointment List" />
+						)}
+						{!sendToAppointmentList && (
+							<div className={clsx({ [classes.phoneNumberPadding]: phoneNumberIsValid })}>
+								<IconTextField
+									testId="phoneNumber-field"
+									onChange={setPhoneNumber}
+									label="Phone Number"
+									focused
+									helperText={phoneNumberIsValid ? '' : 'Invalid Phone Number'}
+									error={!phoneNumberIsValid}
+									value={phoneNumber}
+									Icon={Phone}
+									startAdornment="+1"
+								/>
+							</div>
+						)}
+					</div>
+					<div className={classes.composeContainer}>
+						<div className={classes.listContainer}>
+							<ContainedLabeledList onClick={template => setMessage(template.body)} label="Templates" items={messageTemplates} />
+						</div>
+						<div className={classes.messageComposeContainer}>
+							<MessageCompose
+								messageIsValid={messageIsValid}
+								message={message}
+								onMessageChange={handleMessageChange}
+								onAppend={handleMessageAppend}
+								disableDynamicValues={!sendToAppointmentList}
+								helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
 							/>
 						</div>
-					)}
-				</div>
-				<div className={classes.composeContainer}>
-					<div className={classes.listContainer}>
-						<ContainedLabeledList onClick={template => setMessage(template.body)} label="Templates" items={messageTemplates} />
-					</div>
-					<div className={classes.messageComposeContainer}>
-						<MessageCompose
-							messageIsValid={messageIsValid}
-							message={message}
-							onMessageChange={handleMessageChange}
-							onAppend={handleMessageAppend}
-							disableDynamicValues={!sendToAppointmentList}
-							helperText={messageIsValid ? '' : 'Messages sent to a specific number cannot contain dynamic values.'}
-						/>
 					</div>
 				</div>
 				<div className={classes.actionButtonContainer}>
