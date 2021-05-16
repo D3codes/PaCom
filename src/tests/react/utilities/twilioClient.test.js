@@ -2,10 +2,10 @@ import { enableFetchMocks } from 'jest-fetch-mock';
 import twilioClient from '../../../react/utilities/twilioClient';
 import { NullValueException } from '../../../react/errors/exceptions';
 import persistentStorageMock from '../../../react/utilities/persistentStorage';
-import getEnvInfoMock from '../../../react/utilities/getEnvInfo';
+import getEnvInfoMock from '../../../react/utilities/envInfo';
 
 jest.mock('../../../react/utilities/persistentStorage');
-jest.mock('../../../react/utilities/getEnvInfo');
+jest.mock('../../../react/utilities/envInfo');
 enableFetchMocks();
 
 describe('twilioClient', () => {

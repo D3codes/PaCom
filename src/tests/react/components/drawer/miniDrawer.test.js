@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import getEnvInfoMock from '../../../../react/utilities/getEnvInfo';
+import getEnvInfoMock from '../../../../react/utilities/envInfo';
 import MiniDrawer from '../../../../react/components/drawer/miniDrawer';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 
-jest.mock('../../../../react/utilities/getEnvInfo');
+jest.mock('../../../../react/utilities/envInfo');
 jest.mock('../../../../react/utilities/persistentStorage');
 
 describe('MiniDrawer', () => {

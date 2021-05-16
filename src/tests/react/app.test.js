@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import getEnvInfoMock from '../../react/utilities/getEnvInfo';
+import getEnvInfoMock from '../../react/utilities/envInfo';
 import App from '../../react/app';
 import persistentStorageMock from '../../react/utilities/persistentStorage';
 import sendingStatusMock from '../../react/utilities/sendingStatus';
 
-jest.mock('../../react/utilities/getEnvInfo');
+jest.mock('../../react/utilities/envInfo');
 jest.mock('../../react/utilities/persistentStorage');
 jest.mock('../../react/utilities/sendingStatus');
 

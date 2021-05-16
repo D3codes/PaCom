@@ -19,7 +19,7 @@ import sendingStatus from './utilities/sendingStatus';
 import ErrorBoundary from './components/errors/errorBoundary';
 import persistentStorage from './utilities/persistentStorage';
 import AlertSnackbar from './components/alertSnackbar';
-import getEnvInfo from './utilities/getEnvInfo';
+import envInfo from './utilities/envInfo';
 
 import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from './localization/en/snackbarText';
 
@@ -90,7 +90,7 @@ export default function App() {
 	};
 
 	useEffect(() => {
-		getEnvInfo.getIsDev().then(setIsDev);
+		envInfo.getIsDev().then(setIsDev);
 		reloadSettings();
 	}, []);
 
