@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing()
 	},
 	tableHeadCell: {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: theme.palette.primary.dark,
 		color: theme.palette.primary.contrastText
 	}
 }));
