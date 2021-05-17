@@ -51,14 +51,14 @@ function DescriptiveIconButton({
 	return (
 		<Button
 			onClick={onClick}
-			classes={{ root: classes.buttonRoot, outlinedPrimary: selected ? '' : classes.invisibleOutline }}
+			classes={{ root: classes.buttonRoot, outlinedSecondary: selected ? '' : classes.invisibleOutline }}
 			className={disabled && selected ? classes.disabledSelectedButton : classes.button}
 			disabled={disabled}
-			color="primary"
+			color="secondary"
 			variant="outlined"
 			startIcon={(
 				<Fragment>
-					<Icon style={{ fontSize: '3rem', textAlign: 'left' }} />
+					<Icon style={{ fontSize: '3rem', textAlign: 'left', color: selected ? '#009be5' : '#006db3' }} />
 					<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 				</Fragment>
 			)}>

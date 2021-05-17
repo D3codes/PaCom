@@ -108,7 +108,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				<Button
 					disabled={sharedConfig.behavior !== 2 || !sharedConfig.location}
 					variant={sharedConfig.behavior !== 2 || !sharedConfig.location ? 'outlined' : 'contained'}
-					color="primary"
+					color="secondary"
 					onClick={handleCopyToNetwork}
 					startIcon={<FileCopy />}>
 					Copy Local to Network

@@ -26,7 +26,7 @@ function IconTextField({
 				notched: true,
 				startAdornment: (
 					<Fragment>
-						<Icon color="primary" />
+						<Icon color="secondary" />
 						<Divider className={classes.adornmentDivider} orientation="vertical" flexItem />
 						{startAdornment && <p>{startAdornment}</p>}
 					</Fragment>
@@ -35,6 +35,7 @@ function IconTextField({
 			label={label}
 			variant="outlined"
 			value={value}
+			color="primary"
 			data-testid={testId}
 		/>
 	);
