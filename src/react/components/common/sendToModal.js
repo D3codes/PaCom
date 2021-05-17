@@ -85,7 +85,7 @@ function SendToModal({
 			<DialogActions className={classes.dialogActions}>
 				<Button
 					onClick={applyDefaultState}
-					color="primary"
+					color="secondary"
 					startIcon={<Undo />}
 					variant={isRestoreDefaultDisabled ? 'outlined' : 'contained'}
 					disabled={isRestoreDefaultDisabled}>
