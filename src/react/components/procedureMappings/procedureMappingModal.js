@@ -15,10 +15,15 @@ import dialogController from '../../utilities/dialogController';
 import IconTextField from '../iconTextField';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
-		}
+		},
+		marginTop: theme.spacing(2)
 	},
 	adornmentDivider: {
 		margin: theme.spacing(),
@@ -108,7 +113,7 @@ function ProcedureMappingModal({
 
 	return (
 		<Dialog fullWidth open={open}>
-			<DialogTitle>{procedure ? 'Edit' : 'Add'} Procedure Mapping</DialogTitle>
+			<DialogTitle className={classes.dialogTitle}>{procedure ? 'Edit' : 'Add'} Procedure Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<Typography>Source must be configured exactly as it appears in the appointment list.</Typography>
 				<IconTextField

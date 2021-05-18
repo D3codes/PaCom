@@ -11,11 +11,16 @@ import Procedure from '../../models/procedure';
 import SendTo from './sendTo';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
 		},
-		height: '550px'
+		height: '550px',
+		marginTop: theme.spacing(2)
 	},
 	dialogActions: {
 		display: 'flex',
@@ -66,7 +71,7 @@ function SendToModal({
 
 	return (
 		<Dialog fullWidth open maxWidth="md">
-			<DialogTitle>Send To</DialogTitle>
+			<DialogTitle className={classes.dialogTitle}>Send To</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<Typography className={classes.descriptionText}>
 					Select which Providers and Procedures to send this message to.

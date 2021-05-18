@@ -16,10 +16,15 @@ import dialogController from '../../utilities/dialogController';
 import IconTextField from '../iconTextField';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
-		}
+		},
+		marginTop: theme.spacing(2)
 	}
 }));
 
@@ -82,7 +87,7 @@ function ProviderMappingModal({
 
 	return (
 		<Dialog fullWidth open={open}>
-			<DialogTitle>{provider ? 'Edit' : 'Add'} Provider Mapping</DialogTitle>
+			<DialogTitle className={classes.dialogTitle}>{provider ? 'Edit' : 'Add'} Provider Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<IconTextField
 					autoFocus
