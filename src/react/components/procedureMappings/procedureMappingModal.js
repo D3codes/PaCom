@@ -40,8 +40,7 @@ const useStyles = makeStyles(theme => ({
 	templateSelector: {
 		width: `calc(50% - ${theme.spacing()}px)`,
 		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center'
+		flexDirection: 'column'
 	},
 	form: {
 		width: '100%'
@@ -142,7 +141,7 @@ function ProcedureMappingModal({
 					testId="phonetic-target-field"
 				/>
 				<Divider className={classes.adornmentDivider} />
-				<Typography variant="h5" className={classes.accordionSummaryText}>Reminder Template Overrides</Typography>
+				<Typography variant="h6" className={classes.accordionSummaryText}>Reminder Template Overrides</Typography>
 				<Typography>Select message templates to send instead of the default appointment reminders for this procedure.</Typography>
 				<div className={classes.templateContainer}>
 					<div className={classes.templateSelector}>
