@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, FormControl, Select, MenuItem, Divider, Typography
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, FormControl, Select, MenuItem, Divider, Typography, Slide
 } from '@material-ui/core';
 import {
 	Save, Input, Sms, Phone
@@ -112,7 +112,7 @@ function ProcedureMappingModal({
 	const isSaveDisabled = !(source && target && phonetic);
 
 	return (
-		<Dialog fullWidth open={open}>
+		<Dialog fullWidth open={open} TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
 			<DialogTitle className={classes.dialogTitle}>{procedure ? 'Edit' : 'Add'} Procedure Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<Typography>Source must be configured exactly as it appears in the appointment list.</Typography>

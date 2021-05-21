@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TableContainer
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TableContainer, Slide
 } from '@material-ui/core';
 import { Save, Label } from '@material-ui/icons';
 import IconTextField from '../iconTextField';
@@ -111,7 +111,7 @@ function DynamicValueModal({
 	const saveDisabled = !name || dynamicValue?.mappings === mappings;
 
 	return (
-		<Dialog fullWidth open={open} maxWidth="md" onExited={applyInitialState}>
+		<Dialog fullWidth open={open} maxWidth="md" onExited={applyInitialState} TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
 			{!editProvider && <DialogTitle className={classes.dialogTitle}>{dynamicValue ? 'Edit' : 'Add'} Dynamic Value</DialogTitle>}
 			{editProvider && (
 				<DialogTitle className={classes.dialogTitle}>

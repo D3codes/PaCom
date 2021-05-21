@@ -302,15 +302,14 @@ function CustomMessage({
 					)}
 				</div>
 			</div>
-			{ showSendToModal && (
-				<SendToModal
-					onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
-					procedures={procedures}
-					providers={providers}
-					defaultProcedures={procedureMappings}
-					defaultProviders={providerMappings}
-				/>
-			)}
+			<SendToModal
+				onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
+				procedures={procedures}
+				providers={providers}
+				defaultProcedures={procedureMappings}
+				defaultProviders={providerMappings}
+				isOpen={showSendToModal}
+			/>
 			<AlertSnackBar
 				severity={snackbarSeverity}
 				message={snackbarMessage}
