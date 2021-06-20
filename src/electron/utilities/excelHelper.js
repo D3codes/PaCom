@@ -25,7 +25,7 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 		let appointmentDate = 'Unknown Date';
 		if (reminders[0]?.appointment?.date) {
 			const date = new Date(reminders[0].appointment.date);
-			appointmentDate = `(${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()})`;
+			appointmentDate = `${date.getMonth() + 1}${date.getDate()}${date.getFullYear().toString().substr(-2)}`;
 		}
 		const worksheetName = `${reminders[0]?.appointment?.provider?.target || 'Unmapped Provider(s)'} - ${appointmentDate}`;
 		const worksheet = workbook.addWorksheet(worksheetName, sheetProps);
