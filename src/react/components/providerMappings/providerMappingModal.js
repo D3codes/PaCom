@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Slide
 } from '@material-ui/core';
 import {
 	Save, Input, Sms, Phone
@@ -16,10 +16,15 @@ import dialogController from '../../utilities/dialogController';
 import IconTextField from '../iconTextField';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
-		}
+		},
+		marginTop: theme.spacing(2)
 	}
 }));
 
@@ -81,8 +86,8 @@ function ProviderMappingModal({
 	const isSaveDisabled = !(source && target && phonetic);
 
 	return (
-		<Dialog fullWidth open={open}>
-			<DialogTitle>{provider ? 'Edit' : 'Add'} Provider Mapping</DialogTitle>
+		<Dialog fullWidth open={open} TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
+			<DialogTitle className={classes.dialogTitle}>{provider ? 'Edit' : 'Add'} Provider Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<IconTextField
 					autoFocus

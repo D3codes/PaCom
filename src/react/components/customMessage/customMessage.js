@@ -227,7 +227,7 @@ function CustomMessage({
 			<div className={classes.slideOverContainer}>
 				<div className={classes.content}>
 					<div className={classes.sendTo}>
-						<ButtonGroup disableElevation color="primary">
+						<ButtonGroup disableElevation color="secondary">
 							<Button variant={sendToAppointmentList ? 'outlined' : 'contained'} onClick={() => { setSendToAppointmentList(false); }}>Send to Number</Button>
 							<Button variant={sendToAppointmentList ? 'contained' : 'outlined'} onClick={() => { setSendToAppointmentList(true); }}>Send to Appointments</Button>
 						</ButtonGroup>
@@ -302,15 +302,14 @@ function CustomMessage({
 					)}
 				</div>
 			</div>
-			{ showSendToModal && (
-				<SendToModal
-					onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
-					procedures={procedures}
-					providers={providers}
-					defaultProcedures={procedureMappings}
-					defaultProviders={providerMappings}
-				/>
-			)}
+			<SendToModal
+				onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
+				procedures={procedures}
+				providers={providers}
+				defaultProcedures={procedureMappings}
+				defaultProviders={providerMappings}
+				isOpen={showSendToModal}
+			/>
 			<AlertSnackBar
 				severity={snackbarSeverity}
 				message={snackbarMessage}

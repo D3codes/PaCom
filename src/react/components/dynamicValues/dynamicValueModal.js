@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TableContainer
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TableContainer, Slide
 } from '@material-ui/core';
 import { Save, Label } from '@material-ui/icons';
 import IconTextField from '../iconTextField';
@@ -18,12 +18,17 @@ import {
 } from '../../localization/en/dialogText';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
 		},
 		display: 'flex',
-		flexDirection: 'column'
+		flexDirection: 'column',
+		marginTop: theme.spacing(2)
 	}
 }));
 
@@ -106,9 +111,13 @@ function DynamicValueModal({
 	const saveDisabled = !name || dynamicValue?.mappings === mappings;
 
 	return (
-		<Dialog fullWidth open={open} maxWidth="md" onExited={applyInitialState}>
-			{!editProvider && <DialogTitle>{dynamicValue ? 'Edit' : 'Add'} Dynamic Value</DialogTitle>}
-			{editProvider && <DialogTitle>Value for {providers?.find(provider => provider.source === editProvider).target || editProvider}</DialogTitle>}
+		<Dialog fullWidth open={open} maxWidth="md" onExited={applyInitialState} TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
+			{!editProvider && <DialogTitle className={classes.dialogTitle}>{dynamicValue ? 'Edit' : 'Add'} Dynamic Value</DialogTitle>}
+			{editProvider && (
+				<DialogTitle className={classes.dialogTitle}>
+					Value for {providers?.find(provider => provider.source === editProvider).target || editProvider}
+				</DialogTitle>
+			)}
 			<DialogContent className={classes.dialogContent}>
 				{!editProvider && (
 					<Fragment>

@@ -219,7 +219,7 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 						startIcon={<CloudDownload />}
 						aria-describedby={id}
 						variant="contained"
-						color="primary"
+						color="secondary"
 						onClick={handleClick}>
 						Download Logs
 					</Button>
