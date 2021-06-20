@@ -43,6 +43,11 @@ function SendToModal({
 	const [providerMappings, setProviderMappings] = useState(providers || defaultProviders);
 
 	useEffect(() => {
+		setProcedureMappings(procedures || defaultProcedures);
+		setProviderMappings(providers || defaultProviders);
+	}, [isOpen]);
+
+	useEffect(() => {
 		if (providerMappings.length === 0 && defaultProviders.length !== 0) setProviderMappings(defaultProviders);
 		if (procedureMappings.length === 0 && defaultProcedures.length !== 0) setProcedureMappings(defaultProcedures);
 	}, [defaultProcedures, defaultProviders]);
