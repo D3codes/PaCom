@@ -49,8 +49,9 @@ exports.MessageTemplateConfirmDeleteTitle = MessageTemplateConfirmDeleteTitle;
 exports.MessageTemplateConfirmDeleteMessage = MessageTemplateConfirmDeleteMessage;
 
 // Provider Mapping Source In Use
-const ProviderMappingSourceInUseTitle = 'Provider Source Already in Use';
-const ProviderMappingSourceInUseMessage = 'Saving will overwrite the existing provider mapping. Do you want to save anyway?';
+const ProviderMappingSourceInUseTitle = 'Provider Source Not Unique';
+const ProviderMappingSourceInUseMessage = 'A provider source cannot contain another source. '
+                                        + 'The provider source either contains or is contained by the following sources:\n';
 exports.ProviderMappingSourceInUseTitle = ProviderMappingSourceInUseTitle;
 exports.ProviderMappingSourceInUseMessage = ProviderMappingSourceInUseMessage;
 

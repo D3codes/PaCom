@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Slide
 } from '@material-ui/core';
 import {
 	Save, Input, Sms, Phone
@@ -16,10 +16,15 @@ import dialogController from '../../utilities/dialogController';
 import IconTextField from '../iconTextField';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
-		}
+		},
+		marginTop: theme.spacing(2)
 	}
 }));
 
@@ -62,15 +67,15 @@ function ProviderMappingModal({
 	};
 
 	const handleSave = () => {
-		const existingProvider = !provider && providers?.find(prov => prov.source === source);
-		if (existingProvider) {
-			dialogController.confirmSave(ProviderMappingSourceInUseTitle, ProviderMappingSourceInUseMessage).then(({ response }) => {
-				if (response === 0) {
-					const newProviderMapping = new Provider(source, target, phonetic, sendToReminder, sendToCustom);
-					onSave(newProviderMapping, provider);
-					applyInitialState();
-				}
-			});
+		const otherProviders = (provider ? providers?.filter(x => x.source !== provider.source) : providers) ?? [];
+		const providersThatContainSource = otherProviders.filter(x => x.source.includes(source)).map(x => x.source);
+		const providersContainedInSource = otherProviders.filter(x => source.includes(x.source)).map(x => x.source);
+
+		if (providersThatContainSource.length > 0 || providersContainedInSource.length > 0) {
+			dialogController.showError(
+				ProviderMappingSourceInUseTitle,
+				ProviderMappingSourceInUseMessage + providersThatContainSource.join('\n') + providersContainedInSource.join('\n')
+			);
 		} else {
 			const newProviderMapping = new Provider(source, target, phonetic, sendToReminder, sendToCustom);
 			onSave(newProviderMapping, provider);
@@ -81,8 +86,8 @@ function ProviderMappingModal({
 	const isSaveDisabled = !(source && target && phonetic);
 
 	return (
-		<Dialog fullWidth open={open}>
-			<DialogTitle>{provider ? 'Edit' : 'Add'} Provider Mapping</DialogTitle>
+		<Dialog fullWidth open={open} TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
+			<DialogTitle className={classes.dialogTitle}>{provider ? 'Edit' : 'Add'} Provider Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<IconTextField
 					autoFocus
@@ -90,6 +95,7 @@ function ProviderMappingModal({
 					onChange={handleSourceChange}
 					value={source}
 					Icon={Input}
+					testId="source-field"
 				/>
 				<IconTextField
 					label="SMS Target"
@@ -97,12 +103,14 @@ function ProviderMappingModal({
 					placeholder="SMS..."
 					value={target}
 					Icon={Sms}
+					testId="sms-target-field"
 				/>
 				<IconTextField
 					label="Phonetic Target"
 					onChange={handlePhoneticChange}
 					value={phonetic}
 					Icon={Phone}
+					testId="phonetic-target-field"
 				/>
 			</DialogContent>
 			<DialogActions>

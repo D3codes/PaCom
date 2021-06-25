@@ -15,13 +15,12 @@ import Procedure from '../../models/procedure';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
 		marginTop: `${theme.mixins.toolbar.minHeight}px`
 	},
 	actionButtonContainer: {
-		alignSelf: 'flex-end'
+		display: 'flex',
+		justifyContent: 'flex-end'
 	},
 	tabContent: {
 		height: '100%'

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Slide
 } from '@material-ui/core';
 import { Save, Label } from '@material-ui/icons';
 import IconTextField from '../iconTextField';
@@ -15,10 +15,15 @@ import {
 } from '../../localization/en/dialogText';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
-		}
+		},
+		marginTop: theme.spacing(2)
 	}
 }));
 
@@ -73,8 +78,8 @@ function MessageTemplateModal({
 	const isSaveDisabled = !(name && body) || name.toLocaleLowerCase() === 'default';
 
 	return (
-		<Dialog fullWidth open={open} maxWidth="md">
-			<DialogTitle>{template ? 'Edit' : 'Add'} Message Template</DialogTitle>
+		<Dialog fullWidth open={open} maxWidth="md" TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
+			<DialogTitle className={classes.dialogTitle}>{template ? 'Edit' : 'Add'} Message Template</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<IconTextField
 					autoFocus

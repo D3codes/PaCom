@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom/extend-expect';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import getVersionMock from '../../react/utilities/getVersion';
+import getEnvInfoMock from '../../react/utilities/envInfo';
 import App from '../../react/app';
 import persistentStorageMock from '../../react/utilities/persistentStorage';
 import sendingStatusMock from '../../react/utilities/sendingStatus';
 
-jest.mock('../../react/utilities/getVersion');
+jest.mock('../../react/utilities/envInfo');
 jest.mock('../../react/utilities/persistentStorage');
 jest.mock('../../react/utilities/sendingStatus');
 
@@ -38,7 +38,8 @@ const testSettings = {
 
 describe('App', () => {
 	it('renders without crashing', async () => {
-		getVersionMock.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
 		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
 		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve([]));
 		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
@@ -48,5 +49,20 @@ describe('App', () => {
 
 		render(<App />);
 		expect(await screen.findAllByText('Appointment Reminders')).toHaveLength(2);
+	});
+
+	it('renders in dev mode without crashing', async () => {
+		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(true));
+		persistentStorageMock.getSettings.mockImplementation(async () => testSettings);
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve([]));
+		sendingStatusMock.update.mockImplementation(() => Promise.resolve([]));
+
+		render(<App />);
+		expect(await screen.findAllByText('Appointment Reminders')).toHaveLength(2);
+		expect(await screen.findByText('DEV MODE')).toBeDefined();
 	});
 });

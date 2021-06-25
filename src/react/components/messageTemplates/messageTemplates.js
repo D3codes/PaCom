@@ -10,14 +10,17 @@ import MessageTemplateModal from './messageTemplateModal';
 
 const useStyles = makeStyles(theme => ({
 	buttonContainer: {
-		marginTop: theme.spacing(2),
 		display: 'flex',
 		justifyContent: 'flex-end'
 	},
 	messageTemplatesContainer: {
-		height: '100%',
+		height: '100%'
+	},
+	content: {
+		height: `calc(100% - ${theme.spacing(3)}px)`,
 		display: 'flex',
-		flexFlow: 'column'
+		flexDirection: 'column',
+		paddingBottom: theme.spacing(2)
 	}
 }));
 
@@ -55,16 +58,18 @@ export default function MessageTemplates({
 
 	return (
 		<div className={classes.messageTemplatesContainer}>
-			<MessageTemplatesTable
-				hasWritePermission={hasWritePermission}
-				onEdit={handleEdit}
-				onRemove={handleRemove}
-				onSave={handleSave}
-				templates={templates}
-				defaultPhoneTemplate={defaultPhoneReminderTemplate}
-				defaultSmsTemplate={defaultSmsReminderTemplate}
-				procedureMappings={procedureMappings}
-			/>
+			<div className={classes.content}>
+				<MessageTemplatesTable
+					hasWritePermission={hasWritePermission}
+					onEdit={handleEdit}
+					onRemove={handleRemove}
+					onSave={handleSave}
+					templates={templates}
+					defaultPhoneTemplate={defaultPhoneReminderTemplate}
+					defaultSmsTemplate={defaultSmsReminderTemplate}
+					procedureMappings={procedureMappings}
+				/>
+			</div>
 			<div className={classes.buttonContainer}>
 				<Button
 					color="primary"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, FormControl, Select, MenuItem, Divider, Typography
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, FormControl, Select, MenuItem, Divider, Typography, Slide
 } from '@material-ui/core';
 import {
 	Save, Input, Sms, Phone
@@ -15,10 +15,15 @@ import dialogController from '../../utilities/dialogController';
 import IconTextField from '../iconTextField';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
-		}
+		},
+		marginTop: theme.spacing(2)
 	},
 	adornmentDivider: {
 		margin: theme.spacing(),
@@ -35,8 +40,7 @@ const useStyles = makeStyles(theme => ({
 	templateSelector: {
 		width: `calc(50% - ${theme.spacing()}px)`,
 		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center'
+		flexDirection: 'column'
 	},
 	form: {
 		width: '100%'
@@ -107,9 +111,10 @@ function ProcedureMappingModal({
 	const isSaveDisabled = !(source && target && phonetic);
 
 	return (
-		<Dialog fullWidth open={open}>
-			<DialogTitle>{procedure ? 'Edit' : 'Add'} Procedure Mapping</DialogTitle>
+		<Dialog fullWidth open={open} TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
+			<DialogTitle className={classes.dialogTitle}>{procedure ? 'Edit' : 'Add'} Procedure Mapping</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
+				<Typography>Source must be configured exactly as it appears in the appointment list.</Typography>
 				<IconTextField
 					autoFocus
 					fullWidth
@@ -117,6 +122,7 @@ function ProcedureMappingModal({
 					onChange={handleSourceChange}
 					value={source}
 					Icon={Input}
+					testId="source-field"
 				/>
 				<IconTextField
 					fullWidth
@@ -124,6 +130,7 @@ function ProcedureMappingModal({
 					onChange={handleTargetChange}
 					value={target}
 					Icon={Sms}
+					testId="sms-target-field"
 				/>
 				<IconTextField
 					fullWidth
@@ -131,9 +138,10 @@ function ProcedureMappingModal({
 					onChange={handlePhoneticChange}
 					value={phonetic}
 					Icon={Phone}
+					testId="phonetic-target-field"
 				/>
 				<Divider className={classes.adornmentDivider} />
-				<Typography variant="h5" className={classes.accordionSummaryText}>Reminder Template Overrides</Typography>
+				<Typography variant="h6" className={classes.accordionSummaryText}>Reminder Template Overrides</Typography>
 				<Typography>Select message templates to send instead of the default appointment reminders for this procedure.</Typography>
 				<div className={classes.templateContainer}>
 					<div className={classes.templateSelector}>

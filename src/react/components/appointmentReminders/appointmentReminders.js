@@ -65,8 +65,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	reportTableContainer: {
 		zIndex: 1,
-		display: 'flex',
-		flexFlow: 'column',
 		height: '100%',
 		backgroundColor: theme.palette.background.default
 	},
@@ -224,16 +222,15 @@ function AppointmentReminders({
 					</div>
 				</FileDrop>
 			</div>
-			{ showSendToModal && (
-				<SendToModal
-					onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
-					procedures={procedures}
-					providers={providers}
-					defaultProcedures={procedureMappings}
-					defaultProviders={providerMappings}
-					forAppointmentReminders
-				/>
-			)}
+			<SendToModal
+				onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
+				procedures={procedures}
+				providers={providers}
+				defaultProcedures={procedureMappings}
+				defaultProviders={providerMappings}
+				forAppointmentReminders
+				isOpen={showSendToModal}
+			/>
 			<AlertSnackbar
 				open={showAlertSnackbar}
 				severity={snackbarSeverity}

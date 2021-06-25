@@ -25,7 +25,7 @@ export default function ContactPreferences({
 						disabled={!hasWritePermission}
 						onChange={event => { setSendToPreferredAndSms(event.target.checked); }}
 						checked={sendToPreferredAndSms}
-						color="primary"
+						color="secondary"
 					/>
 				)}
 				label="Send messages via SMS as well as patient's preferred contact method"
@@ -37,7 +37,7 @@ export default function ContactPreferences({
 						disabled={!hasWritePermission}
 						onChange={event => { setTextHomeIfCellNotAvailable(event.target.checked); }}
 						checked={textHomeIfCellNotAvailable}
-						color="primary"
+						color="secondary"
 					/>
 				)}
 				label="Send SMS to home phone number if cell is not available"

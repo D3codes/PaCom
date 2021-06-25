@@ -20,15 +20,13 @@ import folderSelector from '../../utilities/folderSelector';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
 		height: '100%'
 	},
 	form: {
 		'& .MuiTextField-root': {
 			margin: theme.spacing(1)
 		},
-		flex: 1
+		height: `calc(100% - ${theme.spacing(3)}px)`
 	},
 	content: {
 		display: 'block',
@@ -221,7 +219,7 @@ export default function TwilioSettings({ twilio, reloadSettings, hasWritePermiss
 						startIcon={<CloudDownload />}
 						aria-describedby={id}
 						variant="contained"
-						color="primary"
+						color="secondary"
 						onClick={handleClick}>
 						Download Logs
 					</Button>

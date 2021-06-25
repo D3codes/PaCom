@@ -8,7 +8,8 @@ const DRAWER_WIDTH = 206;
 const useStyles = makeStyles(theme => ({
 	actionContainer: {
 		display: 'flex',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		backgroundColor: theme.palette.background.default
 	},
 	progressBar: {
 		position: 'fixed',
@@ -30,26 +31,26 @@ function ReportActions({
 	return (
 		<Fragment>
 			<div className={classes.actionContainer}>
-				<Button onClick={onExport} color="primary" startIcon={<Publish />} variant={isSending ? 'outlined' : 'contained'} disabled={isSending}>Export</Button>
 				<div className={classes.actionContainer}>
+					<Button onClick={onExport} color="secondary" startIcon={<Publish />} variant={isSending ? 'outlined' : 'contained'} disabled={isSending}>Export</Button>
 					<Button
+						className={classes.sendButton}
 						onClick={onSendToClick}
 						color="secondary"
 						disabled={sendDisabled}
-						endIcon={<AllInbox />}
+						startIcon={<AllInbox />}
 						variant={sendDisabled ? 'outlined' : 'contained'}>
 						Send To
 					</Button>
-					<Button
-						className={classes.sendButton}
-						onClick={onSend}
-						color="primary"
-						disabled={sendDisabled}
-						endIcon={<Send />}
-						variant={sendDisabled ? 'outlined' : 'contained'}>
-						Send
-					</Button>
 				</div>
+				<Button
+					onClick={onSend}
+					color="primary"
+					disabled={sendDisabled}
+					endIcon={<Send />}
+					variant={sendDisabled ? 'outlined' : 'contained'}>
+						Send
+				</Button>
 			</div>
 			{isSending && progress > 0 && progress < 100 && <LinearProgress className={classes.progressBar} variant="determinate" value={progress} />}
 		</Fragment>

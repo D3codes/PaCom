@@ -5,4 +5,9 @@ const getVersion = () => window.ipcRenderer.invoke('request-version').then((vers
 	throw VersionNotFoundException(error);
 });
 
-export default getVersion;
+const getIsDev = () => window.ipcRenderer.invoke('is-dev');
+
+export default {
+	getVersion,
+	getIsDev
+};

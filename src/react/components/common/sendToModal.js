@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Typography
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Typography, Slide
 } from '@material-ui/core';
 import { Save, Undo } from '@material-ui/icons';
 
@@ -11,11 +11,16 @@ import Procedure from '../../models/procedure';
 import SendTo from './sendTo';
 
 const useStyles = makeStyles(theme => ({
+	dialogTitle: {
+		backgroundColor: theme.palette.primary.main,
+		color: theme.palette.secondary.contrastText
+	},
 	dialogContent: {
 		'& > * + *': {
 			marginTop: theme.spacing(2)
 		},
-		height: '550px'
+		height: '550px',
+		marginTop: theme.spacing(2)
 	},
 	dialogActions: {
 		display: 'flex',
@@ -30,12 +35,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SendToModal({
-	onClose, procedures = null, providers = null, defaultProcedures, defaultProviders, forAppointmentReminders = false
+	onClose, procedures = null, providers = null, defaultProcedures, defaultProviders, forAppointmentReminders = false, isOpen = false
 }) {
 	const classes = useStyles();
 
 	const [procedureMappings, setProcedureMappings] = useState(procedures || defaultProcedures);
 	const [providerMappings, setProviderMappings] = useState(providers || defaultProviders);
+
+	useEffect(() => {
+		setProcedureMappings(procedures || defaultProcedures);
+		setProviderMappings(providers || defaultProviders);
+	}, [isOpen]);
+
+	useEffect(() => {
+		if (providerMappings.length === 0 && defaultProviders.length !== 0) setProviderMappings(defaultProviders);
+		if (procedureMappings.length === 0 && defaultProcedures.length !== 0) setProcedureMappings(defaultProcedures);
+	}, [defaultProcedures, defaultProviders]);
 
 	const applyDefaultState = () => {
 		setProcedureMappings(defaultProcedures);
@@ -65,8 +80,8 @@ function SendToModal({
 	const isRestoreDefaultDisabled = (mappingsMatch(providerMappings, defaultProviders) && mappingsMatch(procedureMappings, defaultProcedures));
 
 	return (
-		<Dialog fullWidth open maxWidth="md">
-			<DialogTitle>Send To</DialogTitle>
+		<Dialog fullWidth open={isOpen} maxWidth="md" TransitionComponent={Slide} TransitionProps={{ direction: 'up' }}>
+			<DialogTitle className={classes.dialogTitle}>Send To</DialogTitle>
 			<DialogContent className={classes.dialogContent}>
 				<Typography className={classes.descriptionText}>
 					Select which Providers and Procedures to send this message to.
@@ -85,7 +100,7 @@ function SendToModal({
 			<DialogActions className={classes.dialogActions}>
 				<Button
 					onClick={applyDefaultState}
-					color="primary"
+					color="secondary"
 					startIcon={<Undo />}
 					variant={isRestoreDefaultDisabled ? 'outlined' : 'contained'}
 					disabled={isRestoreDefaultDisabled}>
@@ -113,7 +128,8 @@ SendToModal.propTypes = {
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider)),
 	defaultProcedures: PropTypes.arrayOf(PropTypes.instanceOf(Procedure)).isRequired,
 	defaultProviders: PropTypes.arrayOf(PropTypes.instanceOf(Provider)).isRequired,
-	forAppointmentReminders: PropTypes.bool
+	forAppointmentReminders: PropTypes.bool,
+	isOpen: PropTypes.bool
 };
 
 export default SendToModal;

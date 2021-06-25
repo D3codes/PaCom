@@ -119,7 +119,7 @@ export default function SendTo({
 										data-testid={`providerCheckbox-${provider.target || provider.source}`}
 										onChange={event => { handleProviderChange(provider.source, event.target.checked); }}
 										checked={forAppointmentReminders ? provider.sendToReminder : provider.sendToCustom}
-										color="primary"
+										color="secondary"
 										disabled={!hasWritePermission}
 									/>
 								</ListItem>
@@ -149,7 +149,7 @@ export default function SendTo({
 										data-testid={`procedureCheckbox-${procedure.target || procedure.source}`}
 										onChange={event => { handleProcedureChange(procedure.source, event.target.checked); }}
 										checked={forAppointmentReminders ? procedure.sendToReminder : procedure.sendToCustom}
-										color="primary"
+										color="secondary"
 										disabled={!hasWritePermission}
 									/>
 								</ListItem>

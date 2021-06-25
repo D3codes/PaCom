@@ -1,5 +1,5 @@
 import persistentStorage from './persistentStorage';
-import getVersion from './getVersion';
+import envInfo from './envInfo';
 import appSettings from '../appSettings.json';
 
 const { NullValueException } = require('../errors/exceptions');
@@ -7,7 +7,7 @@ const { NullValueException } = require('../errors/exceptions');
 const sendMessage = async (phoneNumber, message, sendAsSms) => {
 	const twilioSettings = (await persistentStorage.getSettings()).twilio;
 	const trimmedMessage = message.replace(/[\r\n]+/gm, ' ');
-	const version = await getVersion();
+	const version = await envInfo.getVersion();
 	const response = await fetch(sendAsSms ? twilioSettings.smsEndpoint : twilioSettings.callEndpoint, {
 		method: 'POST',
 		headers: {

@@ -59,10 +59,6 @@ const sendCalls = async (onUpdate, reminders) => {
 	for (let i = 0; i < calls.length; i++) {
 		const call = calls[i];
 
-		// Tactical sleep
-		// eslint-disable-next-line no-await-in-loop
-		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
-
 		if (!call.number) {
 			call.reminders.forEach(reminder => {
 				reminder.setFailedStatus();
@@ -92,6 +88,10 @@ const sendCalls = async (onUpdate, reminders) => {
 				}
 			});
 		});
+
+		// Tactical sleep
+		// eslint-disable-next-line no-await-in-loop
+		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
 	}
 };
 
@@ -156,7 +156,7 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 			continue;
 		}
 
-		if (providersToSkip.includes(reminder.getIn(['appointment', 'provider', 'source'], null))) {
+		if (providersToSkip.some(x => reminder.getIn(['appointment', 'provider', 'source'], null).includes(x))) {
 			reminder.setSkippedStatus();
 			reminder.setStatusMessage(ProviderSkipped);
 
@@ -204,6 +204,11 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 							reminder.setStatusMessage(TwilioError);
 						}
 					}
+
+					// If this is the last reminder, send bundled calls
+					if (i === reminders.length - 1 && !forceText) {
+						handleLastReminder(onUpdate, reminders);
+					}
 				});
 			} else if (replacedMessage) {
 				callBundler(contactNumber, replacedMessage, reminder);
@@ -211,14 +216,19 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 					reminder.appendStatusMessage(PreferredAndSms);
 					await sendToList([reminder], null, proceduresToSkip, providersToSkip, message, true);
 				}
+
+				// If this is the last reminder, send bundled calls
+				if (i === reminders.length - 1 && !forceText) {
+					handleLastReminder(onUpdate, reminders);
+				}
 			} else {
 				reminder.setFailedStatus();
 				reminder.appendStatusMessage(NoMessageToSend);
-			}
 
-			// If this is the last reminder, send bundled calls
-			if (i === reminders.length - 1 && !forceText) {
-				handleLastReminder(onUpdate, reminders);
+				// If this is the last reminder, send bundled calls
+				if (i === reminders.length - 1 && !forceText) {
+					handleLastReminder(onUpdate, reminders);
+				}
 			}
 		});
 	}
