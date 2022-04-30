@@ -14,9 +14,13 @@ import Reminder from '../../models/reminder';
 const NA = '-';
 
 const StatusIcons = classes => ({
+	// eslint-disable-next-line react/destructuring-assignment
 	[Reminder.Status.Sending]: <Loop color="inherit" className={classes.statusIcon} />,
+	// eslint-disable-next-line react/destructuring-assignment
 	[Reminder.Status.Sent]: <Done color="inherit" className={classes.statusIcon} />,
+	// eslint-disable-next-line react/destructuring-assignment
 	[Reminder.Status.Failed]: <Error color="inherit" className={classes.statusIcon} />,
+	// eslint-disable-next-line react/destructuring-assignment
 	[Reminder.Status.Skipped]: <Redo color="inherit" className={classes.statusIcon} />
 });
 

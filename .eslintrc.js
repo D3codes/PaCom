@@ -37,6 +37,7 @@ module.exports = {
 		'import/prefer-default-export': 'off',
 		'react/jsx-closing-bracket-location': [1, { selfClosing: 'tag-aligned', nonEmpty: 'after-props' }],
 		'react/jsx-fragments': [1, 'element'],
-		'arrow-parens': ['error', 'as-needed']
+		'arrow-parens': ['error', 'as-needed'],
+		'react/jsx-no-bind': 'off'
 	}
 };
