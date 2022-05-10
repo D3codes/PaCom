@@ -93,6 +93,7 @@ function DynamicValueMappingsTable({
 
 DynamicValueMappingsTable.propTypes = {
 	onEdit: PropTypes.func.isRequired,
+	// eslint-disable-next-line react/forbid-prop-types
 	mappings: PropTypes.arrayOf(PropTypes.object).isRequired,
 	providers: PropTypes.arrayOf(PropTypes.instanceOf(Provider))
 };
