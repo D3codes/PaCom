@@ -1,4 +1,4 @@
-import KCPG from './KCPG';
+import KCPG from './KCPGInsight';
 
 // TODO: add logic to select transformer
 

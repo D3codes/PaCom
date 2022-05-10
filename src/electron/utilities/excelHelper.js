@@ -1,6 +1,47 @@
 const ExcelJS = require('exceljs');
 const filePicker = require('./filePicker');
 
+const importXLSX = async (filePath = null) => {
+	// let path = filePath;
+	// if (!path) {
+	// 	const filter = [{ name: 'XLSX', extensions: ['xlsx'] }];
+	// 	path = await filePicker.pick(filter);
+	// }
+
+	// const workbook = new ExcelJS.Workbook();
+	// await workbook.xlsx.readFile(path);
+
+	// const rows = [];
+	// workbook.worksheets[0].eachRow(row => {
+	// 	rows.push(JSON.stringify(row.values));
+	// });
+
+	// return { path, data: rows };
+	const workbook = new ExcelJS.Workbook();
+	if (!filePath) {
+		const filter = [{ name: 'XLSX', extensions: ['xlsx'] }];
+		return new Promise(resolve => filePicker.pick(filter).then(path => {
+			if (!path) return;
+			workbook.xlsx.readFile(path).then(values => {
+				const rows = [];
+				values.worksheets[0].eachRow(row => {
+					rows.push(JSON.stringify(row.values));
+				});
+
+				resolve({ path, data: rows });
+			});
+		}));
+	}
+	return new Promise(resolve => workbook.xlsx.readFile(filePath).then(values => {
+		const rows = [];
+		values.worksheets[0].eachRow(row => {
+			rows.push(JSON.stringify(row.values));
+		});
+
+		resolve({ path: filePath, data: rows });
+	}));
+};
+
 const exportMessageReport = async (report, autoSavePath = null) => {
 	let path = autoSavePath;
 	const workbook = new ExcelJS.Workbook();
@@ -76,5 +117,6 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 };
 
 module.exports = {
+	importXLSX,
 	exportMessageReport
 };
