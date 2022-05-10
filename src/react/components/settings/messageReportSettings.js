@@ -28,12 +28,12 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 	const [autoSave, setAutoSave] = useState(messageReports.autosaveReports);
 	const [location, setLocation] = useState(messageReports.autosaveLocation);
 
-	const changesToSave = (location !== messageReports.autosaveLocation) || (autoSave !== messageReports.autosaveReports);
+	const changesToSave = (location.trim() !== messageReports.autosaveLocation) || (autoSave !== messageReports.autosaveReports);
 	const autoSaveOnAndLocationNotSet = autoSave && !location;
 
 	const handleSave = () => {
 		if (autoSave !== messageReports.autosaveReports) persistentStorage.setMessageReportsAutosave(autoSave);
-		if (location !== messageReports.autosaveLocation) persistentStorage.setMessageReportsAutosaveLocation(location);
+		if (location.trim() !== messageReports.autosaveLocation) persistentStorage.setMessageReportsAutosaveLocation(location.trim());
 		reloadSettings();
 	};
 
