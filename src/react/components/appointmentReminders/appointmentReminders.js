@@ -13,7 +13,6 @@ import Provider from '../../models/provider';
 import Procedure from '../../models/procedure';
 import Template from '../../models/template';
 import ReportTable from '../reportTable/reportTable';
-// import csvImporter from '../../utilities/csvImporter';
 import xlsxImporter from '../../utilities/xlsxImporter';
 import AlertSnackbar from '../alertSnackbar';
 import dialogController from '../../utilities/dialogController';
@@ -136,15 +135,6 @@ function AppointmentReminders({
 			if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 		}).catch(e => throwError(e));
 		xlsxPromise.then(({ path }) => setFilePath(path));
-
-		// const csvPromise = csvImporter.getCSV(appointmentListPath);
-		// csvPromise.then(({ result }) => transformer.transform(result.data, providerMappings, procedureMappings)).then(remindersList => {
-		// 	setValidationRan(false);
-		// 	setSendClicked(false);
-		// 	setReminders(remindersList);
-		// 	if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
-		// }).catch(e => throwError(e));
-		// csvPromise.then(({ path }) => setFilePath(path));
 	};
 
 	const handleFileDrop = files => {

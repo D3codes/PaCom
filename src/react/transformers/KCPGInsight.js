@@ -45,6 +45,8 @@ const defaultDynamicValues = [
 const transform = (rows, providerMappings = null, procedureMappings = null) => {
 	if (!rows) throw new NullValueException(`Null value provided to "KCPGInsight" transformer: ${rows}`);
 
+	console.log(rows);
+
 	const reminders = [];
 	rows.forEach((row, index) => {
 		if (index === 0 || !row[1]) return;
@@ -72,24 +74,6 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 			blockedReason = null,
 			paddedProcedure = null
 		] = JSON.parse(row);
-
-		// // This shift is removing the company from the row
-		// rows[index - 1].shift();
-		// let [
-		// 	paddedProvider = '',
-		// 	appointmentDate = null
-		// ] = rows[index - 1];
-		// const [
-		// 	appointmentTime = null,
-		// 	appointmentDuration = null,
-		// 	name = null,
-		// 	accountNumber = null,
-		// 	dateOfBirth = null,
-		// 	preferredContactMethod = null,,
-		// 	homePhone = null,
-		// 	cellPhone = null,
-		// 	paddedProcedure = null
-		// ] = row;
 
 		const contactMethods = [];
 		if (homePhone) contactMethods.push(ContactMethod.Home(homePhone));
