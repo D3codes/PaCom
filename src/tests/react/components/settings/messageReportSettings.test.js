@@ -65,4 +65,26 @@ describe('MessageReportSettings', () => {
 		expect(persistentStorageMock.setMessageReportsAutosaveLocation).toHaveBeenCalledTimes(1);
 		expect(reloadSettingsMock).toBeCalled();
 	});
+
+	it('does not enable the save button until a location has been changed to a value that differs by more than whitespace', () => {
+		persistentStorageMock.setMessageReportsAutosaveLocation.mockImplementation();
+		const settings = {
+			autosaveReports: true,
+			autosaveLocation: 'C:\\test\\location',
+			lastReport: ''
+		};
+		const reloadSettingsMock = jest.fn();
+		const { getByText, getByTestId } = render(<MessageReportSettings messageReports={settings} reloadSettings={reloadSettingsMock} hasWritePermission />);
+
+		const browseField = getByTestId('browse-field').querySelector('input');
+		browseField.value = 'C:\\test\\location   ';
+		Simulate.change(browseField);
+
+		expect(getByText('Save').parentElement).toBeDisabled();
+
+		browseField.value = 'C:\\new\\test\\location';
+		Simulate.change(browseField);
+
+		expect(getByText('Save').parentElement).toBeEnabled();
+	});
 });
