@@ -1,6 +1,6 @@
 {
   "name": "PaCom",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Convalesce Healthcare Solutions <support@convalesce.health> (http://convalesce.health)",
   "description": "A Patient Communication Solution",
   "private": true,
@@ -82,7 +82,7 @@
     ]
   },
   "devDependencies": {
-    "electron": "^12.0.9",
+    "electron": "^12.2.3",
     "electron-builder": "^22.11.7",
     "electron-reload": "^1.5.0",
     "eslint": "^7.21.0",
