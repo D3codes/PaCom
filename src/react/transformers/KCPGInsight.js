@@ -45,8 +45,6 @@ const defaultDynamicValues = [
 const transform = (rows, providerMappings = null, procedureMappings = null) => {
 	if (!rows) throw new NullValueException(`Null value provided to "KCPGInsight" transformer: ${rows}`);
 
-	console.log(rows);
-
 	const reminders = [];
 	rows.forEach((row, index) => {
 		if (index === 0 || !row[1]) return;
@@ -79,7 +77,7 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 		if (homePhone) contactMethods.push(ContactMethod.Home(homePhone));
 		if (cellPhone) contactMethods.push(ContactMethod.Cell(cellPhone));
 
-		const patient = new Patient('', name, contactMethods, 'Cell', '');
+		const patient = new Patient('', `${lastName}, ${firstName}`, contactMethods, 'Cell', '');
 
 		const invalidProvider = !paddedProvider || (!Number.isNaN(paddedProvider) && !Number.isNaN(parseFloat(paddedProvider)));
 		if (invalidProvider) {
@@ -106,7 +104,7 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 			existingProcedure?.sendToCustom ?? true
 		);
 
-		const appointment = new Appointment(new Date(appointmentDate).toDateString(), appointmentTime, provider, '', procedure);
+		const appointment = new Appointment(new Date(appointmentDate).toUTCString().split(' 00:00:00 ')[0], appointmentTime, provider, '', procedure);
 
 		const reminder = new Reminder(patient, appointment);
 		if (invalidProvider) {
