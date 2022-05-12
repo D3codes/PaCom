@@ -61,7 +61,7 @@ const exportMessageReport = async (report, autoSavePath = null) => {
 			{ header: 'Appt Time', key: 'apptTime', width: 11 },
 			{ header: 'Procedure', key: 'procedure', width: 11 },
 			{ header: 'Patient', key: 'patient', width: 20 },
-			{ header: 'Account', key: 'account', width: 9 },
+			{ header: 'Account', key: 'account', width: 13 },
 			{ header: 'Notify By', key: 'notify', width: 8 },
 			{ header: 'Home', key: 'home', width: 13 },
 			{ header: 'Cell', key: 'cell', width: 13 },
