@@ -51,6 +51,11 @@ function ReportTableHeader() {
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit">
+						Account
+					</Typography>
+				</TableCell>
+				<TableCell className={classes.tableCellHead}>
+					<Typography className={classes.tableHeaderText} color="inherit">
 						Notify By
 					</Typography>
 				</TableCell>
