@@ -15,7 +15,7 @@ describe('ReportTableHeader', () => {
 		expect(getByText('Time')).toBeDefined();
 		expect(getByText('Procedure')).toBeDefined();
 		expect(getByText('Patient')).toBeDefined();
-		expect(getByText('Account')).toBeDefined();
+		expect(getByText('MRN')).toBeDefined();
 		expect(getByText('Notify By')).toBeDefined();
 		expect(getByText('Home')).toBeDefined();
 		expect(getByText('Cell')).toBeDefined();
