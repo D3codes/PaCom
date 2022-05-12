@@ -43,7 +43,7 @@ const defaultDynamicValues = [
 ];
 
 const transform = (rows, providerMappings = null, procedureMappings = null) => {
-	if (!rows) throw new NullValueException(`Null value provided to "KCPGInsight" transformer: ${rows}`);
+	if (!rows) throw new NullValueException(`Null value provided to "KCPGInSync" transformer: ${rows}`);
 
 	const reminders = [];
 	rows.forEach((row, index) => {
