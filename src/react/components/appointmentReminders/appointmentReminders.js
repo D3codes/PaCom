@@ -13,7 +13,7 @@ import Provider from '../../models/provider';
 import Procedure from '../../models/procedure';
 import Template from '../../models/template';
 import ReportTable from '../reportTable/reportTable';
-import csvImporter from '../../utilities/csvImporter';
+import xlsxImporter from '../../utilities/xlsxImporter';
 import AlertSnackbar from '../alertSnackbar';
 import dialogController from '../../utilities/dialogController';
 import valiDate from '../../validators/dateValidator';
@@ -127,14 +127,14 @@ function AppointmentReminders({
 	}, [reminders]);
 
 	const handleAppointmentListImport = (appointmentListPath = null) => {
-		const csvPromise = csvImporter.getCSV(appointmentListPath);
-		csvPromise.then(({ result }) => transformer.transform(result.data, providerMappings, procedureMappings)).then(remindersList => {
+		const xlsxPromise = xlsxImporter.getXLSX(appointmentListPath);
+		xlsxPromise.then(({ result }) => transformer.transform(result, providerMappings, procedureMappings)).then(remindersList => {
 			setValidationRan(false);
 			setSendClicked(false);
 			setReminders(remindersList);
 			if (!defaultTemplatesDefined) dialogController.showWarning(DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage);
 		}).catch(e => throwError(e));
-		csvPromise.then(({ path }) => setFilePath(path));
+		xlsxPromise.then(({ path }) => setFilePath(path));
 	};
 
 	const handleFileDrop = files => {
