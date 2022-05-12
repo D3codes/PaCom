@@ -54,9 +54,7 @@ describe('ProviderDateTableRows', () => {
 		expect(getByText('Pending')).toBeDefined();
 		expect(getByText('David Freeman 01/01/1970')).toBeDefined();
 		expect(getByText('12:00 AM')).toBeDefined();
-		expect(getByText('90')).toBeDefined();
 		expect(getByText('Caullen R Sasnett')).toBeDefined();
-		expect(getByText('1234567')).toBeDefined();
 		expect(getByText('TELEMED')).toBeDefined();
 		expect(getByText('Cell')).toBeDefined();
 		expect(getAllByText('-').length).toBe(1);

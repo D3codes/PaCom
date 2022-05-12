@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import '@testing-library/jest-dom/extend-expect';
-import KCPGInsight from '../../../react/transformers/KCPGInsight';
+import KCPGInSync from '../../../react/transformers/KCPGInSync';
 import { NullValueException } from '../../../react/errors/exceptions';
 
 const testData = [
@@ -18,19 +18,19 @@ const expectedTransform = '[{"patient":{"accountNumber":"","name":"Freeman, Davi
 						+ '{"source":"TMS","sendToReminder":true,"sendToCustom":true},"duration":"","procedure":{"source":"IH","sendToReminder":true,"sendToCustom":true}},'
 						+ '"status":"Pending","statusMessage":""}]';
 
-describe('KCPGInsight', () => {
+describe('KCPGInSync', () => {
 	it('correctly transforms data', () => {
-		expect(JSON.stringify(KCPGInsight.transform(testData))).toEqual(expectedTransform);
+		expect(JSON.stringify(KCPGInSync.transform(testData))).toEqual(expectedTransform);
 	});
 
 	it('returns an empty array if there are no rows or only one row', () => {
-		expect(KCPGInsight.transform([])).toEqual([]);
-		expect(KCPGInsight.transform([['1', '2', '3', '4', '5']])).toEqual([]);
+		expect(KCPGInSync.transform([])).toEqual([]);
+		expect(KCPGInSync.transform([['1', '2', '3', '4', '5']])).toEqual([]);
 	});
 
 	it('throws an InvalidInputError if called with falsy data', () => {
-		expect(() => { KCPGInsight.transform(undefined); }).toThrow(NullValueException);
-		expect(() => { KCPGInsight.transform(null); }).toThrow(NullValueException);
-		expect(() => { KCPGInsight.transform(''); }).toThrow(NullValueException);
+		expect(() => { KCPGInSync.transform(undefined); }).toThrow(NullValueException);
+		expect(() => { KCPGInSync.transform(null); }).toThrow(NullValueException);
+		expect(() => { KCPGInSync.transform(''); }).toThrow(NullValueException);
 	});
 });
