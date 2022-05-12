@@ -64,7 +64,7 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 			lastName = null,
 			firstName = null,
 			patientGroup = null,
-			accountNumber = null,
+			mrn = null,
 			eRin = null,
 			homePhone = null,
 			cellPhone = null,
@@ -77,7 +77,7 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 		if (homePhone) contactMethods.push(ContactMethod.Home(homePhone));
 		if (cellPhone) contactMethods.push(ContactMethod.Cell(cellPhone));
 
-		const patient = new Patient(accountNumber, `${lastName}, ${firstName}`, contactMethods, cellPhone ? 'Cell' : 'Phone', '');
+		const patient = new Patient(mrn, `${lastName}, ${firstName}`, contactMethods, cellPhone ? 'Cell' : 'Phone', '');
 
 		const invalidProvider = !paddedProvider || (!Number.isNaN(paddedProvider) && !Number.isNaN(parseFloat(paddedProvider)));
 		if (invalidProvider) {
