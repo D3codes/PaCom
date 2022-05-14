@@ -273,6 +273,8 @@ ipc.handle('open-csv-dialog', () => {
 	return open(filter);
 });
 
+ipc.handle('import-xlsx', (event, filePath) => excelHelper.importXLSX(filePath));
+
 ipc.handle('open-file', (event, filePath) => open([], filePath));
 
 ipc.handle('save-file', (event, filePath, fileName, file) => save(filePath, fileName, file));

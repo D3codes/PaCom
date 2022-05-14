@@ -41,11 +41,6 @@ function ReportTableHeader() {
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit">
-						Duration
-					</Typography>
-				</TableCell>
-				<TableCell className={classes.tableCellHead}>
-					<Typography className={classes.tableHeaderText} color="inherit">
 						Procedure
 					</Typography>
 				</TableCell>
@@ -56,7 +51,7 @@ function ReportTableHeader() {
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>
 					<Typography className={classes.tableHeaderText} color="inherit">
-						Account
+						MRN
 					</Typography>
 				</TableCell>
 				<TableCell className={classes.tableCellHead}>

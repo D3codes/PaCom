@@ -12,7 +12,7 @@ import {
 } from '@material-ui/icons';
 import clsx from 'clsx';
 import BrowseFile from '../browseFile';
-import csvImporter from '../../utilities/csvImporter';
+import xlsxImporter from '../../utilities/xlsxImporter';
 import validatePhoneNumber from '../../validators/validatePhoneNumber';
 import IconTextField from '../iconTextField';
 import ContainedLabeledList from '../containedLabeledList';
@@ -152,13 +152,13 @@ function CustomMessage({
 	};
 
 	const handleBrowseClick = () => {
-		const csvPromise = csvImporter.getCSV().catch(e => throwError(e));
-		csvPromise.then(({ result }) => transformer.transform(result.data, providerMappings, procedureMappings)).then(remindersList => {
+		const xlsxPromise = xlsxImporter.getXLSX().catch(e => throwError(e));
+		xlsxPromise.then(({ result }) => transformer.transform(result, providerMappings, procedureMappings)).then(remindersList => {
 			setValidationRan(false);
 			setSendClicked(false);
 			setReminders(remindersList);
 		}).catch(e => throwError(e));
-		csvPromise.then(({ path }) => setFilePath(path));
+		xlsxPromise.then(({ path }) => setFilePath(path));
 	};
 
 	const onSendAsSms = () => {

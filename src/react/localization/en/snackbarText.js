@@ -3,7 +3,7 @@ const UpdateDynamicValuesReminderMessage = 'Update dynamic values to include map
 exports.UpdateDynamicValuesReminderMessage = UpdateDynamicValuesReminderMessage;
 
 // Invalid File Type
-const InvalidFileTypeMessage = 'Invalid File Type - Expected CSV';
+const InvalidFileTypeMessage = 'Invalid File Type - Expected XLSX';
 exports.InvalidFileTypeMessage = InvalidFileTypeMessage;
 
 // SMS Sent Successfully

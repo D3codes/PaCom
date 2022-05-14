@@ -113,11 +113,6 @@ function ProviderDateTableRows({ providerDateText, reminders }) {
 						</TableCell>
 						<TableCell className={classes.tableCell}>
 							<Typography variant="body2">
-								{reminder.getIn(['appointment', 'duration'], NA)}
-							</Typography>
-						</TableCell>
-						<TableCell className={classes.tableCell}>
-							<Typography variant="body2">
 								{reminder.getIn(['appointment', 'procedure', 'source'], NA)}
 							</Typography>
 						</TableCell>
