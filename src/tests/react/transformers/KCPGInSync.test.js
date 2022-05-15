@@ -10,11 +10,11 @@ const testData = [
 ];
 
 const expectedTransform = '[{"patient":{"accountNumber":"0001","name":"Freeman, David","contactMethods":[{"phoneNumber":"913-705-0325","type":"Cell"}],'
-						+ '"preferredContactMethod":"Cell","dateOfBirth":""},"appointment":{"date":"Mon, 04 Apr 2022","time":"09:00 AM","provider":'
+						+ '"preferredContactMethod":"Text","dateOfBirth":""},"appointment":{"date":"Mon, 04 Apr 2022","time":"09:00 AM","provider":'
 						+ '{"source":"Lambert, Garrett, MD","sendToReminder":true,"sendToCustom":true},"duration":"","procedure":'
 						+ '{"source":"IH","sendToReminder":true,"sendToCustom":true}},"status":"Pending","statusMessage":""},{"patient":'
 						+ '{"accountNumber":"0002","name":"Sasnett, Caullen","contactMethods":[{"phoneNumber":"913-683-8736","type":"Cell"}],'
-						+ '"preferredContactMethod":"Cell","dateOfBirth":""},"appointment":{"date":"Mon, 04 Apr 2022","time":"09:45 AM","provider":'
+						+ '"preferredContactMethod":"Text","dateOfBirth":""},"appointment":{"date":"Mon, 04 Apr 2022","time":"09:45 AM","provider":'
 						+ '{"source":"TMS","sendToReminder":true,"sendToCustom":true},"duration":"","procedure":{"source":"IH","sendToReminder":true,"sendToCustom":true}},'
 						+ '"status":"Pending","statusMessage":""}]';
 
