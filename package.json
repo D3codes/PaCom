@@ -1,6 +1,6 @@
 {
   "name": "PaCom",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "author": "Convalesce Healthcare Solutions <support@convalesce.health> (http://convalesce.health)",
   "description": "A Patient Communication Solution",
   "private": true,
@@ -26,7 +26,7 @@
     "publish": {
       "provider": "github",
       "repo": "PaCom-Releases",
-      "owner": "d526f861"
+      "owner": "D3codes"
     }
   },
   "dependencies": {
