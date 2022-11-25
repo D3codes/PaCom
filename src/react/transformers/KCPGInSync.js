@@ -63,6 +63,7 @@ const transform = (rows, providerMappings = null, procedureMappings = null) => {
 			name = null,
 			lastName = null,
 			firstName = null,
+			alternateName = null,
 			patientGroup = null,
 			mrn = null,
 			eRin = null,
