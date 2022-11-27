@@ -43,7 +43,7 @@ const addProcedureMapping = mapping => window.ipcRenderer.invoke('add-procedure-
 const removeProcedureMappingWithSource = procedureSource => window.ipcRenderer.invoke('remove-procedure-mapping', procedureSource).then(transformProcedureMappings);
 
 // Message Templates
-const transformTemplates = messageTemplates => messageTemplates.map(({ name, body }) => new Template(name, body));
+const transformTemplates = messageTemplates => messageTemplates.map(({ name, body, smsOnly }) => new Template(name, body, smsOnly));
 
 const getMessageTemplates = () => window.ipcRenderer.invoke('get-message-templates').then(transformTemplates);
 

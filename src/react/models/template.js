@@ -1,10 +1,11 @@
 import Model from './model';
 
 class Template extends Model {
-	constructor(name, body) {
+	constructor(name, body, smsOnly) {
 		super();
 		this.name = name;
 		this.body = body;
+		this.smsOnly = smsOnly;
 	}
 }
 

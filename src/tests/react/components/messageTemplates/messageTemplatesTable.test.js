@@ -7,7 +7,8 @@ import Template from '../../../../react/models/template';
 jest.mock('../../../../react/utilities/persistentStorage');
 
 const templates = [
-	new Template('a', 'b')
+	new Template('a', 'b'),
+	new Template('c', 'd', true)
 ];
 
 describe('MessageTemplatesTable', () => {
@@ -16,6 +17,7 @@ describe('MessageTemplatesTable', () => {
 
 		expect(getByText('Name')).toBeDefined();
 		expect(getByText('Body')).toBeDefined();
+		expect(getByText('SMS Only')).toBeDefined();
 		expect(getByText('Actions')).toBeDefined();
 		expect(getByText('No Message Templates Configured')).toBeDefined();
 	});
@@ -25,5 +27,7 @@ describe('MessageTemplatesTable', () => {
 
 		expect(getByText('a')).toBeDefined();
 		expect(getByText('b')).toBeDefined();
+		expect(getByText('c')).toBeDefined();
+		expect(getByText('d')).toBeDefined();
 	});
 });

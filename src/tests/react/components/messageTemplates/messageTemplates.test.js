@@ -20,7 +20,7 @@ describe('MessageTemplates', () => {
 	it('renders templates without crashing', async () => {
 		const templates = [
 			new Template('Test Template Name', 'Test Template Body'),
-			new Template('Test Template Name 2', 'Test Template Body 2')
+			new Template('Test Template Name 2', 'Test Template Body 2', true)
 		];
 
 		render(<MessageTemplates templates={templates} procedureMappings={[]} hasWritePermission reload={jest.fn()} />);

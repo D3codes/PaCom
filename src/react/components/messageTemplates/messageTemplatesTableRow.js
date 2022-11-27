@@ -4,7 +4,7 @@ import {
 	IconButton, makeStyles, Menu, MenuItem, TableCell, TableRow, Typography, Tooltip
 } from '@material-ui/core';
 import {
-	DeleteForever, Edit, MoreVert
+	DeleteForever, Edit, MoreVert, Done
 } from '@material-ui/icons';
 
 import Template from '../../models/template';
@@ -62,6 +62,9 @@ function MessageTemplatesTableRow({
 				</Typography>
 			</TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{template.get('body', '-')}</Typography></TableCell>
+			<TableCell className={classes.tableCell}>
+				<Typography variant="body2">{template.get('smsOnly') && <Done color="inherit" className={classes.statusIcon} />}</Typography>
+			</TableCell>
 			<TableCell align="center" className={classes.tableCell}>
 				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>
 					<MoreVert />

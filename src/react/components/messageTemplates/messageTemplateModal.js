@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Slide
+	Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Slide, FormControlLabel, Checkbox
 } from '@material-ui/core';
 import { Save, Label } from '@material-ui/icons';
 import IconTextField from '../iconTextField';
@@ -34,17 +34,20 @@ function MessageTemplateModal({
 
 	const [name, setName] = useState('');
 	const [body, setBody] = useState('');
+	const [smsOnly, setSmsOnly] = useState(false);
 
 	useEffect(() => {
 		if (open && template) {
 			setName(template.name);
 			setBody(template.body);
+			setSmsOnly(template.smsOnly);
 		}
 	}, [open, template]);
 
 	const applyInitialState = () => {
 		setName('');
 		setBody('');
+		setSmsOnly(false);
 	};
 
 	const handleNameChange = value => setName(value);
@@ -63,13 +66,13 @@ function MessageTemplateModal({
 		if (existingTemplate) {
 			dialogController.confirmSave(MessageTemplateNameInUseTitle, MessageTemplateNameInUseMessage).then(({ response }) => {
 				if (response === 0) {
-					const newMessageTemplate = new Template(name, body);
+					const newMessageTemplate = new Template(name, body, smsOnly);
 					onSave(newMessageTemplate, template);
 					applyInitialState();
 				}
 			});
 		} else {
-			const newMessageTemplate = new Template(name, body);
+			const newMessageTemplate = new Template(name, body, smsOnly);
 			onSave(newMessageTemplate, template);
 			applyInitialState();
 		}
@@ -96,6 +99,17 @@ function MessageTemplateModal({
 					onAppend={handleBodyAppend}
 					message={body}
 					modal
+				/>
+				<FormControlLabel
+					control={(
+						<Checkbox
+							data-testid="smsOnly-id"
+							onChange={event => { setSmsOnly(event.target.checked); }}
+							checked={smsOnly}
+							color="secondary"
+						/>
+					)}
+					label="Only send this template as an SMS"
 				/>
 			</DialogContent>
 			<DialogActions>

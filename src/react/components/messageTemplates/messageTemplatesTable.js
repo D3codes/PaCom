@@ -44,7 +44,8 @@ function MessageTemplatesTable({
 			<Table padding="none" stickyHeader>
 				<colgroup>
 					<col style={{ width: '25%' }} />
-					<col style={{ width: '65%' }} />
+					<col style={{ width: '55%' }} />
+					<col style={{ width: '10%' }} />
 					<col style={{ width: '10%' }} />
 				</colgroup>
 				<TableHead>
@@ -57,6 +58,11 @@ function MessageTemplatesTable({
 						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
 							<Typography color="inherit">
 									Body
+							</Typography>
+						</TableCell>
+						<TableCell className={clsx(classes.tableHeadCell, classes.tableCell)}>
+							<Typography color="inherit">
+									SMS Only
 							</Typography>
 						</TableCell>
 						<TableCell align="center" className={clsx(classes.lastTableHeadCell, classes.tableHeadCell, classes.tableCell)}>
