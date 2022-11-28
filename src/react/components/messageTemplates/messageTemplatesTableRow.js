@@ -63,7 +63,7 @@ function MessageTemplatesTableRow({
 			</TableCell>
 			<TableCell className={classes.tableCell}><Typography variant="body2">{template.get('body', '-')}</Typography></TableCell>
 			<TableCell className={classes.tableCell}>
-				<Typography variant="body2">{template.get('smsOnly') && <Done color="inherit" className={classes.statusIcon} />}</Typography>
+				<Typography variant="body2">{template.get('smsOnly') && <Done />}</Typography>
 			</TableCell>
 			<TableCell align="center" className={classes.tableCell}>
 				<IconButton disabled={!hasWritePermission} onClick={handleMoreClick}>

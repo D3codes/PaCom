@@ -9,7 +9,7 @@ import Patient from '../models/patient';
 import ContactMethod from '../models/conactMethod';
 
 import {
-	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend, BundledCall, ProviderSkipped, ProcedureSkipped
+	SmsSentToHome, MissingPhoneNumber, PreferredAndSms, TwilioError, NoMessageToSend, BundledCall, ProviderSkipped, ProcedureSkipped, SmsOnlyTemplate
 } from '../localization/en/statusMessageText';
 
 const SLEEP_DURATION = 500;
@@ -169,6 +169,22 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 			continue;
 		}
 
+		const notifyBy = forceText ? Patient.NotifyBy.Text : reminder.getIn(['patient', 'preferredContactMethod'], null);
+		const messageToSend = message || getReminderTemplate(reminder, notifyBy);
+
+		if (messageTemplates.find(t => t.body === messageToSend)?.smsOnly && notifyBy !== Patient.NotifyBy.Text) {
+			reminder.setSkippedStatus();
+			reminder.setStatusMessage(SmsOnlyTemplate);
+
+			// If this is the last reminder, send bundled calls
+			if (i === reminders.length - 1 && !forceText) {
+				handleLastReminder(onUpdate, reminders);
+			}
+
+			// eslint-disable-next-line no-continue
+			continue;
+		}
+
 		reminder.setSendingStatus();
 		if (onUpdate) {
 			onUpdate([...reminders]);
@@ -177,9 +193,6 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 		// Tactical sleep
 		// eslint-disable-next-line no-await-in-loop
 		await new Promise(resolve => setTimeout(() => resolve(null), SLEEP_DURATION));
-
-		const notifyBy = forceText ? Patient.NotifyBy.Text : reminder.getIn(['patient', 'preferredContactMethod'], null);
-		const messageToSend = message || getReminderTemplate(reminder, notifyBy);
 
 		let contactNumber = reminder.get('patient').getPhoneNumberByType(notifyBy === Patient.NotifyBy.Phone ? ContactMethod.Types.Home : ContactMethod.Types.Cell);
 		if (!contactNumber && notifyBy === Patient.NotifyBy.Text && sendSmsToHomeIfNoCell) {

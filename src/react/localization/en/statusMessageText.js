@@ -41,3 +41,7 @@ exports.ProviderSkipped = ProviderSkipped;
 // Procedure Skipped
 const ProcedureSkipped = 'Procedure skipped';
 exports.ProcedureSkipped = ProcedureSkipped;
+
+// SMS Only Template
+const SmsOnlyTemplate = 'SMS Only Template';
+exports.SmsOnlyTemplate = SmsOnlyTemplate;

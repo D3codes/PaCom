@@ -977,4 +977,97 @@ describe('ListSender', () => {
 
 		listSender.sendAppointmentReminders(remindersMock, onUpdateMock, onComplete, [new Procedure('Text', undefined, undefined, 'Default', 'Default', false, false)], []);
 	});
+
+	it('skips sending SMS only template as call', done => {
+		// Mock Twilio Client
+		const sendCallMock = jest.fn(() => Promise.resolve(true));
+		const sendSMSMock = jest.fn(() => Promise.resolve(true));
+		twilioClientMock.sendCall.mockImplementation(sendCallMock);
+		twilioClientMock.sendSMS.mockImplementation(sendSMSMock);
+
+		// Mock Settings
+		const testSettings = {
+			appointmentReminders: {
+				contactPreferences: {
+					sendToPreferredAndSms: false,
+					textHomeIfCellNotAvailable: false
+				},
+				defaultReminderTemplates: {
+					phone: 'phoneTemplate',
+					sms: 'smsTemplate'
+				}
+			},
+			messageReports: {
+				autosaveReports: false,
+				autosaveLocation: ''
+			}
+		};
+		persistentStorageMock.getSettings.mockImplementation(() => Promise.resolve(testSettings));
+
+		// Mock Message Templates
+		const testMessageTemplates = [
+			{
+				name: 'phoneTemplate',
+				body: 'phone template body'
+			},
+			{
+				name: 'smsTemplate',
+				body: 'sms template body'
+			},
+			{
+				name: 'Cell',
+				body: 'Cell Template',
+				smsOnly: true
+			}
+		];
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve(testMessageTemplates));
+
+		// Mock Dynamic Value Replacer
+		const replacedMessageMock = 'Replaced Message';
+		dynamicValueReplacerMock.replace.mockImplementation(() => Promise.resolve(replacedMessageMock));
+
+		// Mock Reminders
+		const setSendingStatusMock = jest.fn();
+		const setFailedStatusMock = jest.fn();
+		const setSentStatusMock = jest.fn();
+		const setSkippedStatusMock = jest.fn();
+		const getInMock = jest.fn(() => 'Cell');
+		const getPhoneNumberByTypeMock = jest.fn(() => '1234567890');
+		const patientMock = {
+			getPhoneNumberByType: getPhoneNumberByTypeMock
+		};
+		const getMock = jest.fn(() => patientMock);
+		const setStatusMessageMock = jest.fn();
+		const appendStatusMessageMock = jest.fn();
+		const remindersMock = [
+			{
+				setSendingStatus: setSendingStatusMock,
+				setFailedStatus: setFailedStatusMock,
+				setSentStatus: setSentStatusMock,
+				setSkippedStatus: setSkippedStatusMock,
+				getIn: getInMock,
+				get: getMock,
+				setStatusMessage: setStatusMessageMock,
+				appendStatusMessage: appendStatusMessageMock
+			}
+		];
+
+		const onUpdateMock = jest.fn();
+		const onComplete = () => {
+			try {
+				expect(sendCallMock).toBeCalledTimes(0);
+				expect(sendSMSMock).toBeCalledTimes(0);
+				expect(onUpdateMock).toBeCalledTimes(1);
+				expect(setSendingStatusMock).toBeCalledTimes(0);
+				expect(setFailedStatusMock).toBeCalledTimes(0);
+				expect(setSentStatusMock).toBeCalledTimes(0);
+				expect(setSkippedStatusMock).toBeCalledTimes(1);
+				done();
+			} catch (error) {
+				done(error);
+			}
+		};
+
+		listSender.sendAppointmentReminders(remindersMock, onUpdateMock, onComplete, [], []);
+	});
 });
