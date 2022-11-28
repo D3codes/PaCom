@@ -13,7 +13,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 0,
 			location: ''
 		};
-		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByText('LOCAL')).toBeDefined();
 		expect(getByText('NETWORK - READ ONLY')).toBeDefined();
@@ -25,7 +25,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 0,
 			location: ''
 		};
-		const { getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByTestId('browse-field').querySelector('input')).toBeDisabled();
 	});
@@ -35,7 +35,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 1,
 			location: ''
 		};
-		const { getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByTestId('browse-field').querySelector('input')).toBeEnabled();
 	});
@@ -45,7 +45,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 0,
 			location: ''
 		};
-		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByText('Copy Local to Network').parentElement).toBeDisabled();
 	});
@@ -55,7 +55,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 1,
 			location: ''
 		};
-		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByText('Copy Local to Network').parentElement).toBeDisabled();
 	});
@@ -65,7 +65,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 2,
 			location: ''
 		};
-		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByText('Copy Local to Network').parentElement).toBeDisabled();
 	});
@@ -75,7 +75,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 2,
 			location: 'C:\\test\\location'
 		};
-		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByText('Copy Local to Network').parentElement).toBeEnabled();
 	});
@@ -85,7 +85,7 @@ describe('SharedConfigurationSettings', () => {
 			behavior: 2,
 			location: 'C:\\test\\location'
 		};
-		const { getByText, getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={jest.fn()} />);
+		const { getByText, getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={jest.fn()} />);
 
 		expect(getByText('Save').parentElement).toBeDisabled();
 
@@ -103,7 +103,7 @@ describe('SharedConfigurationSettings', () => {
 			location: 'C:\\test\\location'
 		};
 		const reloadSettingsMock = jest.fn();
-		const { getByText, getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} reloadSettings={reloadSettingsMock} />);
+		const { getByText, getByTestId } = render(<SharedConfigurationSettings sharedConfig={testSettings} adminAccess reloadSettings={reloadSettingsMock} />);
 
 		const browseField = getByTestId('browse-field').querySelector('input');
 		browseField.value = 'C:\\new\\test\\location';

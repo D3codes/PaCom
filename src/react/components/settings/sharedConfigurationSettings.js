@@ -34,7 +34,7 @@ const BEHAVIOR = {
 	networkReadAndWrite: 2
 };
 
-export default function SharedConfigurationSettings({ sharedConfig, reloadSettings }) {
+export default function SharedConfigurationSettings({ sharedConfig, adminAccess, reloadSettings }) {
 	const classes = useStyles();
 	const [selectedOption, setSelectedOption] = useState(sharedConfig.behavior);
 	const [location, setLocation] = useState(sharedConfig.location);
@@ -98,6 +98,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 				/>
 				<DescriptiveIconButton
 					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
+					disabled={!adminAccess}
 					selected={selectedOption === BEHAVIOR.networkReadAndWrite}
 					title="NETWORK - READ AND WRITE"
 					description="Read and Write all templates, mappings, dynamic values, and settings from a network location."
@@ -106,7 +107,7 @@ export default function SharedConfigurationSettings({ sharedConfig, reloadSettin
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
-					disabled={sharedConfig.behavior !== 2 || !sharedConfig.location}
+					disabled={sharedConfig.behavior !== 2 || !sharedConfig.location || !adminAccess}
 					variant={sharedConfig.behavior !== 2 || !sharedConfig.location ? 'outlined' : 'contained'}
 					color="secondary"
 					onClick={handleCopyToNetwork}
@@ -140,5 +141,6 @@ SharedConfigurationSettings.propTypes = {
 			location: PropTypes.string
 		}.isRequired
 	),
+	adminAccess: PropTypes.bool.isRequired,
 	reloadSettings: PropTypes.func.isRequired
 };
