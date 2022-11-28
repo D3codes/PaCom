@@ -38,7 +38,7 @@ export default function MessageReportSettings({ messageReports, hasWritePermissi
 	};
 
 	const browseForFolder = () => {
-		folderSelector.getFolder().then(folderPath => setLocation(folderPath));
+		folderSelector.getFolder().then(folderPath => { if (folderPath) setLocation(folderPath); });
 	};
 
 	return (
