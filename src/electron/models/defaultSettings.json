@@ -1,6 +1,7 @@
 {
     "settings": {
         "adminAccess": false,
+        "firstOpen": true,
         "appointmentReminders": {
             "dateVerification": {
                 "numberOfDays": 3,

@@ -86,7 +86,10 @@ export default function App() {
 		persistentStorage.getSettings(true).then(settings => {
 			setSharedConfigurationSettings(settings.shareData);
 			setAdminAccess(settings.adminAccess);
-			if (settings.firstOpen) setSelectedTabId(MiniDrawer.TabIds.SHARED_CONFIGURATION_SETTINGS);
+			if (settings.firstOpen) {
+				setSelectedTabId(MiniDrawer.TabIds.SHARED_CONFIGURATION_SETTINGS);
+				persistentStorage.disableFirstOpen();
+			}
 		});
 		persistentStorage.getProviderMappings().then(setProviderMappings);
 		persistentStorage.getProcedureMappings().then(setProcedureMappings);
@@ -103,7 +106,12 @@ export default function App() {
 		<ErrorBoundary>
 			<div className={classes.content}>
 				<CssBaseline />
-				<MiniDrawer onTabSelect={setSelectedTabId} disableNavigation={disableNavigation} selectedTabId={selectedTabId} />
+				<MiniDrawer
+					onTabSelect={setSelectedTabId}
+					disableNavigation={disableNavigation}
+					selectedTabId={selectedTabId}
+					reload={reloadSettings}
+				/>
 				<AppBar
 					position="fixed"
 					className={classes.appBar}>

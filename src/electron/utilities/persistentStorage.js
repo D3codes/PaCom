@@ -132,7 +132,6 @@ const getSettings = (forceLocal = false) => {
 	if (!settings) {
 		store.set(defaultSettings);
 		settings = defaultSettings;
-		settings.firstOpen = true;
 	} else if (settings.shareData.behavior !== 0 && !forceLocal) {
 		store = new Store({ cwd: settings.shareData.location });
 		settings = store.get(SETTINGS);

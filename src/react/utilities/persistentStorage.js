@@ -58,6 +58,8 @@ const setSettings = (path, value, forceLocal = false) => window.ipcRenderer.invo
 
 const setAdminAccess = hasAccess => setSettings('settings.adminAccess', hasAccess, true);
 
+const disableFirstOpen = () => setSettings('settings.firstOpen', false, true);
+
 // Appointment Reminder Settings
 
 const setDefaultPhoneReminder = messageTemplateName => setSettings('settings.appointmentReminders.defaultReminderTemplates.phone', messageTemplateName);
@@ -153,5 +155,6 @@ export default {
 	setAllowSendOutsideRangeForCustomMessages,
 	setEndOfRangeForCustomMessage,
 	setNumberOfDaysForCustomMessages,
-	setUseBusinessDaysForCustomMessages
+	setUseBusinessDaysForCustomMessages,
+	disableFirstOpen
 };

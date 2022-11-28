@@ -132,7 +132,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function MiniDrawer({
-	onTabSelect, disableNavigation, selectedTabId = PRIMARY_TABS[0].id
+	onTabSelect, disableNavigation, selectedTabId = PRIMARY_TABS[0].id, reload
 }) {
 	const classes = useStyles();
 	const [version, setVersion] = useState(null);
@@ -172,12 +172,14 @@ export default function MiniDrawer({
 
 		if (!adminAccess && clickCount >= CLICKS_REQUIRED_FOR_ADMIN_ACCESS - 1) {
 			persistentStorage.setAdminAccess(true).then(setAdminAccess);
+			reload();
 		}
 	};
 
 	const handleAdminDisable = () => {
 		persistentStorage.setAdminAccess(false).then(setAdminAccess);
 		onTabSelect(PRIMARY_TABS[0].id);
+		reload();
 	};
 
 	return (
@@ -244,7 +246,8 @@ export default function MiniDrawer({
 MiniDrawer.propTypes = {
 	onTabSelect: PropTypes.func.isRequired,
 	disableNavigation: PropTypes.bool.isRequired,
-	selectedTabId: PropTypes.string
+	selectedTabId: PropTypes.string,
+	reload: PropTypes.func.isRequired
 };
 
 MiniDrawer.Tabs = PRIMARY_TABS.concat(SECONDARY_TABS).concat(SETTINGS_TABS);
