@@ -96,14 +96,15 @@ export default function SharedConfigurationSettings({ sharedConfig, adminAccess,
 					description="Read all templates, mappings, dynamic values, and settings from a network location."
 					Icon={Storage}
 				/>
-				<DescriptiveIconButton
-					onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
-					disabled={!adminAccess}
-					selected={selectedOption === BEHAVIOR.networkReadAndWrite}
-					title="NETWORK - READ AND WRITE"
-					description="Read and Write all templates, mappings, dynamic values, and settings from a network location."
-					Icon={Storage}
-				/>
+				{adminAccess && (
+					<DescriptiveIconButton
+						onClick={() => { setSelectedOption(BEHAVIOR.networkReadAndWrite); }}
+						selected={selectedOption === BEHAVIOR.networkReadAndWrite}
+						title="NETWORK - READ AND WRITE"
+						description="Read and Write all templates, mappings, dynamic values, and settings from a network location."
+						Icon={Storage}
+					/>
+				)}
 			</div>
 			<div className={classes.actionButtonContainer}>
 				<Button
