@@ -255,8 +255,9 @@ const sendCustomMessage = (reminders, message, onUpdate, onComplete, procedureMa
 	});
 };
 
-const sendAppointmentReminders = (reminders, onUpdate, onComplete, procedureMappings, providerMappings) => {
+const sendAppointmentReminders = (reminders, onUpdate, onComplete, procedureMappings, providerMappings, isDev = false) => {
 	setDefaults();
+	testSend = isDev;
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
 		// Get Names of Default Call and Message Templates from Settings
