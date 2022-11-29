@@ -10,6 +10,33 @@ jest.mock('../../react/utilities/envInfo');
 jest.mock('../../react/utilities/persistentStorage');
 jest.mock('../../react/utilities/sendingStatus');
 
+const firstOpenSettings = {
+	firstOpen: true,
+	appointmentReminders: {
+		dateVerification: {
+			numberOfDays: 3,
+			endOfRange: null,
+			allowSendOutsideRange: 0,
+			useBusinessDays: true
+		},
+		contactPreferences: {
+			sendToPreferredAndSms: false,
+			textHomeIfCellNotAvailable: false
+		},
+		defaultReminderTemplates: {
+			phone: null,
+			sms: null
+		}
+	},
+	customMessages: {},
+	messageReports: {},
+	twilio: {},
+	shareData: {
+		behavior: 0,
+		location: ''
+	}
+};
+
 const testSettings = {
 	appointmentReminders: {
 		dateVerification: {
@@ -37,6 +64,20 @@ const testSettings = {
 };
 
 describe('App', () => {
+	it('renders first open without crashing', async () => {
+		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
+		persistentStorageMock.getSettings.mockImplementation(async () => firstOpenSettings);
+		persistentStorageMock.getDynamicValues.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getMessageTemplates.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getProcedureMappings.mockImplementation(() => Promise.resolve([]));
+		persistentStorageMock.getProviderMappings.mockImplementation(() => Promise.resolve([]));
+		sendingStatusMock.update.mockImplementation(() => Promise.resolve([]));
+
+		render(<App />);
+		expect(await screen.findAllByText('Settings | Shared Configuration')).toHaveLength(1);
+	});
+
 	it('renders without crashing', async () => {
 		getEnvInfoMock.getVersion.mockImplementation(() => Promise.resolve('0.1.0'));
 		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
