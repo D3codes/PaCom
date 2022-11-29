@@ -57,7 +57,7 @@ function getTitle(tabId) {
 
 export default function App() {
 	const classes = useStyles();
-	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
+	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.TabIds.SEND_APPOINTMENT_REMINDERS);
 	const [disableNavigation, setDisableNavigation] = useState(false);
 	useEffect(() => { sendingStatus.update(disableNavigation); }, [disableNavigation]);
 
@@ -74,6 +74,7 @@ export default function App() {
 	const [messageTemplates, setMessageTemplates] = useState([]);
 	const [dynamicValues, setDynamicValues] = useState([]);
 	const [isDev, setIsDev] = useState(false);
+	const [adminAccess, setAdminAccess] = useState(false);
 
 	const reloadSettings = () => {
 		persistentStorage.getSettings().then(settings => {
@@ -82,7 +83,14 @@ export default function App() {
 			setMessageReportSettings(settings.messageReports);
 			setTwilioSettings(settings.twilio);
 		});
-		persistentStorage.getSettings(true).then(settings => { setSharedConfigurationSettings(settings.shareData); });
+		persistentStorage.getSettings(true).then(settings => {
+			setSharedConfigurationSettings(settings.shareData);
+			setAdminAccess(settings.adminAccess);
+			if (settings.firstOpen) {
+				setSelectedTabId(MiniDrawer.TabIds.SHARED_CONFIGURATION_SETTINGS);
+				persistentStorage.disableFirstOpen();
+			}
+		});
 		persistentStorage.getProviderMappings().then(setProviderMappings);
 		persistentStorage.getProcedureMappings().then(setProcedureMappings);
 		persistentStorage.getMessageTemplates().then(setMessageTemplates);
@@ -98,7 +106,12 @@ export default function App() {
 		<ErrorBoundary>
 			<div className={classes.content}>
 				<CssBaseline />
-				<MiniDrawer onTabSelect={setSelectedTabId} disableNavigation={disableNavigation} selectedTabId={selectedTabId} />
+				<MiniDrawer
+					onTabSelect={setSelectedTabId}
+					disableNavigation={disableNavigation}
+					selectedTabId={selectedTabId}
+					reload={reloadSettings}
+				/>
 				<AppBar
 					position="fixed"
 					className={classes.appBar}>
@@ -208,6 +221,7 @@ export default function App() {
 					{selectedTabId === MiniDrawer.TabIds.SHARED_CONFIGURATION_SETTINGS && (
 						<SharedConfigurationSettings
 							sharedConfig={sharedConfigurationSettings}
+							adminAccess={adminAccess}
 							reloadSettings={reloadSettings}
 						/>
 					)}
