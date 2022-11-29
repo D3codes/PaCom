@@ -5,6 +5,10 @@ import { Simulate } from 'react-dom/test-utils';
 import CustomMessage from '../../../../react/components/customMessage/customMessage';
 import persistentStorageMock from '../../../../react/utilities/persistentStorage';
 import Template from '../../../../react/models/template';
+import getEnvInfoMock from '../../../../react/utilities/envInfo';
+
+jest.mock('../../../../react/utilities/envInfo');
+jest.mock('../../../../react/utilities/persistentStorage');
 
 const testValues = [
 	{
@@ -35,11 +39,10 @@ const testSettings = {
 	}
 };
 
-jest.mock('../../../../react/utilities/persistentStorage');
-
 describe('CustomMessage', () => {
 	it('renders without crashing', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
 
 		render(
 			<CustomMessage
@@ -61,6 +64,7 @@ describe('CustomMessage', () => {
 
 	it('switches views when toggled', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
 
 		const { getByText } = render(
 			<CustomMessage
@@ -84,6 +88,7 @@ describe('CustomMessage', () => {
 
 	it('keeps send buttons disabled when no message entered', async () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
 
 		const { getByText, getByTestId } = render(
 			<CustomMessage
