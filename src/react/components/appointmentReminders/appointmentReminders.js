@@ -2,7 +2,7 @@ import React, {
 	useMemo, useEffect, useState, Fragment
 } from 'react';
 import {
-	makeStyles, Typography, CircularProgress, Button, Slide
+	makeStyles, Typography, CircularProgress, Button, Slide, FormControlLabel, Checkbox
 } from '@material-ui/core';
 import { SystemUpdateAlt } from '@material-ui/icons';
 import { FileDrop } from 'react-file-drop';
@@ -110,6 +110,7 @@ function AppointmentReminders({
 	const [sendClicked, setSendClicked] = useState(false);
 
 	const [isDev, setIsDev] = useState(false);
+	const [twilioSend, setTwilioSend] = useState(false);
 
 	const throwError = useAsyncError();
 
@@ -173,7 +174,7 @@ function AppointmentReminders({
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings, isDev);
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings, isDev && !twilioSend);
 	};
 
 	const handleSendToClose = (newProcedures, newProviders) => {
@@ -228,6 +229,20 @@ function AppointmentReminders({
 							)}
 					</div>
 				</FileDrop>
+				{isDev && (
+					<FormControlLabel
+						control={(
+							<Checkbox
+								data-testid="twilioSend-id"
+								onChange={event => { setTwilioSend(event.target.checked); }}
+								checked={twilioSend}
+								color="error"
+							/>
+						)}
+						label="SEND WITH TWILIO"
+						color="error"
+					/>
+				)}
 			</div>
 			<SendToModal
 				onClose={(newProcedures, newProviders) => { handleSendToClose(newProcedures, newProviders); }}
