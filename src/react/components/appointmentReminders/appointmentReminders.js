@@ -23,6 +23,7 @@ import listSender from '../../utilities/listSender';
 import transformer from '../../transformers/transformer';
 import AllowSendOutsideRange from '../../models/allowSendOutsideRange';
 import SendToModal from '../common/sendToModal';
+import envInfo from '../../utilities/envInfo';
 
 import { DefaultReminderTemplatesNotDefinedTitle, DefaultReminderTemplatesNotDefinedMessage } from '../../localization/en/dialogText';
 import {
@@ -108,7 +109,13 @@ function AppointmentReminders({
 	const [isValid, setIsValid] = useState(null);
 	const [sendClicked, setSendClicked] = useState(false);
 
+	const [isDev, setIsDev] = useState(false);
+
 	const throwError = useAsyncError();
+
+	useEffect(() => {
+		envInfo.getIsDev().then(setIsDev);
+	}, []);
 
 	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
@@ -166,7 +173,7 @@ function AppointmentReminders({
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings);
+		listSender.sendAppointmentReminders(reminders, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings, isDev);
 	};
 
 	const handleSendToClose = (newProcedures, newProviders) => {

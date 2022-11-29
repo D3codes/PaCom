@@ -15,13 +15,13 @@ const sendMessage = async (phoneNumber, message, sendAsSms, testSend = false) =>
 			headers: { 'Content-Type': 'application/json' },
 			mode: 'cors',
 			body: JSON.stringify({
-				"to": phoneNumber,
-				"from": twilioSettings.phoneNumber,
-				"message": trimmedMessage,
-				"paComVersion": version,
-				"sendAsSms": sendAsSms
+				to: phoneNumber,
+				from: twilioSettings.phoneNumber,
+				message: trimmedMessage,
+				paComVersion: version,
+				sendAsSms
 			})
-		})
+		});
 
 		return response.ok;
 	}

@@ -23,6 +23,7 @@ let autoSavePath = '';
 let complete = null;
 let messageTemplates = [];
 let calls = [];
+let testSend = false;
 
 const setDefaults = () => {
 	defaultPhoneReminder = '';
@@ -34,6 +35,7 @@ const setDefaults = () => {
 	complete = null;
 	calls = [];
 	messageTemplates = [];
+	testSend = false;
 };
 
 const callBundler = (number, message, reminder) => {
@@ -73,7 +75,7 @@ const sendCalls = async (onUpdate, reminders) => {
 			continue;
 		}
 
-		twilio.sendCall(call.number, call.message).then(sentSuccessfully => {
+		twilio.sendCall(call.number, call.message, testSend).then(sentSuccessfully => {
 			// loop through all reminders for number and update statuses
 			call.reminders.forEach(reminder => {
 				if (sentSuccessfully) {
@@ -196,7 +198,7 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 		// eslint-disable-next-line no-await-in-loop, no-loop-func
 		await dynamicValueReplacer.replace(messageToSend, reminder, notifyBy).then(async replacedMessage => {
 			if (replacedMessage && notifyBy === Patient.NotifyBy.Text) {
-				twilio.sendSMS(contactNumber, replacedMessage).then(sentSuccessfully => {
+				twilio.sendSMS(contactNumber, replacedMessage, testSend).then(sentSuccessfully => {
 					if (!forceText) {
 						if (sentSuccessfully) reminder.setSentStatus();
 						else {
@@ -234,8 +236,9 @@ const sendToList = async (reminders, onUpdate = null, proceduresToSkip, provider
 	}
 };
 
-const sendCustomMessage = (reminders, message, onUpdate, onComplete, procedureMappings, providerMappings) => {
+const sendCustomMessage = (reminders, message, onUpdate, onComplete, procedureMappings, providerMappings, isDev = false) => {
 	setDefaults();
+	testSend = isDev;
 	complete = onComplete;
 	persistentStorage.getSettings().then(settings => {
 		// Get Contact Preferences

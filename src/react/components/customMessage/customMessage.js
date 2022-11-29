@@ -37,6 +37,7 @@ import {
 	ErrorSendingSomeRemindersTitle, ErrorSendingSomeRemindersMessage
 } from '../../localization/en/snackbarText';
 import listSender from '../../utilities/listSender';
+import envInfo from '../../utilities/envInfo';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -124,8 +125,14 @@ function CustomMessage({
 		(sendToAppointmentList ? reminders : phoneNumberIsValid && messageIsValid) && message
 	), [sendToAppointmentList, reminders, phoneNumberIsValid, messageIsValid, message]);
 
+	const [isDev, setIsDev] = useState(false);
+
 	const dateVerificationSettings = customMessageSettings?.dateVerification;
 	const throwError = useAsyncError();
+
+	useEffect(() => {
+		envInfo.getIsDev().then(setIsDev);
+	}, []);
 
 	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
@@ -162,7 +169,7 @@ function CustomMessage({
 	};
 
 	const onSendAsSms = () => {
-		twilio.sendSMS(phoneNumber, message).then(sentSuccessfully => {
+		twilio.sendSMS(phoneNumber, message, isDev).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? AlertSnackBar.Severities.Success : AlertSnackBar.Severities.Error);
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? SmsSentSuccessfully : ErrorSendingSms);
@@ -171,7 +178,7 @@ function CustomMessage({
 	};
 
 	const onSendAsCall = () => {
-		twilio.sendCall(phoneNumber, message).then(sentSuccessfully => {
+		twilio.sendCall(phoneNumber, message, isDev).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? AlertSnackBar.Severities.Success : AlertSnackBar.Severities.Error);
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? CallSentSuccessfully : ErrorSendingCall);
@@ -192,7 +199,7 @@ function CustomMessage({
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings);
+		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings, isDev);
 	};
 
 	const handleSendToClose = (newProcedures, newProviders) => {
