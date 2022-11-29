@@ -3,11 +3,9 @@ import twilioClient from '../../../react/utilities/twilioClient';
 import { NullValueException } from '../../../react/errors/exceptions';
 import persistentStorageMock from '../../../react/utilities/persistentStorage';
 import getEnvInfoMock from '../../../react/utilities/envInfo';
-import appSettingsMock from '../../../react/appSettings.json';
 
 jest.mock('../../../react/utilities/persistentStorage');
 jest.mock('../../../react/utilities/envInfo');
-jest.mock('../../../react/appSettings.json');
 enableFetchMocks();
 
 const requestBinUrl = 'https://eo1winfxrjpo8o.m.pipedream.net';
