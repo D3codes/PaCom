@@ -27,7 +27,7 @@ describe('AppointmentReminders', () => {
 	it('renders without crashing', async () => {
 		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
 
-		const { container } = render(
+		const { container, queryByText } = render(
 			<AppointmentReminders
 				providerMappings={[]}
 				procedureMappings={[]}
@@ -41,5 +41,26 @@ describe('AppointmentReminders', () => {
 
 		await screen.findByText('Browse for Appointments');
 		expect(container.firstChild.className.includes('appointmentRemindersContainer')).toBe(true);
+		expect(queryByText('SEND WITH TWILIO')).toBeNull();
+	});
+
+	it('renders in dev mode without crashing', async () => {
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(true));
+
+		const { container, queryByText } = render(
+			<AppointmentReminders
+				providerMappings={[]}
+				procedureMappings={[]}
+				appointmentReminderSettings={testSettings}
+				messageTemplates={[]}
+				reload={jest.fn()}
+				disableNavigation={false}
+				onDisableNavigationChange={jest.fn()}
+			/>
+		);
+
+		await screen.findByText('Browse for Appointments');
+		expect(container.firstChild.className.includes('appointmentRemindersContainer')).toBe(true);
+		expect(queryByText('SEND WITH TWILIO')).toBeDefined();
 	});
 });

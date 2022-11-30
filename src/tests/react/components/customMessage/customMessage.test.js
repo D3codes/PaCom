@@ -44,7 +44,7 @@ describe('CustomMessage', () => {
 		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
 		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(false));
 
-		render(
+		const { queryByText } = render(
 			<CustomMessage
 				messageTemplates={testTemplates}
 				customMessageSettings={testSettings}
@@ -60,6 +60,30 @@ describe('CustomMessage', () => {
 		expect(await screen.findByText('Send to Number')).toBeDefined();
 		expect(await screen.findByText('Templates')).toBeDefined();
 		expect(await screen.findByText('Dynamic Values')).toBeDefined();
+		expect(queryByText('SEND WITH TWILIO')).toBeNull();
+	});
+
+	it('renders in dev mode without crashing', async () => {
+		persistentStorageMock.getDynamicValues.mockImplementation(async () => (testValues));
+		getEnvInfoMock.getIsDev.mockImplementation(() => Promise.resolve(true));
+
+		const { queryByText } = render(
+			<CustomMessage
+				messageTemplates={testTemplates}
+				customMessageSettings={testSettings}
+				hasWritePermission
+				providerMappings={[]}
+				procedureMappings={[]}
+				reload={jest.fn()}
+				disableNavigation={false}
+				onDisableNavigationChange={jest.fn()}
+			/>
+		);
+
+		expect(await screen.findByText('Send to Number')).toBeDefined();
+		expect(await screen.findByText('Templates')).toBeDefined();
+		expect(await screen.findByText('Dynamic Values')).toBeDefined();
+		expect(queryByText('SEND WITH TWILIO')).toBeDefined();
 	});
 
 	it('switches views when toggled', async () => {
