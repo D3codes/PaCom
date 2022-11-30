@@ -6,7 +6,9 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, ButtonGroup, Slide } from '@material-ui/core';
+import {
+	Button, ButtonGroup, Slide, FormControlLabel, Checkbox
+} from '@material-ui/core';
 import {
 	Phone, Sms, ArrowForwardIos
 } from '@material-ui/icons';
@@ -37,6 +39,7 @@ import {
 	ErrorSendingSomeRemindersTitle, ErrorSendingSomeRemindersMessage
 } from '../../localization/en/snackbarText';
 import listSender from '../../utilities/listSender';
+import envInfo from '../../utilities/envInfo';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -124,8 +127,15 @@ function CustomMessage({
 		(sendToAppointmentList ? reminders : phoneNumberIsValid && messageIsValid) && message
 	), [sendToAppointmentList, reminders, phoneNumberIsValid, messageIsValid, message]);
 
+	const [isDev, setIsDev] = useState(false);
+	const [twilioSend, setTwilioSend] = useState(false);
+
 	const dateVerificationSettings = customMessageSettings?.dateVerification;
 	const throwError = useAsyncError();
+
+	useEffect(() => {
+		envInfo.getIsDev().then(setIsDev);
+	}, []);
 
 	useEffect(() => {
 		if (reminders && !validationRan && dateVerificationSettings) {
@@ -162,7 +172,7 @@ function CustomMessage({
 	};
 
 	const onSendAsSms = () => {
-		twilio.sendSMS(phoneNumber, message).then(sentSuccessfully => {
+		twilio.sendSMS(phoneNumber, message, isDev && !twilioSend).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? AlertSnackBar.Severities.Success : AlertSnackBar.Severities.Error);
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? SmsSentSuccessfully : ErrorSendingSms);
@@ -171,7 +181,7 @@ function CustomMessage({
 	};
 
 	const onSendAsCall = () => {
-		twilio.sendCall(phoneNumber, message).then(sentSuccessfully => {
+		twilio.sendCall(phoneNumber, message, isDev && !twilioSend).then(sentSuccessfully => {
 			setSnackbarSeverity(sentSuccessfully ? AlertSnackBar.Severities.Success : AlertSnackBar.Severities.Error);
 			setSnackbarTitle('');
 			setSnackbarMessage(sentSuccessfully ? CallSentSuccessfully : ErrorSendingCall);
@@ -192,7 +202,7 @@ function CustomMessage({
 	const handleSend = () => {
 		setSendClicked(true);
 		onDisableNavigationChange(true);
-		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings);
+		listSender.sendCustomMessage(reminders, message, setReminders, onSendingComplete, procedures || procedureMappings, providers || providerMappings, isDev && !twilioSend);
 	};
 
 	const handleSendToClose = (newProcedures, newProviders) => {
@@ -269,6 +279,20 @@ function CustomMessage({
 					</div>
 				</div>
 				<div className={classes.actionButtonContainer}>
+					{isDev && (
+						<FormControlLabel
+							control={(
+								<Checkbox
+									data-testid="twilioSend-id"
+									onChange={event => { setTwilioSend(event.target.checked); }}
+									checked={twilioSend}
+									color="error"
+								/>
+							)}
+							label="SEND WITH TWILIO"
+							color="error"
+						/>
+					)}
 					{!sendToAppointmentList && (
 						<Fragment>
 							<Button
