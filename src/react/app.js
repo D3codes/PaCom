@@ -1,7 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import React, {
+	useState, useEffect, useMemo
+} from 'react';
 import {
 	AppBar, CssBaseline, makeStyles, Toolbar, Typography
 } from '@material-ui/core';
+
+import Confetti from 'react-confetti';
 
 import AppointmentReminders from './components/appointmentReminders/appointmentReminders';
 import CustomMessage from './components/customMessage/customMessage';
@@ -102,9 +107,20 @@ export default function App() {
 		reloadSettings();
 	}, []);
 
+	const [konamiCode, setKonamiCode] = useState([]);
+	const konamiCodeSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+	const isKonamiCodeEntered = useMemo(() => konamiCode.join('') === konamiCodeSequence.join(''), [konamiCode]);
+	const handleKeyDown = event => {
+		const { key } = event;
+		setKonamiCode(prevState => [...prevState, key]);
+		if (konamiCode.length >= 10) {
+			setKonamiCode(prevState => prevState.slice(1));
+		}
+	};
+
 	return (
 		<ErrorBoundary>
-			<div className={classes.content}>
+			<div onKeyDown={handleKeyDown} className={classes.content}>
 				<CssBaseline />
 				<MiniDrawer
 					onTabSelect={setSelectedTabId}
@@ -236,6 +252,12 @@ export default function App() {
 					/>
 				</main>
 			</div>
+			{isKonamiCodeEntered && (
+				<Confetti
+					recycle={false}
+					onConfettiComplete={() => { setKonamiCode([]); }}
+				/>
+			)}
 		</ErrorBoundary>
 	);
 }
