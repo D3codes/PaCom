@@ -45,3 +45,10 @@ const ErrorSendingSomeRemindersTitle = 'Error Sending Reminders';
 const ErrorSendingSomeRemindersMessage = 'Check statuses for details';
 exports.ErrorSendingSomeRemindersTitle = ErrorSendingSomeRemindersTitle;
 exports.ErrorSendingSomeRemindersMessage = ErrorSendingSomeRemindersMessage;
+
+// REVERT
+// End of Support
+const EndOfSupportTitle = 'PaCom 2 is no longer supported';
+const EndOfSupportMessage = 'Further security updates and bug fixes will not be provided. Continued use of PaCom 2 may expose your data and devices to potential security vulnerabilities.';
+exports.EndOfSupportTitle = EndOfSupportTitle;
+exports.EndOfSupportMessage = EndOfSupportMessage;
