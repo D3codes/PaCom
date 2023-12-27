@@ -21,7 +21,9 @@ import persistentStorage from './utilities/persistentStorage';
 import AlertSnackbar from './components/alertSnackbar';
 import envInfo from './utilities/envInfo';
 
-import { ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage } from './localization/en/snackbarText';
+import {
+	ReadOnlyConfigurationTitle, ReadOnlyConfigurationMessage, EndOfSupportTitle, EndOfSupportMessage
+} from './localization/en/snackbarText';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -60,6 +62,9 @@ export default function App() {
 	const [selectedTabId, setSelectedTabId] = useState(MiniDrawer.Tabs[0].id);
 	const [disableNavigation, setDisableNavigation] = useState(false);
 	useEffect(() => { sendingStatus.update(disableNavigation); }, [disableNavigation]);
+
+	// REVERT
+	const [showEndOfSupportSnackbar, setShowEndOfSupportSnackbar] = useState(true);
 
 	const title = getTitle(selectedTabId);
 
@@ -111,6 +116,12 @@ export default function App() {
 								DEV MODE
 							</Typography>
 						)}
+						{
+							// REVERT
+							<Typography align="right" color="error" noWrap>
+								OUT OF SUPPORT
+							</Typography>
+						}
 					</Toolbar>
 				</AppBar>
 				<main className={classes.main}>
@@ -220,6 +231,16 @@ export default function App() {
 						title={ReadOnlyConfigurationTitle}
 						message={ReadOnlyConfigurationMessage}
 					/>
+					{
+						// REVERT
+						<AlertSnackbar
+							open={showEndOfSupportSnackbar}
+							severity={AlertSnackbar.Severities.Error}
+							title={EndOfSupportTitle}
+							message={EndOfSupportMessage}
+							onClose={() => { setShowEndOfSupportSnackbar(false); }}
+						/>
+					}
 				</main>
 			</div>
 		</ErrorBoundary>

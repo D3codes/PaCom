@@ -1,13 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const Sentry = require('@sentry/electron');
+// REVERT
+// const Sentry = require('@sentry/electron');
 const electron = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-const { autoUpdater } = require('electron-updater');
+// REVERT
+// const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
 const projectPackage = require('../../package.json');
-const appSettings = require('./appSettings.json');
+// REVERT
+// const appSettings = require('./appSettings.json');
 const { open, save } = require('./utilities/fileOpener');
 const filePicker = require('./utilities/filePicker');
 const persistentStorage = require('./utilities/persistentStorage');
@@ -19,9 +22,10 @@ const {
 let mainWindow;
 let sending = false;
 
-if (!isDev) {
-	Sentry.init({ dsn: appSettings.sentry.dsn });
-}
+// REVERT
+// if (!isDev) {
+// 	Sentry.init({ dsn: appSettings.sentry.dsn });
+// }
 
 const isMac = process.platform === 'darwin';
 const menuTemplate = [
@@ -226,46 +230,47 @@ const LOGGING_METHODS = [
 ];
 const localLog = (severity, details) => { LOGGING_METHODS[severity](details); };
 
+// REVERT
 // Auto Updater
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
-localLog(LOGGING_SEVERITIES.Info, 'PaCom starting...');
+// autoUpdater.logger = log;
+// autoUpdater.logger.transports.file.level = 'info';
+// localLog(LOGGING_SEVERITIES.Info, 'PaCom starting...');
 
-autoUpdater.on('checking-for-update', () => {
-	localLog(LOGGING_SEVERITIES.Info, 'Checking for update...');
-});
-autoUpdater.on('update-available', () => {
-	localLog(LOGGING_SEVERITIES.Info, 'Update available.');
-});
-autoUpdater.on('update-not-available', () => {
-	localLog(LOGGING_SEVERITIES.Info, 'Update not available.');
-});
-autoUpdater.on('error', err => {
-	localLog(LOGGING_SEVERITIES.Error, `Error in auto-updater. ${err}`);
-});
-autoUpdater.on('download-progress', progressObj => {
-	let logMessage = `Download speed: ${progressObj.bytesPerSecond}`;
-	logMessage = `${logMessage} - Downloaded ${progressObj.percent}%`;
-	logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
-	localLog(LOGGING_SEVERITIES.Info, logMessage);
-});
+// autoUpdater.on('checking-for-update', () => {
+// 	localLog(LOGGING_SEVERITIES.Info, 'Checking for update...');
+// });
+// autoUpdater.on('update-available', () => {
+// 	localLog(LOGGING_SEVERITIES.Info, 'Update available.');
+// });
+// autoUpdater.on('update-not-available', () => {
+// 	localLog(LOGGING_SEVERITIES.Info, 'Update not available.');
+// });
+// autoUpdater.on('error', err => {
+// 	localLog(LOGGING_SEVERITIES.Error, `Error in auto-updater. ${err}`);
+// });
+// autoUpdater.on('download-progress', progressObj => {
+// 	let logMessage = `Download speed: ${progressObj.bytesPerSecond}`;
+// 	logMessage = `${logMessage} - Downloaded ${progressObj.percent}%`;
+// 	logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
+// 	localLog(LOGGING_SEVERITIES.Info, logMessage);
+// });
 
-app.on('ready', () => {
-	autoUpdater.checkForUpdatesAndNotify();
-});
+// app.on('ready', () => {
+// 	autoUpdater.checkForUpdatesAndNotify();
+// });
 
-autoUpdater.on('update-downloaded', async () => {
-	if ((await showAlert(
-		'PaCom Update Available',
-		'A new version of PaCom has been downloaded. It is recommended to install this update immediately.',
-		'info',
-		['Update Now', 'Cancel'],
-		1,
-		1
-	)).response === 0) {
-		autoUpdater.quitAndInstall();
-	}
-});
+// autoUpdater.on('update-downloaded', async () => {
+// 	if ((await showAlert(
+// 		'PaCom Update Available',
+// 		'A new version of PaCom has been downloaded. It is recommended to install this update immediately.',
+// 		'info',
+// 		['Update Now', 'Cancel'],
+// 		1,
+// 		1
+// 	)).response === 0) {
+// 		autoUpdater.quitAndInstall();
+// 	}
+// });
 
 // Listeners
 ipc.handle('open-csv-dialog', () => {
