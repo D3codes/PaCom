@@ -52,7 +52,7 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-file-drop": "^3.1.2",
-    "react-scripts": "4.0.3"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
@@ -87,7 +87,7 @@
     "electron-reload": "^1.5.0",
     "eslint": "^7.21.0",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^24.1.7",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
